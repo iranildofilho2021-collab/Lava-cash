@@ -27,13 +27,15 @@
 
   <style>
     /* small visual reset to keep layout consistent */
-    html,body{height:100%;}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    /* Avoid forcing html/body to 100% height which can cause scroll issues when using fixed sidebars */
+    html { height: 100%; }
+    body { min-height: 100vh; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen overflow-y-auto">
   <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-md min-h-screen fixed">
+  <aside class="w-64 bg-white shadow-md h-screen fixed">
     <div class="p-6">
       <div class="flex items-center gap-3">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/></svg>
@@ -53,7 +55,7 @@
   </aside>
 
   <!-- Main content -->
-  <main class="ml-64 p-8">
+  <main class="ml-64 p-8 pb-16">
     <header class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
       <div class="text-sm text-gray-600">Resumo rápido — Lava-Cash</div>
@@ -79,7 +81,9 @@
     <section class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="bg-white p-4 rounded-lg shadow">
         <h3 class="text-lg font-semibold">Despesas por Categoria</h3>
-        <canvas id="chartExpenses" width="400" height="200" aria-label="Gráfico de despesas" role="img"></canvas>
+        <div class="w-full h-56">
+          <canvas id="chartExpenses" class="w-full h-full" aria-label="Gráfico de despesas" role="img"></canvas>
+        </div>
       </div>
 
       <div class="bg-white p-4 rounded-lg shadow">
@@ -90,6 +94,7 @@
       </div>
     </section>
 
+    <footer class="mt-12 text-center text-sm text-gray-500">Painel Lava-Cash — criado com ❤️</footer>
   </main>
 
   <!-- Small script: ensure any <img> will use lazy loading and add minimal accessibility fixes -->
@@ -110,7 +115,7 @@
             labels: ['Sem dados'],
             datasets: [{ data: [1], backgroundColor: ['#38bdf8'] }]
           },
-          options: { responsive: true, maintainAspectRatio: false }
+          options: { responsive: true, maintainAspectRatio: true }
         });
       }
     }
