@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lava-Cash | Importar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg flex flex-col">
+    <div class="flex items-center gap-2 px-6 py-6 border-b">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
+        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
+      </svg>
+      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Dashboard</a>
+      <a href="importar.html" class="block px-4 py-2 rounded-lg bg-sky-100 text-sky-700 font-semibold">Importar</a>
+      <a href="despesas.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Despesas</a>
+  <!-- Link para graficos.html removido porque a página não existe mais -->
+      <a href="ajuda.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Ajuda</a>
+      <a href="configuracoes.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Configurações</a>
+    </nav>
+    <div class="px-6 py-4 border-t text-xs text-gray-400">
+      &copy; 2025 Lava-Cash
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Importar Dados</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500 mb-2">Selecione um arquivo CSV ou Excel</span>
+        <input type="file" id="fileInput" accept=".csv,.xlsx" class="mt-2" />
+        <p id="fileName" class="mt-2 text-sm text-gray-600"></p>
+  <button id="processarBtn" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2 mt-4" disabled>Processar</button>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+  <span class="text-gray-500 mb-2">Preview</span>
+  <div id="preview" class="text-sm text-gray-600">Nenhum arquivo selecionado.</div>
+  <div id="tabelaPreview" class="mt-4 overflow-x-auto"></div>
+  <div id="tabelaResumo" class="mt-8 overflow-x-auto"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none"><path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-lg font-semibold">Adicionar Despesa</span>
+      </a>
+      <!-- Card de Gráficos removido porque a página não existe mais -->
+    </div>
+  </main>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const preview = document.getElementById('preview');
+    const processarBtn = document.getElementById('processarBtn');
+    const tabelaPreview = document.getElementById('tabelaPreview');
+    const tabelaResumo = document.getElementById('tabelaResumo');
+    let arquivoSelecionado = null;
+
+    function atualizarResumo() {
+      const vendasSalvas = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+      let html = '<table class="min-w-full text-xs border"><thead><tr>';
+      html += `<th class='border px-2 py-1 bg-gray-100'>Ano/Mês</th>`;
+      html += `<th class='border px-2 py-1 bg-gray-100'>Receita Bruta</th>`;
+      html += `<th class='border px-2 py-1 bg-gray-100'>MDR</th>`;
+      html += `<th class='border px-2 py-1 bg-gray-100'>Receita Líquida</th>`;
+      html += `<th class='border px-2 py-1 bg-gray-100'>Excluir</th>`;
+      html += '</tr></thead><tbody>';
+      vendasSalvas.forEach((v, idx) => {
+        html += '<tr>';
+        html += `<td class='border px-2 py-1'>${v.anoMes}</td>`;
+        html += `<td class='border px-2 py-1'>R$ ${v.receitaBruta.toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>`;
+        html += `<td class='border px-2 py-1'>R$ ${v.mdr.toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>`;
+        html += `<td class='border px-2 py-1'>R$ ${v.receitaLiquida.toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>`;
+        html += `<td class='border px-2 py-1 text-center'><button onclick='excluirResumo(${idx})' class='text-red-600 hover:text-red-800'>Excluir</button></td>`;
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      tabelaResumo.innerHTML = html;
+    }
+
+    window.excluirResumo = function(idx) {
+      let vendasSalvas = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+      vendasSalvas.splice(idx, 1);
+      localStorage.setItem('vendasResumo', JSON.stringify(vendasSalvas));
+      atualizarResumo();
+      atualizarDashboardGraficos();
+    }
+
+    function atualizarDashboardGraficos() {
+      // Atualiza Dashboard e Gráficos
+      const vendasSalvas = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+      const receitaLiquidaTotal = vendasSalvas.reduce((acc, v) => acc + v.receitaLiquida, 0);
+      localStorage.setItem('receitaLiquidaTotal', receitaLiquidaTotal);
+    }
+
+    fileInput && fileInput.addEventListener('change', (e) => {
+      const target = e.target;
+      if (target.files && target.files.length > 0) {
+        arquivoSelecionado = target.files[0];
+        fileName.textContent = `Arquivo: ${arquivoSelecionado.name}`;
+        preview.textContent = 'Arquivo pronto para processamento.';
+        processarBtn.disabled = false;
+      } else {
+        arquivoSelecionado = null;
+        fileName.textContent = '';
+        preview.textContent = 'Nenhum arquivo selecionado.';
+        processarBtn.disabled = true;
+      }
+      tabelaPreview.innerHTML = '';
+    });
+
+    processarBtn.addEventListener('click', () => {
+      if (!arquivoSelecionado) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet, {header:1});
+        // Colunas: 0=data, 1=hora, 2=status, 3=valor original, 4=valor atualizado, 5=modalidade, 9=bandeira, 10=taxa MDR, 11=valor taxa MDR
+        let resumoPorMes = {};
+        let totalVendas = 0;
+        function excelDateToJSDate(serial) {
+          // Excel date serial to JS Date, ajustando para fuso horário Brasil (UTC-3)
+          const utc = new Date((serial - 25569) * 86400 * 1000);
+          // Adiciona 3 horas para garantir que não caia no dia anterior
+          utc.setHours(utc.getHours() + 3);
+          return utc;
+        }
+        for (let i = 2; i < json.length; i++) {
+          const row = json[i];
+          if (!row || row.length < 12) continue;
+          // Interpreta data
+          let dataVenda = row[0];
+          let status = String(row[2]).trim().toLowerCase();
+          if (status === 'negada') continue;
+          // Interpreta mês/ano
+          let anoMes = 'Indefinido';
+          if (typeof dataVenda === 'string' && dataVenda.length >= 7 && dataVenda.includes('/')) {
+            let [dia, mes, ano] = dataVenda.split('/');
+            anoMes = `${ano}/${mes}`;
+          } else if (!isNaN(dataVenda)) {
+            // Se vier como número Excel
+            const d = excelDateToJSDate(Number(dataVenda));
+            const mes = String(d.getMonth()+1).padStart(2,'0');
+            const ano = d.getFullYear();
+            anoMes = `${ano}/${mes}`;
+          }
+          if (!resumoPorMes[anoMes]) resumoPorMes[anoMes] = {receitaBruta:0, mdr:0};
+          // Valor atualizado
+          let valorAtualizado = parseFloat(String(row[4]).replace('R$','').replace(',','.')) || 0;
+          // Valor taxa MDR
+          let valorMDR = parseFloat(String(row[11]).replace('R$','').replace(',','.')) || 0;
+          resumoPorMes[anoMes].receitaBruta += valorAtualizado;
+          resumoPorMes[anoMes].mdr += valorMDR;
+          totalVendas++;
+        }
+        // Calcula receita líquida
+        Object.keys(resumoPorMes).forEach(anoMes => {
+          resumoPorMes[anoMes].receitaLiquida = resumoPorMes[anoMes].receitaBruta - resumoPorMes[anoMes].mdr;
+        });
+        preview.textContent = `${totalVendas} vendas processadas.`;
+        tabelaPreview.innerHTML = '';
+
+        // Salva resumo no localStorage
+        let vendasResumo = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+        Object.entries(resumoPorMes).forEach(([anoMes, valores]) => {
+          vendasResumo = vendasResumo.filter(v => v.anoMes !== anoMes); // Remove duplicados
+          vendasResumo.push({anoMes, ...valores});
+        });
+        localStorage.setItem('vendasResumo', JSON.stringify(vendasResumo));
+        atualizarResumo();
+        atualizarDashboardGraficos();
+      };
+      reader.readAsArrayBuffer(arquivoSelecionado);
+    });
+
+    // Inicializa tabela resumo ao carregar
+    atualizarResumo();
+  </script>
+</body>
+</html>

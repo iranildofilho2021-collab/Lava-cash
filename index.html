@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lava-Cash | Dashboard</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg flex flex-col">
+    <div class="flex items-center gap-2 px-6 py-6 border-b">
+      <!-- Logo SVG -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
+        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
+      </svg>
+      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <a href="index.html" class="block px-4 py-2 rounded-lg bg-sky-100 text-sky-700 font-semibold">Dashboard</a>
+      <a href="importar.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Importar</a>
+      <a href="despesas.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Despesas</a>
+      <a href="ajuda.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Ajuda</a>
+      <a href="configuracoes.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Configurações</a>
+    </nav>
+    <div class="px-6 py-4 border-t text-xs text-gray-400">
+      &copy; 2025 Lava-Cash
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
+    
+    <!-- Cards de Resumo Financeiro -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Receita Bruta Anual -->
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">Receita Bruta Anual</span>
+        <span id="receitaBrutaAnual" class="text-2xl font-bold text-green-600 mt-2">R$ 0,00</span>
+        <span class="text-xs font-semibold text-sky-600 mt-1">Receita Líquida Anual: <span id="receitaLiquidaAnual">R$ 0,00</span></span>
+      </div>
+      <!-- Receita do Mês -->
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">Receita do Mês</span>
+        <span id="receitaBrutaMes" class="text-2xl font-bold text-sky-600 mt-2">R$ 0,00</span>
+        <span class="text-xs font-semibold text-green-600 mt-1">Receita Líquida do Mês: <span id="receitaLiquidaMes">R$ 0,00</span></span>
+      </div>
+      <!-- Despesa Anual -->
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">Despesa Anual</span>
+        <span id="despesaAnual" class="text-2xl font-bold text-red-500 mt-2">R$ 0,00</span>
+      </div>
+      <!-- Despesa Mensal -->
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">Despesa Mensal</span>
+        <span id="despesaMensal" class="text-2xl font-bold text-red-500 mt-2">R$ 0,00</span>
+      </div>
+    </div>
+
+    <!-- Cards de Estatísticas Rápidas -->
+
+    <!-- Gráfico de Desempenho Mensal -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-700">Desempenho Mensal</h2>
+        <div>
+          <label for="anoFiltro" class="text-sm text-gray-600 mr-2">Ano:</label>
+          <select id="anoFiltro" class="border rounded px-2 py-1 text-sm">
+          </select>
+        </div>
+      </div>
+      <canvas id="graficoMensal" height="100"></canvas>
+      <h2 class="text-xl font-bold text-gray-700 mb-4 mt-8">Despesas por Categoria</h2>
+      <div class="flex items-center gap-2 mb-4">
+        <label for="mesSelect" class="text-sm font-medium text-gray-700">Selecione o mês:</label>
+        <select id="mesSelect" class="rounded border px-3 py-2">
+          <option>Janeiro</option>
+          <option>Fevereiro</option>
+          <option>Março</option>
+          <option>Abril</option>
+          <option>Maio</option>
+          <option>Junho</option>
+          <option>Julho</option>
+          <option>Agosto</option>
+          <option>Setembro</option>
+          <option>Outubro</option>
+          <option>Novembro</option>
+          <option>Dezembro</option>
+        </select>
+      </div>
+      <div class="flex justify-center">
+        <canvas id="graficoPizza" width="250" height="250" style="max-width:250px;max-height:250px;"></canvas>
+      </div>
+    </div>
+
+    <!-- Atalhos para Ações Rápidas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <a href="importar.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none"><path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/></svg>
+        <span class="text-lg font-semibold">Importar Dados</span>
+      </a>
+      <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none"><path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-lg font-semibold">Adicionar Despesa</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- Script para o gráfico -->
+  <script>
+    // Gráfico de pizza de despesas por categoria
+    function atualizarGraficoPizza(mes) {
+      const despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+      const categorias = {};
+      despesas.forEach(d => {
+        if (d.mes === mes) {
+          categorias[d.categoria] = (categorias[d.categoria] || 0) + Number(d.valor);
+        }
+      });
+      const ctxPizza = document.getElementById('graficoPizza').getContext('2d');
+      if (window.graficoPizzaInstance) window.graficoPizzaInstance.destroy();
+      window.graficoPizzaInstance = new Chart(ctxPizza, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(categorias),
+          datasets: [{
+            data: Object.values(categorias),
+            backgroundColor: [
+              '#38bdf8','#0ea5e9','#ef4444','#f59e42','#22c55e','#eab308','#a21caf','#f472b6','#64748b','#facc15','#14b8a6','#6366f1'
+            ]
+          }]
+        },
+        options: {
+          plugins: { legend: { display: true } }
+        }
+      });
+    }
+    document.getElementById('mesSelect').addEventListener('change', function() {
+      atualizarGraficoPizza(this.value);
+    });
+    atualizarGraficoPizza(document.getElementById('mesSelect').value);
+    // Lê despesas do localStorage
+    const despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+    // Atualiza valor total de despesas
+    const totalDespesas = despesas.reduce((acc, d) => acc + Number(d.valor), 0);
+    document.querySelectorAll('.text-2xl.font-bold.text-red-500').forEach(el => {
+      el.textContent = `R$ ${totalDespesas.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+    });
+    // Atualiza valor de receitas (Receita Líquida)
+    document.addEventListener('DOMContentLoaded', function() {
+      const vendasResumo = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+      const anoAtual = new Date().getFullYear();
+      let receitaBrutaAnual = 0;
+      let receitaLiquidaAnual = 0;
+      vendasResumo.forEach(v => {
+        if (v.anoMes && v.anoMes.startsWith(anoAtual.toString())) {
+          receitaBrutaAnual += Number(v.receitaBruta) || 0;
+          receitaLiquidaAnual += Number(v.receitaLiquida) || 0;
+        }
+      });
+      const elBruta = document.getElementById('receitaBrutaAnual');
+      const elLiquida = document.getElementById('receitaLiquidaAnual');
+      if (elBruta) elBruta.textContent = `R$ ${receitaBrutaAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elLiquida) elLiquida.textContent = `R$ ${receitaLiquidaAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+    });
+    // Atualiza gráfico mensal
+    const ctx = document.getElementById('graficoMensal').getContext('2d');
+    // Soma despesas por mês
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const despesasPorMes = Array(12).fill(0);
+    despesas.forEach(d => {
+      const idx = meses.indexOf(d.mes);
+      if (idx >= 0) despesasPorMes[idx] += Number(d.valor);
+    });
+    // Filtro de ano para o gráfico
+    const vendasResumoGrafico = JSON.parse(localStorage.getItem('vendasResumo')) || [];
+    const anosDisponiveis = [...new Set(vendasResumoGrafico.map(v => v.anoMes && v.anoMes.split('/')[0]).filter(Boolean))].sort((a, b) => a - b);
+    const anoFiltroSelect = document.getElementById('anoFiltro');
+    anoFiltroSelect.innerHTML = '';
+    anosDisponiveis.forEach(ano => {
+      const opt = document.createElement('option');
+      opt.value = ano;
+      opt.textContent = ano;
+      anoFiltroSelect.appendChild(opt);
+    });
+    let anoSelecionado = anosDisponiveis.length ? anosDisponiveis[anosDisponiveis.length - 1] : new Date().getFullYear().toString();
+    anoFiltroSelect.value = anoSelecionado;
+
+    let graficoMensal;
+    function atualizarGraficoMensal(ano) {
+      const receitaBrutaPorMes = Array(12).fill(0);
+      const receitaLiquidaPorMes = Array(12).fill(0);
+      let receitaBrutaAnual = 0;
+      let receitaLiquidaAnual = 0;
+      let receitaBrutaMes = 0;
+      let receitaLiquidaMes = 0;
+      let despesaAnual = 0;
+      let despesaMensal = 0;
+      const mesAtual = (new Date()).getMonth() + 1;
+      vendasResumoGrafico.forEach(v => {
+        if (!v.anoMes) return;
+        const [anoV, mes] = v.anoMes.split('/');
+        const idx = Number(mes)-1;
+        if (anoV === ano && idx >= 0 && idx < 12) {
+          const bruta = Number(v.receitaBruta) || 0;
+          const liquida = Number(v.receitaLiquida) || 0;
+          receitaBrutaPorMes[idx] += bruta;
+          receitaLiquidaPorMes[idx] += liquida;
+          receitaBrutaAnual += bruta;
+          receitaLiquidaAnual += liquida;
+          if (Number(mes) === mesAtual) {
+            receitaBrutaMes += bruta;
+            receitaLiquidaMes += liquida;
+          }
+        }
+      });
+      // Despesas do localStorage filtradas pelo ano
+      const despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+      const despesasPorMesFiltrado = Array(12).fill(0);
+      despesas.forEach(d => {
+        if (d.mes && d.ano && String(d.ano) === ano) {
+          despesaAnual += Number(d.valor) || 0;
+          const idxMesDespesa = meses.indexOf(d.mes);
+          if (idxMesDespesa >= 0) {
+            despesasPorMesFiltrado[idxMesDespesa] += Number(d.valor) || 0;
+            if (idxMesDespesa+1 === mesAtual) {
+              despesaMensal += Number(d.valor) || 0;
+            }
+          }
+        }
+      });
+
+      // Atualiza os cards do topo
+      const elBruta = document.getElementById('receitaBrutaAnual');
+      const elLiquida = document.getElementById('receitaLiquidaAnual');
+      const elBrutaMes = document.getElementById('receitaBrutaMes');
+      const elLiquidaMes = document.getElementById('receitaLiquidaMes');
+      const elDespAnual = document.getElementById('despesaAnual');
+      const elDespMensal = document.getElementById('despesaMensal');
+      if (elBruta) elBruta.textContent = `R$ ${receitaBrutaAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elLiquida) elLiquida.textContent = `R$ ${receitaLiquidaAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elBrutaMes) elBrutaMes.textContent = `R$ ${receitaBrutaMes.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elLiquidaMes) elLiquidaMes.textContent = `R$ ${receitaLiquidaMes.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elDespAnual) elDespAnual.textContent = `R$ ${despesaAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      if (elDespMensal) elDespMensal.textContent = `R$ ${despesaMensal.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+
+      // Renderiza o gráfico
+      if (graficoMensal) graficoMensal.destroy();
+      graficoMensal = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+          datasets: [
+            {
+              label: 'Receita Bruta',
+              data: receitaBrutaPorMes,
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56,189,248,0.1)',
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Receita Líquida',
+              data: receitaLiquidaPorMes,
+              borderColor: '#0ea5e9',
+              backgroundColor: 'rgba(14,165,233,0.1)',
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Despesas',
+              data: despesasPorMesFiltrado,
+              borderColor: '#ef4444',
+              backgroundColor: 'rgba(239,68,68,0.1)',
+              tension: 0.4,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+    anoFiltroSelect.addEventListener('change', function() {
+      anoSelecionado = anoFiltroSelect.value;
+      atualizarGraficoMensal(anoSelecionado);
+    });
+    atualizarGraficoMensal(anoSelecionado);
+  </script>
+</body>
+</html>

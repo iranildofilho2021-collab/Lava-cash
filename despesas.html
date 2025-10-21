@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lava-Cash | Despesas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg flex flex-col">
+    <div class="flex items-center gap-2 px-6 py-6 border-b">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
+        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
+      </svg>
+      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Dashboard</a>
+      <a href="importar.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Importar</a>
+      <a href="despesas.html" class="block px-4 py-2 rounded-lg bg-sky-100 text-sky-700 font-semibold">Despesas</a>
+      <a href="ajuda.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Ajuda</a>
+      <a href="configuracoes.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Configurações</a>
+    </nav>
+    <div class="px-6 py-4 border-t text-xs text-gray-400">
+      &copy; 2025 Lava-Cash
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Despesas</h1>
+    <!-- Formulário de nova despesa -->
+    <form class="bg-white rounded-xl shadow p-6 mb-8 grid grid-cols-1 md:grid-cols-7 gap-4 items-end">
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ano</label>
+        <select id="ano-despesa" class="w-full rounded border px-3 py-2">
+          <option>2020</option>
+          <option>2021</option>
+          <option>2022</option>
+          <option>2023</option>
+          <option>2024</option>
+          <option selected>2025</option>
+          <option>2026</option>
+          <option>2027</option>
+          <option>2028</option>
+          <option>2029</option>
+          <option>2030</option>
+        </select>
+      </div>
+      <div id="mes-despesa-div" class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Mês</label>
+        <select id="mes-despesa" class="w-full rounded border px-3 py-2">
+          <option>Janeiro</option>
+          <option>Fevereiro</option>
+          <option>Março</option>
+          <option>Abril</option>
+          <option>Maio</option>
+          <option>Junho</option>
+          <option>Julho</option>
+          <option>Agosto</option>
+          <option>Setembro</option>
+          <option>Outubro</option>
+          <option>Novembro</option>
+          <option>Dezembro</option>
+        </select>
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <select class="w-full rounded border px-3 py-2" id="tipo-despesa">
+          <option>Fixo</option>
+          <option selected>Variável</option>
+        </select>
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+        <select id="categoria-despesa" class="w-full rounded border px-3 py-2"></select>
+        <script>
+        function carregarCategoriasForm() {
+          const select = document.getElementById('categoria-despesa');
+          const categorias = JSON.parse(localStorage.getItem('categorias')) || [
+            'Conta de Água','Energia','Suprimentos','Aluguel','Royalties','Seguro','Contadora','DAS-Impostos','Empréstimo','Salário','INSS'
+          ];
+          select.innerHTML = '';
+          categorias.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.textContent = cat;
+            select.appendChild(opt);
+          });
+        }
+        carregarCategoriasForm();
+        window.addEventListener('storage', carregarCategoriasForm);
+        </script>
+        </select>
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+        <input type="text" class="w-full rounded border px-3 py-2" placeholder="Ex: Conta de água mês 10" />
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
+        <input type="number" class="w-full rounded border px-3 py-2" placeholder="0,00" min="0" step="0.01" />
+      </div>
+      <div class="md:col-span-1">
+        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2 w-full">Adicionar</button>
+      </div>
+    </form>
+    <!-- Filtro de mês -->
+    <div class="mb-4">
+      <label for="filtro-mes" class="text-sm font-semibold mr-2">Filtrar por mês:</label>
+      <select id="filtro-mes" class="border rounded px-2 py-1">
+        <option>Janeiro</option>
+        <option>Fevereiro</option>
+        <option>Março</option>
+        <option>Abril</option>
+        <option>Maio</option>
+        <option>Junho</option>
+        <option>Julho</option>
+        <option>Agosto</option>
+        <option>Setembro</option>
+        <option>Outubro</option>
+        <option>Novembro</option>
+        <option>Dezembro</option>
+      </select>
+    </div>
+    <!-- Cards de estatísticas -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-700 mb-4">Tabela de Despesas</h2>
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-2 py-2 text-left">Ano</th>
+            <th class="px-2 py-2 text-left">Mês</th>
+            <th class="px-2 py-2 text-left">Tipo</th>
+            <th class="px-2 py-2 text-left">Categoria</th>
+            <th class="px-2 py-2 text-left">Descrição</th>
+            <th class="px-2 py-2 text-left">Valor (R$)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">Nenhuma despesa cadastrada</td>
+            <td class="px-2 py-2">R$ 0,00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+<script>
+let despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+
+function atualizarTabela() {
+  const mesesOrdem = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const mesSelecionado = document.getElementById('filtro-mes').value;
+  const tbody = document.querySelector('.bg-white table tbody');
+  tbody.innerHTML = '';
+  const filtradas = despesas.filter(d => d.mes === mesSelecionado);
+  if (filtradas.length === 0) {
+    tbody.innerHTML = `<tr><td class='px-2 py-2' colspan='7'>Nenhuma despesa cadastrada</td></tr>`;
+    atualizarDashboard();
+    return;
+  }
+  // Ordena por mês (dezembro para janeiro)
+  const ordenadas = [...filtradas].sort((a, b) => mesesOrdem.indexOf(b.mes) - mesesOrdem.indexOf(a.mes));
+  ordenadas.forEach((d, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class='px-2 py-2'>${d.ano}</td>
+      <td class='px-2 py-2'>${d.mes}</td>
+      <td class='px-2 py-2'>${d.tipo}</td>
+      <td class='px-2 py-2'>${d.categoria}</td>
+      <td class='px-2 py-2'>${d.descricao}</td>
+      <td class='px-2 py-2'>R$ ${Number(d.valor).toFixed(2)}</td>
+      <td class='px-2 py-2 text-center'>
+        <button onclick='excluirDespesa(${i})' title='Excluir' style='background:none;border:none;'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7v12a2 2 0 002 2h8a2 2 0 002-2V7M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2M6 7h12" /></svg>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  atualizarDashboard();
+  localStorage.setItem('despesas', JSON.stringify(despesas));
+}
+
+function excluirDespesa(index) {
+  despesas.splice(index, 1);
+  atualizarTabela();
+  localStorage.setItem('despesas', JSON.stringify(despesas));
+}
+
+function atualizarDashboard() {
+  const hoje = new Date();
+  const mesAtual = hoje.toLocaleString('pt-BR', {month: 'long'});
+  const anoAtual = hoje.getFullYear().toString();
+  const total = despesas.reduce((acc, d) => {
+    if (d.mes === mesAtual && d.ano === anoAtual) {
+      return acc + Number(d.valor);
+    }
+    return acc;
+  }, 0);
+  document.querySelector('.text-2xl.font-bold.text-red-500').textContent = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+}
+
+document.getElementById('tipo-despesa').addEventListener('change', function() {
+  const mesDespesaDiv = document.getElementById('mes-despesa-div');
+  if (this.value === 'Fixo') {
+    mesDespesaDiv.style.display = 'none';
+  } else {
+    mesDespesaDiv.style.display = '';
+  }
+});
+
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const selects = this.querySelectorAll('select');
+  const ano = document.getElementById('ano-despesa').value;
+  const tipo = document.getElementById('tipo-despesa').value;
+  const categoria = document.getElementById('categoria-despesa').value;
+  const descricao = this.querySelector('input[type="text"]').value;
+  const valor = parseFloat(this.querySelector('input[type="number"]').value);
+  if (!valor) {
+    mostrarMensagem('Preencha o valor!', true);
+    return;
+  }
+  if (tipo === 'Fixo') {
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    meses.forEach(mes => {
+      despesas.push({ano, mes, tipo, categoria, descricao: descricao || categoria, valor});
+    });
+  } else {
+    const mes = document.getElementById('mes-despesa').value;
+    despesas.push({ano, mes, tipo, categoria, descricao: descricao || categoria, valor});
+  }
+  atualizarTabela();
+  localStorage.setItem('despesas', JSON.stringify(despesas));
+  mostrarMensagem('Dados cadastrados com sucesso!');
+  this.reset();
+  document.getElementById('ano-despesa').value = '2025';
+  this.querySelector('select').dispatchEvent(new Event('change'));
+});
+
+function mostrarMensagem(msg, erro = false) {
+  let div = document.getElementById('mensagem-sucesso');
+  if (!div) {
+    div = document.createElement('div');
+    div.id = 'mensagem-sucesso';
+    div.className = 'mb-4 p-3 rounded font-semibold';
+    document.querySelector('main').insertBefore(div, document.querySelector('form'));
+  }
+  div.textContent = msg;
+  div.className = erro ? 'mb-4 p-3 rounded bg-red-100 text-red-700 font-semibold' : 'mb-4 p-3 rounded bg-green-100 text-green-700 font-semibold';
+  div.classList.remove('hidden');
+  setTimeout(() => div.classList.add('hidden'), 2500);
+}
+
+document.getElementById('filtro-mes').addEventListener('change', atualizarTabela);
+// Define o mês atual como padrão ao carregar
+window.addEventListener('DOMContentLoaded', function() {
+  const filtroMes = document.getElementById('filtro-mes');
+  const mesAtual = new Date().toLocaleString('pt-BR', {month: 'long'});
+  filtroMes.value = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1);
+  atualizarTabela();
+});
+
+atualizarTabela();
+</script>
+</body>
+</body>
+</html>
