@@ -5,107 +5,594 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lava-Cash | Configurações</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <style>
+    /* estilos específicos desta página (mantidos localmente) */
+  /* active label centralized to css/app.css */
+    select.filter{border:1px solid #e5e7eb;border-radius:.5rem;padding:.25rem .5rem;background:#fff}
+    /* controle de visibilidade das ações */
+    .hidden-actions{display:none}
+  </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex">
   <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-lg flex flex-col">
+  <aside class="w-48 lg:w-64 bg-white shadow-lg flex flex-col">
     <div class="flex items-center gap-2 px-6 py-6 border-b">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
         <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
       </svg>
       <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
     </div>
     <nav class="flex-1 px-4 py-6 space-y-2">
-      <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Dashboard</a>
-      <a href="importar.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Importar</a>
-      <a href="despesas.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Despesas</a>
-      <a href="ajuda.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Ajuda</a>
-      <a href="configuracoes.html" class="block px-4 py-2 rounded-lg bg-sky-100 text-sky-700 font-semibold">Configurações</a>
+      <a href="index.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z" fill="#0ea5e9"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="importar.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Importar</span>
+      </a>
+      <a href="receitas.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2v2M5 7h14M4 21h16v-8H4v8z" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Despesas</span>
+      </a>
+      <a href="ajuda.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 18h.01M12 14a4 4 0 1 0-4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Ajuda</span>
+      </a>
+      <a href="configuracoes.html" class="sidebar-link active">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+  <span>Configurações</span>
+      </a>
     </nav>
     <div class="px-6 py-4 border-t text-xs text-gray-400">
       &copy; 2025 Lava-Cash
     </div>
   </aside>
-
-  <!-- Main Content -->
-  <main class="flex-1 p-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Configurações</h1>
+  <main class="flex-1 p-6 main-content">
+    <!-- Preferências -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
-        <span class="text-gray-500">Moeda</span>
-        <select class="mt-2 w-full rounded border px-3 py-2">
-          <option>BRL (R$)</option>
-          <option>USD ($)</option>
+        <label for="sel-moeda" class="text-gray-500">Moeda</label>
+        <select id="sel-moeda" class="mt-2 w-full rounded border px-3 py-2">
+          <option value="BRL">BRL (R$)</option>
+          <option value="USD">USD ($)</option>
         </select>
       </div>
       <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
-        <span class="text-gray-500">Fuso horário</span>
-        <select class="mt-2 w-full rounded border px-3 py-2">
+        <label for="sel-fuso" class="text-gray-500">Fuso horário</label>
+        <select id="sel-fuso" class="mt-2 w-full rounded border px-3 py-2">
+          <option>America/Fortaleza</option>
           <option>America/Sao_Paulo</option>
         </select>
       </div>
     </div>
+
+    <!-- Categorias -->
     <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
       <span class="text-gray-500 mb-2">Gerenciar Categorias de Despesas</span>
-      <div class="flex gap-2 mb-2" id="lista-categorias"></div>
-      <input type="text" id="novaCategoria" class="rounded border px-3 py-2 mb-2" placeholder="Nova categoria" />
-      <button id="adicionarCategoria" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2">Adicionar Categoria</button>
+      <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias"></div>
+      <div class="flex gap-2 w-full max-w-lg">
+        <input type="text" id="novaCategoria" class="flex-1 rounded border px-3 py-2" placeholder="Nova categoria" />
+        <button id="adicionarCategoria" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2">Adicionar</button>
+      </div>
     </div>
-    <script>
-      // Carregar categorias do localStorage
-      function carregarCategorias() {
-        return JSON.parse(localStorage.getItem('categorias')) || [
-          'Conta de Água','Energia','Suprimentos','Aluguel','Royalties','Seguro','Contadora','DAS-Impostos','Empréstimo','Salário','INSS'
-        ];
-      }
-      function salvarCategorias(categorias) {
-        localStorage.setItem('categorias', JSON.stringify(categorias));
-      }
-      function renderizarCategorias() {
-        const lista = document.getElementById('lista-categorias');
-        const categorias = carregarCategorias();
-        lista.innerHTML = '';
-        categorias.forEach((cat, i) => {
-          const span = document.createElement('span');
-          span.textContent = cat;
-          span.className = 'bg-gray-100 rounded px-2 py-1 text-sm mr-2';
-          const btn = document.createElement('button');
-          btn.textContent = '✕';
-          btn.className = 'ml-1 text-red-500';
-          btn.onclick = () => {
-            categorias.splice(i,1);
-            salvarCategorias(categorias);
-            renderizarCategorias();
-          };
-          span.appendChild(btn);
-          lista.appendChild(span);
-        });
-      }
-      document.getElementById('adicionarCategoria').onclick = () => {
-        const input = document.getElementById('novaCategoria');
-        const valor = input.value.trim();
-        if (valor) {
-          const categorias = carregarCategorias();
-          categorias.push(valor);
-          salvarCategorias(categorias);
-          renderizarCategorias();
-          input.value = '';
-        }
-      };
-      renderizarCategorias();
-    </script>
+
+    <!-- Gerenciar Despesas -->
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+      <h2 class="text-lg font-semibold mb-3">Gerenciar Despesas</h2>
+      <div class="flex flex-wrap items-center gap-3 mb-4 w-full">
+        <label class="text-sm">Ver despesas do ano:</label>
+        <select id="select-anos-despesas" class="rounded border px-2 py-2"></select>
+        <button id="btn-ver-ano" class="bg-sky-600 hover:bg-sky-700 text-white rounded px-3 py-2">Ver</button>
+      </div>
+      <div id="lista-despesas-ano" class="w-full overflow-x-auto"></div>
     </div>
+
+    <!-- Atalhos -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <a href="importar.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
-        <svg width="32" height="32" fill="none"><path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/></svg>
+        <svg width="32" height="32" fill="none" aria-hidden="true">
+          <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
+        </svg>
         <span class="text-lg font-semibold">Importar Dados</span>
       </a>
       <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
-        <svg width="32" height="32" fill="none"><path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="32" height="32" fill="none" aria-hidden="true">
+          <path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <span class="text-lg font-semibold">Adicionar Despesa</span>
       </a>
     </div>
   </main>
+
+  <script>
+    // ---------- Preferências (moeda/fuso) ----------
+    function getPrefs() {
+      try { return JSON.parse(localStorage.getItem('prefs')) || {}; } catch { return {}; }
+    }
+    function setPrefs(p) {
+      localStorage.setItem('prefs', JSON.stringify(p));
+    }
+    function initPrefs() {
+      const selMoeda = document.getElementById('sel-moeda');
+      const selFuso = document.getElementById('sel-fuso');
+      const prefs = getPrefs();
+
+      if (prefs.moeda) selMoeda.value = prefs.moeda;
+      if (prefs.fuso) {
+        const exists = Array.from(selFuso.options).some(o => o.value === prefs.fuso || o.text === prefs.fuso);
+        if (!exists) {
+          const opt = document.createElement('option');
+          opt.textContent = prefs.fuso;
+          selFuso.appendChild(opt);
+        }
+        selFuso.value = prefs.fuso;
+      }
+
+      selMoeda.addEventListener('change', () => {
+        setPrefs({ ...getPrefs(), moeda: selMoeda.value });
+        showMsg('Moeda salva.');
+      });
+      selFuso.addEventListener('change', () => {
+        setPrefs({ ...getPrefs(), fuso: selFuso.value });
+        showMsg('Fuso horário salvo.');
+      });
+    }
+
+    // ---------- Toast / mensagens ----------
+    function showMsg(text, isError=false) {
+      const div = document.getElementById('msg-config');
+      div.textContent = text;
+      div.className = isError
+        ? 'mb-4 p-3 rounded bg-red-100 text-red-700 font-semibold'
+        : 'mb-4 p-3 rounded bg-green-100 text-green-700 font-semibold';
+      clearTimeout(showMsg._t);
+      showMsg._t = setTimeout(() => { div.textContent=''; div.className='mb-4 w-full'; }, 2500);
+    }
+
+    // ---------- Categorias ----------
+    function carregarCategorias() {
+      return JSON.parse(localStorage.getItem('categorias')) || [
+        'Conta de Água','Energia','Suprimentos','Aluguel','Royalties','Seguro','Contadora','DAS-Impostos','Empréstimo','Salário','INSS'
+      ];
+    }
+    function salvarCategorias(categorias) {
+      localStorage.setItem('categorias', JSON.stringify(categorias));
+    }
+    function renderizarCategorias() {
+      const lista = document.getElementById('lista-categorias');
+      const categorias = carregarCategorias();
+      lista.innerHTML = '';
+      categorias.forEach((cat, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'bg-gray-100 rounded px-2 py-1 text-sm inline-flex items-center';
+        chip.innerHTML = `<span>${cat}</span>`;
+        const btn = document.createElement('button');
+        btn.textContent = '✕';
+        btn.className = 'ml-2 text-red-500 hover:text-red-600';
+        btn.title = 'Remover';
+        btn.onclick = () => {
+          const novas = carregarCategorias().filter((_, idx) => idx !== i);
+          salvarCategorias(novas);
+          renderizarCategorias();
+          showMsg('Categoria removida.');
+        };
+        chip.appendChild(btn);
+        lista.appendChild(chip);
+      });
+    }
+    function adicionarCategoria() {
+      const input = document.getElementById('novaCategoria');
+      const valor = input.value.trim();
+      if (!valor) { showMsg('Informe um nome de categoria.', true); return; }
+      const categorias = carregarCategorias();
+      const jaExiste = categorias.some(c => c.toLowerCase() === valor.toLowerCase());
+      if (jaExiste) { showMsg('Esta categoria já existe.', true); return; }
+      categorias.push(valor);
+      salvarCategorias(categorias);
+      renderizarCategorias();
+      input.value = '';
+      showMsg('Categoria adicionada.');
+    }
+
+    // ---------- Despesas ----------
+    function genIdLocal() {
+      return (Date.now().toString(36) + Math.random().toString(36).slice(2,8));
+    }
+    function carregarDespesas() {
+      try { return JSON.parse(localStorage.getItem('despesas')) || []; } catch { return []; }
+    }
+    function salvarDespesas(ds) {
+      localStorage.setItem('despesas', JSON.stringify(ds));
+    }
+
+    function atualizarSelectAnos() {
+      const sel = document.getElementById('select-anos-despesas');
+      const ds = carregarDespesas();
+      const anosSet = new Set(ds.map(d => String(d.ano)));
+      const anos = Array.from(anosSet).sort((a,b) => Number(b) - Number(a));
+      sel.innerHTML = '';
+      if (anos.length === 0) {
+        const opt = document.createElement('option'); opt.textContent = 'Nenhum registro'; opt.value = '';
+        sel.appendChild(opt);
+        return;
+      }
+      anos.forEach(a => {
+        const opt = document.createElement('option'); opt.value = a; opt.textContent = a;
+        sel.appendChild(opt);
+      });
+      const anoAtual = String(new Date().getFullYear());
+      if (anos.includes(anoAtual)) sel.value = anoAtual;
+    }
+
+    // estado global
+    const filtros = { mes: 'Todos', tipo: 'Todos', categoria: 'Todos' };
+    let mostrarAcoes = false;
+
+    // helpers filtros
+    function uniqueSorted(arr) {
+      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b),'pt-BR'));
+    }
+
+    function montaOptions(values, atual) {
+      const opts = ['<option value="Todos">Todos</option>']
+        .concat(values.map(v => `<option value="${String(v)}"${String(v)===String(atual)?' selected':''}>${v}</option>`));
+      return opts.join('');
+    }
+
+    // Ordena uma lista de meses qualquer (nomes ou números) de Janeiro a Dezembro
+    function orderMonths(values) {
+      const monthNames = ['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+      function idxOf(v) {
+        if (v == null) return 99;
+        const s = String(v).trim().toLowerCase();
+        // se for número em string
+        const num = parseInt(s, 10);
+        if (!isNaN(num) && num >=1 && num <=12) return num - 1;
+        // normaliza 'março' vs 'marco'
+        const norm = s.replace('ç','c');
+        const i = monthNames.indexOf(norm);
+        if (i >= 0) return i;
+        return 99; // coloca no final
+      }
+      return values.slice().sort((a,b) => idxOf(a) - idxOf(b));
+    }
+
+    // retorna índice (0-11) de um mês dado nome ou número; valores desconhecidos -> 99
+    function mesIndex(v) {
+      const monthNames = ['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+      if (v == null) return 99;
+      const s = String(v).trim().toLowerCase();
+      const num = parseInt(s,10);
+      if (!isNaN(num) && num >= 1 && num <= 12) return num - 1;
+      const norm = s.replace('ç','c');
+      const i = monthNames.indexOf(norm);
+      if (i >= 0) return i;
+      return 99;
+    }
+
+    function aplicaFiltros(linhas) {
+      return linhas.filter(d => {
+        const okMes = filtros.mes === 'Todos' || String(d.mes) === String(filtros.mes);
+        const okTipo = filtros.tipo === 'Todos' || String(d.tipo) === String(filtros.tipo);
+        const okCat = filtros.categoria === 'Todos' || String(d.categoria) === String(filtros.categoria);
+        return okMes && okTipo && okCat;
+      });
+    }
+
+    function renderizarDespesasAno(ano) {
+      const container = document.getElementById('lista-despesas-ano');
+      container.innerHTML = '';
+      if (!ano) { container.textContent = 'Escolha um ano para visualizar.'; return; }
+
+      let ds = carregarDespesas().map(d => ({...d, ano:String(d.ano)})).filter(d => d.ano === ano);
+      if (ds.length === 0) { container.textContent = 'Nenhuma despesa encontrada para o ano ' + ano; return; }
+
+      // valores únicos para popular filtros
+  const meses = orderMonths(uniqueSorted(ds.map(d => d.mes)));
+      const tipos = uniqueSorted(ds.map(d => d.tipo));
+      const cats  = uniqueSorted(ds.map(d => d.categoria));
+
+      // aplica filtros vigentes
+      const dsView = aplicaFiltros(ds);
+      // ordenar por mês (Janeiro..Dezembro) — se mesmo mês, ordenar por descrição
+      dsView.sort((a,b) => {
+        const mi = mesIndex(a.mes) - mesIndex(b.mes);
+        if (mi !== 0) return mi;
+        return String(a.descricao || '').localeCompare(String(b.descricao || ''), 'pt-BR');
+      });
+
+      // total filtrado
+      const totalFiltrado = dsView.reduce((acc, d) => {
+        const n = Number(String(d.valor).replace(',','.'));
+        return acc + (isNaN(n) ? 0 : n);
+      }, 0);
+
+      const table = document.createElement('table');
+      table.className = 'min-w-full divide-y divide-gray-200 text-sm';
+
+      // thead com duas linhas: seleção + títulos + filtros (sem cabeçalho "Ações")
+      const thead = document.createElement('thead');
+      thead.innerHTML = `
+        <tr class="bg-gray-50">
+          <th class='px-2 py-2'><input id="selectAllConfig" type="checkbox" aria-label="Selecionar todos" /></th>
+          <th class='px-2 py-2 text-left'>Ano</th>
+          <th class='px-2 py-2 text-left'>Mês</th>
+          <th class='px-2 py-2 text-left'>Tipo</th>
+          <th class='px-2 py-2 text-left'>Categoria</th>
+          <th class='px-2 py-2 text-left'>Descrição</th>
+          <th class='px-2 py-2 text-left'>Valor (R$)</th>
+          <th class='px-2 py-2 text-left'></th>
+        </tr>
+        <tr class="bg-white">
+          <th class='px-2 py-2'></th>
+          <th class='px-2 py-2'></th>
+          <th class='px-2 py-2'>
+            <select id="filtro-mes" class="filter w-full">
+              ${montaOptions(meses, filtros.mes)}
+            </select>
+          </th>
+          <th class='px-2 py-2'>
+            <select id="filtro-tipo" class="filter w-full">
+              ${montaOptions(tipos, filtros.tipo)}
+            </select>
+          </th>
+          <th class='px-2 py-2'>
+            <select id="filtro-cat" class="filter w-full">
+              ${montaOptions(cats, filtros.categoria)}
+            </select>
+          </th>
+          <th class='px-2 py-2'></th>
+          <th class='px-2 py-2'></th>
+          <th class='px-2 py-2 text-right'></th>
+        </tr>`;
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+
+      dsView.forEach(d => {
+        if (!d.id) d.id = genIdLocal();
+        const tr = document.createElement('tr');
+        tr.className = 'odd:bg-white even:bg-gray-50';
+        const valorNumber = Number(String(d.valor).replace(',','.')) || 0;
+        tr.innerHTML = `
+          <td class='px-2 py-2'><input type="checkbox" class="rowCheckbox" data-id='${d.id}' aria-label="Selecionar linha" /></td>
+          <td class='px-2 py-2 whitespace-nowrap'>${d.ano}</td>
+          <td class='px-2 py-2 whitespace-nowrap'>${d.mes}</td>
+          <td class='px-2 py-2 whitespace-nowrap'>${d.tipo}</td>
+          <td class='px-2 py-2 whitespace-nowrap'>${d.categoria}</td>
+          <td class='px-2 py-2'>${d.descricao || ''}</td>
+          <td class='px-2 py-2 valor-td'>R$ ${valorNumber.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+          <td class='px-2 py-2 col-actions ${mostrarAcoes ? '' : 'hidden-actions'}'>
+            <button data-id='${d.id}' class='btn-edit-config text-gray-600 hover:text-sky-600' title='Editar'>✎</button>
+            <button data-id='${d.id}' class='btn-del-config text-gray-600 hover:text-red-600 ml-2' title='Excluir'>🗑</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+
+      // tfoot com totalizador do filtrado
+      const tfoot = document.createElement('tfoot');
+      tfoot.innerHTML = `
+        <tr class="bg-gray-50 font-semibold">
+          <td class='px-2 py-2' colspan="5"></td>
+          <td class='px-2 py-2 text-right'>Total filtrado</td>
+          <td class='px-2 py-2 text-left'>R$ ${totalFiltrado.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+          <td class='px-2 py-2'></td>
+        </tr>`;
+      table.appendChild(tfoot);
+
+      // toolbar with actions closer to the table
+      const toolbar = document.createElement('div');
+      toolbar.className = 'flex justify-end gap-3 mb-2';
+      toolbar.innerHTML = `
+        <div class="flex gap-2">
+          <button id="btn-limpar-filtros-toolbar" class="text-sky-700 hover:underline text-xs">Limpar filtros</button>
+          <button id="btn-toggle-acoes-toolbar" class="text-slate-700 hover:underline text-xs">${mostrarAcoes ? 'Ocultar Editar' : 'Editar'}</button>
+          <button id="btn-delete-selected-config" class="text-red-600 hover:underline text-xs">Excluir selecionados</button>
+        </div>
+      `;
+      container.appendChild(toolbar);
+      container.appendChild(table);
+
+      // listeners dos filtros e toolbar actions
+      document.getElementById('filtro-mes').addEventListener('change', (e)=>{
+        filtros.mes = e.target.value;
+        renderizarDespesasAno(ano);
+      });
+      document.getElementById('filtro-tipo').addEventListener('change', (e)=>{
+        filtros.tipo = e.target.value;
+        renderizarDespesasAno(ano);
+      });
+      document.getElementById('filtro-cat').addEventListener('change', (e)=>{
+        filtros.categoria = e.target.value;
+        renderizarDespesasAno(ano);
+      });
+      document.getElementById('btn-limpar-filtros-toolbar').addEventListener('click', ()=>{
+        filtros.mes = 'Todos';
+        filtros.tipo = 'Todos';
+        filtros.categoria = 'Todos';
+        renderizarDespesasAno(ano);
+      });
+      document.getElementById('btn-toggle-acoes-toolbar').addEventListener('click', ()=>{
+        mostrarAcoes = !mostrarAcoes;
+        renderizarDespesasAno(ano);
+      });
+      // excluir selecionados
+      const btnDelSel = document.getElementById('btn-delete-selected-config');
+      if (btnDelSel) btnDelSel.addEventListener('click', ()=>{
+        const checked = Array.from(container.querySelectorAll('.rowCheckbox:checked'));
+        if (checked.length === 0) { showMsg('Nenhuma despesa selecionada.', true); return; }
+  if (!confirm(`Confirma exclusão de ${checked.length} despesa(s) selecionada(s)?`)) return;
+  const ids = checked.map(cb => cb.dataset.id).filter(Boolean);
+  let all = carregarDespesas();
+  const before = all.length;
+  all = all.filter(d => !ids.includes(String(d.id)));
+  salvarDespesas(all);
+  // força notificação em outras abas/janelas caso necessário
+  try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
+        const removed = before - all.length;
+        showMsg(`${removed} despesa(s) excluída(s).`);
+        atualizarSelectAnos();
+        // resetar filtros para mostrar todas as despesas
+        filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
+        renderizarDespesasAno(ano);
+      });
+
+      // excluir
+      container.querySelectorAll('.btn-del-config').forEach(b => b.addEventListener('click', (ev) => {
+        const id = ev.currentTarget.dataset.id;
+        if (!confirm('Confirma exclusão desta despesa?')) return;
+        let dsAll = carregarDespesas();
+  dsAll = dsAll.filter(x => x.id !== id);
+  salvarDespesas(dsAll);
+  try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
+        showMsg('Despesa excluída.');
+        atualizarSelectAnos();
+        // resetar filtros
+        filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
+        renderizarDespesasAno(ano);
+      }));
+
+      // seleção por linha (checkboxes) - similar ao preview
+      (function initRowSelection(){
+        const selectAll = container.querySelector('#selectAllConfig');
+        const rowCheckboxes = Array.from(container.querySelectorAll('.rowCheckbox'));
+        if (!selectAll && rowCheckboxes.length === 0) return;
+        if (selectAll) {
+          selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(r => r.checked);
+          selectAll.addEventListener('change', (e) => {
+            rowCheckboxes.forEach(cb => {
+              cb.checked = e.target.checked;
+              const tr = cb.closest('tr');
+              if (tr) tr.classList.toggle('bg-sky-100', e.target.checked);
+            });
+          });
+        }
+        rowCheckboxes.forEach(cb => cb.addEventListener('change', () => {
+          const anyChecked = rowCheckboxes.some(r => r.checked);
+          if (selectAll) selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(r => r.checked);
+          const tr = cb.closest('tr');
+          if (tr) tr.classList.toggle('bg-sky-100', cb.checked);
+        }));
+      })();
+
+      // editar inline (apenas valor)
+      container.querySelectorAll('.btn-edit-config').forEach(b => b.addEventListener('click', (ev) => {
+        const id = ev.currentTarget.dataset.id;
+        const dsAll = carregarDespesas();
+        const idx = dsAll.findIndex(x => x.id === id);
+        if (idx === -1) { showMsg('Registro não encontrado', true); return; }
+        const row = ev.currentTarget.closest('tr');
+        const valorTd = row.querySelector('.valor-td');
+        const actionsTd = row.querySelector('.col-actions');
+
+        const original = String(dsAll[idx].valor);
+        const originalNumber = Number(original.replace(',','.')) || 0;
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.01';
+        input.min = '0';
+        input.className = 'rounded border px-2 py-1 w-32';
+        input.value = originalNumber.toFixed(2);
+        valorTd.innerHTML = '';
+        valorTd.appendChild(input);
+        input.focus();
+
+        const btnSave = document.createElement('button');
+        btnSave.className = 'bg-green-500 hover:bg-green-600 text-white rounded px-2 py-1 mr-2';
+        btnSave.textContent = 'Salvar';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.className = 'bg-gray-200 hover:bg-gray-300 text-gray-800 rounded px-2 py-1';
+        btnCancel.textContent = 'Cancelar';
+
+        const oldActions = actionsTd.innerHTML;
+        actionsTd.innerHTML = '';
+        actionsTd.appendChild(btnSave);
+        actionsTd.appendChild(btnCancel);
+
+        const restoreRow = () => {
+          const novoValor = Number(dsAll[idx].valor)||0;
+          valorTd.textContent = 'R$ ' + novoValor.toLocaleString('pt-BR',{minimumFractionDigits:2});
+          actionsTd.innerHTML = oldActions;
+          // reanexa handlers básicos (visibilidade continua obedecendo mostrarAcoes)
+          actionsTd.classList.toggle('hidden-actions', !mostrarAcoes);
+          actionsTd.querySelector('.btn-edit-config')?.addEventListener('click', ev.currentTarget.onclick);
+          actionsTd.querySelector('.btn-del-config')?.addEventListener('click', (e2) => {
+            const id2 = e2.currentTarget.dataset.id;
+            if (!confirm('Confirma exclusão desta despesa?')) return;
+            let all = carregarDespesas().filter(x => x.id !== id2);
+            salvarDespesas(all);
+            showMsg('Despesa excluída.');
+            atualizarSelectAnos();
+            // resetar filtros
+            filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
+            renderizarDespesasAno(ano);
+          });
+        };
+
+        btnSave.addEventListener('click', () => {
+          const novoRaw = input.value;
+          const novo = parseFloat(String(novoRaw).replace(',', '.'));
+          if (isNaN(novo)) { showMsg('Valor inválido.', true); return; }
+          dsAll[idx].valor = novo;
+          salvarDespesas(dsAll);
+          try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
+          showMsg('Valor atualizado.');
+          atualizarSelectAnos();
+          renderizarDespesasAno(ano); // mantém filtros e atualiza totalizador
+        });
+
+        btnCancel.addEventListener('click', restoreRow);
+      }));
+    }
+
+    // ---------- Ações globais ----------
+    document.getElementById('adicionarCategoria').addEventListener('click', adicionarCategoria);
+    document.getElementById('novaCategoria').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') adicionarCategoria();
+    });
+
+    // nota: o botão "Excluir todas as despesas" foi removido da UI conforme solicitado
+
+    document.getElementById('btn-ver-ano').addEventListener('click', () => {
+      const sel = document.getElementById('select-anos-despesas');
+      // ao trocar de ano, reseta filtros (comportamento de planilha)
+      filtros.mes = 'Todos';
+      filtros.tipo = 'Todos';
+      filtros.categoria = 'Todos';
+      // mantém estado do "mostrarAcoes" do jeito que estiver
+      renderizarDespesasAno(sel.value);
+    });
+
+    // ---------- Init ----------
+    (function init(){
+      initPrefs();
+      renderizarCategorias();
+      atualizarSelectAnos();
+    })();
+  </script>
 </body>
 </html>
