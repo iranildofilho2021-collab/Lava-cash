@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lava-Cash | Receitas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <!-- estilos compartilhados movidos para css/app.css -->
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+  <aside class="w-48 lg:w-64 bg-white shadow-lg flex flex-col">
+    <div class="flex items-center gap-2 px-6 py-6 border-b">
+      <!-- Logo SVG -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
+        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
+      </svg>
+      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <a href="index.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z" fill="#0ea5e9"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="importar.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Importar</span>
+      </a>
+      <a href="receitas.html" class="sidebar-link active" aria-current="page">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v2M5 7h14M4 21h16v-8H4v8z" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="ajuda.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 18h.01M12 14a4 4 0 1 0-4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Ajuda</span>
+      </a>
+      <a href="configuracoes.html" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.28 18.9l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09c.66 0 1.27-.4 1.51-1a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 6.1 4.28l.06.06a1.65 1.65 0 0 0 1.82.33h.09C9.3 4.4 9.9 4 10.56 4H13.44c.66 0 1.27.4 1.51 1 .26.7.98 1.2 1.77 1.2h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.72 5.1l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09c0 .66.4 1.27 1 1.51H21a2 2 0 1 1 0 4h-.09c-.66 0-1.27.4-1.51 1-.26.7-.98 1.2-1.77 1.2h-.09c-.66 0-1.27-.4-1.51-1z" stroke="#0ea5e9" stroke-width="0"/></svg>
+        <span>Configurações</span>
+      </a>
+    </nav>
+    <div class="px-6 py-4 border-t text-xs text-gray-400">
+      &copy; 2025 Lava-Cash
+    </div>
+  </aside>
+
+  <main class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Receitas</h1>
+
+    <div class="bg-white rounded-xl shadow p-6 mb-6">
+      <div class="flex items-center gap-4">
+        <label class="text-sm">Ver receitas do ano:</label>
+        <select id="select-anos-receitas" class="rounded border px-2 py-2"></select>
+        <button id="btn-ver-ano-receitas" class="bg-sky-600 text-white rounded px-3 py-2">Ver</button>
+      </div>
+    </div>
+
+    <div id="lista-receitas-ano" class="bg-white rounded-xl shadow p-6"></div>
+  </main>
+
+  <script>
+    // --- helpers ---
+    function carregarVendasResumo(){ try { return JSON.parse(localStorage.getItem('vendasResumo'))||[] } catch(e){return[]} }
+    function salvarVendasResumo(v){ localStorage.setItem('vendasResumo', JSON.stringify(v)); try{ localStorage.setItem('vendasResumo_last_update', String(Date.now())); }catch(e){} }
+    function orderMonths(values){ const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; function idx(v){ if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99;} return values.slice().sort((a,b)=>idx(a)-idx(b)); }
+    function mesIndex(v){ const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99; }
+
+    function atualizarSelectAnos(){ const sel=document.getElementById('select-anos-receitas'); const all=carregarVendasResumo(); const anosSet = new Set(all.map(v=> (v.anoMes && v.anoMes.split('/')[0]) ).filter(Boolean)); const anos=Array.from(anosSet).sort((a,b)=>Number(b)-Number(a)); sel.innerHTML=''; if(anos.length===0){ const opt=document.createElement('option'); opt.value=''; opt.textContent='Nenhum registro'; sel.appendChild(opt); return;} anos.forEach(a=>{const opt=document.createElement('option'); opt.value=a; opt.textContent=a; sel.appendChild(opt);}); const anoAtual=String(new Date().getFullYear()); if(anos.includes(anoAtual)) sel.value=anoAtual; }
+
+    function renderizarReceitasAno(ano){ const container=document.getElementById('lista-receitas-ano'); container.innerHTML=''; if(!ano){ container.textContent='Escolha um ano para visualizar.'; return; }
+      const all = carregarVendasResumo().map(v=> ({...v})).filter(v=> (v.anoMes && String(v.anoMes).startsWith(String(ano)+"/")));
+      if(all.length===0){ container.textContent = 'Nenhuma receita encontrada para o ano '+ano; return; }
+      // meses, fontes, tipos
+      const meses = orderMonths(Array.from(new Set(all.map(v=> v.anoMes && v.anoMes.split('/')[1]).filter(Boolean))).map(m=>{ // convert 'MM' to month name
+        const num = parseInt(m,10); if(!isNaN(num)) return ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][num-1]; return m; }).filter(Boolean));
+      const fontes = Array.from(new Set(all.map(v=> v.source=== 'cartao' ? 'Cartões' : v.source==='pix' ? 'PIX' : (v.source||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+      const tipos = Array.from(new Set(all.map(v=> v.tipoPagamento || '').filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+      // aplica filtros (controlados via filtros object)
+      const filtros = { mes:'Todos', fonte:'Todos', tipo:'Todos' };
+
+      // toolbar
+      const toolbar = document.createElement('div'); toolbar.className='flex justify-between items-center mb-3';
+      toolbar.innerHTML = `<div class="flex gap-2 items-center"><label class='text-sm'>Filtrar por mês:</label><select id='filtro-mes-rec' class='border rounded px-2 py-1'>${['Todos'].concat(meses).map(m=>`<option value="${m}">${m}</option>`).join('')}</select><label class='text-sm ml-4'>Fonte:</label><select id='filtro-fonte-rec' class='border rounded px-2 py-1'>${['Todos'].concat(fontes).map(f=>`<option value="${f}">${f}</option>`).join('')}</select><label class='text-sm ml-4'>Tipo:</label><select id='filtro-tipo-rec' class='border rounded px-2 py-1'>${['Todos'].concat(tipos).map(t=>`<option value="${t}">${t}</option>`).join('')}</select></div><div class="flex gap-2"><button id='btn-limpar-filtros-rec' class='text-sky-700 text-xs'>Limpar filtros</button><button id='btn-delete-selected-rec' class='text-red-600 text-xs'>Excluir selecionados</button></div>`;
+      container.appendChild(toolbar);
+
+      // table
+      const table = document.createElement('table'); table.className='min-w-full divide-y divide-gray-200 text-sm';
+      table.innerHTML = `<thead><tr class='bg-gray-50'><th class='px-2 py-2'><input id='selectAllRec' type='checkbox' /></th><th class='px-2 py-2 text-left'>Ano</th><th class='px-2 py-2 text-left'>Mês</th><th class='px-2 py-2 text-left'>Fonte</th><th class='px-2 py-2 text-left'>Tipo</th><th class='px-2 py-2 text-right'>Receita Bruta</th><th class='px-2 py-2 text-right'>MDR</th><th class='px-2 py-2 text-right'>Receita Líquida</th><th class='px-2 py-2'></th></tr></thead><tbody></tbody>`;
+      container.appendChild(table);
+
+      function aplicaEFazRender(){ const tbody = table.querySelector('tbody'); tbody.innerHTML=''; let view = all.filter(v=>{
+        if(filtros.mes !== 'Todos'){ const mes = (v.anoMes && v.anoMes.split('/')[1]) || ''; const nome = (Number(mes)>=1? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][Number(mes)-1] : mes); if(String(nome)!==String(filtros.mes)) return false; }
+        if(filtros.fonte !== 'Todos'){ const fonte = v.source==='cartao'?'Cartões': v.source==='pix'?'PIX': (v.source||''); if(String(fonte)!==String(filtros.fonte)) return false; }
+        if(filtros.tipo !== 'Todos'){ if(String(v.tipoPagamento||'')!==String(filtros.tipo)) return false; }
+        return true;
+      });
+      // ordenar por mês
+      view.sort((a,b)=> mesIndex((a.anoMes||'').split('/')[1]) - mesIndex((b.anoMes||'').split('/')[1]));
+      view.forEach(v=>{
+        const ano = v.anoMes? v.anoMes.split('/')[0]:''; const mesNum = v.anoMes? Number(v.anoMes.split('/')[1]): null; const mesNome = mesNum? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][mesNum-1] : '';
+        const tr = document.createElement('tr'); tr.className='odd:bg-white even:bg-gray-50';
+        tr.innerHTML = `<td class='px-2 py-2'><input type='checkbox' class='rowCheckbox' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}' /></td><td class='px-2 py-2'>${ano}</td><td class='px-2 py-2'>${mesNome}</td><td class='px-2 py-2'>${v.source==='cartao'?'Cartões':v.source==='pix'?'PIX':(v.source||'')}</td><td class='px-2 py-2'>${v.tipoPagamento||''}</td><td class='px-2 py-2 text-right'>R$ ${Number(v.receitaBruta||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 text-right'>R$ ${Number(v.mdr||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 text-right font-semibold text-sky-700'>R$ ${Number(v.receitaLiquida||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 col-actions'><button class='btn-del-rec text-gray-600 hover:text-red-600' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}'>🗑</button></td>`;
+        tbody.appendChild(tr);
+      });
+      // footer totals under Receita Líquida (8th column)
+      const totalLiquida = view.reduce((acc,x)=> acc + Number(x.receitaLiquida||0),0);
+      const oldT = table.querySelector('tfoot'); if(oldT) oldT.remove(); const tfoot = document.createElement('tfoot'); tfoot.innerHTML = `<tr class='bg-gray-50 font-semibold'><td class='px-2 py-2' colspan='7'></td><td class='px-2 py-2 text-right'>R$ ${totalLiquida.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2'></td></tr>`; table.appendChild(tfoot);
+
+      // wiring filters and selection
+      const selectAll = container.querySelector('#selectAllRec'); const rowCheckboxes = Array.from(container.querySelectorAll('.rowCheckbox'));
+      if(selectAll){ selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); selectAll.addEventListener('change', e=>{ rowCheckboxes.forEach(cb=>{ cb.checked = e.target.checked; const tr=cb.closest('tr'); if(tr) tr.classList.toggle('bg-sky-100', e.target.checked);}); }); }
+      rowCheckboxes.forEach(cb=> cb.addEventListener('change', ()=>{ if(selectAll) selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); const tr=cb.closest('tr'); if(tr) tr.classList.toggle('bg-sky-100', cb.checked); }));
+
+      // delete selected
+      const btnDelSel = container.querySelector('#btn-delete-selected-rec'); if(btnDelSel) btnDelSel.addEventListener('click', ()=>{
+        const checks = Array.from(container.querySelectorAll('.rowCheckbox:checked'));
+        if(checks.length===0){ alert('Nenhuma receita selecionada.'); return; }
+        if(!confirm(`Confirma exclusão de ${checks.length} item(s)?`)) return;
+        const keys = checks.map(c=> c.dataset.key);
+        let allRec = carregarVendasResumo();
+        allRec = allRec.filter(v => !keys.includes(`${v.anoMes}__${v.source}__${v.tipoPagamento||''}`));
+        salvarVendasResumo(allRec);
+        atualizarSelectAnos(); renderizarReceitasAno(ano);
+      });
+
+      // per-row delete
+      container.querySelectorAll('.btn-del-rec').forEach(b => b.addEventListener('click', (ev)=>{
+        const key = ev.currentTarget.dataset.key; if(!confirm('Confirma exclusão deste item?')) return; let allRec = carregarVendasResumo(); allRec = allRec.filter(v => !( `${v.anoMes}__${v.source}__${v.tipoPagamento||''}` === key )); salvarVendasResumo(allRec); atualizarSelectAnos(); renderizarReceitasAno(ano);
+      }));
+
+      // filter controls
+      container.querySelector('#filtro-mes-rec').addEventListener('change', e=>{ filtros.mes = e.target.value; aplicaEFazRender(); });
+      container.querySelector('#filtro-fonte-rec').addEventListener('change', e=>{ filtros.fonte = e.target.value; aplicaEFazRender(); });
+      container.querySelector('#filtro-tipo-rec').addEventListener('change', e=>{ filtros.tipo = e.target.value; aplicaEFazRender(); });
+      container.querySelector('#btn-limpar-filtros-rec').addEventListener('click', ()=>{ filtros.mes='Todos'; filtros.fonte='Todos'; filtros.tipo='Todos'; container.querySelector('#filtro-mes-rec').value='Todos'; container.querySelector('#filtro-fonte-rec').value='Todos'; container.querySelector('#filtro-tipo-rec').value='Todos'; aplicaEFazRender(); });
+      }
+    }
+
+    // init
+    document.getElementById('btn-ver-ano-receitas').addEventListener('click', ()=>{ const sel=document.getElementById('select-anos-receitas'); renderizarReceitasAno(sel.value); });
+    function init(){ atualizarSelectAnos(); }
+    init();
+
+    // react to changes from importar page
+    window.addEventListener('storage', (e)=>{ if(e.key === 'vendasResumo' || e.key === 'vendasResumo_last_update'){ atualizarSelectAnos(); const sel=document.getElementById('select-anos-receitas'); if(sel && sel.value) renderizarReceitasAno(sel.value); } });
+
+  </script>
+</body>
+</html>

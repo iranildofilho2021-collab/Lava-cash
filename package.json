@@ -1,0 +1,12 @@
+{
+  "name": "despesas-static-site",
+  "version": "1.0.0",
+  "description": "Test harness for despesas utils",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
