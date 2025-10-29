@@ -3,153 +3,1148 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lava-Cash | Receitas</title>
+  <title>IRANCASH | Receitas</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
   <!-- estilos compartilhados movidos para css/app.css -->
 </head>
 <body class="bg-gray-50 min-h-screen flex">
-  <aside class="w-48 lg:w-64 bg-white shadow-lg flex flex-col">
+  <aside class="sidebar-collapsed bg-white shadow-lg flex flex-col lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:z-10">
     <div class="flex items-center gap-2 px-6 py-6 border-b">
-      <!-- Logo SVG -->
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
-        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
-      </svg>
-      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+  <img class="sidebar-logo" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+      <span class="logo-text text-xl font-bold text-sky-600">IRANCASH</span>
     </div>
     <nav class="flex-1 px-4 py-6 space-y-2">
       <a href="index.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z" fill="#0ea5e9"/></svg>
+  <img class="sidebar-icon-img" src="assets/dashboard-symbol.png" alt="Dashboard" loading="lazy" decoding="async" />
         <span>Dashboard</span>
       </a>
-      <a href="importar.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Importar</span>
-      </a>
+      <!-- Importar link removed (import UI is integrated on this page) -->
       <a href="receitas.html" class="sidebar-link active" aria-current="page">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v2M5 7h14M4 21h16v-8H4v8z" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <img class="sidebar-icon-img" src="assets/receitas-symbol.png" alt="Receitas" loading="lazy" decoding="async" />
         <span>Receitas</span>
       </a>
       <a href="despesas.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img class="sidebar-icon-img" src="assets/despesas-symbol.png" alt="Despesas" loading="lazy" decoding="async" />
         <span>Despesas</span>
       </a>
       <a href="ajuda.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 18h.01M12 14a4 4 0 1 0-4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img class="sidebar-icon-img" src="assets/ajuda-icone.png" alt="Ajuda" loading="lazy" decoding="async" />
         <span>Ajuda</span>
       </a>
       <a href="configuracoes.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.28 18.9l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09c.66 0 1.27-.4 1.51-1a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 6.1 4.28l.06.06a1.65 1.65 0 0 0 1.82.33h.09C9.3 4.4 9.9 4 10.56 4H13.44c.66 0 1.27.4 1.51 1 .26.7.98 1.2 1.77 1.2h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.72 5.1l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09c0 .66.4 1.27 1 1.51H21a2 2 0 1 1 0 4h-.09c-.66 0-1.27.4-1.51 1-.26.7-.98 1.2-1.77 1.2h-.09c-.66 0-1.27-.4-1.51-1z" stroke="#0ea5e9" stroke-width="0"/></svg>
+  <img class="sidebar-icon-img" src="assets/configuracao-symbol.png" alt="Configurações" loading="lazy" decoding="async" />
         <span>Configurações</span>
       </a>
     </nav>
     <div class="px-6 py-4 border-t text-xs text-gray-400">
-      &copy; 2025 Lava-Cash
+      &copy; 2025 IRANCASH
     </div>
   </aside>
 
   <main class="flex-1 p-8">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Receitas</h1>
-
-    <div class="bg-white rounded-xl shadow p-6 mb-6">
-      <div class="flex items-center gap-4">
-        <label class="text-sm">Ver receitas do ano:</label>
-        <select id="select-anos-receitas" class="rounded border px-2 py-2"></select>
-        <button id="btn-ver-ano-receitas" class="bg-sky-600 text-white rounded px-3 py-2">Ver</button>
+    <div class="mb-4 md:sticky md:top-6 md:z-40">
+      <div class="flex items-center gap-2">
+        <button id="btn-toggle-import" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Importar Vendas</button>
+        <button id="btn-open-import-config" type="button" class="inline-flex items-center gap-2 bg-white border text-gray-700 font-medium rounded px-3 py-2">Config. importação</button>
       </div>
     </div>
 
+  <div id="import-config-panel" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] md:transform md:transition md:duration-500 md:scale-95 bg-white rounded-xl shadow p-4 mb-6">
+      <h3 class="text-md font-semibold mb-2">Configurações de importação</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (Cartões)</label>
+          <input id="headerline-cartao" type="number" min="1" value="2" class="mt-1 rounded border px-2 py-1 w-24" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha (1 = primeira linha do arquivo) onde está o cabeçalho para arquivos de cartão.</div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (PIX)</label>
+          <input id="headerline-pix" type="number" min="1" value="2" class="mt-1 rounded border px-2 py-1 w-24" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha (1 = primeira linha do arquivo) onde está o cabeçalho para arquivos PIX.</div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="save-import-config" class="bg-sky-600 text-white rounded px-3 py-1">Salvar configurações</button>
+        <button id="open-mapping-cartao" class="bg-white border rounded px-3 py-1">Abrir mapeamento (Cartão)</button>
+        <button id="open-mapping-pix" class="bg-white border rounded px-3 py-1">Abrir mapeamento (PIX)</button>
+      </div>
+      <div id="mapping-cartao-panel" class="mt-4 p-3 bg-gray-50 rounded hidden">
+        <div class="text-sm text-gray-700 mb-2 font-semibold">Mapeamento de colunas (Cartões)</div>
+        <div id="mapping-cartao-sample" class="mb-2 text-sm text-gray-600">
+          <div>Selecione um arquivo de exemplo para popular as colunas, ou selecione o arquivo no painel <strong>Importar Vendas</strong>.</div>
+          <div class="mt-2">
+            <input id="mapping-cartao-sample-file" type="file" accept=".csv,.xlsx" class="text-sm" />
+          </div>
+        </div>
+        <div id="mapping-cartao-fields" class="grid grid-cols-1 gap-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="save-mapping-cartao" class="bg-sky-600 text-white rounded px-3 py-1 text-sm">Salvar modelo</button>
+          <button id="reset-mapping-cartao" class="bg-white border text-sm rounded px-3 py-1">Resetar</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Dica: selecione a linha de cabeçalho correta na primeira coluna do arquivo para popular as opções.</p>
+      </div>
+      <div id="mapping-pix-panel" class="mt-4 p-3 bg-gray-50 rounded hidden">
+        <div class="text-sm text-gray-700 mb-2 font-semibold">Mapeamento de colunas (PIX)</div>
+        <div id="mapping-pix-sample" class="mb-2 text-sm text-gray-600">
+          <div>Selecione um arquivo de exemplo para popular as colunas, ou selecione o arquivo no painel <strong>Importar Vendas</strong>.</div>
+          <div class="mt-2">
+            <input id="mapping-pix-sample-file" type="file" accept=".csv,.xlsx" class="text-sm" />
+          </div>
+        </div>
+        <div id="mapping-pix-fields" class="grid grid-cols-1 gap-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="save-mapping-pix" class="bg-sky-600 text-white rounded px-3 py-1 text-sm">Salvar modelo</button>
+          <button id="reset-mapping-pix" class="bg-white border text-sm rounded px-3 py-1">Resetar</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Dica: selecione a linha de cabeçalho correta na primeira coluna do arquivo para popular as opções.</p>
+      </div>
+    </div>
+
+    <!-- Importar: painéis de upload (copiado de importar.html) - inicialmente ocultos; exibidos ao clicar em Importar Vendas -->
+  <div id="import-panels" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] md:transform md:transition md:duration-500 md:scale-95 grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Upload Cartões -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-md font-semibold text-gray-700 mb-2">Importar Vendas em Cartões</h2>
+        <p class="text-gray-500 text-sm mb-2">Selecione um arquivo CSV ou Excel</p>
+        <input type="file" id="fileInputCartao" accept=".csv,.xlsx" class="mt-1 text-sm" multiple />
+        <p id="fileNameCartao" class="mt-1 text-sm text-gray-600"></p>
+        <div class="flex gap-2 mt-3">
+          <button id="processarBtnCartao" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 text-sm" disabled>Processar</button>
+        </div>
+      
+      </div>
+
+      <!-- Upload PIX -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-md font-semibold text-gray-700 mb-2">Importar Vendas via PIX</h2>
+        <p class="text-gray-500 text-sm mb-2">Selecione um arquivo CSV ou Excel (PIX)</p>
+        <input type="file" id="fileInputPix" accept=".csv,.xlsx" class="mt-1 text-sm" multiple />
+        <p id="fileNamePix" class="mt-1 text-sm text-gray-600"></p>
+        <div class="flex gap-2 mt-3">
+          <button id="processarBtnPix" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 text-sm" disabled>Processar</button>
+        </div>
+      
+      </div>
+    </div>
+
+
+    <!-- Toolbar: escolher ano e ações -->
+    <div class="bg-white rounded-xl shadow p-6 mb-6">
+      <div class="flex items-center gap-4">
+  <label class="text-sm">Ver receitas do ano:</label>
+  <select id="select-anos-receitas" class="rounded border px-2 py-2"></select>
+  <button id="btn-ver-ano-receitas" class="bg-sky-600 text-white rounded px-3 py-2">Ver</button>
+      </div>
+    </div>
+
+    <!-- Área principal de resumo (UI movida da Importação) -->
     <div id="lista-receitas-ano" class="bg-white rounded-xl shadow p-6"></div>
   </main>
 
   <script>
+    // Toggle para exibir/ocultar os painéis de importação ao clicar em 'Importar Vendas'
+    (function(){
+      const btn = document.getElementById('btn-toggle-import');
+      const panels = document.getElementById('import-panels');
+      if (!btn || !panels) return;
+      btn.addEventListener('click', function(){
+        const isOpen = panels.classList.contains('opacity-100');
+        if (!isOpen) {
+          panels.classList.remove('max-h-0','opacity-0','-translate-y-2');
+          panels.classList.add('max-h-[1000px]','opacity-100','translate-y-0');
+          // hide import config panel if open (use transition classes)
+          const importCfg = document.getElementById('import-config-panel'); if(importCfg){ importCfg.classList.remove('max-h-[1000px]','opacity-100','translate-y-0'); importCfg.classList.add('max-h-0','opacity-0','-translate-y-2'); importCfg.classList.remove('md:scale-100'); importCfg.classList.add('md:scale-95'); }
+          // animação adicional em telas grandes
+          panels.classList.remove('md:scale-95'); panels.classList.add('md:scale-100');
+          btn.textContent = 'Fechar importação';
+          // foco no primeiro input
+          const first = panels.querySelector('input, button'); if (first) first.focus();
+        } else {
+          panels.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
+          panels.classList.add('max-h-0','opacity-0','-translate-y-2');
+          // volta escala em telas grandes
+          panels.classList.remove('md:scale-100'); panels.classList.add('md:scale-95');
+          btn.textContent = 'Importar Vendas';
+        }
+      });
+    })();
+  </script>
+
+  <script>
     // --- helpers ---
-    function carregarVendasResumo(){ try { return JSON.parse(localStorage.getItem('vendasResumo'))||[] } catch(e){return[]} }
-    function salvarVendasResumo(v){ localStorage.setItem('vendasResumo', JSON.stringify(v)); try{ localStorage.setItem('vendasResumo_last_update', String(Date.now())); }catch(e){} }
-    function orderMonths(values){ const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; function idx(v){ if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99;} return values.slice().sort((a,b)=>idx(a)-idx(b)); }
-    function mesIndex(v){ const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99; }
+    function carregarVendasResumo(){
+      try { 
+        const dados = JSON.parse(localStorage.getItem('vendasResumo'))||[];
+        return dados;
+      } catch(e){
+        console.error('[DEBUG] Erro ao carregar dados:', e);
+        return[];
+      } 
+    }
+    function salvarVendasResumo(v){ 
+      localStorage.setItem('vendasResumo', JSON.stringify(v)); 
+      try{ localStorage.setItem('vendasResumo_last_update', String(Date.now())); }catch(e){} 
+    }
+    function orderMonths(values){ 
+      const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; 
+      function idx(v){ if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99;} 
+      return values.slice().sort((a,b)=>idx(a)-idx(b)); 
+    }
+    function mesIndex(v){ 
+      const monthNames=['janeiro','fevereiro','março','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; 
+      if(v==null) return 99; const s=String(v).toLowerCase(); const n=parseInt(s,10); if(!isNaN(n)&&n>=1&&n<=12) return n-1; const norm=s.replace('ç','c'); const i=monthNames.indexOf(norm); return i>=0?i:99; 
+    }
 
-    function atualizarSelectAnos(){ const sel=document.getElementById('select-anos-receitas'); const all=carregarVendasResumo(); const anosSet = new Set(all.map(v=> (v.anoMes && v.anoMes.split('/')[0]) ).filter(Boolean)); const anos=Array.from(anosSet).sort((a,b)=>Number(b)-Number(a)); sel.innerHTML=''; if(anos.length===0){ const opt=document.createElement('option'); opt.value=''; opt.textContent='Nenhum registro'; sel.appendChild(opt); return;} anos.forEach(a=>{const opt=document.createElement('option'); opt.value=a; opt.textContent=a; sel.appendChild(opt);}); const anoAtual=String(new Date().getFullYear()); if(anos.includes(anoAtual)) sel.value=anoAtual; }
+    function atualizarSelectAnos(){ 
+      const sel=document.getElementById('select-anos-receitas'); 
+      const all=carregarVendasResumo(); 
+      const anosSet = new Set(all.map(v=> (v.anoMes && v.anoMes.split('/')[0]) ).filter(Boolean)); 
+      const anos=Array.from(anosSet).sort((a,b)=>Number(b)-Number(a)); 
+      sel.innerHTML=''; 
+      if(anos.length===0){ 
+        const opt=document.createElement('option'); 
+        opt.value=''; 
+        opt.textContent='Nenhum registro'; 
+        sel.appendChild(opt); 
+        return;
+      } 
+      anos.forEach(a=>{
+        const opt=document.createElement('option'); 
+        opt.value=a; 
+        opt.textContent=a; 
+        sel.appendChild(opt);
+      }); 
+      const anoAtual=String(new Date().getFullYear()); 
+      if(anos.includes(anoAtual)) sel.value=anoAtual; 
+    }
 
-    function renderizarReceitasAno(ano){ const container=document.getElementById('lista-receitas-ano'); container.innerHTML=''; if(!ano){ container.textContent='Escolha um ano para visualizar.'; return; }
-      const all = carregarVendasResumo().map(v=> ({...v})).filter(v=> (v.anoMes && String(v.anoMes).startsWith(String(ano)+"/")));
-      if(all.length===0){ container.textContent = 'Nenhuma receita encontrada para o ano '+ano; return; }
+    function renderizarReceitasAno(ano){ 
+      const container=document.getElementById('lista-receitas-ano'); 
+      container.innerHTML=''; 
+      // Sempre renderizar cabeçalho da tabela mesmo que não haja dados — mostraremos linhas vazias/rodapé com zeros
+      if(!ano){ 
+        // se nenhum ano for informado, usa o ano atual como default (permite visualizar o cabeçalho)
+        ano = String(new Date().getFullYear());
+      }
+      const all = carregarVendasResumo().map(v=> ({...v})).filter(v=> (v.anoMes && String(v.anoMes).startsWith(String(ano)+"/"))); 
+  // if no data, we'll still render the table header and an empty body (user requested header instead of message)
       // meses, fontes, tipos
-      const meses = orderMonths(Array.from(new Set(all.map(v=> v.anoMes && v.anoMes.split('/')[1]).filter(Boolean))).map(m=>{ // convert 'MM' to month name
+      const meses = orderMonths(Array.from(new Set(all.map(v=> v.anoMes && v.anoMes.split('/')[1]).filter(Boolean))).map(m=>{
         const num = parseInt(m,10); if(!isNaN(num)) return ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][num-1]; return m; }).filter(Boolean));
       const fontes = Array.from(new Set(all.map(v=> v.source=== 'cartao' ? 'Cartões' : v.source==='pix' ? 'PIX' : (v.source||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
       const tipos = Array.from(new Set(all.map(v=> v.tipoPagamento || '').filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-      // aplica filtros (controlados via filtros object)
       const filtros = { mes:'Todos', fonte:'Todos', tipo:'Todos' };
 
-      // toolbar
+      // toolbar (actions only) — filters are rendered inside the table header to match Configurações
       const toolbar = document.createElement('div'); toolbar.className='flex justify-between items-center mb-3';
-      toolbar.innerHTML = `<div class="flex gap-2 items-center"><label class='text-sm'>Filtrar por mês:</label><select id='filtro-mes-rec' class='border rounded px-2 py-1'>${['Todos'].concat(meses).map(m=>`<option value="${m}">${m}</option>`).join('')}</select><label class='text-sm ml-4'>Fonte:</label><select id='filtro-fonte-rec' class='border rounded px-2 py-1'>${['Todos'].concat(fontes).map(f=>`<option value="${f}">${f}</option>`).join('')}</select><label class='text-sm ml-4'>Tipo:</label><select id='filtro-tipo-rec' class='border rounded px-2 py-1'>${['Todos'].concat(tipos).map(t=>`<option value="${t}">${t}</option>`).join('')}</select></div><div class="flex gap-2"><button id='btn-limpar-filtros-rec' class='text-sky-700 text-xs'>Limpar filtros</button><button id='btn-delete-selected-rec' class='text-red-600 text-xs'>Excluir selecionados</button></div>`;
+      toolbar.innerHTML = `<div class="flex gap-2 items-center">
+          <span class='text-sm font-semibold'>Filtros</span>
+        </div>
+        <div class="flex gap-2">
+          <button id='btn-limpar-filtros-rec' class='text-sky-700 text-xs'>Limpar filtros</button>
+          <button id='btn-delete-selected-rec' class='text-red-600 text-xs'>Excluir selecionados</button>
+        </div>`;
       container.appendChild(toolbar);
 
       // table
       const table = document.createElement('table'); table.className='min-w-full divide-y divide-gray-200 text-sm';
-      table.innerHTML = `<thead><tr class='bg-gray-50'><th class='px-2 py-2'><input id='selectAllRec' type='checkbox' /></th><th class='px-2 py-2 text-left'>Ano</th><th class='px-2 py-2 text-left'>Mês</th><th class='px-2 py-2 text-left'>Fonte</th><th class='px-2 py-2 text-left'>Tipo</th><th class='px-2 py-2 text-right'>Receita Bruta</th><th class='px-2 py-2 text-right'>MDR</th><th class='px-2 py-2 text-right'>Receita Líquida</th><th class='px-2 py-2'></th></tr></thead><tbody></tbody>`;
+      table.innerHTML = `<thead>
+          <tr class='bg-gray-50'>
+            <th class='px-2 py-2'><input id='selectAllRec' type='checkbox' /></th>
+            <th class='px-2 py-2 text-left'>Ano</th>
+            <th class='px-2 py-2 text-left'>Mês</th>
+            <th class='px-2 py-2 text-left'>Fonte</th>
+            <th class='px-2 py-2 text-left'>Tipo</th>
+            <th class='px-2 py-2 text-right'>Receita Bruta</th>
+            <th class='px-2 py-2 text-right'>MDR</th>
+            <th class='px-2 py-2 text-right'>Receita Líquida</th>
+            <th class='px-2 py-2'></th>
+          </tr>
+          <tr class='bg-white'>
+            <th class='px-2 py-2'></th>
+            <th class='px-2 py-2'></th>
+            <th class='px-2 py-2'>
+              <select id='filtro-mes-rec' class='filter w-full'>${['Todos'].concat(meses).map(m=>`<option value="${m}">${m}</option>`).join('')}</select>
+            </th>
+            <th class='px-2 py-2'>
+              <select id='filtro-fonte-rec' class='filter w-full'>${['Todos'].concat(fontes).map(f=>`<option value="${f}">${f}</option>`).join('')}</select>
+            </th>
+            <th class='px-2 py-2'>
+              <select id='filtro-tipo-rec' class='filter w-full'>${['Todos'].concat(tipos).map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+            </th>
+            <th class='px-2 py-2'></th>
+            <th class='px-2 py-2'></th>
+            <th class='px-2 py-2 text-right'></th>
+            <th class='px-2 py-2 text-right'></th>
+          </tr>
+        </thead>
+        <tbody></tbody>`;
       container.appendChild(table);
 
-      function aplicaEFazRender(){ const tbody = table.querySelector('tbody'); tbody.innerHTML=''; let view = all.filter(v=>{
-        if(filtros.mes !== 'Todos'){ const mes = (v.anoMes && v.anoMes.split('/')[1]) || ''; const nome = (Number(mes)>=1? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][Number(mes)-1] : mes); if(String(nome)!==String(filtros.mes)) return false; }
-        if(filtros.fonte !== 'Todos'){ const fonte = v.source==='cartao'?'Cartões': v.source==='pix'?'PIX': (v.source||''); if(String(fonte)!==String(filtros.fonte)) return false; }
-        if(filtros.tipo !== 'Todos'){ if(String(v.tipoPagamento||'')!==String(filtros.tipo)) return false; }
-        return true;
-      });
-      // ordenar por mês
-      view.sort((a,b)=> mesIndex((a.anoMes||'').split('/')[1]) - mesIndex((b.anoMes||'').split('/')[1]));
-      view.forEach(v=>{
-        const ano = v.anoMes? v.anoMes.split('/')[0]:''; const mesNum = v.anoMes? Number(v.anoMes.split('/')[1]): null; const mesNome = mesNum? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][mesNum-1] : '';
-        const tr = document.createElement('tr'); tr.className='odd:bg-white even:bg-gray-50';
-        tr.innerHTML = `<td class='px-2 py-2'><input type='checkbox' class='rowCheckbox' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}' /></td><td class='px-2 py-2'>${ano}</td><td class='px-2 py-2'>${mesNome}</td><td class='px-2 py-2'>${v.source==='cartao'?'Cartões':v.source==='pix'?'PIX':(v.source||'')}</td><td class='px-2 py-2'>${v.tipoPagamento||''}</td><td class='px-2 py-2 text-right'>R$ ${Number(v.receitaBruta||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 text-right'>R$ ${Number(v.mdr||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 text-right font-semibold text-sky-700'>R$ ${Number(v.receitaLiquida||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2 col-actions'><button class='btn-del-rec text-gray-600 hover:text-red-600' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}'>🗑</button></td>`;
-        tbody.appendChild(tr);
-      });
-      // footer totals under Receita Líquida (8th column)
-      const totalLiquida = view.reduce((acc,x)=> acc + Number(x.receitaLiquida||0),0);
-      const oldT = table.querySelector('tfoot'); if(oldT) oldT.remove(); const tfoot = document.createElement('tfoot'); tfoot.innerHTML = `<tr class='bg-gray-50 font-semibold'><td class='px-2 py-2' colspan='7'></td><td class='px-2 py-2 text-right'>R$ ${totalLiquida.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class='px-2 py-2'></td></tr>`; table.appendChild(tfoot);
+      function aplicaEFazRender(){ 
+        const tbody = table.querySelector('tbody'); 
+        tbody.innerHTML=''; 
+        let view = all.filter(v=>{
+          if(filtros.mes !== 'Todos'){ const mes = (v.anoMes && v.anoMes.split('/')[1]) || ''; const nome = (Number(mes)>=1? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][Number(mes)-1] : mes); if(String(nome)!==String(filtros.mes)) return false; }
+          if(filtros.fonte !== 'Todos'){ const fonte = v.source==='cartao'?'Cartões': v.source==='pix'?'PIX': (v.source||''); if(String(fonte)!==String(filtros.fonte)) return false; }
+          if(filtros.tipo !== 'Todos'){ if(String(v.tipoPagamento||'')!==String(filtros.tipo)) return false; }
+          return true;
+        });
+        // ordenar por mês
+        view.sort((a,b)=> mesIndex((a.anoMes||'').split('/')[1]) - mesIndex((b.anoMes||'').split('/')[1]));
+        view.forEach((v) => {
+          const ano = v.anoMes? v.anoMes.split('/')[0]:'';
+          const mesNum = v.anoMes? Number(v.anoMes.split('/')[1]): null; 
+          const mesNome = mesNum? ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][mesNum-1] : '';
+          const tr = document.createElement('tr'); 
+          tr.className='odd:bg-white even:bg-gray-50';
+          tr.innerHTML = `
+            <td class='px-2 py-2'><input type='checkbox' class='rowCheckbox' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}' /></td>
+            <td class='px-2 py-2'>${ano}</td>
+            <td class='px-2 py-2'>${mesNome}</td>
+            <td class='px-2 py-2'>${v.source==='cartao'?'Cartões':v.source==='pix'?'PIX':(v.source||'')}</td>
+            <td class='px-2 py-2'>${v.tipoPagamento||''}</td>
+            <td class='px-2 py-2 text-right'>R$ ${Number(v.receitaBruta||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2 text-right'>R$ ${Number(v.mdr||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2 text-right font-semibold text-sky-700'>R$ ${Number(v.receitaLiquida||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2 col-actions'><button class='btn-del-rec text-gray-600 hover:text-red-600' data-key='${v.anoMes}__${v.source}__${v.tipoPagamento||''}'>🗑</button></td>`;
+          tbody.appendChild(tr);
+        });
+  // totais: soma de Receita Bruta, MDR e Receita Líquida
+        const totalBruta = view.reduce((acc,x)=> acc + Number(x.receitaBruta||0),0);
+        const totalMdr = view.reduce((acc,x)=> acc + Number(x.mdr||0),0);
+        const totalLiquida = view.reduce((acc,x)=> acc + Number(x.receitaLiquida||0),0);
+        const oldT = table.querySelector('tfoot'); if(oldT) oldT.remove(); 
+        const tfoot = document.createElement('tfoot'); 
+        tfoot.innerHTML = `
+          <tr class='bg-gray-50 font-semibold'>
+            <td class='px-2 py-2' colspan='5'></td>
+            <td class='px-2 py-2 text-right'>R$ ${totalBruta.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2 text-right'>R$ ${totalMdr.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2 text-right'>R$ ${totalLiquida.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+            <td class='px-2 py-2'></td>
+          </tr>`; 
+        table.appendChild(tfoot);
 
-      // wiring filters and selection
-      const selectAll = container.querySelector('#selectAllRec'); const rowCheckboxes = Array.from(container.querySelectorAll('.rowCheckbox'));
-      if(selectAll){ selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); selectAll.addEventListener('change', e=>{ rowCheckboxes.forEach(cb=>{ cb.checked = e.target.checked; const tr=cb.closest('tr'); if(tr) tr.classList.toggle('bg-sky-100', e.target.checked);}); }); }
-      rowCheckboxes.forEach(cb=> cb.addEventListener('change', ()=>{ if(selectAll) selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); const tr=cb.closest('tr'); if(tr) tr.classList.toggle('bg-sky-100', cb.checked); }));
+        // seleção
+        const selectAll = container.querySelector('#selectAllRec'); 
+        const rowCheckboxes = Array.from(container.querySelectorAll('.rowCheckbox'));
+        if(selectAll){ 
+          selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); 
+          selectAll.addEventListener('change', e=>{
+            rowCheckboxes.forEach(cb=>{
+              cb.checked = e.target.checked; 
+              const tr=cb.closest('tr'); 
+              if(tr) tr.classList.toggle('bg-sky-100', e.target.checked);
+            });
+          }); 
+        }
+        rowCheckboxes.forEach(cb=> cb.addEventListener('change', ()=>{
+          if(selectAll) selectAll.checked = rowCheckboxes.length>0 && rowCheckboxes.every(r=>r.checked); 
+          const tr=cb.closest('tr'); if(tr) tr.classList.toggle('bg-sky-100', cb.checked);
+        }));
 
-      // delete selected
-      const btnDelSel = container.querySelector('#btn-delete-selected-rec'); if(btnDelSel) btnDelSel.addEventListener('click', ()=>{
-        const checks = Array.from(container.querySelectorAll('.rowCheckbox:checked'));
-        if(checks.length===0){ alert('Nenhuma receita selecionada.'); return; }
-        if(!confirm(`Confirma exclusão de ${checks.length} item(s)?`)) return;
-        const keys = checks.map(c=> c.dataset.key);
-        let allRec = carregarVendasResumo();
-        allRec = allRec.filter(v => !keys.includes(`${v.anoMes}__${v.source}__${v.tipoPagamento||''}`));
-        salvarVendasResumo(allRec);
-        atualizarSelectAnos(); renderizarReceitasAno(ano);
-      });
+        // excluir selecionados
+        const btnDelSel = container.querySelector('#btn-delete-selected-rec'); 
+        if(btnDelSel) btnDelSel.addEventListener('click', ()=>{
+          const checks = Array.from(container.querySelectorAll('.rowCheckbox:checked'));
+          if(checks.length===0){ alert('Nenhuma receita selecionada.'); return; }
+          if(!confirm(`Confirma exclusão de ${checks.length} item(s)?`)) return;
+          const keys = checks.map(c=> c.dataset.key);
+          let allRec = carregarVendasResumo();
+          allRec = allRec.filter(v => !keys.includes(`${v.anoMes}__${v.source}__${v.tipoPagamento||''}`));
+          salvarVendasResumo(allRec);
+          atualizarSelectAnos(); renderizarReceitasAno(ano);
+        });
 
-      // per-row delete
-      container.querySelectorAll('.btn-del-rec').forEach(b => b.addEventListener('click', (ev)=>{
-        const key = ev.currentTarget.dataset.key; if(!confirm('Confirma exclusão deste item?')) return; let allRec = carregarVendasResumo(); allRec = allRec.filter(v => !( `${v.anoMes}__${v.source}__${v.tipoPagamento||''}` === key )); salvarVendasResumo(allRec); atualizarSelectAnos(); renderizarReceitasAno(ano);
-      }));
+        // excluir linha
+        container.querySelectorAll('.btn-del-rec').forEach(b => b.addEventListener('click', (ev)=>{
+          const key = ev.currentTarget.dataset.key; 
+          if(!confirm('Confirma exclusão deste item?')) return; 
+          let allRec = carregarVendasResumo(); 
+          allRec = allRec.filter(v => !( `${v.anoMes}__${v.source}__${v.tipoPagamento||''}` === key )); 
+          salvarVendasResumo(allRec); 
+          atualizarSelectAnos(); 
+          renderizarReceitasAno(ano);
+        }));
 
-      // filter controls
-      container.querySelector('#filtro-mes-rec').addEventListener('change', e=>{ filtros.mes = e.target.value; aplicaEFazRender(); });
-      container.querySelector('#filtro-fonte-rec').addEventListener('change', e=>{ filtros.fonte = e.target.value; aplicaEFazRender(); });
-      container.querySelector('#filtro-tipo-rec').addEventListener('change', e=>{ filtros.tipo = e.target.value; aplicaEFazRender(); });
-      container.querySelector('#btn-limpar-filtros-rec').addEventListener('click', ()=>{ filtros.mes='Todos'; filtros.fonte='Todos'; filtros.tipo='Todos'; container.querySelector('#filtro-mes-rec').value='Todos'; container.querySelector('#filtro-fonte-rec').value='Todos'; container.querySelector('#filtro-tipo-rec').value='Todos'; aplicaEFazRender(); });
+        // filtros
+        container.querySelector('#filtro-mes-rec').addEventListener('change', e=>{ filtros.mes = e.target.value; aplicaEFazRender(); });
+        container.querySelector('#filtro-fonte-rec').addEventListener('change', e=>{ filtros.fonte = e.target.value; aplicaEFazRender(); });
+        container.querySelector('#filtro-tipo-rec').addEventListener('change', e=>{ filtros.tipo = e.target.value; aplicaEFazRender(); });
+        container.querySelector('#btn-limpar-filtros-rec').addEventListener('click', ()=>{
+          filtros.mes='Todos'; filtros.fonte='Todos'; filtros.tipo='Todos'; 
+          container.querySelector('#filtro-mes-rec').value='Todos'; 
+          container.querySelector('#filtro-fonte-rec').value='Todos'; 
+          container.querySelector('#filtro-tipo-rec').value='Todos'; 
+          aplicaEFazRender(); 
+        });
       }
+      aplicaEFazRender();
+
+      // garante visibilidade
+      setTimeout(() => {
+        const table = container.querySelector('table');
+        if (table) {
+          table.style.display = 'table';
+          table.style.visibility = 'visible';
+          table.style.opacity = '1';
+        }
+      }, 50);
     }
 
     // init
-    document.getElementById('btn-ver-ano-receitas').addEventListener('click', ()=>{ const sel=document.getElementById('select-anos-receitas'); renderizarReceitasAno(sel.value); });
-    function init(){ atualizarSelectAnos(); }
+    document.getElementById('btn-ver-ano-receitas').addEventListener('click', ()=>{ 
+      const sel=document.getElementById('select-anos-receitas'); 
+      renderizarReceitasAno(sel.value); 
+      setTimeout(() => {
+        const table = document.querySelector('#lista-receitas-ano table');
+        if (table) {
+          table.style.display = 'table';
+          table.style.visibility = 'visible';
+          table.style.opacity = '1';
+        }
+      }, 50);
+    });
+    
+
+    function init(){ 
+      atualizarSelectAnos(); 
+      setTimeout(() => {
+        const sel = document.getElementById('select-anos-receitas');
+        if (sel && sel.value) {
+          renderizarReceitasAno(sel.value);
+        }
+      }, 100);
+    }
     init();
 
-    // react to changes from importar page
-    window.addEventListener('storage', (e)=>{ if(e.key === 'vendasResumo' || e.key === 'vendasResumo_last_update'){ atualizarSelectAnos(); const sel=document.getElementById('select-anos-receitas'); if(sel && sel.value) renderizarReceitasAno(sel.value); } });
+    // Ouve mudanças vindas da página Importar
+    window.addEventListener('storage', (e)=>{ 
+      if(e.key === 'vendasResumo' || e.key === 'vendasResumo_last_update'){ 
+        atualizarSelectAnos(); 
+        const sel=document.getElementById('select-anos-receitas'); 
+        if(sel && sel.value) {
+          renderizarReceitasAno(sel.value); 
+        }
+      } 
+    });
 
+    // Fallback polling (mesma aba)
+    setInterval(() => {
+      const lastUpdate = localStorage.getItem('vendasResumo_last_update');
+      if (lastUpdate && window.lastKnownUpdate !== lastUpdate) {
+        window.lastKnownUpdate = lastUpdate;
+        atualizarSelectAnos();
+        const sel = document.getElementById('select-anos-receitas');
+        if (sel && sel.value) {
+          renderizarReceitasAno(sel.value);
+        }
+      }
+    }, 1000);
+    
+    // Sidebar navigation logic extracted to `js/sidebar-nav.js` (loaded below)
+
+    // ===== Importer helpers & handlers (moved from importar.html, adapted) =====
+    function parseNumber(v){ if(v==null) return 0; const s=String(v).replace(/R\$|\s/g,'').replace(',','.'); const n=parseFloat(s); return isNaN(n)?0:n; }
+    function excelDateToJSDate(serial){ return new Date(Math.round((serial - 25569) * 86400 * 1000)); }
+    // Retorna ano/mês e dia (quando disponível) a partir de valores variados (string, Excel serial, ISO)
+    // Agora retorna { anoMes, dia, dateISO }
+    function parseDateToAnoMes(value){
+      let anoMes = 'Indefinido';
+      let dia = null;
+      let dateISO = null;
+      if (value == null) return { anoMes, dia, dateISO };
+
+      // tenta usar o parser genérico que converte para Date
+      try{
+        const d = parseToJSDate(value);
+        if (d && !isNaN(d.getTime())){
+          const year = d.getFullYear();
+          const month = String(d.getMonth()+1).padStart(2,'0');
+          const day = String(d.getDate()).padStart(2,'0');
+          anoMes = `${year}/${month}`;
+          dia = Number(day);
+          dateISO = `${year}-${month}-${day}`;
+          return { anoMes, dia, dateISO };
+        }
+      }catch(e){ /* segue para heurísticas abaixo */ }
+
+      // heurísticas de fallback para strings (ex: dd/mm/yyyy ou yyyy-mm-dd)
+      if (typeof value === 'string'){
+        const datePart = value.split(' ')[0].trim();
+        if (datePart.includes('/')){
+          const parts = datePart.split('/');
+          if (parts.length >= 3){
+            const day = parts[0].padStart(2,'0');
+            const mes = parts[1].padStart(2,'0');
+            let ano = parts[2].split(' ')[0];
+            if (ano.length === 2 && /^\d{2}$/.test(ano)){ const n = Number(ano); ano = n < 50 ? '20' + ano : '19' + ano; }
+            anoMes = `${ano}/${mes}`;
+            dia = Number(day);
+            dateISO = `${ano}-${mes}-${day}`;
+            return { anoMes, dia, dateISO };
+          }
+        }
+        if (datePart.includes('-')){
+          const parts = datePart.split('-');
+          if (parts.length === 3){
+            // yyyy-mm-dd
+            if (parts[0].length === 4){ const ano = parts[0]; const mes = parts[1].padStart(2,'0'); const day = parts[2].padStart(2,'0'); anoMes = `${ano}/${mes}`; dia = Number(day); dateISO = `${ano}-${mes}-${day}`; return { anoMes, dia, dateISO }; }
+            // dd-mm-yyyy or dd-mm-yy
+            if (parts[2].length === 4 || parts[2].length === 2){ let ano = parts[2]; if (ano.length === 2 && /^\d{2}$/.test(ano)){ const n = Number(ano); ano = n < 50 ? '20' + ano : '19' + ano; } const mes = parts[1].padStart(2,'0'); const day = parts[0].padStart(2,'0'); anoMes = `${ano}/${mes}`; dia = Number(day); dateISO = `${ano}-${mes}-${day}`; return { anoMes, dia, dateISO }; }
+          }
+        }
+        const parsed = Date.parse(value);
+        if (!isNaN(parsed)){ const d = new Date(parsed); const mes = String(d.getMonth()+1).padStart(2,'0'); const ano = d.getFullYear(); const day = String(d.getDate()).padStart(2,'0'); anoMes = `${ano}/${mes}`; dia = Number(day); dateISO = `${ano}-${mes}-${day}`; return { anoMes, dia, dateISO }; }
+      }
+
+      // Se for número (p.ex., serial Excel) tente converter
+      if (!isNaN(value)){
+        try{
+          const d = excelDateToJSDate(Number(value));
+          const mes = String(d.getUTCMonth()+1).padStart(2,'0'); const ano = d.getUTCFullYear(); const day = String(d.getUTCDate()).padStart(2,'0'); anoMes = `${ano}/${mes}`; dia = Number(day); dateISO = `${ano}-${mes}-${day}`; return { anoMes, dia, dateISO };
+        }catch(e){}
+      }
+      return { anoMes, dia, dateISO };
+    }
+
+    // Parse a value (string, Excel serial, ISO) into a JS Date if possible.
+    function parseToJSDate(value){
+      if (value == null) return null;
+      // Excel serial number
+      if (!isNaN(value) && value !== ''){
+          try{ 
+            // convert Excel serial to a JS Date in LOCAL timezone representing the same Y-M-D
+            const d = excelDateToJSDate(Number(value));
+            return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
+          }catch(e){}
+      }
+      if (typeof value === 'string'){
+        const s = value.trim();
+        // dd/mm/yyyy[ hh:mm[:ss]]
+        const m1 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(?:[ T]+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+        if (m1){
+          const day = Number(m1[1]); const month = Number(m1[2]); let year = Number(m1[3]); if (year < 100) year += (year < 50 ? 2000 : 1900);
+          const hour = m1[4] ? Number(m1[4]) : 0; const min = m1[5] ? Number(m1[5]) : 0; const sec = m1[6] ? Number(m1[6]) : 0;
+          return new Date(year, month-1, day, hour, min, sec);
+        }
+        // yyyy-mm-dd or ISO parse
+        const iso = Date.parse(s);
+        if (!isNaN(iso)) return new Date(iso);
+      }
+      return null;
+    }
+
+    // Detailed transactions storage (keeps per-row data to allow weekday/month aggregations)
+    function carregarVendasDetalhadas(){ try { return JSON.parse(localStorage.getItem('vendasDetalhadas')) || []; } catch(e){ return []; } }
+    function salvarVendasDetalhadas(arr){ try { localStorage.setItem('vendasDetalhadas', JSON.stringify(arr)); } catch(e){} }
+    function addVendaDetalhada(tx){
+      try{
+        const arr = carregarVendasDetalhadas();
+        // compute deterministic id if not present: dateISO||value(2dec)||source||tipoPagamento
+        const v = Number(tx.value||0).toFixed(2);
+        const id = tx.id || `${tx.date||''}||${v}||${tx.source||''}||${tx.tipoPagamento||''}`;
+        // build set of existing ids
+        const existing = new Set(arr.map(x=> x.id || `${x.date||''}||${Number(x.value||0).toFixed(2)}||${x.source||''}||${x.tipoPagamento||''}`));
+        if (existing.has(id)) return false; // duplicate, skip
+        tx.id = id;
+        arr.push(tx);
+        salvarVendasDetalhadas(arr);
+        return true;
+      }catch(e){ console.warn('Erro ao salvar venda detalhada', e); return false; }
+    }
+
+    // remove duplicates in vendasDetalhadas by id (or by computed signature) and persist unique list
+    function dedupeVendasDetalhadas(){
+      try{
+        const arr = carregarVendasDetalhadas();
+        const map = new Map();
+        for (const x of arr){
+          const key = x.id || `${x.date||''}||${Number(x.value||0).toFixed(2)}||${x.source||''}||${x.tipoPagamento||''}`;
+          if (!map.has(key)) map.set(key, {...x, id: key});
+        }
+        const unique = Array.from(map.values());
+        salvarVendasDetalhadas(unique);
+        return unique.length;
+      }catch(e){ return 0; }
+    }
+
+    // Compute sums by weekday (0=Sunday..6=Saturday) grouped per month (YYYY/MM)
+    function computeWeekdaySumsPerMonth(){
+      // ensure we don't have duplicates before computing
+      try{ dedupeVendasDetalhadas(); }catch(e){}
+      const all = carregarVendasDetalhadas();
+      const out = {};
+      for (const t of all){
+        // t.date should be ISO or parsable
+        const d = t && t.date ? parseToJSDate(t.date) || (new Date(t.date)) : null;
+        if (!d || isNaN(d.getTime())) continue;
+        const ano = d.getFullYear(); const mes = String(d.getMonth()+1).padStart(2,'0');
+        const key = `${ano}/${mes}`;
+        if (!out[key]) out[key] = { '0':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0 };
+        const wd = String(d.getDay());
+        const v = Number(t.value) || 0;
+        out[key][wd] = (Number(out[key][wd]) || 0) + v;
+      }
+      try{ localStorage.setItem('vendas_por_dia_semana', JSON.stringify(out)); }catch(e){ }
+      return out;
+    }
+
+    function getWeekdaySumsForMonth(anoMes){
+      try{ const p = JSON.parse(localStorage.getItem('vendas_por_dia_semana') || '{}'); return p[anoMes] || { '0':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0 }; }catch(e){ return { '0':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0 }; }
+    }
+
+    // Inputs
+    const fileInputCartao = document.getElementById('fileInputCartao');
+    const fileNameCartao = document.getElementById('fileNameCartao');
+    const processarBtnCartao = document.getElementById('processarBtnCartao');
+
+    const fileInputPix = document.getElementById('fileInputPix');
+    const fileNamePix = document.getElementById('fileNamePix');
+    const processarBtnPix = document.getElementById('processarBtnPix');
+
+    let arquivosSelecionadosCartao = [];
+    let arquivosSelecionadosPix = [];
+
+    // --- Header mapping helpers ---
+    function detectHeaderRow(json){
+      // tenta escolher a linha com mais células texto (primeiras 10 linhas)
+      let best = {idx:0, score: -1};
+      for (let i=0;i<Math.min(10,json.length);i++){
+        const row = json[i] || [];
+        let score = 0;
+        for (const cell of row){ if (cell !== null && cell !== undefined && String(cell).trim().length>0) score += 1; }
+        if (score > best.score){ best = {idx:i, score}; }
+      }
+      return best.idx;
+    }
+
+    function getHeadersFromJson(json, overrideHeaderRow){
+      const hr = (typeof overrideHeaderRow === 'number' && !isNaN(overrideHeaderRow)) ? overrideHeaderRow : detectHeaderRow(json);
+      const headerRow = json[hr] || [];
+      return headerRow.map(h => h==null? '': String(h).trim());
+    }
+
+    function loadMapping(key){
+      try{ return JSON.parse(localStorage.getItem(key)) || {}; } catch(e){ return {}; }
+    }
+    function saveMapping(key, map){ try{ localStorage.setItem(key, JSON.stringify(map)); }catch(e){} }
+
+    function renderMappingUI(panelId, fieldsContainerId, headers, storageKey, defaults){
+      const panel = document.getElementById(panelId);
+      const container = document.getElementById(fieldsContainerId);
+      if(!panel || !container) return;
+      container.innerHTML='';
+  const mapping = loadMapping(storageKey) || {};
+  // if saved mapping only contains headerRow (from import config) treat it as empty so auto-detect runs
+  const userMappingKeys = Object.keys(mapping).filter(k => k !== 'headerRow');
+  const auto = (userMappingKeys.length === 0) ? autoMapHeaders(headers, defaults) : {};
+      const options = [''].concat(headers);
+      // also offer numeric index options up to headers length-1
+      for (const f of defaults){
+        const row = document.createElement('div');
+        row.className='flex items-center gap-2';
+        const label = document.createElement('div'); label.className='w-36 text-xs text-gray-600'; label.textContent = f.label;
+        const sel = document.createElement('select'); sel.className='map-select rounded border px-2 py-1 text-sm flex-1';
+        // option for automatic index by header name
+        sel.innerHTML = options.map(o => `<option value="${o}">${o||'(nenhum)'}</option>`).join('') +
+                        Array.from({length: Math.max(0, Math.min(30, headers.length+5))}).map((_,i)=>`<option value="__idx__${i}">Índice ${i}</option>`).join('');
+        // set current value from mapping, auto-detect or default
+        const current = (mapping[f.key] || auto[f.key] || f.default);
+        if(current!==undefined && current!==null){ sel.value = current; }
+        row.appendChild(label); row.appendChild(sel);
+        container.appendChild(row);
+      }
+      // show panel
+      panel.classList.remove('hidden');
+    }
+
+    function normalizeForMatch(s){ if(!s) return ''; try{ return String(s).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''); }catch(e){ return String(s).toLowerCase(); } }
+
+    function autoMapHeaders(headers, defaults){
+      const map = {};
+      const norm = headers.map(h => normalizeForMatch(h||''));
+      function findByWords(words){
+        for (let i=0;i<norm.length;i++){ const h = norm[i]; for (const w of words){ if(w && h.includes(w)) return headers[i]; } }
+        return null;
+      }
+      // heuristics per key
+      defaults.forEach(d => {
+        const k = d.key;
+        let found = null;
+        if(k === 'date'){
+          found = findByWords(['data','date','emissao','emissão','timestamp','dia']);
+        } else if(k === 'time'){
+          found = findByWords(['hora','time','horario']);
+        } else if(k === 'status'){
+          found = findByWords(['status','situacao','situação','estado','estado da']);
+        } else if(k === 'valorBruto'){
+          found = findByWords(['valor da venda atualizado','valor da venda original','valor da venda','valor atualizado','valor original','valor bruto','valor','amount','valorvenda']);
+        } else if(k === 'modalidade'){
+          found = findByWords(['modalidade','tipo','tipo de pagamento','forma']);
+        } else if(k === 'valorMdr' || k === 'mdr'){
+          found = findByWords(['mdr','taxa mdr','taxa mdr','taxa','taxa mdr']);
+        } else if(k === 'valorLiquido'){
+          found = findByWords(['valor liquido','valor líquido','liquido','liquidado','liquido','liquid']);
+        }
+        // fallback: try to find words from key name
+        if(!found){ found = findByWords([normalizeForMatch(k)]); }
+        // if still not found, try to guess by index common patterns (e.g., valorBruto prefer column 4 etc.) -- use header index if present
+        if(!found){
+          // no header match, try numeric fallback: look for header containing 'valor' for valor fields
+          if(k === 'valorBruto' || k === 'valorLiquido' || k === 'valorMdr'){
+            found = findByWords(['valor']);
+          }
+        }
+        if(found){ map[k] = found; }
+      });
+      // special case: if time wasn't found but date was found (common when date and time are in same cell), map time to the same header as date
+      if(!map.time && map.date){ map.time = map.date; }
+      return map;
+    }
+
+    function readFirstFileHeaders(file, headerRowOverride){
+      return new Promise(async (resolve, reject)=>{
+        try{
+          const data = await file.arrayBuffer();
+          const workbook = XLSX.read(new Uint8Array(data), {type:'array'});
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const json = XLSX.utils.sheet_to_json(sheet, {header:1});
+          const headers = getHeadersFromJson(json, headerRowOverride);
+          resolve({headers,json});
+        }catch(err){ reject(err); }
+      });
+    }
+
+    function applyMappingIndex(headers, mappingValue, fallbackIndex){
+      if(!mappingValue) return fallbackIndex;
+      if(String(mappingValue).startsWith('__idx__')){
+        const n = Number(String(mappingValue).replace('__idx__',''));
+        return Number.isFinite(n) ? n : fallbackIndex;
+      }
+      // try find header name
+      const idx = headers.indexOf(String(mappingValue));
+      return idx >= 0 ? idx : fallbackIndex;
+    }
+
+
+    // --- helpers para sincronizar MDR como despesas ---
+    function genIdLocal() { return (Date.now().toString(36) + Math.random().toString(36).slice(2,8)); }
+    function carregarDespesas() { try { return JSON.parse(localStorage.getItem('despesas')) || []; } catch(e){ return []; } }
+    function salvarDespesas(ds) { try { localStorage.setItem('despesas', JSON.stringify(ds)); } catch(e){} }
+
+    // Recebe um array de objetos resumoPorMes (val) e sincroniza lançamentos MDR em despesas
+    function syncMdrToDespesas(vals){
+      if (!Array.isArray(vals) || vals.length===0) return;
+      const despesas = carregarDespesas();
+      // construir mapa de keys novas
+      const newKeys = vals.map(v=> `${v.source}||${v.anoMes}||${v.tipoPagamento||''}`);
+      // remover despesas automáticas pré-existentes para essas keys
+      const filtered = despesas.filter(d => !d.autoFromVendasKey || newKeys.indexOf(d.autoFromVendasKey) === -1);
+      // adicionar novas despesas para cada val com mdr > 0
+      vals.forEach(v => {
+        const key = `${v.source}||${v.anoMes}||${v.tipoPagamento||''}`;
+        if (!v || !v.anoMes) return;
+        const mdrVal = Number(v.mdr||0);
+        if (mdrVal <= 0) return;
+        const parts = String(v.anoMes||'').split('/');
+        const ano = parts[0] || String(new Date().getFullYear());
+        const mesNum = parts[1] ? Number(parts[1]) : null;
+        const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        const mesNome = (mesNum && mesNum>=1 && mesNum<=12) ? MONTHS_PT[mesNum-1] : (v.mes || MONTHS_PT[new Date().getMonth()]);
+        // calcula o último dia do mês para usar como dia padrão
+        let lastDay = 1;
+        try{
+          if (mesNum && !isNaN(Number(ano))) {
+            // em JS Date, new Date(year, monthIndex+1, 0) retorna o último dia do mês
+            lastDay = new Date(Number(ano), Number(mesNum), 0).getDate();
+          } else {
+            // fallback para último dia do mês atual
+            const d = new Date(); lastDay = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+          }
+        } catch(e){ lastDay = 1; }
+
+        const item = {
+          id: genIdLocal(),
+          ano: String(ano),
+          mes: mesNome,
+          dia: lastDay,
+          tipo: 'Variável',
+          categoria: 'Taxas de Vendas (MDR)',
+          descricao: `MDR ${v.source || ''} ${v.tipoPagamento || ''}`.trim(),
+          valor: Number(mdrVal),
+          autoFromVendasKey: key
+        };
+        filtered.push(item);
+      });
+      salvarDespesas(filtered);
+      try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch(e){}
+    }
+
+    if(fileInputCartao){
+      fileInputCartao.addEventListener('change', (e)=>{
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        arquivosSelecionadosCartao = files;
+        fileNameCartao.textContent = files.length ? `Arquivos: ${files.map(f=>f.name).join(', ')}` : '';
+        processarBtnCartao.disabled = files.length === 0;
+      });
+    }
+    if(fileInputPix){
+      fileInputPix.addEventListener('change', (e)=>{
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        arquivosSelecionadosPix = files;
+        fileNamePix.textContent = files.length ? `Arquivos: ${files.map(f=>f.name).join(', ')}` : '';
+        processarBtnPix.disabled = files.length === 0;
+      });
+    }
+
+  // Config / mapping UI wiring
+  const btnSaveCartao = document.getElementById('save-mapping-cartao');
+  const btnResetCartao = document.getElementById('reset-mapping-cartao');
+
+  const btnSavePix = document.getElementById('save-mapping-pix');
+  const btnResetPix = document.getElementById('reset-mapping-pix');
+
+    // when files selected, try to read first file header to populate mapping selects
+    async function tryPopulateCartaoMapping(headerRowOverride){
+      if(!arquivosSelecionadosCartao || arquivosSelecionadosCartao.length===0) return;
+      try{
+        const {headers} = await readFirstFileHeaders(arquivosSelecionadosCartao[0], headerRowOverride);
+        renderMappingUI('mapping-cartao-panel','mapping-cartao-fields', headers, 'mapping_cartao', [
+          {key:'date', label:'Data (data da venda)', default:''},
+          {key:'time', label:'Hora (hora da venda)', default:''},
+          {key:'status', label:'Status (aprovada/negada)', default:''},
+          {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
+          {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
+          {key:'valorMdr', label:'Valor MDR', default:''},
+          {key:'valorLiquido', label:'Valor Líquido', default:''}
+        ]);
+      }catch(e){ console.warn('Não foi possível detectar cabeçalho (cartão):', e); }
+    }
+
+    async function tryPopulatePixMapping(headerRowOverride){
+      if(!arquivosSelecionadosPix || arquivosSelecionadosPix.length===0) return;
+      try{
+        const {headers} = await readFirstFileHeaders(arquivosSelecionadosPix[0], headerRowOverride);
+        // use the same default mapping fields/labels as Cartão so PIX mapping panel shows the same options
+        renderMappingUI('mapping-pix-panel','mapping-pix-fields', headers, 'mapping_pix', [
+          {key:'date', label:'Data (data da venda)', default:''},
+          {key:'time', label:'Hora (hora da venda)', default:''},
+          {key:'status', label:'Status (aprovada/negada)', default:''},
+          {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
+          {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
+          {key:'valorMdr', label:'Valor MDR', default:''},
+          {key:'valorLiquido', label:'Valor Líquido', default:''}
+        ]);
+      }catch(e){ console.warn('Não foi possível detectar cabeçalho (pix):', e); }
+    }
+
+    if(fileInputCartao){ fileInputCartao.addEventListener('change', tryPopulateCartaoMapping); }
+    if(fileInputPix){ fileInputPix.addEventListener('change', tryPopulatePixMapping); }
+
+    // import config panel wiring
+    const btnOpenImportConfig = document.getElementById('btn-open-import-config');
+    const importConfigPanel = document.getElementById('import-config-panel');
+    const inputHeaderCartao = document.getElementById('headerline-cartao');
+    const inputHeaderPix = document.getElementById('headerline-pix');
+    const btnSaveImportConfig = document.getElementById('save-import-config');
+    const btnOpenMappingCartao = document.getElementById('open-mapping-cartao');
+    const btnOpenMappingPix = document.getElementById('open-mapping-pix');
+
+    if(btnOpenImportConfig){ btnOpenImportConfig.addEventListener('click', ()=>{
+      if(!importConfigPanel) return;
+      const isOpen = importConfigPanel.classList.contains('opacity-100');
+      const panels = document.getElementById('import-panels');
+      const btnToggle = document.getElementById('btn-toggle-import');
+      if(!isOpen){
+        // open import-config-panel (add open classes)
+        importConfigPanel.classList.remove('max-h-0','opacity-0','-translate-y-2');
+        importConfigPanel.classList.add('max-h-[1000px]','opacity-100','translate-y-0');
+        importConfigPanel.classList.remove('md:scale-95'); importConfigPanel.classList.add('md:scale-100');
+        // close import panels
+        if(panels){ panels.classList.remove('max-h-[1000px]','opacity-100','translate-y-0'); panels.classList.add('max-h-0','opacity-0','-translate-y-2'); panels.classList.remove('md:scale-100'); panels.classList.add('md:scale-95'); }
+        if(btnToggle) btnToggle.textContent = 'Importar Vendas';
+      } else {
+        // close import-config-panel
+        importConfigPanel.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
+        importConfigPanel.classList.add('max-h-0','opacity-0','-translate-y-2');
+        importConfigPanel.classList.remove('md:scale-100'); importConfigPanel.classList.add('md:scale-95');
+      }
+    }); }
+
+    // load saved header rows into inputs if exist
+    try{
+      const savedCartao = loadMapping('mapping_cartao') || {};
+      if(savedCartao.headerRow !== undefined && savedCartao.headerRow !== null){ inputHeaderCartao.value = (Number(savedCartao.headerRow) + 1); }
+      const savedPix = loadMapping('mapping_pix') || {};
+      if(savedPix.headerRow !== undefined && savedPix.headerRow !== null){ inputHeaderPix.value = (Number(savedPix.headerRow) + 1); }
+    }catch(e){}
+
+    if(btnSaveImportConfig){ btnSaveImportConfig.addEventListener('click', ()=>{
+      const cartaoVal = Number(inputHeaderCartao.value);
+      const pixVal = Number(inputHeaderPix.value);
+      if(!Number.isFinite(cartaoVal) || cartaoVal < 1){ alert('Linha do cabeçalho (Cartões) deve ser um número inteiro >= 1'); return; }
+      if(!Number.isFinite(pixVal) || pixVal < 1){ alert('Linha do cabeçalho (PIX) deve ser um número inteiro >= 1'); return; }
+      const mc = loadMapping('mapping_cartao') || {}; mc.headerRow = Math.max(0, Math.floor(cartaoVal)-1); saveMapping('mapping_cartao', mc);
+      const mp = loadMapping('mapping_pix') || {}; mp.headerRow = Math.max(0, Math.floor(pixVal)-1); saveMapping('mapping_pix', mp);
+      // after saving config, collapse mapping panels (they use hidden)
+      const mcp = document.getElementById('mapping-cartao-panel'); if(mcp) mcp.classList.add('hidden');
+      const mpp = document.getElementById('mapping-pix-panel'); if(mpp) mpp.classList.add('hidden');
+      // also collapse the import-config-panel using transitions
+      const importCfg = document.getElementById('import-config-panel'); if(importCfg){ importCfg.classList.remove('max-h-[1000px]','opacity-100','translate-y-0'); importCfg.classList.add('max-h-0','opacity-0','-translate-y-2'); importCfg.classList.remove('md:scale-100'); importCfg.classList.add('md:scale-95'); }
+      alert('Configurações de importação salvas.');
+    }); }
+
+    if(btnOpenMappingCartao){ btnOpenMappingCartao.addEventListener('click', async ()=>{
+      const panel = document.getElementById('mapping-cartao-panel');
+      if(panel && !panel.classList.contains('hidden')){ panel.classList.add('hidden'); return; }
+      // if no file selected in upload, show sample file input and wait for user to pick a file
+      if(!arquivosSelecionadosCartao || arquivosSelecionadosCartao.length===0){
+        // reveal panel and let user choose sample file
+        document.getElementById('mapping-cartao-panel')?.classList.remove('hidden');
+        const sampleInput = document.getElementById('mapping-cartao-sample-file');
+        if(sampleInput){
+          sampleInput.value = null;
+          sampleInput.onchange = async (e)=>{
+            const f = e.target.files && e.target.files[0]; if(!f) return;
+            try{ const {headers} = await readFirstFileHeaders(f, loadMapping('mapping_cartao')?.headerRow); renderMappingUI('mapping-cartao-panel','mapping-cartao-fields', headers, 'mapping_cartao', [
+                {key:'date', label:'Data (data da venda)', default:''},
+                {key:'time', label:'Hora (hora da venda)', default:''},
+                {key:'status', label:'Status (aprovada/negada)', default:''},
+                {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
+                {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
+                {key:'valorMdr', label:'Valor MDR', default:''},
+                {key:'valorLiquido', label:'Valor Líquido', default:''}
+              ]);
+            }catch(err){ console.warn('Erro ao ler arquivo amostra (cartão):', err); alert('Erro ao ler arquivo amostra.'); }
+          };
+        }
+        return;
+      }
+      const m = loadMapping('mapping_cartao') || {}; const hv = (m.headerRow !== undefined ? m.headerRow : (Number(inputHeaderCartao.value||2)-1));
+      await tryPopulateCartaoMapping(hv);
+      document.getElementById('mapping-cartao-panel')?.classList.remove('hidden');
+    }); }
+
+    if(btnOpenMappingPix){ btnOpenMappingPix.addEventListener('click', async ()=>{
+      const panel = document.getElementById('mapping-pix-panel');
+      if(panel && !panel.classList.contains('hidden')){ panel.classList.add('hidden'); return; }
+      if(!arquivosSelecionadosPix || arquivosSelecionadosPix.length===0){
+        document.getElementById('mapping-pix-panel')?.classList.remove('hidden');
+        const sampleInput = document.getElementById('mapping-pix-sample-file');
+        if(sampleInput){
+          sampleInput.value = null;
+          sampleInput.onchange = async (e)=>{
+            const f = e.target.files && e.target.files[0]; if(!f) return;
+            try{ const {headers} = await readFirstFileHeaders(f, loadMapping('mapping_pix')?.headerRow); 
+              // use the same default mapping fields/labels as Cartão
+              renderMappingUI('mapping-pix-panel','mapping-pix-fields', headers, 'mapping_pix', [
+                {key:'date', label:'Data (data da venda)', default:''},
+                {key:'time', label:'Hora (hora da venda)', default:''},
+                {key:'status', label:'Status (aprovada/negada)', default:''},
+                {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
+                {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
+                {key:'valorMdr', label:'Valor MDR', default:''},
+                {key:'valorLiquido', label:'Valor Líquido', default:''}
+              ]);
+            }catch(err){ console.warn('Erro ao ler arquivo amostra (pix):', err); alert('Erro ao ler arquivo amostra.'); }
+          };
+        }
+        return;
+      }
+      const m = loadMapping('mapping_pix') || {}; const hv = (m.headerRow !== undefined ? m.headerRow : (Number(inputHeaderPix.value||2)-1));
+      await tryPopulatePixMapping(hv);
+      document.getElementById('mapping-pix-panel')?.classList.remove('hidden');
+    }); }
+
+    
+
+    // save mapping: reads selects inside fields container and stores map
+    if(btnSaveCartao){ btnSaveCartao.addEventListener('click', ()=>{
+      const container = document.getElementById('mapping-cartao-fields'); if(!container) return;
+      const selects = Array.from(container.querySelectorAll('select'));
+      const keys = ['date','time','status','valorBruto','modalidade','valorMdr','valorLiquido'];
+      const map = {};
+      selects.forEach((s,i)=>{ if(keys[i]) map[keys[i]] = s.value; });
+      saveMapping('mapping_cartao', map);
+      alert('Modelo de Cartão salvo.');
+    }); }
+    if(btnResetCartao){ btnResetCartao.addEventListener('click', ()=>{ localStorage.removeItem('mapping_cartao'); alert('Modelo de Cartão resetado.'); }); }
+
+    if(btnSavePix){ btnSavePix.addEventListener('click', ()=>{
+      const container = document.getElementById('mapping-pix-fields'); if(!container) return;
+      const selects = Array.from(container.querySelectorAll('select'));
+      // save the full set of mapping keys (same as Cartão) so PIX mapping persists the same fields
+      const keys = ['date','time','status','valorBruto','modalidade','valorMdr','valorLiquido'];
+      const map = {};
+      selects.forEach((s,i)=>{ if(keys[i]) map[keys[i]] = s.value; });
+      saveMapping('mapping_pix', map);
+      alert('Modelo de PIX salvo.');
+    }); }
+    if(btnResetPix){ btnResetPix.addEventListener('click', ()=>{ localStorage.removeItem('mapping_pix'); alert('Modelo de PIX resetado.'); }); }
+
+    // ===== Processar Cartões =====
+    if(processarBtnCartao){
+      processarBtnCartao.addEventListener('click', async ()=>{
+        if (!arquivosSelecionadosCartao.length) return;
+        processarBtnCartao.disabled = true;
+        let resumoPorMes = {};
+        let totalVendas = 0;
+        try{
+          const savedMap = loadMapping('mapping_cartao') || {};
+          for (const arquivo of arquivosSelecionadosCartao){
+            const data = await arquivo.arrayBuffer();
+            const workbook = XLSX.read(new Uint8Array(data), {type: 'array'});
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(sheet, {header:1});
+
+            // detect header row and headers
+            const headerRowIndex = detectHeaderRow(json);
+            const headers = (json[headerRowIndex] || []).map(h => h==null? '': String(h).trim());
+
+            for (let i = headerRowIndex+1; i<json.length; i++){
+              let row = json[i]; if(!row) continue;
+              if (Array.isArray(row) && row.length===1 && typeof row[0]==='string' && row[0].includes(';')){ row = row[0].split(';').map(c => c==null ? '' : String(c).trim()); }
+
+              // resolve indices by mapping or fallback to legacy indices
+              const idxDate = applyMappingIndex(headers, savedMap.date || savedMap.data || savedMap.dataDaVenda, 0);
+              const idxStatus = applyMappingIndex(headers, savedMap.status || savedMap.statusVenda, 2);
+              const idxValorBruto = applyMappingIndex(headers, savedMap.valorBruto || savedMap.valorVendaAtualizado || savedMap['valor da venda atualizado'], 4);
+              const idxModalidade = applyMappingIndex(headers, savedMap.modalidade || savedMap.tipo || savedMap['modalidade'], 5);
+              const idxMdr = applyMappingIndex(headers, savedMap.valorMdr || savedMap.mdr || savedMap['valor mdr'], 11);
+              const idxValorLiquido = applyMappingIndex(headers, savedMap.valorLiquido || savedMap['valor liquido'] , 16);
+
+              const status = String(row[idxStatus]||'').trim().toLowerCase(); if (status === 'negada') continue;
+
+              let { anoMes } = parseDateToAnoMes(row[idxDate]);
+              const modalidadeRaw = (row[idxModalidade]||'').toString().trim().toLowerCase();
+              const modalidadeNorm = modalidadeRaw.normalize ? modalidadeRaw.normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/\s+/g,'') : modalidadeRaw;
+              let tipoPagamento = '';
+              if (modalidadeNorm.includes('debito') || modalidadeNorm.includes('deb')) tipoPagamento = 'Débito';
+              else if (modalidadeNorm.includes('credito') || modalidadeNorm.includes('cred')) tipoPagamento = 'Crédito';
+              else if (modalidadeNorm.includes('pix')) tipoPagamento = 'PIX';
+              if (tipoPagamento!=='Débito' && tipoPagamento!=='Crédito') continue;
+
+              const valorBruto = parseNumber(row[idxValorBruto]);
+              const valorMDR  = parseNumber(row[idxMdr]);
+
+              // save transaction-level detail so we can compute weekday/month aggregates later
+              try{
+                const dateObj = parseToJSDate(row[idxDate]);
+                if (dateObj && !isNaN(dateObj.getTime())){
+                  addVendaDetalhada({ date: dateObj.toISOString(), value: valorBruto, source: 'cartao', tipoPagamento });
+                }
+              }catch(e){ /* ignore */ }
+
+              const key = `${anoMes}||${tipoPagamento}`;
+              if(!resumoPorMes[key]) resumoPorMes[key] = {receitaBruta:0, mdr:0, anoMes, source:'cartao', tipoPagamento};
+              resumoPorMes[key].receitaBruta += valorBruto;
+              resumoPorMes[key].mdr          += valorMDR;
+              resumoPorMes[key].receitaLiquida = resumoPorMes[key].receitaBruta - resumoPorMes[key].mdr;
+              totalVendas++;
+            }
+          }
+
+          // merge com localStorage (sobrescreve por anoMes/source/tipo)
+          let vendasResumo = carregarVendasResumo();
+          Object.values(resumoPorMes).forEach(val => {
+            vendasResumo = vendasResumo.filter(v => !(v.anoMes===val.anoMes && v.source===val.source && v.tipoPagamento===val.tipoPagamento));
+            vendasResumo.push(val);
+          });
+          salvarVendasResumo(vendasResumo);
+          // sincroniza MDR como despesas na categoria 'Taxas de Vendas (MDR)'
+          try { syncMdrToDespesas(Object.values(resumoPorMes)); } catch(e){ console.warn('syncMdrToDespesas falhou', e); }
+          // recompute weekday sums per month from detailed transactions
+          try{ computeWeekdaySumsPerMonth(); }catch(e){ /* ignore */ }
+          alert(`Importação concluída: ${totalVendas} registros processados (cartões).`);
+          atualizarSelectAnos();
+          const sel = document.getElementById('select-anos-receitas'); if(sel && sel.value) renderizarReceitasAno(sel.value);
+        } catch(err){ console.error(err); alert('Erro ao processar arquivos de cartões: ' + (err && err.message ? err.message : err)); }
+        finally{ processarBtnCartao.disabled = false; }
+      });
+    }
+
+    // ===== Processar PIX =====
+    if(processarBtnPix){
+      processarBtnPix.addEventListener('click', async ()=>{
+        if (!arquivosSelecionadosPix.length) return;
+        processarBtnPix.disabled = true;
+        let resumoPorMes = {};
+        let totalVendas = 0;
+        try{
+          const savedMap = loadMapping('mapping_pix') || {};
+          for (const arquivo of arquivosSelecionadosPix){
+            const data = await arquivo.arrayBuffer();
+            const workbook = XLSX.read(new Uint8Array(data), {type:'array'});
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(sheet, {header:1});
+
+            const headerRowIndex = detectHeaderRow(json);
+            const headers = (json[headerRowIndex] || []).map(h => h==null? '': String(h).trim());
+
+            for (let i=headerRowIndex+1; i<json.length; i++){
+              let row = json[i]; if(!row) continue;
+              if (Array.isArray(row) && row.length===1 && typeof row[0]==='string' && row[0].includes(';')){ row = row[0].split(';').map(c => c==null ? '' : String(c).trim()); }
+
+              const idxDate = applyMappingIndex(headers, savedMap.date || savedMap.data, 0);
+              const idxStatus = applyMappingIndex(headers, savedMap.status || savedMap.statusVenda, 13);
+              const idxValorBruto = applyMappingIndex(headers, savedMap.valorBruto || savedMap['valor bruto'], 16);
+              const idxValorLiquido = applyMappingIndex(headers, savedMap.valorLiquido || savedMap['valor liquido'], 21);
+
+              const dataRaw = row[idxDate];
+              const status = String((row[idxStatus] || '') || '').trim().toLowerCase();
+              if (!['approved','aprovado','concluida','concluído','concluido','liquidado'].some(s => status.includes(s))) continue;
+
+              let { anoMes } = parseDateToAnoMes(dataRaw);
+              const tipoPagamento = 'PIX';
+              const key = `${anoMes}||${tipoPagamento}`;
+              if(!resumoPorMes[key]) resumoPorMes[key] = {receitaBruta:0, mdr:0, anoMes, source:'pix', tipoPagamento};
+
+              const valorBruto   = parseNumber(row[idxValorBruto]);
+              const valorLiquido = parseNumber(row[idxValorLiquido]);
+              const valorMDR = (valorBruto || 0) - (valorLiquido || 0);
+
+              // save transaction-level detail for PIX
+              try{
+                const dateObj = parseToJSDate(dataRaw);
+                if (dateObj && !isNaN(dateObj.getTime())){
+                  addVendaDetalhada({ date: dateObj.toISOString(), value: valorBruto, source: 'pix', tipoPagamento });
+                }
+              }catch(e){ /* ignore */ }
+
+              resumoPorMes[key].receitaBruta   += valorBruto;
+              resumoPorMes[key].mdr            += valorMDR;
+              resumoPorMes[key].receitaLiquida  = resumoPorMes[key].receitaBruta - resumoPorMes[key].mdr;
+              totalVendas++;
+            }
+          }
+
+          let vendasResumo = carregarVendasResumo();
+          Object.values(resumoPorMes).forEach(val => {
+            vendasResumo = vendasResumo.filter(v => !(v.anoMes===val.anoMes && v.source===val.source && v.tipoPagamento===val.tipoPagamento));
+            vendasResumo.push(val);
+          });
+          salvarVendasResumo(vendasResumo);
+          // sincroniza MDR como despesas na categoria 'Taxas de Vendas (MDR)'
+          try { syncMdrToDespesas(Object.values(resumoPorMes)); } catch(e){ console.warn('syncMdrToDespesas falhou', e); }
+          // recompute weekday sums per month from detailed transactions
+          try{ computeWeekdaySumsPerMonth(); }catch(e){ /* ignore */ }
+          alert(`Importação PIX concluída: ${totalVendas} registros processados.`);
+          atualizarSelectAnos();
+          const sel = document.getElementById('select-anos-receitas'); if(sel && sel.value) renderizarReceitasAno(sel.value);
+        } catch(err){ console.error(err); alert('Erro ao processar arquivos PIX: ' + (err && err.message ? err.message : err)); }
+        finally{ processarBtnPix.disabled = false; }
+      });
+    }
   </script>
+  <!-- Load shared sidebar navigation logic -->
+  <script src="js/sidebar-nav.js" defer></script>
 </body>
 </html>
