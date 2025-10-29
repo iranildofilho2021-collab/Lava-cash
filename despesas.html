@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lava-Cash | Despesas</title>
+  <title>IRANCASH | Despesas</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
   <!-- estilos compartilhados movidos para css/app.css -->
@@ -15,51 +18,50 @@
     .btn-editar.editing svg { transform: rotate(-10deg) scale(1.05); transition: transform .18s ease; }
     .btn-ok { transition: opacity .12s ease; }
     .valor-text { transition: opacity .12s ease; }
+    /* notas: a animação do formulário foi migrada para utilitários Tailwind (transition-all, duration, translate, opacity) */
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex">
   <!-- Sidebar -->
-  <aside class="w-48 lg:w-64 bg-white shadow-lg flex flex-col">
+  <aside class="sidebar-collapsed bg-white shadow-lg flex flex-col lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:z-10">
     <div class="flex items-center gap-2 px-6 py-6 border-b">
-      <!-- Logo SVG -->
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
-        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
-      </svg>
-      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+  <img class="sidebar-logo" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+      <span class="logo-text text-xl font-bold text-sky-600">IRANCASH</span>
     </div>
     <nav class="flex-1 px-4 py-6 space-y-2">
       <a href="index.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z" fill="#0ea5e9"/></svg>
+  <img class="sidebar-icon-img" src="assets/dashboard-symbol.png" alt="Dashboard" loading="lazy" decoding="async" />
         <span>Dashboard</span>
       </a>
-      <a href="importar.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Importar</span>
-      </a>
+      <!-- Importar link removed (functionality moved to receitas.html) -->
       <a href="receitas.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v2M5 7h14M4 21h16v-8H4v8z" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img class="sidebar-icon-img" src="assets/receitas-symbol.png" alt="Receitas" loading="lazy" decoding="async" />
         <span>Receitas</span>
       </a>
       <a href="despesas.html" class="sidebar-link active" aria-current="page">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img class="sidebar-icon-img" src="assets/despesas-symbol.png" alt="Despesas" loading="lazy" decoding="async" />
         <span>Despesas</span>
       </a>
       <a href="ajuda.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 18h.01M12 14a4 4 0 1 0-4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img class="sidebar-icon-img" src="assets/ajuda-icone.png" alt="Ajuda" loading="lazy" decoding="async" />
         <span>Ajuda</span>
       </a>
       <a href="configuracoes.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.28 18.9l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09c.66 0 1.27-.4 1.51-1a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 6.1 4.28l.06.06a1.65 1.65 0 0 0 1.82.33h.09C9.3 4.4 9.9 4 10.56 4H13.44c.66 0 1.27.4 1.51 1 .26.7.98 1.2 1.77 1.2h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.72 5.1l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09c0 .66.4 1.27 1 1.51H21a2 2 0 1 1 0 4h-.09c-.66 0-1.27.4-1.51 1-.26.7-.98 1.2-1.77 1.2h-.09c-.66 0-1.27-.4-1.51-1z" stroke="#0ea5e9" stroke-width="0"/></svg>
+  <img class="sidebar-icon-img" src="assets/configuracao-symbol.png" alt="Configurações" loading="lazy" decoding="async" />
         <span>Configurações</span>
       </a>
     </nav>
     <div class="px-6 py-4 border-t text-xs text-gray-400">
-      &copy; 2025 Lava-Cash
+      &copy; 2025 IRANCASH
     </div>
   </aside>
   <main class="flex-1 p-6 main-content">
-    <form class="bg-white rounded-xl shadow p-6 mb-8 grid grid-cols-1 md:grid-cols-7 gap-4 items-end">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Despesas</h1>
+  <div class="mb-4 md:sticky md:top-6 md:z-40">
+    <button id="btn-toggle-form" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg" aria-expanded="false" aria-controls="form-despesa">+ Lançamentos</button>
+  </div>
+
+  <form id="form-despesa" class="bg-white rounded-xl shadow p-6 mb-8 grid grid-cols-1 md:grid-cols-7 gap-4 items-end max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)]" aria-hidden="true">
       <div class="md:col-span-1">
         <label class="block text-sm font-medium text-gray-700 mb-1">Ano</label>
         <select id="ano-despesa" class="w-full rounded border px-3 py-2">
@@ -74,6 +76,10 @@
           <option>Julho</option><option>Agosto</option><option>Setembro</option><option>Outubro</option><option>Novembro</option><option>Dezembro</option>
         </select>
       </div>
+      <div id="dia-despesa-div" class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Dia</label>
+        <select id="dia-despesa" class="w-full rounded border px-3 py-2"></select>
+      </div>
       <div class="md:col-span-1">
         <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
         <select class="w-full rounded border px-3 py-2" id="tipo-despesa">
@@ -85,9 +91,10 @@
       <div class="md:col-span-1">
         <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
         <select id="categoria-despesa" class="w-full rounded border px-3 py-2"></select>
-        <script>
-        function carregarCategoriasForm() {
-          const select = document.getElementById('categoria-despesa');
+          <!-- Load shared sidebar navigation logic -->
+          <script src="js/sidebar-nav.js" defer></script>
+        </body>
+        </html>
           const categorias = JSON.parse(localStorage.getItem('categorias')) || [
             'Conta de Água','Energia','Suprimentos','Aluguel','Royalties','Seguro','Contadora','DAS-Impostos','Empréstimo','Salário','INSS'
           ];
@@ -110,10 +117,17 @@
         <label class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
         <input id="valor-despesa" name="valor-despesa" type="number" class="w-full rounded border px-3 py-2" placeholder="0,00" min="0" step="0.01" />
       </div>
+      <div id="comprovante-despesa-div" class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Comprovante (opcional)</label>
+        <input id="comprovante-despesa" name="comprovante-despesa" type="file" accept="application/pdf,image/png,image/jpeg" class="w-full text-sm" />
+      </div>
       <div class="md:col-span-1">
         <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2 w-full">Adicionar</button>
       </div>
     </form>
+
+    <!-- botão removido (migrado para topo) -->
+
     <!-- Filtro de mês -->
     <div class="mb-4">
       <label for="filtro-mes" class="text-sm font-semibold mr-2">Filtrar por mês:</label>
@@ -132,10 +146,12 @@
           <tr>
             <th class="px-2 py-2 text-left">Ano</th>
             <th class="px-2 py-2 text-left">Mês</th>
+            <th class="px-2 py-2 text-left">Dia</th>
             <th class="px-2 py-2 text-left">Tipo</th>
             <th class="px-2 py-2 text-left">Categoria</th>
             <th class="px-2 py-2 text-left">Descrição</th>
             <th class="px-2 py-2 text-right">Valor (R$)</th>
+            <th class="px-2 py-2 text-center">Comprovante</th>
             <th class="px-2 py-2 text-left">Ações</th>
           </tr>
         </thead>
@@ -145,14 +161,39 @@
             <td class="px-2 py-2">-</td>
             <td class="px-2 py-2">-</td>
             <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
             <td class="px-2 py-2">Nenhuma despesa cadastrada</td>
             <td class="px-2 py-2 text-right">R$ 0,00</td>
+            <td class="px-2 py-2"></td>
             <td class="px-2 py-2"></td>
           </tr>
         </tbody>
       </table>
     </div>
   </main>
+  <!-- Modal de visualização de comprovante -->
+  <div id="comprovante-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+    <div class="bg-white rounded-lg w-full max-w-4xl mx-4 md:mx-0 overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="font-semibold">Visualizar comprovante</h3>
+        <button onclick="closeComprovanteModal()" aria-label="Fechar" class="text-gray-600 hover:text-gray-900">Fechar ✕</button>
+      </div>
+      <div id="comprovante-modal-body" class="p-4 max-h-[70vh] overflow-auto flex items-center justify-center"></div>
+    </div>
+  </div>
+    <!-- Modal de confirmação para despesas fixas -->
+    <div id="confirm-fixo-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+      <div id="confirm-fixo-panel" class="bg-white rounded-lg w-full max-w-lg mx-4 md:mx-0 overflow-hidden transform scale-95 transition-transform duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+        <div class="p-4">
+          <h3 class="font-semibold text-lg mb-2">Confirmar criação de lançamentos</h3>
+          <div id="confirm-fixo-body" class="text-sm text-gray-700 mb-4">Será criado X lançamentos. Deseja continuar?</div>
+          <div class="flex justify-end gap-2">
+            <button id="confirm-fixo-cancel" class="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200">Cancelar</button>
+            <button id="confirm-fixo-ok" class="px-4 py-2 rounded bg-sky-600 text-white hover:bg-sky-700">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script src="js/despesas-utils.js"></script>
   <script>
@@ -164,9 +205,10 @@ try {
   despesas = [];
 }
 
-// Normaliza despesas existentes: garante que cada item tenha um id
+// Normaliza despesas existentes: garante que cada item tenha um id e o campo dia
 despesas = despesas.map(d => {
   if (!d.id) d.id = genId();
+  if (!('dia' in d)) d.dia = null;
   return d;
 });
 // persiste IDs adicionados, se houver
@@ -199,6 +241,79 @@ function bloquearTodosEdits() {
   document.querySelectorAll('.btn-ok').forEach(b => b.classList.add('hidden'));
 }
 
+// utilitários para dia/mês
+const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+function monthNameToIndex(name) {
+  if (!name) return -1;
+  const cap = name.charAt(0).toUpperCase() + name.slice(1);
+  return MONTHS_PT.indexOf(cap);
+}
+function daysInMonth(year, monthIndex) {
+  return new Date(Number(year), monthIndex + 1, 0).getDate();
+}
+
+function atualizarDiasDisponiveis() {
+  const diaSelect = document.getElementById('dia-despesa');
+  if (!diaSelect) return;
+  const tipo = (document.getElementById('tipo-despesa') && document.getElementById('tipo-despesa').value) || 'Variável';
+  const ano = (document.getElementById('ano-despesa') && document.getElementById('ano-despesa').value) || new Date().getFullYear();
+  let mes = (document.getElementById('mes-despesa') && document.getElementById('mes-despesa').value) || '';
+  // se o tipo for Fixo e o select de mês estiver oculto, usamos o mês atual apenas para popular dias
+  if (!mes) mes = new Date().toLocaleString('pt-BR', {month: 'long'});
+  const monthIdx = monthNameToIndex(mes);
+  const total = monthIdx >= 0 ? daysInMonth(ano, monthIdx) : 31;
+  const prev = parseInt(diaSelect.value, 10) || null;
+  diaSelect.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = String(i);
+    diaSelect.appendChild(opt);
+  }
+  if (prev && prev <= total) diaSelect.value = String(prev);
+  else {
+    // tenta ajustar para dia atual ou 1
+    const hoje = new Date().getDate();
+    diaSelect.value = String(Math.min(hoje, total));
+  }
+}
+
+// Modal de confirmação para criação de despesas fixas - lógica JS
+let _confirmFixoCallback = null;
+function openConfirmFixoModal(count, monthsList, onConfirm) {
+  const modal = document.getElementById('confirm-fixo-modal');
+  const body = document.getElementById('confirm-fixo-body');
+  const panel = document.getElementById('confirm-fixo-panel');
+  if (!modal || !body) { if (onConfirm) onConfirm(); return; }
+  body.textContent = `Serão criados ${count} lançamento(s) (${monthsList.join(', ')}). Deseja continuar?`;
+  // mostra o modal com transição de opacidade e escala do painel
+  modal.classList.remove('hidden');
+  // pequenas pausas garantem que a transição CSS dispare
+  setTimeout(() => {
+    modal.classList.add('opacity-100');
+    if (panel) panel.classList.remove('scale-95'); panel && panel.classList.add('scale-100');
+  }, 20);
+  _confirmFixoCallback = onConfirm;
+}
+function closeConfirmFixoModal() {
+  const modal = document.getElementById('confirm-fixo-modal');
+  const panel = document.getElementById('confirm-fixo-panel');
+  if (!modal) return;
+  modal.classList.remove('opacity-100');
+  if (panel) { panel.classList.remove('scale-100'); panel.classList.add('scale-95'); }
+  setTimeout(() => modal.classList.add('hidden'), 360);
+  _confirmFixoCallback = null;
+}
+document.addEventListener('click', function(e){
+  if (e.target && e.target.id === 'confirm-fixo-cancel') closeConfirmFixoModal();
+  if (e.target && e.target.id === 'confirm-fixo-ok') {
+    if (_confirmFixoCallback) {
+      try { _confirmFixoCallback(); } catch(err){ console.error(err); }
+    }
+    closeConfirmFixoModal();
+  }
+});
+
 function atualizarTabela() {
   const mesesOrdem = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const mesSelecionado = document.getElementById('filtro-mes').value;
@@ -207,7 +322,7 @@ function atualizarTabela() {
   tbody.innerHTML = '';
   const filtradas = despesas.filter(d => String(d.mes) === String(mesSelecionado) && String(d.ano) === String(anoSelecionado));
   if (filtradas.length === 0) {
-    tbody.innerHTML = `<tr><td class='px-2 py-2' colspan='7'>Nenhuma despesa cadastrada</td></tr>`;
+    tbody.innerHTML = `<tr><td class='px-2 py-2' colspan='9'>Nenhuma despesa cadastrada</td></tr>`;
     atualizarDashboard();
     // Ajusta/atualiza o footer de total para 0
     const table = document.querySelector('.bg-white table');
@@ -221,7 +336,9 @@ function atualizarTabela() {
         <td class='px-2 py-2'></td>
         <td class='px-2 py-2'></td>
         <td class='px-2 py-2'></td>
+        <td class='px-2 py-2'></td>
         <td class='px-2 py-2 text-right'>R$ 0,00</td>
+        <td class='px-2 py-2'></td>
         <td class='px-2 py-2'></td>
       </tr>`;
     table.appendChild(tfoot0);
@@ -231,11 +348,16 @@ function atualizarTabela() {
   const ordenadas = [...filtradas].sort((a, b) => mesesOrdem.indexOf(b.mes) - mesesOrdem.indexOf(a.mes));
   ordenadas.forEach((d) => {
     const tr = document.createElement('tr');
+    // marca o tr com o id para efeitos visuais posteriores
+    tr.dataset.id = d.id;
+    // hover e transição suave usando Tailwind
+  tr.classList.add('hover:bg-sky-50','transition-colors','duration-200');
     // id do item
     const itemId = d.id;
 
     // Valor + botões (somente FIXO editável via botão)
     let valorCell = '';
+    let comprovanteCell = '';
     let acoesCell = `
       <button onclick="excluirDespesa('${d.id}')" title='Excluir' class='text-gray-600 hover:text-red-600' style='background:none;border:none;'>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7v12a2 2 0 002 2h8a2 2 0 002-2V7M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2M6 7h12" /></svg>
@@ -262,22 +384,43 @@ function atualizarTabela() {
           <button onclick="excluirDespesa('${d.id}')" title='Excluir' class='text-gray-600 hover:text-red-600' style='background:none;border:none;'>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7v12a2 2 0 002 2h8a2 2 0 002-2V7M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2M6 7h12" /></svg>
           </button>
+          <!-- Anexar comprovante (gera input dinâmico) -->
+          <button type="button" onclick="triggerAnexar('${d.id}')" title="Anexar comprovante" aria-label="Anexar comprovante" class="text-gray-600 hover:text-sky-600" style="background:none;border:none;">
+            <!-- clipe -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05L12.7 19.79a5 5 0 0 1-7.07-7.07l8.49-8.49a3.5 3.5 0 0 1 4.95 4.95L10.59 17.29a2 2 0 1 1-2.83-2.83l7.07-7.07"/></svg>
+          </button>
         </div>
       `;
     } else {
       valorCell = `R$ ${Number(d.valor).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
     }
 
+    // preparar célula de comprovante
+    if (d.comprovante && d.comprovante.mime) {
+      if (d.comprovante.mime === 'application/pdf') {
+        comprovanteCell = `<div class="text-center"><button type="button" title="Visualizar comprovante" aria-label="Visualizar comprovante" data-id="${d.id}" data-view="pdf" class="view-comprovante text-gray-700 hover:text-sky-600" style="background:none;border:none;"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z\"></path><path d=\"M14 2v6h6\"></path></svg></button></div>`;
+      } else if (d.comprovante.mime.startsWith('image/')) {
+        comprovanteCell = `<div class="text-center"><button type="button" title="Visualizar comprovante" aria-label="Visualizar comprovante" data-id="${d.id}" data-view="img" class="view-comprovante text-gray-700 hover:text-sky-600" style="background:none;border:none;"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"></rect><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"></circle><path d=\"M21 15l-5-5L5 21\"></path></svg></button></div>`;
+      }
+    } else {
+      comprovanteCell = `<div class="text-center text-gray-300">–</div>`;
+    }
+
     tr.innerHTML = `
       <td class='px-2 py-2'>${d.ano}</td>
       <td class='px-2 py-2'>${d.mes}</td>
+      <td class='px-2 py-2'>${d.dia || '-'}</td>
       <td class='px-2 py-2'>${d.tipo}</td>
       <td class='px-2 py-2'>${d.categoria}</td>
       <td class='px-2 py-2'>${d.descricao}</td>
       <td class='px-2 py-2 text-right'>${valorCell}</td>
+      <td class='px-2 py-2'>${comprovanteCell}</td>
       <td class='px-2 py-2 text-left'>${acoesCell}</td>
     `;
     tbody.appendChild(tr);
+
+  // adiciona pequenas transições a botões dentro da linha
+  tr.querySelectorAll('button').forEach(b => b.classList.add('transition-transform','duration-200','hover:scale-105'));
 
   // --- listeners por-linha ---
     const btnEdit = tr.querySelector('.btn-editar');
@@ -356,9 +499,11 @@ function atualizarTabela() {
       <td class='px-2 py-2'></td>
       <td class='px-2 py-2'></td>
       <td class='px-2 py-2'></td>
+      <td class='px-2 py-2'></td>
       <td class='px-2 py-2 text-right'>
         R$ ${totalMes.toLocaleString('pt-BR',{minimumFractionDigits:2})}
       </td>
+      <td class='px-2 py-2'></td>
       <td class='px-2 py-2'></td>
     </tr>`;
   table.appendChild(tfoot);
@@ -367,9 +512,240 @@ function atualizarTabela() {
   saveDespesas();
 }
 
+// Leitor helper para dataURL com Promise
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onerror = () => { fr.abort(); reject(new Error('Falha ao ler o arquivo')); };
+    fr.onload = () => resolve(fr.result);
+    fr.readAsDataURL(file);
+  });
+}
+
+// Limite de arquivo em bytes (10MB)
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+
+// Ao criar/editar via formulário: suportar comprovante opcional
+document.getElementById('form-despesa').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const ano = document.getElementById('ano-despesa').value;
+  const tipo = document.getElementById('tipo-despesa').value;
+  const categoria = document.getElementById('categoria-despesa').value;
+  const descricao = this.querySelector('input[type="text"]').value;
+  const diaSel = document.getElementById('dia-despesa');
+  const diaValue = diaSel ? parseInt(diaSel.value, 10) : null;
+  const valorRaw = (document.getElementById('valor-despesa') || this.querySelector('input[type="number"]')).value;
+  const valor = parseFloat(String(valorRaw).replace(',', '.'));
+  if (!valor) {
+    mostrarMensagem('Preencha o valor!', true);
+    return;
+  }
+
+  // tratar comprovante do formulário (opcional) -- apenas quando tipo !== 'Fixo'
+  let comprovanteObj = null;
+  if (tipo !== 'Fixo') {
+    const inputFile = document.getElementById('comprovante-despesa');
+    if (inputFile && inputFile.files && inputFile.files.length > 0) {
+      const file = inputFile.files[0];
+      if (!["application/pdf", "image/png", "image/jpeg"].includes(file.type)) {
+        mostrarMensagem('Tipo de arquivo não suportado. Use pdf, png ou jpg.', true);
+        return;
+      }
+      if (file.size > MAX_FILE_BYTES) {
+        mostrarMensagem('Arquivo muito grande. Máx 10 MB.', true);
+        return;
+      }
+      try {
+        const dataUrl = await readFileAsDataURL(file);
+        const tipoShort = file.type === 'application/pdf' ? 'pdf' : 'imagem';
+        comprovanteObj = { nome: file.name, tipo: tipoShort, mime: file.type, url: dataUrl };
+      } catch (err) {
+        console.error(err);
+        mostrarMensagem('Erro ao processar o arquivo.', true);
+        return;
+      }
+    }
+  } else {
+    // garantir que não existe arquivo selecionado para tipo Fixo
+    const inputFile = document.getElementById('comprovante-despesa');
+    if (inputFile) inputFile.value = '';
+  }
+
+  if (tipo === 'Fixo') {
+    // Criar despesas fixas a partir do mês selecionado até dezembro do mesmo ano
+    const startMonth = (document.getElementById('mes-despesa') && document.getElementById('mes-despesa').value) || MONTHS_PT[0];
+    const startIdx = Math.max(0, monthNameToIndex(startMonth));
+    const monthsToCreate = MONTHS_PT.slice(startIdx);
+    const count = monthsToCreate.length;
+    // validação visual: garantir mês de início presente
+    if (!startMonth) {
+      const mesSel = document.getElementById('mes-despesa');
+      if (mesSel) { mesSel.classList.add('ring-2', 'ring-red-300'); mesSel.focus(); }
+      mostrarMensagem('Escolha o Mês de início para despesas fixas', true);
+      return;
+    }
+
+    const doCreate = function(){
+      for (let idx = startIdx; idx < MONTHS_PT.length; idx++) {
+        const mes = MONTHS_PT[idx];
+        const diaParaMes = diaValue ? Math.min(diaValue, daysInMonth(ano, idx)) : null;
+        const item = {id: genId(), ano, mes, dia: diaParaMes, tipo, categoria, descricao: descricao || categoria, valor};
+        if (comprovanteObj) item.comprovante = comprovanteObj;
+        despesas.push(item);
+      }
+      atualizarTabela();
+      saveDespesas();
+      mostrarMensagem('Despesas fixas criadas com sucesso.');
+      // reset form and defaults
+      document.getElementById('form-despesa').reset();
+      const now = new Date();
+      const anoAtual = now.getFullYear().toString();
+      const mesAtual = now.toLocaleString('pt-BR', {month: 'long'});
+      const mesAtualCap = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1);
+      const anoElem = document.getElementById('ano-despesa');
+      const mesElem = document.getElementById('mes-despesa');
+      if (anoElem) anoElem.value = anoAtual;
+      if (mesElem) mesElem.value = mesAtualCap;
+      atualizarDiasDisponiveis();
+    };
+
+    // Se cria mais de 1 lançamento, pedir confirmação com modal
+    if (count > 1) {
+      openConfirmFixoModal(count, monthsToCreate, doCreate);
+      return; // aguarda confirmação
+    }
+    // caso count === 1, cria diretamente
+    doCreate();
+  } else {
+    const mes = document.getElementById('mes-despesa').value;
+    const item = {id: genId(), ano, mes, dia: diaValue || null, tipo, categoria, descricao: descricao || categoria, valor};
+    if (comprovanteObj) item.comprovante = comprovanteObj;
+    despesas.push(item);
+  }
+  atualizarTabela();
+  saveDespesas();
+  mostrarMensagem('Dados cadastrados com sucesso!');
+  this.reset();
+  // após reset, restaura os defaults para ano/mês atuais
+  const now = new Date();
+  const anoAtual = now.getFullYear().toString();
+  const mesAtual = now.toLocaleString('pt-BR', {month: 'long'});
+  const mesAtualCap = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1);
+  const anoElem = document.getElementById('ano-despesa');
+  const mesElem = document.getElementById('mes-despesa');
+  if (anoElem) anoElem.value = anoAtual;
+  if (mesElem) mesElem.value = mesAtualCap;
+  // atualiza opções de dia após reset
+  atualizarDiasDisponiveis();
+  this.querySelector('select').dispatchEvent(new Event('change'));
+});
+
+// Trigger de anexar: cria input dinamicamente para escolher arquivo
+function triggerAnexar(id) {
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'application/pdf,image/png,image/jpeg';
+  inp.onchange = async function() {
+    if (!inp.files || inp.files.length === 0) return;
+    const file = inp.files[0];
+    if (!["application/pdf", "image/png", "image/jpeg"].includes(file.type)) {
+      mostrarMensagem('Tipo de arquivo não suportado. Use pdf, png ou jpg.', true);
+      return;
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      mostrarMensagem('Arquivo muito grande. Máx 10 MB.', true);
+      return;
+    }
+    const idx = despesas.findIndex(x => x.id === id);
+    if (idx === -1) { mostrarMensagem('Despesa não encontrada', true); return; }
+    const exist = despesas[idx].comprovante;
+    if (exist) {
+      const ok = confirm('Já existe um comprovante para esta despesa. Deseja substituí-lo?');
+      if (!ok) return;
+    }
+    try {
+      const dataUrl = await readFileAsDataURL(file);
+      const tipoShort = file.type === 'application/pdf' ? 'pdf' : 'imagem';
+      despesas[idx].comprovante = { nome: file.name, tipo: tipoShort, mime: file.type, url: dataUrl };
+      saveDespesas();
+      atualizarTabela();
+      mostrarMensagem('Comprovante anexado.');
+      // destaque visual breve na linha onde o comprovante foi anexado
+      highlightRow(id);
+    } catch (err) {
+      console.error(err);
+      mostrarMensagem('Erro ao anexar comprovante.', true);
+    }
+  };
+  // disparar seletor
+  inp.click();
+}
+
+// destaca brevemente uma linha (usado ao anexar comprovante)
+function highlightRow(id) {
+  try {
+    const tr = document.querySelector(`tr[data-id="${id}"]`);
+    if (!tr) return;
+    tr.classList.add('bg-green-50','ring-1','ring-green-200');
+    setTimeout(() => {
+      tr.classList.remove('bg-green-50','ring-1','ring-green-200');
+    }, 1200);
+  } catch (e) { /*silent*/ }
+}
+
+// Modal para visualizar comprovantes
+function openComprovanteModalById(id, viewType) {
+  const d = despesas.find(x => x.id === id);
+  if (!d || !d.comprovante) return mostrarMensagem('Comprovante não encontrado', true);
+  openComprovanteModal(d.comprovante, viewType || (d.comprovante.mime === 'application/pdf' ? 'pdf' : 'img'));
+}
+
+function openComprovanteModal(comprovante, viewType) {
+  const modal = document.getElementById('comprovante-modal');
+  const container = document.getElementById('comprovante-modal-body');
+  container.innerHTML = '';
+  if (comprovante.mime === 'application/pdf') {
+    const iframe = document.createElement('iframe');
+    iframe.src = comprovante.url;
+    iframe.className = 'w-full h-96 md:h-[70vh] border';
+    iframe.setAttribute('aria-label', comprovante.nome || 'PDF comprovante');
+    container.appendChild(iframe);
+  } else if (comprovante.mime.startsWith('image/')) {
+    const img = document.createElement('img');
+    img.src = comprovante.url;
+    img.alt = comprovante.nome || 'Comprovante';
+  img.className = 'max-w-full max-h-[70vh] mx-auto block transition-transform duration-200 cursor-zoom-in';
+    img.onclick = function() { img.classList.toggle('scale-150'); img.classList.toggle('cursor-zoom-in'); img.classList.toggle('cursor-zoom-out'); };
+    container.appendChild(img);
+  }
+  modal.classList.remove('hidden');
+  setTimeout(() => modal.classList.add('opacity-100'), 20);
+}
+
+function closeComprovanteModal() {
+  const modal = document.getElementById('comprovante-modal');
+  modal.classList.remove('opacity-100');
+  setTimeout(() => modal.classList.add('hidden'), 360);
+}
+
+// Delegação: abrir modal quando clicar em view-comprovante
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest && e.target.closest('.view-comprovante');
+  if (btn) {
+    const id = btn.dataset.id;
+    const view = btn.dataset.view;
+    openComprovanteModalById(id, view);
+  }
+});
+
+// fechar modal com ESC e clique no backdrop
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeComprovanteModal(); });
+
 function excluirDespesa(id) {
   const idx = despesas.findIndex(x => x.id === id);
   if (idx === -1) return;
+  const ok = confirm('Excluir esta despesa definitivamente? Esta ação não pode ser desfeita.');
+  if (!ok) return;
   despesas.splice(idx, 1);
   atualizarTabela();
   saveDespesas();
@@ -391,50 +767,35 @@ function atualizarDashboard() {
 
 document.getElementById('tipo-despesa').addEventListener('change', function() {
   const mesDespesaDiv = document.getElementById('mes-despesa-div');
+  const mesLabel = mesDespesaDiv && mesDespesaDiv.querySelector('label');
+  // Sempre mostrar o select de mês; para Fixo o label vira 'Mês de início'
   if (this.value === 'Fixo') {
-    mesDespesaDiv.style.display = 'none';
+    if (mesDespesaDiv) mesDespesaDiv.style.display = '';
+    if (mesLabel) mesLabel.innerHTML = 'Mês de início <span class="text-red-500">*</span>';
+    // marcar select como aria-required
+    const mesSel = document.getElementById('mes-despesa'); if (mesSel) mesSel.setAttribute('aria-required','true');
   } else {
-    mesDespesaDiv.style.display = '';
+    if (mesDespesaDiv) mesDespesaDiv.style.display = '';
+    if (mesLabel) mesLabel.innerHTML = 'Mês';
+    const mesSel = document.getElementById('mes-despesa'); if (mesSel) { mesSel.removeAttribute('aria-required'); mesSel.classList.remove('ring-2','ring-red-300'); }
+  }
+  // atualizar dias quando o tipo muda
+  atualizarDiasDisponiveis();
+});
+
+// Mostrar/ocultar campo comprovante no formulário: apenas para 'Variável'
+document.getElementById('tipo-despesa').addEventListener('change', function() {
+  const comprovanteDiv = document.getElementById('comprovante-despesa-div');
+  const inputFile = document.getElementById('comprovante-despesa');
+  if (this.value === 'Fixo') {
+    if (comprovanteDiv) comprovanteDiv.style.display = 'none';
+    if (inputFile) inputFile.value = ''; // limpa qualquer seleção anterior
+  } else {
+    if (comprovanteDiv) comprovanteDiv.style.display = '';
   }
 });
 
-document.querySelector('form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const ano = document.getElementById('ano-despesa').value;
-  const tipo = document.getElementById('tipo-despesa').value;
-  const categoria = document.getElementById('categoria-despesa').value;
-  const descricao = this.querySelector('input[type="text"]').value;
-  // lê o valor específico do input do valor (evita confundir com o input de frequência)
-  const valorRaw = (document.getElementById('valor-despesa') || this.querySelector('input[type="number"]')).value;
-  const valor = parseFloat(String(valorRaw).replace(',', '.'));
-  if (!valor) {
-    mostrarMensagem('Preencha o valor!', true);
-    return;
-  }
-  if (tipo === 'Fixo') {
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    meses.forEach(mes => {
-      despesas.push({id: genId(), ano, mes, tipo, categoria, descricao: descricao || categoria, valor});
-    });
-  } else {
-    const mes = document.getElementById('mes-despesa').value;
-    despesas.push({id: genId(), ano, mes, tipo, categoria, descricao: descricao || categoria, valor});
-  }
-  atualizarTabela();
-  saveDespesas();
-  mostrarMensagem('Dados cadastrados com sucesso!');
-  this.reset();
-  // após reset, restaura os defaults para ano/mês atuais
-  const now = new Date();
-  const anoAtual = now.getFullYear().toString();
-  const mesAtual = now.toLocaleString('pt-BR', {month: 'long'});
-  const mesAtualCap = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1);
-  const anoElem = document.getElementById('ano-despesa');
-  const mesElem = document.getElementById('mes-despesa');
-  if (anoElem) anoElem.value = anoAtual;
-  if (mesElem) mesElem.value = mesAtualCap;
-  this.querySelector('select').dispatchEvent(new Event('change'));
-});
+
 
 function mostrarMensagem(msg, erro = false) {
   let div = document.getElementById('mensagem-sucesso');
@@ -442,7 +803,8 @@ function mostrarMensagem(msg, erro = false) {
     div = document.createElement('div');
     div.id = 'mensagem-sucesso';
     div.className = 'mb-4 p-3 rounded font-semibold';
-    document.querySelector('main').insertBefore(div, document.querySelector('form'));
+    const ref = document.getElementById('form-despesa') || document.querySelector('main').firstChild;
+    document.querySelector('main').insertBefore(div, ref);
   }
   div.textContent = msg;
   div.className = erro ? 'mb-4 p-3 rounded bg-red-100 text-red-700 font-semibold' : 'mb-4 p-3 rounded bg-green-100 text-green-700 font-semibold';
@@ -465,6 +827,9 @@ window.addEventListener('DOMContentLoaded', function() {
   if (anoDespesa) anoDespesa.value = anoAtual;
   if (mesDespesa) mesDespesa.value = mesAtualCap;
   if (filtroMes) filtroMes.value = mesAtualCap;
+  // garante visibilidade correta do campo comprovante conforme tipo
+  const tipoElem = document.getElementById('tipo-despesa');
+  if (tipoElem) tipoElem.dispatchEvent(new Event('change'));
   
   // popula filtro de ano com anos presentes nas despesas (ou ano atual se vazio)
   const filtroAno = document.getElementById('filtro-ano');
@@ -481,8 +846,44 @@ window.addEventListener('DOMContentLoaded', function() {
     filtroAno.addEventListener('change', atualizarTabela);
   }
 
+  // conectar select de mês/ano ao preenchimento de dias e popular inicialmente
+  if (mesDespesa) {
+    mesDespesa.addEventListener('change', atualizarDiasDisponiveis);
+    mesDespesa.addEventListener('change', function(){ this.classList.remove('ring-2','ring-red-300'); });
+  }
+  if (anoDespesa) anoDespesa.addEventListener('change', atualizarDiasDisponiveis);
+  atualizarDiasDisponiveis();
+
   atualizarTabela();
 });
+
+// Toggle para exibir/ocultar o formulário quando clicar em +Lançamentos
+(function() {
+  const btnToggle = document.getElementById('btn-toggle-form');
+  const form = document.getElementById('form-despesa');
+  if (!btnToggle || !form) return;
+  btnToggle.addEventListener('click', function() {
+    // Usamos utilitários Tailwind para transição: alterna estados de max-height, opacity e translate
+    const isOpen = form.classList.contains('opacity-100');
+    if (!isOpen) {
+      form.classList.remove('max-h-0', 'opacity-0', '-translate-y-2');
+      form.classList.add('max-h-[1100px]', 'opacity-100', 'translate-y-0');
+      form.setAttribute('aria-hidden', 'false');
+      btnToggle.setAttribute('aria-expanded', 'true');
+      btnToggle.textContent = 'Fechar';
+      // foco no primeiro campo do formulário
+      const first = form.querySelector('select, input, textarea, button');
+      if (first) first.focus();
+    } else {
+      // reverte para estado fechado com transição
+      form.classList.remove('max-h-[1100px]', 'opacity-100', 'translate-y-0');
+      form.classList.add('max-h-0', 'opacity-0', '-translate-y-2');
+      form.setAttribute('aria-hidden', 'true');
+      btnToggle.setAttribute('aria-expanded', 'false');
+      btnToggle.textContent = '+ Lançamentos';
+    }
+  });
+})();
 
 // garante salvar ao sair da página
 window.addEventListener('beforeunload', function () { saveDespesas(); });
@@ -500,13 +901,15 @@ window.addEventListener('storage', (e) => {
       console.warn('Falha ao ler despesas via storage event:', err);
       despesas = [];
     }
-    // garante ids e persiste caso necessário
-    despesas = despesas.map(d => { if (!d.id) d.id = genId(); return d; });
+  // garante ids e campo dia; persiste caso necessário
+  despesas = despesas.map(d => { if (!d.id) d.id = genId(); if (!('dia' in d)) d.dia = null; return d; });
     saveDespesas();
     atualizarTabela();
     atualizarDashboard();
   }
 });
 </script>
+<!-- Intercepta cliques no sidebar para animação sutil antes de navegar -->
+  <!-- Sidebar navigation logic extracted to `js/sidebar-nav.js` (loaded below) -->
 </body>
 </html>
