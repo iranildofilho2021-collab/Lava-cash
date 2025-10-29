@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lava-Cash | Configurações</title>
+  <title>IRANCASH | Configurações</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
   <style>
     /* estilos específicos desta página (mantidos localmente) */
-  /* active label centralized to css/app.css */
+    /* active label centralized to css/app.css */
     select.filter{border:1px solid #e5e7eb;border-radius:.5rem;padding:.25rem .5rem;background:#fff}
     /* controle de visibilidade das ações */
     .hidden-actions{display:none}
@@ -17,53 +19,37 @@
 </head>
 <body class="bg-gray-50 min-h-screen flex">
   <!-- Sidebar -->
-  <aside class="w-48 lg:w-64 bg-white shadow-lg flex flex-col">
+  <aside class="sidebar-collapsed bg-white shadow-lg flex flex-col lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:z-10">
     <div class="flex items-center gap-2 px-6 py-6 border-b">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <ellipse cx="16" cy="16" rx="14" ry="14" fill="#38bdf8"/>
-        <path d="M16 6C19 12 26 13 16 26C6 13 13 12 16 6Z" fill="#0ea5e9"/>
-      </svg>
-      <span class="text-xl font-bold text-sky-600">Lava-Cash</span>
+  <img class="sidebar-logo" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+      <span class="logo-text text-xl font-bold text-sky-600">IRANCASH</span>
     </div>
     <nav class="flex-1 px-4 py-6 space-y-2">
       <a href="index.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z" fill="#0ea5e9"/></svg>
+  <img class="sidebar-icon-img" src="assets/dashboard-symbol.png" alt="Dashboard" loading="lazy" decoding="async" />
         <span>Dashboard</span>
       </a>
-      <a href="importar.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3v9" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Importar</span>
-      </a>
+      <!-- Importar link removed (functionality moved to receitas.html) -->
       <a href="receitas.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2v2M5 7h14M4 21h16v-8H4v8z" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <img class="sidebar-icon-img" src="assets/receitas-symbol.png" alt="Receitas" loading="lazy" decoding="async" />
         <span>Receitas</span>
       </a>
       <a href="despesas.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <img class="sidebar-icon-img" src="assets/despesas-symbol.png" alt="Despesas" loading="lazy" decoding="async" />
         <span>Despesas</span>
       </a>
       <a href="ajuda.html" class="sidebar-link">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M12 18h.01M12 14a4 4 0 1 0-4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <img class="sidebar-icon-img" src="assets/ajuda-icone.png" alt="Ajuda" loading="lazy" decoding="async" />
         <span>Ajuda</span>
       </a>
       <a href="configuracoes.html" class="sidebar-link active">
-        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-  <span>Configurações</span>
+  <img class="sidebar-icon-img" src="assets/configuracao-symbol.png" alt="Configurações" loading="lazy" decoding="async" />
+        <span>Configurações</span>
       </a>
+      <!-- atalho rápido para Gerenciar Categorias removido do sidebar -->
     </nav>
     <div class="px-6 py-4 border-t text-xs text-gray-400">
-      &copy; 2025 Lava-Cash
+      &copy; 2025 IRANCASH
     </div>
   </aside>
   <main class="flex-1 p-6 main-content">
@@ -85,8 +71,13 @@
       </div>
     </div>
 
+    <!-- Botão para mostrar/ocultar gerenciamento de categorias -->
+    <div class="mb-4 md:sticky md:top-6 md:z-40">
+      <button id="btn-toggle-categorias" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Categorias de Despesas</button>
+    </div>
+
     <!-- Categorias -->
-    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+  <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
       <span class="text-gray-500 mb-2">Gerenciar Categorias de Despesas</span>
       <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias"></div>
       <div class="flex gap-2 w-full max-w-lg">
@@ -108,7 +99,7 @@
 
     <!-- Atalhos -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <a href="importar.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+  <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
         <svg width="32" height="32" fill="none" aria-hidden="true">
           <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
@@ -160,7 +151,14 @@
 
     // ---------- Toast / mensagens ----------
     function showMsg(text, isError=false) {
-      const div = document.getElementById('msg-config');
+      let div = document.getElementById('msg-config');
+      if (!div) {
+        div = document.createElement('div');
+        div.id = 'msg-config';
+        div.className = 'mb-4 w-full';
+        // insere no topo do main
+        document.querySelector('main').prepend(div);
+      }
       div.textContent = text;
       div.className = isError
         ? 'mb-4 p-3 rounded bg-red-100 text-red-700 font-semibold'
@@ -308,7 +306,7 @@
       if (ds.length === 0) { container.textContent = 'Nenhuma despesa encontrada para o ano ' + ano; return; }
 
       // valores únicos para popular filtros
-  const meses = orderMonths(uniqueSorted(ds.map(d => d.mes)));
+      const meses = orderMonths(uniqueSorted(ds.map(d => d.mes)));
       const tipos = uniqueSorted(ds.map(d => d.tipo));
       const cats  = uniqueSorted(ds.map(d => d.categoria));
 
@@ -337,6 +335,7 @@
           <th class='px-2 py-2'><input id="selectAllConfig" type="checkbox" aria-label="Selecionar todos" /></th>
           <th class='px-2 py-2 text-left'>Ano</th>
           <th class='px-2 py-2 text-left'>Mês</th>
+          <th class='px-2 py-2 text-left'>Dia</th>
           <th class='px-2 py-2 text-left'>Tipo</th>
           <th class='px-2 py-2 text-left'>Categoria</th>
           <th class='px-2 py-2 text-left'>Descrição</th>
@@ -350,6 +349,9 @@
             <select id="filtro-mes" class="filter w-full">
               ${montaOptions(meses, filtros.mes)}
             </select>
+          </th>
+          <th class='px-2 py-2'>
+            <!-- Dia: sem filtro -->
           </th>
           <th class='px-2 py-2'>
             <select id="filtro-tipo" class="filter w-full">
@@ -378,6 +380,7 @@
           <td class='px-2 py-2'><input type="checkbox" class="rowCheckbox" data-id='${d.id}' aria-label="Selecionar linha" /></td>
           <td class='px-2 py-2 whitespace-nowrap'>${d.ano}</td>
           <td class='px-2 py-2 whitespace-nowrap'>${d.mes}</td>
+          <td class='px-2 py-2 whitespace-nowrap'>${d.dia || ''}</td>
           <td class='px-2 py-2 whitespace-nowrap'>${d.tipo}</td>
           <td class='px-2 py-2 whitespace-nowrap'>${d.categoria}</td>
           <td class='px-2 py-2'>${d.descricao || ''}</td>
@@ -395,9 +398,9 @@
       const tfoot = document.createElement('tfoot');
       tfoot.innerHTML = `
         <tr class="bg-gray-50 font-semibold">
-          <td class='px-2 py-2' colspan="5"></td>
+          <td class='px-2 py-2' colspan="6"></td>
           <td class='px-2 py-2 text-right'>Total filtrado</td>
-          <td class='px-2 py-2 text-left'>R$ ${totalFiltrado.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+          <td class='px-2 py-2 text-left total-valor-td'>R$ ${totalFiltrado.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
           <td class='px-2 py-2'></td>
         </tr>`;
       table.appendChild(tfoot);
@@ -443,14 +446,13 @@
       if (btnDelSel) btnDelSel.addEventListener('click', ()=>{
         const checked = Array.from(container.querySelectorAll('.rowCheckbox:checked'));
         if (checked.length === 0) { showMsg('Nenhuma despesa selecionada.', true); return; }
-  if (!confirm(`Confirma exclusão de ${checked.length} despesa(s) selecionada(s)?`)) return;
-  const ids = checked.map(cb => cb.dataset.id).filter(Boolean);
-  let all = carregarDespesas();
-  const before = all.length;
-  all = all.filter(d => !ids.includes(String(d.id)));
-  salvarDespesas(all);
-  // força notificação em outras abas/janelas caso necessário
-  try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
+        if (!confirm(`Confirma exclusão de ${checked.length} despesa(s) selecionada(s)?`)) return;
+        const ids = checked.map(cb => cb.dataset.id).filter(Boolean);
+        let all = carregarDespesas();
+        const before = all.length;
+        all = all.filter(d => !ids.includes(String(d.id)));
+        salvarDespesas(all);
+        try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
         const removed = before - all.length;
         showMsg(`${removed} despesa(s) excluída(s).`);
         atualizarSelectAnos();
@@ -459,22 +461,7 @@
         renderizarDespesasAno(ano);
       });
 
-      // excluir
-      container.querySelectorAll('.btn-del-config').forEach(b => b.addEventListener('click', (ev) => {
-        const id = ev.currentTarget.dataset.id;
-        if (!confirm('Confirma exclusão desta despesa?')) return;
-        let dsAll = carregarDespesas();
-  dsAll = dsAll.filter(x => x.id !== id);
-  salvarDespesas(dsAll);
-  try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
-        showMsg('Despesa excluída.');
-        atualizarSelectAnos();
-        // resetar filtros
-        filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
-        renderizarDespesasAno(ano);
-      }));
-
-      // seleção por linha (checkboxes) - similar ao preview
+      // seleção por linha (checkboxes)
       (function initRowSelection(){
         const selectAll = container.querySelector('#selectAllConfig');
         const rowCheckboxes = Array.from(container.querySelectorAll('.rowCheckbox'));
@@ -490,30 +477,42 @@
           });
         }
         rowCheckboxes.forEach(cb => cb.addEventListener('change', () => {
-          const anyChecked = rowCheckboxes.some(r => r.checked);
           if (selectAll) selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(r => r.checked);
           const tr = cb.closest('tr');
           if (tr) tr.classList.toggle('bg-sky-100', cb.checked);
         }));
       })();
 
-      // editar inline (apenas valor)
-      container.querySelectorAll('.btn-edit-config').forEach(b => b.addEventListener('click', (ev) => {
+      // handlers estáveis para Editar / Excluir — permite reuso ao restaurar a linha
+      const handleDeleteClick = (evt) => {
+        const id = evt.currentTarget.dataset.id;
+        if (!confirm('Confirma exclusão desta despesa?')) return;
+        let all = carregarDespesas().filter(x => String(x.id) !== String(id));
+        salvarDespesas(all);
+        try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
+        showMsg('Despesa excluída.');
+        atualizarSelectAnos();
+        // Reaplicar filtros e re-render global aqui é aceitável para exclusão:
+        filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
+        renderizarDespesasAno(ano);
+      };
+
+      const handleEditClick = (ev) => {
+        // evita múltiplas edições simultâneas
+        if (container.querySelector('.valor-td input')) { showMsg('Finalize a edição atual primeiro.', true); return; }
         const id = ev.currentTarget.dataset.id;
         const dsAll = carregarDespesas();
-        const idx = dsAll.findIndex(x => x.id === id);
+        const idx = dsAll.findIndex(x => String(x.id) === String(id));
         if (idx === -1) { showMsg('Registro não encontrado', true); return; }
+
         const row = ev.currentTarget.closest('tr');
         const valorTd = row.querySelector('.valor-td');
         const actionsTd = row.querySelector('.col-actions');
 
-        const original = String(dsAll[idx].valor);
-        const originalNumber = Number(original.replace(',','.')) || 0;
+        const originalNumber = Number(String(dsAll[idx].valor).replace(',','.')) || 0;
 
         const input = document.createElement('input');
-        input.type = 'number';
-        input.step = '0.01';
-        input.min = '0';
+        input.type = 'number'; input.step = '0.01'; input.min = '0';
         input.className = 'rounded border px-2 py-1 w-32';
         input.value = originalNumber.toFixed(2);
         valorTd.innerHTML = '';
@@ -523,50 +522,56 @@
         const btnSave = document.createElement('button');
         btnSave.className = 'bg-green-500 hover:bg-green-600 text-white rounded px-2 py-1 mr-2';
         btnSave.textContent = 'Salvar';
+        btnSave.type = 'button'; // evita comportamento de submit implícito
 
         const btnCancel = document.createElement('button');
         btnCancel.className = 'bg-gray-200 hover:bg-gray-300 text-gray-800 rounded px-2 py-1';
         btnCancel.textContent = 'Cancelar';
+        btnCancel.type = 'button'; // evita submit
 
-        const oldActions = actionsTd.innerHTML;
+        const oldActionsHTML = actionsTd.innerHTML;
         actionsTd.innerHTML = '';
         actionsTd.appendChild(btnSave);
         actionsTd.appendChild(btnCancel);
 
         const restoreRow = () => {
-          const novoValor = Number(dsAll[idx].valor)||0;
+          const novoValor = Number(dsAll[idx].valor) || 0;
           valorTd.textContent = 'R$ ' + novoValor.toLocaleString('pt-BR',{minimumFractionDigits:2});
-          actionsTd.innerHTML = oldActions;
-          // reanexa handlers básicos (visibilidade continua obedecendo mostrarAcoes)
+          actionsTd.innerHTML = oldActionsHTML;
           actionsTd.classList.toggle('hidden-actions', !mostrarAcoes);
-          actionsTd.querySelector('.btn-edit-config')?.addEventListener('click', ev.currentTarget.onclick);
-          actionsTd.querySelector('.btn-del-config')?.addEventListener('click', (e2) => {
-            const id2 = e2.currentTarget.dataset.id;
-            if (!confirm('Confirma exclusão desta despesa?')) return;
-            let all = carregarDespesas().filter(x => x.id !== id2);
-            salvarDespesas(all);
-            showMsg('Despesa excluída.');
-            atualizarSelectAnos();
-            // resetar filtros
-            filtros.mes = 'Todos'; filtros.tipo = 'Todos'; filtros.categoria = 'Todos';
-            renderizarDespesasAno(ano);
-          });
+          // recoloca handlers estáveis
+          actionsTd.querySelector('.btn-edit-config')?.addEventListener('click', handleEditClick);
+          actionsTd.querySelector('.btn-del-config')?.addEventListener('click', handleDeleteClick);
+          // remove foco de qualquer elemento que possa manter "estado de edição"
+          if (document.activeElement) document.activeElement.blur();
         };
 
         btnSave.addEventListener('click', () => {
-          const novoRaw = input.value;
-          const novo = parseFloat(String(novoRaw).replace(',', '.'));
+          const novo = parseFloat(String(input.value).replace(',', '.'));
           if (isNaN(novo)) { showMsg('Valor inválido.', true); return; }
           dsAll[idx].valor = novo;
           salvarDespesas(dsAll);
           try { localStorage.setItem('despesas_last_update', String(Date.now())); } catch (e) { /* ignore */ }
           showMsg('Valor atualizado.');
-          atualizarSelectAnos();
-          renderizarDespesasAno(ano); // mantém filtros e atualiza totalizador
+          // 1) restaura a linha primeiro
+          restoreRow();
+          // 2) atualiza total do rodapé sem re-render completo
+          const allNow = carregarDespesas().map(d => ({...d, ano: String(d.ano)})).filter(d => d.ano === ano);
+          const filteredNow = aplicaFiltros(allNow);
+          const newTotal = filteredNow.reduce((acc, d) => {
+            const n = Number(String(d.valor).replace(',','.'));
+            return acc + (isNaN(n) ? 0 : n);
+          }, 0);
+          const totalTd = table.querySelector('.total-valor-td');
+          if (totalTd) totalTd.textContent = 'R$ ' + newTotal.toLocaleString('pt-BR',{minimumFractionDigits:2});
         });
 
         btnCancel.addEventListener('click', restoreRow);
-      }));
+      };
+
+      // anexar handlers estáveis
+      container.querySelectorAll('.btn-edit-config').forEach(b => b.addEventListener('click', handleEditClick));
+      container.querySelectorAll('.btn-del-config').forEach(b => b.addEventListener('click', handleDeleteClick));
     }
 
     // ---------- Ações globais ----------
@@ -575,7 +580,29 @@
       if (e.key === 'Enter') adicionarCategoria();
     });
 
-    // nota: o botão "Excluir todas as despesas" foi removido da UI conforme solicitado
+    // Toggle para exibir/ocultar seção de categorias com animação (slide + opacity)
+    const btnToggleCategorias = document.getElementById('btn-toggle-categorias');
+    const categoriasSection = document.getElementById('categorias-section');
+    if (btnToggleCategorias && categoriasSection) {
+      btnToggleCategorias.addEventListener('click', () => {
+        const isClosed = categoriasSection.classList.contains('opacity-0');
+        if (isClosed) {
+          // abrir: maximiza altura e mostra
+          categoriasSection.classList.remove('max-h-0','opacity-0','-translate-y-2');
+          categoriasSection.classList.add('max-h-[600px]','opacity-100','translate-y-0');
+          // força re-render das categorias ao mostrar
+          renderizarCategorias();
+          btnToggleCategorias.textContent = 'Fechar Gerenciar Categorias';
+        } else {
+          // fechar: recolhe novamente
+          categoriasSection.classList.remove('max-h-[600px]','opacity-100','translate-y-0');
+          categoriasSection.classList.add('max-h-0','opacity-0','-translate-y-2');
+          btnToggleCategorias.textContent = 'Gerenciar Categorias de Despesas';
+        }
+      });
+    }
+
+    // Nota: atalho do sidebar para categorias removido; apenas o botão permanece
 
     document.getElementById('btn-ver-ano').addEventListener('click', () => {
       const sel = document.getElementById('select-anos-despesas');
@@ -594,5 +621,9 @@
       atualizarSelectAnos();
     })();
   </script>
+  <!-- Intercepta cliques no sidebar para animação sutil antes de navegar -->
+  <!-- Sidebar navigation logic extracted to `js/sidebar-nav.js` (loaded below) -->
+  <!-- Load shared sidebar navigation logic -->
+  <script src="js/sidebar-nav.js" defer></script>
 </body>
 </html>
