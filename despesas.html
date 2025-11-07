@@ -1,0 +1,179 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IRANCASH | Despesas</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <!-- estilos compartilhados movidos para css/app.css -->
+  <link rel="stylesheet" href="css/despesas.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="sidebar-collapsed bg-white shadow-lg flex flex-col lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:z-10">
+    <div class="flex items-center gap-2 px-6 py-6 border-b">
+  <img class="sidebar-logo" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+      <span class="logo-text text-xl font-bold text-sky-600">IRANCASH</span>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <a href="index.html" class="sidebar-link">
+  <img class="sidebar-icon-img" src="assets/dashboard-symbol.png" alt="Dashboard" loading="lazy" decoding="async" />
+        <span>Dashboard</span>
+      </a>
+      <!-- Importar link removed (functionality moved to receitas.html) -->
+      <a href="receitas.html" class="sidebar-link">
+  <img class="sidebar-icon-img" src="assets/receitas-symbol.png" alt="Receitas" loading="lazy" decoding="async" />
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="sidebar-link active" aria-current="page">
+  <img class="sidebar-icon-img" src="assets/despesas-symbol.png" alt="Despesas" loading="lazy" decoding="async" />
+        <span>Despesas</span>
+      </a>
+      <a href="ajuda.html" class="sidebar-link">
+  <img class="sidebar-icon-img" src="assets/ajuda-icone.png" alt="Ajuda" loading="lazy" decoding="async" />
+        <span>Ajuda</span>
+      </a>
+      <a href="configuracoes.html" class="sidebar-link">
+  <img class="sidebar-icon-img" src="assets/configuracao-symbol.png" alt="Configurações" loading="lazy" decoding="async" />
+        <span>Configurações</span>
+      </a>
+    </nav>
+    <div class="px-6 py-4 border-t text-xs text-gray-400">
+      &copy; 2025 IRANCASH
+    </div>
+  </aside>
+  <main class="flex-1 p-6 main-content">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Despesas</h1>
+  <div class="mb-4 md:sticky md:top-6 md:z-40">
+    <button id="btn-toggle-form" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg" aria-expanded="false" aria-controls="form-despesa">+ Lançamentos</button>
+  </div>
+
+  <form id="form-despesa" class="bg-white rounded-xl shadow p-6 mb-8 grid grid-cols-1 md:grid-cols-7 gap-4 items-end max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)]" aria-hidden="true">
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ano</label>
+        <select id="ano-despesa" class="w-full rounded border px-3 py-2">
+          <option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option>
+          <option selected>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option>
+        </select>
+      </div>
+      <div id="mes-despesa-div" class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Mês</label>
+        <select id="mes-despesa" class="w-full rounded border px-3 py-2">
+          <option>Janeiro</option><option>Fevereiro</option><option>Março</option><option>Abril</option><option>Maio</option><option>Junho</option>
+          <option>Julho</option><option>Agosto</option><option>Setembro</option><option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+        </select>
+      </div>
+      <div id="dia-despesa-div" class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Dia</label>
+        <select id="dia-despesa" class="w-full rounded border px-3 py-2"></select>
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <select class="w-full rounded border px-3 py-2" id="tipo-despesa">
+          <option>Fixo</option>
+          <option selected>Variável</option>
+        </select>
+      </div>
+      
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+        <select id="categoria-despesa" class="w-full rounded border px-3 py-2"></select>
+          <!-- categorias do formulário serão populadas por js/despesas.js -->
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+        <input type="text" class="w-full rounded border px-3 py-2" placeholder="Ex: Conta de água mês 10" />
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
+        <input id="valor-despesa" name="valor-despesa" type="number" class="w-full rounded border px-3 py-2" placeholder="0,00" min="0" step="0.01" />
+      </div>
+      <div id="comprovante-despesa-div" class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Comprovante (opcional)</label>
+        <input id="comprovante-despesa" name="comprovante-despesa" type="file" accept="application/pdf,image/png,image/jpeg" class="w-full text-sm" />
+      </div>
+      <div class="md:col-span-1">
+        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2 w-full">Adicionar</button>
+      </div>
+    </form>
+
+    <!-- botão removido (migrado para topo) -->
+
+    <!-- Filtro de mês -->
+    <div class="mb-4">
+      <label for="filtro-mes" class="text-sm font-semibold mr-2">Filtrar por mês:</label>
+      <select id="filtro-mes" class="border rounded px-2 py-1">
+        <option>Janeiro</option><option>Fevereiro</option><option>Março</option><option>Abril</option><option>Maio</option><option>Junho</option>
+        <option>Julho</option><option>Agosto</option><option>Setembro</option><option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+      </select>
+      <label for="filtro-ano" class="text-sm font-semibold ml-4 mr-2">Ano:</label>
+      <select id="filtro-ano" class="border rounded px-2 py-1"></select>
+    </div>
+    <!-- Tabela -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-700 mb-4">Tabela de Despesas</h2>
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-2 py-2 text-left">Ano</th>
+            <th class="px-2 py-2 text-left">Mês</th>
+            <th class="px-2 py-2 text-left">Dia</th>
+            <th class="px-2 py-2 text-left">Tipo</th>
+            <th class="px-2 py-2 text-left">Categoria</th>
+            <th class="px-2 py-2 text-left">Descrição</th>
+            <th class="px-2 py-2 text-right">Valor (R$)</th>
+            <th class="px-2 py-2 text-center">Comprovante</th>
+            <th class="px-2 py-2 text-left">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">-</td>
+            <td class="px-2 py-2">Nenhuma despesa cadastrada</td>
+            <td class="px-2 py-2 text-right">R$ 0,00</td>
+            <td class="px-2 py-2"></td>
+            <td class="px-2 py-2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <!-- Modal de visualização de comprovante -->
+  <div id="comprovante-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+    <div class="bg-white rounded-lg w-full max-w-4xl mx-4 md:mx-0 overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="font-semibold">Visualizar comprovante</h3>
+        <button onclick="closeComprovanteModal()" aria-label="Fechar" class="text-gray-600 hover:text-gray-900">Fechar ✕</button>
+      </div>
+      <div id="comprovante-modal-body" class="p-4 max-h-[70vh] overflow-auto flex items-center justify-center"></div>
+    </div>
+  </div>
+    <!-- Modal de confirmação para despesas fixas -->
+    <div id="confirm-fixo-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+      <div id="confirm-fixo-panel" class="bg-white rounded-lg w-full max-w-lg mx-4 md:mx-0 overflow-hidden transform scale-95 transition-transform duration-300 ease-[cubic-bezier(.2,1.2,.2,1)]">
+        <div class="p-4">
+          <h3 class="font-semibold text-lg mb-2">Confirmar criação de lançamentos</h3>
+          <div id="confirm-fixo-body" class="text-sm text-gray-700 mb-4">Será criado X lançamentos. Deseja continuar?</div>
+          <div class="flex justify-end gap-2">
+            <button id="confirm-fixo-cancel" class="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200">Cancelar</button>
+            <button id="confirm-fixo-ok" class="px-4 py-2 rounded bg-sky-600 text-white hover:bg-sky-700">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script src="js/despesas-utils.js"></script>
+  <script src="js/despesas.js" defer></script>
+  <!-- Sidebar navigation logic -->
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
