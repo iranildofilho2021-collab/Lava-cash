@@ -1,0 +1,21 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "no-duplicate-selectors": null,
+    "color-hex-length": null,
+    "color-named": "never",
+    "selector-attribute-quotes": "always",
+    "function-url-quotes": "always",
+    "comment-whitespace-inside": "always",
+    "rule-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "declaration-block-single-line-max-declarations": null,
+    "color-function-notation": null,
+    "alpha-value-notation": null,
+    "font-family-name-quotes": null,
+    "no-descending-specificity": null,
+    "selector-id-pattern": null,
+    "media-feature-range-notation": null,
+    "at-rule-empty-line-before": null
+  }
+}
