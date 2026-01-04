@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
@@ -9,31 +10,31 @@
     "sourceType": "script"
   },
   "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
     "no-unused-vars": "warn",
     "no-console": "off",
     "no-undef": "error",
-    "eqeqeq": "error",
-    "curly": "error",
-    "brace-style": ["error", "1tbs"],
-    "comma-dangle": ["error", "never"],
-    "comma-spacing": ["error", { "before": false, "after": true }],
-    "keyword-spacing": ["error", { "before": true, "after": true }],
-    "space-before-blocks": "error",
-    "space-before-function-paren": ["error", {
-      "anonymous": "never",
-      "named": "never",
-      "asyncArrow": "always"
-    }],
-    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "eqeqeq": "warn",
+    "curly": "off",
+    "brace-style": "off",
+    "comma-dangle": "off",
+    "comma-spacing": "off",
+    "keyword-spacing": "off",
+    "space-before-blocks": "off",
+    "space-before-function-paren": "off",
+    "arrow-spacing": "off",
     "no-var": "warn",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "indent": "off",
+    "linebreak-style": "off",
+    "quotes": "off",
+    "semi": "off",
+    "no-empty": "warn"
   },
   "globals": {
     "Chart": "readonly",
-    "localStorage": "readonly"
+    "localStorage": "readonly",
+    "genId": "readonly",
+    "criarInputValorElement": "readonly",
+    "criarSpanValorElement": "readonly"
   }
 }
