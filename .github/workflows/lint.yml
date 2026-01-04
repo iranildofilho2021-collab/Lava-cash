@@ -32,16 +32,9 @@ jobs:
 
       - name: Run HTMLHint
         run: npm run lint:html
-        continue-on-error: false
 
       - name: Run Stylelint
         run: npm run lint:css
-        continue-on-error: false
 
       - name: Run ESLint
         run: npm run lint:js
-        continue-on-error: false
-
-      - name: Run all linters
-        run: npm run lint
-        if: success()
