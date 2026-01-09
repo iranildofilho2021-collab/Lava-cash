@@ -6,18 +6,21 @@
   'use strict';
 
   function initSidebarNav(){
-    const links = document.querySelectorAll('aside nav a.sidebar-link');
-    if (!links || !links.length) return;
-
-    links.forEach(link => {
-      // Previne flicker de colapso/expansão ao clicar
-      link.addEventListener('mousedown', handlePointerDown);
-      link.addEventListener('touchstart', handlePointerDown, { passive: true });
-      link.addEventListener('click', handleLinkClick);
-      
-      // Suporte a navegação por teclado
-      link.addEventListener('keydown', handleKeyDown);
+    // Usa event delegation para lidar com links injetados dinamicamente
+    document.body.addEventListener('click', (e) => {
+      const link = e.target.closest('aside nav a.sidebar-link');
+      if (link) handleLinkClick(e, link);
     });
+
+    document.body.addEventListener('mousedown', (e) => {
+      const link = e.target.closest('aside nav a.sidebar-link');
+      if (link) handlePointerDown();
+    });
+    
+    document.body.addEventListener('touchstart', (e) => {
+      const link = e.target.closest('aside nav a.sidebar-link');
+      if (link) handlePointerDown();
+    }, { passive: true });
   }
 
   function handlePointerDown() {
@@ -25,14 +28,17 @@
     if (asideEl) asideEl.classList.add('no-collapse');
   }
 
-  function handleLinkClick(e) {
-    const link = e.currentTarget;
+  function handleLinkClick(e, link) {
     const href = link.getAttribute('href');
     
     if (!href || href.startsWith('#')) return;
     
-    const current = location.pathname.split('/').pop() || 'index.html';
-    if (current === href) return; // Já está na página
+    // Normalização de caminho para funcionar local e no GitHub Pages
+    const currentPath = location.pathname.replace(/\/$/, '/index.html'); // Trata raiz como index.html
+    const targetPath = href;
+    
+    // Verifica se já está na página (ignora query params por enquanto)
+    if (currentPath.endsWith(targetPath)) return;
     
     e.preventDefault();
     

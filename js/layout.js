@@ -11,7 +11,9 @@
 
   function renderSidebar(activePage) {
     const links = NAV_ITEMS.map(item => {
-      const isActive = item.id === activePage;
+      // Correção de caminho para GitHub Pages ou subdiretórios
+      // Compara apenas o nome do arquivo final
+      const isActive = activePage === item.id;
       return `
       <a href="${item.href}" class="sidebar-link${isActive ? ' active' : ''}"${isActive ? ' aria-current="page"' : ''}>
         <img class="sidebar-icon-img" src="${item.icon}" alt="${item.alt}" loading="lazy" decoding="async" />
