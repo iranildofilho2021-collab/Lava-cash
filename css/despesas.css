@@ -1,7 +1,0 @@
-/* Small visual polish for edit state (extraído de despesas.html) */
-.valor-edit { transition: box-shadow .12s ease, transform .12s ease; }
-.valor-edit.ring-2 { box-shadow: 0 0 0 3px rgba(14,165,233,0.15); transform: translateY(-1px); }
-.btn-editar.editing svg { transform: rotate(-10deg) scale(1.05); transition: transform .18s ease; }
-.btn-ok { transition: opacity .12s ease; }
-.valor-text { transition: opacity .12s ease; }
-/* Notas: animações do formulário usam utilitários Tailwind (transition-all, duration, translate, opacity) */
