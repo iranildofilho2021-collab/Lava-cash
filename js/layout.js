@@ -44,8 +44,19 @@
   }
 
   function mountSidebar() {
-    const mountPoint = document.querySelector('[data-sidebar]');
-    if (!mountPoint) return;
+    let mountPoint = document.querySelector('[data-sidebar]');
+    if (!mountPoint) {
+      console.warn('[Layout] Elemento [data-sidebar] não encontrado. Tentando injetar automaticamente...');
+      // Se não houver ponto de montagem, tenta criar um no início do body
+      const aside = document.createElement('aside');
+      aside.setAttribute('data-sidebar', '');
+      document.body.insertBefore(aside, document.body.firstChild);
+      mountPoint = aside; // Atualiza a referência
+    }
+    
+    // Adiciona classe ao body para ajuste de layout
+    document.body.classList.add('with-fixed-sidebar');
+    
     const activePage = document.body.dataset.page || 'dashboard';
     mountPoint.outerHTML = renderSidebar(activePage);
   }

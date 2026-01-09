@@ -116,6 +116,14 @@ body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helv
     max-width: 100% !important;
   }
 
+  /* Make main container full width on smaller screens */
+  .dashboard-container, .container, .container-max {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
   .sidebar-collapsed { 
     width: 100% !important;
     height: auto !important;
@@ -131,6 +139,7 @@ body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helv
     border-top: 1px solid #e2e8f0;
     box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1) !important;
     z-index: 9999 !important;
+    position: fixed !important; /* Ensure it sticks to bottom */
   }
 
   /* Hide logo and footer elements on mobile */
