@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Dashboard IRANCASH - Sistema de gestão financeira para lavanderias. Controle receitas, despesas e visualize gráficos financeiros em tempo real." />
+  <meta name="keywords" content="gestão financeira, lavanderia, receitas, despesas, dashboard, IRANCASH, controle financeiro" />
+  <meta name="author" content="IRANCASH" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="IRANCASH" />
+  <title>IRANCASH | Dashboard</title>
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Estilos compartilhados do projeto (seu app.css existente) -->
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  <!-- UX Improvements -->
+  <link rel="stylesheet" href="css/ux-improvements.css">
+  <!-- Página estilos específicos separados em css/dashboard.css -->
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex" data-page="dashboard">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner lg"></div>
+    <div class="loading-text">Carregando dashboard...</div>
+  </div>
+
+  <aside data-sidebar></aside>
+
+    <!-- Main content (reconstruído: IDs necessários pelo js/dashboard.js) -->
+    <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Conteúdo principal">
+      <div class="dashboard-container mx-auto w-full">
+      <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+        
+        <!-- Quick Actions -->
+        <div class="flex items-center gap-2">
+          <a href="receitas.html" class="quick-action-btn bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            <span class="hidden sm:inline">Receita</span>
+          </a>
+          <a href="despesas.html" class="quick-action-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+            <span class="hidden sm:inline">Despesa</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="flex items-center gap-2">
+            <label for="anoSelect" class="text-sm font-semibold">Ano:</label>
+            <select id="anoSelect" class="border rounded px-2 py-1 bg-white dark:bg-gray-800">
+              <option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option>
+              <option selected>2025</option><option>2026</option><option>2027</option><option>2028</option>
+            </select>
+          </div>
+          
+          <!-- Comparar com outro ano -->
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-gray-500">
+              <input type="checkbox" id="chkCompararAno" class="mr-1 rounded">
+              Comparar:
+            </label>
+            <select id="anoCompararSelect" class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-sm" disabled>
+              <option>2020</option><option>2021</option><option>2022</option><option>2023</option>
+              <option selected>2024</option><option>2025</option><option>2026</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Modo de visualização -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Toggle Modo Compacto -->
+          <button id="btnModoCompacto" class="compact-toggle" title="Reduz espaçamentos para ver mais informações">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+            <span class="hidden sm:inline">Compacto</span>
+          </button>
+          
+          <div class="modo-toggle bg-gray-100 rounded-full p-1 flex gap-1">
+            <button id="btnModoNormal" class="modo-btn px-2 sm:px-3 py-1 text-xs font-medium rounded-full transition-all bg-white text-gray-800 shadow-sm" title="Modo Normal">
+              Normal
+            </button>
+            <button id="btnModoDetalhado" class="modo-btn px-2 sm:px-3 py-1 text-xs font-medium rounded-full transition-all text-gray-500" title="Modo Detalhado">
+              Detalhado
+            </button>
+          </div>
+        </div>
+      </div>
+
+  <div class="months-wrap mb-6 relative">
+    <div id="cardsMeses" class="months-scroll flex gap-3 overflow-x-auto scrollbar-thin" aria-label="Meses"></div>
+    <!-- overlay arrows (visually at the sides of the months strip) -->
+    <button id="mesPrev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white border rounded-full p-2 shadow hidden hover:scale-110 transition-transform" aria-label="Anterior">◀</button>
+    <button id="mesNext" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white border rounded-full p-2 shadow hidden hover:scale-110 transition-transform" aria-label="Próximo">▶</button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Combined card: valores + pizza donut -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800">Até o momento</h3>
+              <div id="tituloMesAtual" class="text-sm text-gray-500"></div>
+            </div>
+            <div id="margemBadge" class="px-3 py-1 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700" data-tooltip="Percentual de lucro sobre a receita">
+              Margem: <span id="margemValor">0%</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <!-- Valores à esquerda -->
+            <div class="flex-1 space-y-2">
+              <div class="summary-box-new sum-rec flex items-center justify-between p-3 rounded-lg">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">💰</span>
+                  <div>
+                    <div class="text-xs text-gray-500 uppercase" data-tooltip="Total de receitas do mês selecionado">Entrou</div>
+                    <div id="valorReceitaAtual" class="text-lg font-bold text-emerald-600 value-transition">R$ 0,00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="summary-box-new sum-desp flex items-center justify-between p-3 rounded-lg">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">📉</span>
+                  <div>
+                    <div class="text-xs text-gray-500 uppercase" data-tooltip="Total de despesas do mês selecionado">Saiu</div>
+                    <div id="valorDespesaAtual" class="text-lg font-bold text-red-600 value-transition">R$ 0,00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="summary-box-new sum-saldo flex items-center justify-between p-3 rounded-lg border">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">💵</span>
+                  <div>
+                    <div class="text-xs text-gray-500 uppercase" data-tooltip="Receitas menos despesas">Saldo</div>
+                    <div id="valorLucroAtual" class="text-lg font-bold text-sky-600 value-transition">R$ 0,00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Donut Chart à direita -->
+            <div class="w-36 h-36 relative">
+              <canvas id="pizzaAtual"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle column: comparação -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">📊 Comparação</h3>
+              <div class="text-sm text-gray-500">vs período anterior</div>
+            </div>
+          </div>
+          <!-- Indicadores de variação -->
+          <div class="grid grid-cols-2 gap-2 mb-2">
+            <div class="bg-emerald-50 rounded-lg p-1.5 text-center">
+              <div class="text-xs text-gray-500">Receita</div>
+              <div id="varReceitaComp" class="text-sm font-bold text-emerald-600">--</div>
+            </div>
+            <div class="bg-red-50 rounded-lg p-1.5 text-center">
+              <div class="text-xs text-gray-500">Despesa</div>
+              <div id="varDespesaComp" class="text-sm font-bold text-red-600">--</div>
+            </div>
+          </div>
+          <div class="comparacao-wrap" style="height: 180px;">
+            <canvas id="comparacaoChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Right column: Contas a Pagar -->
+        <div class="bg-white rounded-xl shadow p-3 flex flex-col">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-semibold text-gray-800">📋 Despesas Futuras</h3>
+              <span id="contadorDespesas" class="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded-full">0</span>
+            </div>
+          </div>
+          <div id="paraAcontecerList" class="flex-1 space-y-1"></div>
+          <div class="mt-2 pt-2 border-t border-gray-100">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-gray-500">Total Pendente</span>
+              <span id="paraAcontecerSaldo" class="text-base font-bold text-red-600">R$ 0,00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 5 Despesas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-semibold text-gray-800">🏆 Top 5 Despesas</h3>
+            <span class="text-xs text-gray-500">Mês selecionado</span>
+          </div>
+          <div id="top5DespesasContainer">
+            <!-- Preenchido via JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Resumo de Variações -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <h3 class="text-lg font-semibold text-gray-800 mb-3">📈 Indicadores do Mês</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gradient-to-br from-emerald-50 to-white rounded-lg p-3 border border-emerald-100">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Margem de Lucro</p>
+              <p id="indicadorMargem" class="text-xl font-bold text-emerald-600 mt-1">0%</p>
+              <p class="text-xs text-gray-400 mt-1">Lucro / Receita</p>
+            </div>
+            <div class="bg-gradient-to-br from-sky-50 to-white rounded-lg p-3 border border-sky-100">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Variação Receita</p>
+              <p id="indicadorVarReceita" class="text-xl font-bold text-sky-600 mt-1">0%</p>
+              <p class="text-xs text-gray-400 mt-1">vs mês anterior</p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-50 to-white rounded-lg p-3 border border-amber-100">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Variação Despesa</p>
+              <p id="indicadorVarDespesa" class="text-xl font-bold text-amber-600 mt-1">0%</p>
+              <p class="text-xs text-gray-400 mt-1">vs mês anterior</p>
+            </div>
+            <div class="bg-gradient-to-br from-purple-50 to-white rounded-lg p-3 border border-purple-100">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Eficiência</p>
+              <p id="indicadorEficiencia" class="text-xl font-bold text-purple-600 mt-1">0%</p>
+              <p class="text-xs text-gray-400 mt-1">Receita / Despesa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nova seção: Projeção e Metas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Projeção do Mês -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-semibold text-gray-800" data-tooltip="Estimativa baseada na média diária dos dias já passados">🔮 Projeção do Mês</h3>
+            <span id="diasRestantes" class="text-xs text-gray-500">-- dias restantes</span>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500" data-tooltip="Projeção de receita até fim do mês">Receita Projetada</span>
+              <span id="receitaProjetada" class="text-sm font-bold text-emerald-600 value-transition">R$ 0,00</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500" data-tooltip="Projeção de despesa até fim do mês">Despesa Projetada</span>
+              <span id="despesaProjetada" class="text-sm font-bold text-red-600 value-transition">R$ 0,00</span>
+            </div>
+            <div class="border-t pt-2 flex items-center justify-between">
+              <span class="text-xs font-medium text-gray-700">Saldo Projetado</span>
+              <span id="saldoProjetado" class="text-base font-bold text-sky-600 value-transition">R$ 0,00</span>
+            </div>
+            <div class="text-xs text-gray-400 text-center mt-1">
+              Baseado na média diária atual
+            </div>
+          </div>
+        </div>
+
+        <!-- Meta de Receita -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-semibold text-gray-800" data-tooltip="Defina um objetivo mensal e acompanhe seu progresso">🎯 Meta de Receita</h3>
+            <button id="btnEditarMeta" class="text-xs text-sky-600 hover:text-sky-700 font-medium transition-all hover:scale-105">Editar</button>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-gray-500">Meta Mensal</span>
+              <span id="valorMeta" class="font-semibold text-gray-700">R$ 0,00</span>
+            </div>
+            <div class="relative pt-1">
+              <div class="overflow-hidden h-3 text-xs flex rounded-full bg-gray-100">
+                <div id="barraProgressoMeta" class="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-emerald-400 to-emerald-600" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-gray-500">Atingido</span>
+              <span id="percentualMeta" class="font-bold text-emerald-600">0%</span>
+            </div>
+            <div id="statusMeta" class="text-xs text-center py-1 px-2 rounded-full bg-gray-100 text-gray-600">
+              Defina uma meta
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparativo Anual -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-semibold text-gray-800" data-tooltip="Compare a performance do ano atual com o anterior">📊 Comparativo Anual</h3>
+            <span id="comparativoAnos" class="text-xs text-gray-500">2025 vs 2024</span>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500">Receita Ano Atual</span>
+              <span id="receitaAnoAtual" class="text-sm font-bold text-emerald-600">R$ 0,00</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500">Receita Ano Anterior</span>
+              <span id="receitaAnoAnterior" class="text-sm font-bold text-gray-500">R$ 0,00</span>
+            </div>
+            <div class="border-t pt-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-gray-700">Crescimento</span>
+                <span id="crescimentoAnual" class="text-base font-bold text-sky-600">0%</span>
+              </div>
+              <div id="statusCrescimento" class="text-xs text-center py-1 px-2 rounded-full bg-gray-100 text-gray-600 mt-2">
+                Sem dados anteriores
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ranking de Meses do Ano -->
+      <div class="bg-white rounded-xl shadow p-4 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-base font-semibold text-gray-800" data-tooltip="Identifique padrões e tendências ao longo do ano">🏅 Ranking do Ano</h3>
+          <span class="text-xs text-gray-500">Meses com melhor e pior desempenho</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-3 border border-emerald-200 clickable-card" data-tooltip="Mês com maior faturamento">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="text-sm">🥇</span>
+              <span class="text-xs font-medium text-emerald-700">Maior Receita</span>
+            </div>
+            <div id="rankMaiorReceita" class="text-sm font-bold text-emerald-800">--</div>
+            <div id="rankMaiorReceitaValor" class="text-xs text-emerald-600">R$ 0,00</div>
+          </div>
+          <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-3 border border-red-200 clickable-card" data-tooltip="Mês com menor faturamento">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="text-sm">📉</span>
+              <span class="text-xs font-medium text-red-700">Menor Receita</span>
+            </div>
+            <div id="rankMenorReceita" class="text-sm font-bold text-red-800">--</div>
+            <div id="rankMenorReceitaValor" class="text-xs text-red-600">R$ 0,00</div>
+          </div>
+          <div class="bg-gradient-to-br from-sky-50 to-sky-100 rounded-lg p-3 border border-sky-200 clickable-card" data-tooltip="Mês com melhor resultado líquido">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="text-sm">💰</span>
+              <span class="text-xs font-medium text-sky-700">Maior Lucro</span>
+            </div>
+            <div id="rankMaiorLucro" class="text-sm font-bold text-sky-800">--</div>
+            <div id="rankMaiorLucroValor" class="text-xs text-sky-600">R$ 0,00</div>
+          </div>
+          <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-3 border border-amber-200 clickable-card" data-tooltip="Mês com maiores gastos - atenção!">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="text-sm">⚠️</span>
+              <span class="text-xs font-medium text-amber-700">Maior Despesa</span>
+            </div>
+            <div id="rankMaiorDespesa" class="text-sm font-bold text-amber-800">--</div>
+            <div id="rankMaiorDespesaValor" class="text-xs text-amber-600">R$ 0,00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- other charts (kept as two columns) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">☀️ Vendas por Período</h3>
+              <div class="text-sm text-gray-500">distribuição por faixa horária</div>
+            </div>
+          </div>
+          <div id="vendas-periodo-conteudo" style="height: 220px;">
+            <!-- Canvas vendasPeriodoChart criado dinamicamente -->
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">📅 Vendas por Dia</h3>
+              <div class="text-sm text-gray-500">receita bruta do mês selecionado</div>
+            </div>
+          </div>
+          <div style="height: 220px;">
+            <canvas id="vendasDiaSemanaChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full-width 12-month fluxo financeiro chart as the last chart -->
+      <div class="mt-6">
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">📊 Fluxo Financeiro</h3>
+              <div class="text-sm text-gray-500">evolução do ano selecionado (Janeiro a Dezembro)</div>
+            </div>
+          </div>
+          <!-- Resumo do Ano -->
+          <div id="resumoAnoFluxo" class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+            <div class="summary-box-new sum-rec p-2 rounded-lg text-center">
+              <div class="text-xs text-gray-500 uppercase">Total Receita</div>
+              <div id="fluxoTotalReceita" class="text-base font-bold text-emerald-600">R$ 0</div>
+            </div>
+            <div class="summary-box-new sum-desp p-2 rounded-lg text-center">
+              <div class="text-xs text-gray-500 uppercase">Total Despesa</div>
+              <div id="fluxoTotalDespesa" class="text-base font-bold text-red-600">R$ 0</div>
+            </div>
+            <div class="summary-box-new sum-saldo p-2 rounded-lg text-center border">
+              <div class="text-xs text-gray-500 uppercase">Saldo Anual</div>
+              <div id="fluxoSaldoAnual" class="text-base font-bold text-sky-600">R$ 0</div>
+            </div>
+            <div class="bg-gray-50 p-2 rounded-lg text-center">
+              <div class="text-xs text-gray-500 uppercase">Média Mensal</div>
+              <div id="fluxoMediaMensal" class="text-base font-bold text-purple-600">R$ 0</div>
+            </div>
+          </div>
+          <div style="height: 250px;">
+            <canvas id="fluxoChart"></canvas>
+          </div>
+        </div>
+      </div>
+      </div>
+    </main>
+
+    <!-- Firebase deve ser carregado primeiro -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <!-- Utilitário para verificar dados no Firebase -->
+  <script src="js/firebase-check.js" defer></script>
+  <!-- DataStore (usa Firebase quando disponível) -->
+  <script src="js/data-store.js" defer></script>
+  <!-- carregar o script do dashboard no fim do body para manter ordem e performance -->
+  <script src="js/indexeddb-store.js" defer></script>
+  <script src="js/shared-utils.js" defer></script>
+  <script src="js/ui-utils.js" defer></script>
+  <script src="js/security-utils.js" defer></script>
+  <script src="js/layout.js" defer></script>
+  <script src="js/theme-toggle.js" defer></script>
+  <script src="js/backup-utils.js" defer></script>
+  <script src="js/dashboard.js" defer></script>
+  <!-- Load shared sidebar navigation logic -->
+  <script src="js/ui/connection-status.js" defer></script>
+  <script src="js/utils/cleanup.js" defer></script>
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
+

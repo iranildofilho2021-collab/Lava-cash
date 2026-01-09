@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Despesas de Investimento Inicial IRANCASH - Registre e controle todos os investimentos iniciais da sua lavanderia." />
+  <meta name="keywords" content="investimento inicial, despesas, equipamentos, infraestrutura, IRANCASH" />
+  <meta name="author" content="IRANCASH" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>IRANCASH | Investimento Inicial</title>
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/ux-improvements.css">
+  <!-- Utilitários de validação e loading -->
+  <script src="js/validation-utils.js" defer></script>
+  <script src="js/loading-utils.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex" data-page="investimento-inicial">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+  <aside data-sidebar></aside>
+  
+  <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Registro de investimentos iniciais">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Investimento Inicial</h1>
+    
+    <!-- Botão para adicionar despesa -->
+    <div class="mb-4 md:sticky md:top-6 md:z-40">
+      <button id="btn-toggle-form" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg" aria-expanded="false" aria-controls="form-investimento">
+        + Adicionar Investimento
+      </button>
+    </div>
+
+    <!-- Formulário de Lançamento -->
+    <form id="form-investimento" class="bg-white rounded-xl shadow p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4 items-end max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)]" aria-hidden="true">
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria do Investimento</label>
+        <select id="categoria-investimento" class="w-full rounded border px-3 py-2" required>
+          <option value="">Selecione...</option>
+          <option>Equipamentos</option>
+          <option>Infraestrutura</option>
+          <option>Tecnologia</option>
+          <option>Mobiliário</option>
+          <option>Reforma</option>
+          <option>Licenças e Documentos</option>
+          <option>Marketing</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Data do Investimento</label>
+        <input id="data-investimento" type="date" class="w-full rounded border px-3 py-2" required />
+      </div>
+      
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição do Investimento</label>
+        <input id="descricao-investimento" type="text" class="w-full rounded border px-3 py-2" placeholder="Ex: Máquina de lavar industrial" required />
+      </div>
+      
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Valor do Investimento (R$)</label>
+        <input id="valor-investimento" type="number" class="w-full rounded border px-3 py-2" placeholder="0,00" min="0" step="0.01" required />
+      </div>
+      
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Forma de Pagamento</label>
+        <select id="forma-pagamento" class="w-full rounded border px-3 py-2" required>
+          <option value="">Selecione...</option>
+          <option>À vista</option>
+          <option>Parcelado</option>
+          <option>Financiado</option>
+          <option>Leasing</option>
+        </select>
+      </div>
+      
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Justificativa do Investimento</label>
+        <textarea id="justificativa-investimento" rows="3" class="w-full rounded border px-3 py-2" placeholder="Explique o motivo do investimento..."></textarea>
+      </div>
+      
+      <div class="md:col-span-2 flex gap-2">
+        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2">Salvar</button>
+        <button type="button" id="btn-cancelar-form" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded px-6 py-2">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- Tabela de Investimentos -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-700 mb-4">Investimentos Cadastrados</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Categoria</th>
+              <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Descrição</th>
+              <th class="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-700">Valor</th>
+              <th class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">Data</th>
+              <th class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">Forma de Pagamento</th>
+              <th class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">Status</th>
+              <th class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaInvestimentosBody">
+            <tr>
+              <td colspan="7" class="border border-gray-300 px-4 py-8 text-center text-gray-500">Nenhum investimento cadastrado ainda.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase deve ser carregado primeiro -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <!-- DataStore (usa Firebase quando disponível) -->
+  <script src="js/data-store.js" defer></script>
+  <script src="js/ui/connection-status.js" defer></script>
+  <script src="js/utils/cleanup.js" defer></script>
+  <script src="js/indexeddb-store.js" defer></script>
+  <script src="js/shared-utils.js" defer></script>
+  <script src="js/security-utils.js" defer></script>
+  <script src="js/layout.js" defer></script>
+  <script src="js/theme-toggle.js" defer></script>
+  <script src="js/backup-utils.js" defer></script>
+  <script src="js/investimento-inicial.js" defer></script>
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
+

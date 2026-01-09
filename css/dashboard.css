@@ -1,0 +1,224 @@
+/* Estilos específicos do dashboard extraídos de index.html */
+body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
+.card-hover{ transition: transform .18s ease, box-shadow .18s ease; }
+.card-hover:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(2,6,23,0.10); }
+/* Sidebar styles removed to use shared app.css styles for consistency
+.sidebar-link{ display:flex; align-items:center; gap:.75rem; padding:.6rem 1rem; border-radius:.65rem; transition: background-color .18s, box-shadow .18s, transform .18s; font-size:.95rem;}
+.sidebar-link:hover{ background:#f1f5f9; }
+.sidebar-link.active{ background:#e6f4ff; box-shadow: inset 0 0 0 1px rgba(14,165,233,0.25); }
+.sidebar-icon{ width:18px; height:18px; }
+*/
+/* aumentar largura máxima do dashboard para melhor uso do espaço em telas grandes */
+.container-max{ max-width: 1560px; }
+.dashboard-container{ max-width: 1600px; margin-left: auto; margin-right: auto; }
+/* months carousel wrapper and pills */
+.months-wrap{ position: relative; }
+.months-scroll{ display:flex; gap:1rem; overflow-x:auto; padding-bottom:0.5rem; scroll-behavior:smooth; }
+.month-pill{
+	/* show 6 pills in the visible area by default: 6 items + 5 gaps (gap = 1rem)
+		 flex-basis uses calc((100% - totalGap) / 6). This keeps exactly 6 visible per viewport. */
+	flex: 0 0 calc((100% - 5rem) / 6);
+	max-width: none;
+	min-width: 0;
+	cursor: pointer;
+}
+.month-pill:focus{ outline: 3px solid rgba(14,165,233,0.15); outline-offset: 4px; }
+.month-pill.selected{ box-shadow: 0 6px 18px rgba(2,6,23,0.08); border: 1px solid rgba(14,165,233,0.16); }
+.scrollbar-thin::-webkit-scrollbar{ height: 6px; }
+.scrollbar-thin::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:10px; }
+
+/* months wrapper: ensure arrows overlay and proper spacing */
+.months-wrap { position: relative; }
+.months-scroll { padding: 0.25rem 48px; }
+
+/* overlay arrow buttons styles (kept hidden when not needed) */
+#mesPrev, #mesNext { z-index: 30; border: 1px solid rgba(0,0,0,0.06); }
+#mesPrev.hidden, #mesNext.hidden { display: none !important; }
+
+/* Summary boxes (Entrou / Saiu / Sobrou) */
+.summary-box{ background: #f8fafc; }
+.summary-box.sum-rec{ background: linear-gradient(90deg, rgba(16,185,129,0.06), rgba(255,255,255,0)); }
+.summary-box.sum-desp{ background: linear-gradient(90deg, rgba(239,68,68,0.06), rgba(255,255,255,0)); }
+.summary-box.sum-luc{ background: linear-gradient(90deg, rgba(14,165,233,0.06), rgba(255,255,255,0)); }
+.summary-label{ font-size: 0.95rem; }
+.summary-sub{ opacity: 0.9; }
+.summary-value{ font-size: 0.95rem; background: #ffffff; padding: .45rem .6rem; border-radius: .5rem; box-shadow: none; }
+
+/* Color the value pills to match their labels */
+.sum-rec .summary-value { background: linear-gradient(90deg, rgba(16,185,129,0.06), rgba(255,255,255,0)); }
+.sum-desp .summary-value { color: #e40606; background: linear-gradient(90deg, rgba(239,68,68,0.06), rgba(255,255,255,0)); }
+.sum-luc .summary-value { background: linear-gradient(90deg, rgba(14,165,233,0.06), rgba(255,255,255,0));  }
+
+.legend span { display: inline-block; vertical-align: middle; }
+
+/* Reduce spacing inside the combined card to bring heading/data up */
+.bg-white.p-3 { padding: .75rem; }
+.combined-tight { padding-top: .5rem; padding-bottom: .5rem; }
+
+/* Comparação title styles */
+.comparacao-title{ font-size: 1.125rem; font-weight: 600; }
+.comparacao-sub{ font-size: .875rem; color: #6b7280; }
+
+/* constrain middle comparison column to be a bit narrower */
+.comparacao-wrap{ max-width: 760px; }
+
+/* ensure panels don't become too wide on large screens */
+.dashboard-container > .grid { gap: 1rem; }
+
+/* prevent month pills from forcing extreme layout on small screens */
+@media (max-width: 640px){
+	/* on small screens fallback to sensible fixed min-width and allow horizontal scrolling */
+	.month-pill{ flex: 0 0 auto; min-width: 140px; width: auto; }
+}
+
+/* --- Panels do dashboard --- */
+.dashboard-container > .grid.mb-6 > .bg-white.rounded-xl.shadow {
+	display: flex;
+	flex-direction: column;
+}
+
+/* ============ NOVOS ESTILOS PARA SUMMARY BOXES ============ */
+.summary-box-new {
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.summary-box-new.sum-rec {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255,255,255,0.5) 100%);
+  border-left: 3px solid #10b981;
+}
+
+.summary-box-new.sum-desp {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255,255,255,0.5) 100%);
+  border-left: 3px solid #ef4444;
+}
+
+.summary-box-new.sum-saldo {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(255,255,255,0.5) 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+}
+
+/* ============ MODO DE VISUALIZAÇÃO ============ */
+.modo-toggle {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.modo-btn {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.modo-btn:hover {
+  background: rgba(255,255,255,0.8);
+}
+
+/* Modo Detalhado - mostra mais informações */
+.dashboard-detalhado .month-pill {
+  min-height: 180px;
+}
+
+.dashboard-detalhado .grid.gap-4 {
+  gap: 1.5rem;
+}
+
+.dashboard-detalhado .bg-white.rounded-xl {
+  padding: 1.5rem;
+}
+
+.dashboard-detalhado h3 {
+  font-size: 1.25rem;
+}
+
+.dashboard-detalhado .text-sm {
+  font-size: 0.95rem;
+}
+
+/* ============ DONUT CHART ============ */
+#pizzaAtual {
+  max-height: 144px !important;
+  height: 144px !important;
+}
+
+/* ============ MELHOR INDICADOR BADGE ============ */
+.melhor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.05) 100%);
+  color: #b45309;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* ============ DARK MODE ============ */
+[data-theme="dark"] .summary-box-new {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+[data-theme="dark"] .summary-box-new.sum-rec {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(30, 41, 59, 0.5) 100%);
+}
+
+[data-theme="dark"] .summary-box-new.sum-desp {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(30, 41, 59, 0.5) 100%);
+}
+
+[data-theme="dark"] .summary-box-new.sum-saldo {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(30, 41, 59, 0.5) 100%);
+}
+
+[data-theme="dark"] .modo-toggle {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+[data-theme="dark"] .modo-btn {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .modo-btn.bg-white {
+  background: var(--card-background) !important;
+  color: var(--text-strong) !important;
+}
+
+/* Badge de prejuízo nos cards de meses */
+.badge-prejuizo {
+  font-size: 0.85rem;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+.prejuizo-card {
+  border: 2px solid rgba(239, 68, 68, 0.3) !important;
+  background: linear-gradient(135deg, #fff 0%, rgba(254, 226, 226, 0.3) 100%) !important;
+}
+
+.prejuizo-card:hover {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* Top 5 Despesas estilos */
+.top5-item {
+  padding: 0.5rem 0;
+}
+
+.top5-item:not(:last-child) {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* Indicadores do mês */
+.indicador-positivo { color: #10b981; }
+.indicador-negativo { color: #ef4444; }
+.indicador-neutro { color: #6b7280; }
+
+/* Variação nos cards de meses */
+.variacao-positiva { color: #10b981; }
+.variacao-negativa { color: #ef4444; }
+

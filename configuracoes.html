@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Configurações IRANCASH - Personalize moeda, fuso horário e gerencie categorias de despesas do sistema." />
+  <meta name="keywords" content="configurações, categorias, despesas, moeda, fuso horário, IRANCASH" />
+  <meta name="author" content="IRANCASH" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>IRANCASH | Configurações</title>
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/ux-improvements.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex" data-page="configuracoes">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+  <aside data-sidebar></aside>
+  <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Configurações do sistema">
+    <!-- Preferências -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <label for="sel-moeda" class="text-gray-500">Moeda</label>
+        <select id="sel-moeda" class="mt-2 w-full rounded border px-3 py-2">
+          <option value="BRL">BRL (R$)</option>
+          <option value="USD">USD ($)</option>
+        </select>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <label for="sel-fuso" class="text-gray-500">Fuso horário</label>
+        <select id="sel-fuso" class="mt-2 w-full rounded border px-3 py-2">
+          <option>America/Fortaleza</option>
+          <option>America/Sao_Paulo</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Botão para mostrar/ocultar gerenciamento de categorias -->
+    <div class="mb-4 md:sticky md:top-6 md:z-40">
+      <button id="btn-toggle-categorias" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Categorias de Despesas</button>
+    </div>
+
+    <!-- Categorias -->
+  <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+      <span class="text-gray-500 mb-2">Gerenciar Categorias de Despesas</span>
+      <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias"></div>
+      <div class="flex gap-2 w-full max-w-lg">
+        <input type="text" id="novaCategoria" class="flex-1 rounded border px-3 py-2" placeholder="Nova categoria" />
+        <button id="adicionarCategoria" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2">Adicionar</button>
+      </div>
+    </div>
+
+    <!-- Gerenciar Despesas -->
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+      <h2 class="text-lg font-semibold mb-3">Gerenciar Despesas</h2>
+      <div class="flex flex-wrap items-center gap-3 mb-4 w-full">
+        <label class="text-sm">Ver despesas do ano:</label>
+        <select id="select-anos-despesas" class="rounded border px-2 py-2"></select>
+        <button id="btn-ver-ano" class="bg-sky-600 hover:bg-sky-700 text-white rounded px-3 py-2">Ver</button>
+      </div>
+      <div id="lista-despesas-ano" class="w-full overflow-x-auto"></div>
+    </div>
+
+    <!-- Backup e Restauração -->
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+      <h2 class="text-lg font-semibold mb-3">💾 Backup e Restauração de Dados</h2>
+      <p class="text-sm text-gray-500 mb-4">Faça backup dos seus dados ou restaure de um arquivo anterior.</p>
+      
+      <div id="storage-info" class="w-full mb-4 p-3 bg-gray-50 rounded-lg">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium">Uso do armazenamento local</span>
+          <span id="storage-percent-text" class="text-sm font-semibold">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div id="storage-bar-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Limite aproximado: 5 MB</p>
+      </div>
+
+      <div class="flex flex-wrap gap-3 w-full">
+        <button id="btn-export-backup" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded px-4 py-2 transition">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Exportar Backup
+        </button>
+        
+        <label class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 cursor-pointer transition">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Importar Backup
+          <input type="file" id="input-import-backup" accept=".json" class="hidden" />
+        </label>
+        
+        <button id="btn-clear-data" class="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded px-4 py-2 transition">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          </svg>
+          Limpar Dados
+        </button>
+      </div>
+    </div>
+
+    <!-- Atalhos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none" aria-hidden="true">
+          <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
+        </svg>
+        <span class="text-lg font-semibold">Importar Dados</span>
+      </a>
+      <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none" aria-hidden="true">
+          <path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-lg font-semibold">Adicionar Despesa</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- Firebase deve ser carregado primeiro -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <!-- DataStore (usa Firebase quando disponível) -->
+  <script src="js/data-store.js" defer></script>
+  <script src="js/ui/connection-status.js" defer></script>
+  <script src="js/utils/cleanup.js" defer></script>
+  <script src="js/indexeddb-store.js" defer></script>
+  <script src="js/shared-utils.js" defer></script>
+  <script src="js/security-utils.js" defer></script>
+  <script src="js/layout.js" defer></script>
+  <script src="js/theme-toggle.js" defer></script>
+  <script src="js/backup-utils.js" defer></script>
+  <script src="js/configuracoes.js" defer></script>
+  <!-- Intercepta cliques no sidebar para animação sutil antes de navegar -->
+  <!-- Sidebar navigation logic extracted to `js/sidebar-nav.js` (loaded below) -->
+  <!-- Load shared sidebar navigation logic -->
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
+
+

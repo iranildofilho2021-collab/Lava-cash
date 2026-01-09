@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ajuda e suporte IRANCASH - Encontre respostas para dúvidas frequentes e informações de contato para suporte." />
+  <meta name="keywords" content="ajuda, suporte, FAQ, IRANCASH, documentação, tutorial" />
+  <meta name="author" content="IRANCASH" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>IRANCASH | Ajuda</title>
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <!-- estilos compartilhados movidos para css/app.css -->
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/ux-improvements.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex" data-page="ajuda">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+  <aside data-sidebar></aside>
+
+  <!-- Main Content -->
+  <main id="main-content" class="flex-1 p-8 main-content" role="main" aria-label="Central de ajuda">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Ajuda</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">FAQ</span>
+        <span class="text-lg font-bold text-sky-600 mt-2">Como importar um CSV?</span>
+        <span class="text-sm text-gray-600 mt-2">Vá em Importar → selecione o arquivo CSV. Posso ativar parsing no navegador se desejar.</span>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+        <span class="text-gray-500">Contato</span>
+        <span class="text-lg font-bold text-green-600 mt-2">Suporte</span>
+        <span class="text-sm text-gray-600 mt-2">contato@lava-cash.com.br</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none"><path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/></svg>
+        <span class="text-lg font-semibold">Importar Dados</span>
+      </a>
+      <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <svg width="32" height="32" fill="none"><path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-lg font-semibold">Adicionar Despesa</span>
+      </a>
+    </div>
+  </main>
+  <!-- Firebase deve ser carregado primeiro -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <!-- DataStore (usa Firebase quando disponível) -->
+  <script src="js/data-store.js" defer></script>
+  <script src="js/ui/connection-status.js" defer></script>
+  <script src="js/utils/cleanup.js" defer></script>
+  <script src="js/indexeddb-store.js" defer></script>
+  <script src="js/shared-utils.js" defer></script>
+  <script src="js/security-utils.js" defer></script>
+  <script src="js/layout.js" defer></script>
+  <script src="js/theme-toggle.js" defer></script>
+  <script src="js/backup-utils.js" defer></script>
+  <!-- Sidebar navigation logic (shared) -->
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
+

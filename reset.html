@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset do Sistema</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+    h1 { color: #0f172a; margin-top: 0; }
+    p { color: #64748b; margin-bottom: 2rem; }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-local {
+      background-color: #e2e8f0;
+      color: #475569;
+    }
+    .btn-local:hover { background-color: #cbd5e1; }
+    
+    .btn-factory {
+      background-color: #ef4444;
+      color: white;
+    }
+    .btn-factory:hover { background-color: #dc2626; }
+
+    .note {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
+    <h1>Reset do Sistema</h1>
+    <p>Escolha o tipo de limpeza que deseja realizar:</p>
+
+    <button onclick="window.clearApp(false)" class="btn-local">
+      Limpar Apenas Este Dispositivo
+    </button>
+    
+    <button onclick="if(confirm('ATENÇÃO: Isso apagará TODOS os dados no servidor Firebase permanentemente. Tem certeza?')) window.clearApp(true)" class="btn-factory">
+      Reset de Fábrica (Apagar Nuvem)
+    </button>
+
+    <div class="note">
+      * Limpar apenas o dispositivo fará com que os dados sejam baixados novamente da nuvem ao recarregar.
+    </div>
+  </div>
+
+  <!-- Scripts necessários -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <script src="js/utils/cleanup.js"></script>
+</body>
+</html>

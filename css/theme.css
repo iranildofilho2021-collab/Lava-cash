@@ -1,0 +1,90 @@
+:root {
+  color-scheme: light;
+  --background-app: #f8fafc;
+  --card-background: #ffffff;
+  --card-muted: #eef2ff;
+  --text-strong: #0f172a;
+  --text-muted: #475569;
+  --border-color: #e2e8f0;
+  --sidebar-background: #ffffff;
+  --sidebar-text: #0f172a;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background-app: #0b1221;
+  --card-background: #111a2f;
+  --card-muted: #1c2541;
+  --text-strong: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-color: #243352;
+  --sidebar-background: #0f172a;
+  --sidebar-text: #f1f5f9;
+}
+
+body {
+  background-color: var(--background-app);
+  color: var(--text-strong);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-gray-50,
+[data-theme="dark"] .bg-slate-50 {
+  background-color: var(--card-background) !important;
+  color: var(--text-strong) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .text-gray-800,
+[data-theme="dark"] .text-gray-700,
+[data-theme="dark"] .text-gray-600 {
+  color: var(--text-strong) !important;
+}
+
+[data-theme="dark"] .text-gray-500,
+[data-theme="dark"] .text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-gray-100,
+[data-theme="dark"] .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .bg-gray-100,
+[data-theme="dark"] .bg-slate-100 {
+  background-color: var(--card-muted) !important;
+}
+
+[data-theme="dark"] aside.sidebar-collapsed {
+  background-color: var(--sidebar-background);
+  color: var(--sidebar-text);
+}
+
+[data-theme="dark"] aside.sidebar-collapsed .sidebar-link {
+  color: var(--sidebar-text);
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  background: transparent;
+  color: inherit;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background-color: rgba(226, 232, 240, 0.08);
+}

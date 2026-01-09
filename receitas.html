@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Gerenciamento de receitas IRANCASH - Importe vendas de cartões e PIX, visualize receitas por período e analise o desempenho financeiro." />
+  <meta name="keywords" content="receitas, vendas, importação CSV, PIX, cartões, gestão financeira, lavanderia, IRANCASH" />
+  <meta name="author" content="IRANCASH" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>IRANCASH | Receitas</title>
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <!-- estilos compartilhados movidos para css/app.css -->
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/ux-improvements.css">
+  <!-- Utilitários de validação e loading -->
+  <script src="js/loading-utils.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex" data-page="receitas">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+  <aside data-sidebar></aside>
+
+  <main id="main-content" class="flex-1 p-8" role="main" aria-label="Gerenciamento de receitas">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Receitas</h1>
+    <div class="mb-4 md:sticky md:top-6 md:z-40">
+      <div class="flex items-center gap-2">
+        <button id="btn-toggle-import" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Importar Vendas</button>
+        <button id="btn-open-import-config" type="button" class="inline-flex items-center gap-2 bg-white border text-gray-700 font-medium rounded px-3 py-2">Config. importação</button>
+      </div>
+    </div>
+
+  <div id="import-config-panel" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] md:transform md:transition md:duration-500 md:scale-95 bg-white rounded-xl shadow p-4 mb-6">
+      <h3 class="text-md font-semibold mb-2">Configurações de importação</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (Cartões)</label>
+          <input id="headerline-cartao" type="number" min="1" value="2" class="mt-1 rounded border px-2 py-1 w-24" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha (1 = primeira linha do arquivo) onde está o cabeçalho para arquivos de cartão.</div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (PIX)</label>
+          <input id="headerline-pix" type="number" min="1" value="2" class="mt-1 rounded border px-2 py-1 w-24" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha (1 = primeira linha do arquivo) onde está o cabeçalho para arquivos PIX.</div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="save-import-config" class="bg-sky-600 text-white rounded px-3 py-1">Salvar configurações</button>
+        <button id="open-mapping-cartao" class="bg-white border rounded px-3 py-1">Abrir mapeamento (Cartão)</button>
+        <button id="open-mapping-pix" class="bg-white border rounded px-3 py-1">Abrir mapeamento (PIX)</button>
+      </div>
+  <div id="mapping-cartao-panel" class="mt-4 p-3 bg-gray-50 rounded hidden max-h-96 overflow-y-auto">
+        <div class="text-sm text-gray-700 mb-2 font-semibold">Mapeamento de colunas (Cartões)</div>
+        <div id="mapping-cartao-sample" class="mb-2 text-sm text-gray-600">
+          <div>Selecione um arquivo de exemplo para popular as colunas, ou selecione o arquivo no painel <strong>Importar Vendas</strong>.</div>
+          <div class="mt-2">
+            <input id="mapping-cartao-sample-file" type="file" accept=".csv,.xlsx" class="text-sm" />
+          </div>
+        </div>
+        <div id="mapping-cartao-fields" class="grid grid-cols-1 gap-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="save-mapping-cartao" class="bg-sky-600 text-white rounded px-3 py-1 text-sm">Salvar modelo</button>
+          <button id="reset-mapping-cartao" class="bg-white border text-sm rounded px-3 py-1">Resetar</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Dica: selecione a linha de cabeçalho correta na primeira coluna do arquivo para popular as opções.</p>
+      </div>
+  <div id="mapping-pix-panel" class="mt-4 p-3 bg-gray-50 rounded hidden max-h-96 overflow-y-auto">
+        <div class="text-sm text-gray-700 mb-2 font-semibold">Mapeamento de colunas (PIX)</div>
+        <div id="mapping-pix-sample" class="mb-2 text-sm text-gray-600">
+          <div>Selecione um arquivo de exemplo para popular as colunas, ou selecione o arquivo no painel <strong>Importar Vendas</strong>.</div>
+          <div class="mt-2">
+            <input id="mapping-pix-sample-file" type="file" accept=".csv,.xlsx" class="text-sm" />
+          </div>
+        </div>
+        <div id="mapping-pix-fields" class="grid grid-cols-1 gap-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="save-mapping-pix" class="bg-sky-600 text-white rounded px-3 py-1 text-sm">Salvar modelo</button>
+          <button id="reset-mapping-pix" class="bg-white border text-sm rounded px-3 py-1">Resetar</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Dica: selecione a linha de cabeçalho correta na primeira coluna do arquivo para popular as opções.</p>
+      </div>
+    </div>
+
+    <!-- Importar: painéis de upload (copiado de importar.html) - inicialmente ocultos; exibidos ao clicar em Importar Vendas -->
+  <div id="import-panels" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] md:transform md:transition md:duration-500 md:scale-95 grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Upload Cartões -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-md font-semibold text-gray-700 mb-2">Importar Vendas em Cartões</h2>
+        <p class="text-gray-500 text-sm mb-2">Selecione um arquivo CSV ou Excel</p>
+        <input type="file" id="fileInputCartao" accept=".csv,.xlsx" class="mt-1 text-sm" multiple />
+        <p id="fileNameCartao" class="mt-1 text-sm text-gray-600"></p>
+        <div class="flex gap-2 mt-3">
+          <button id="processarBtnCartao" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 text-sm" disabled>Processar</button>
+        </div>
+      
+      </div>
+
+      <!-- Upload PIX -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-md font-semibold text-gray-700 mb-2">Importar Vendas via PIX</h2>
+        <p class="text-gray-500 text-sm mb-2">Selecione um arquivo CSV ou Excel (PIX)</p>
+        <input type="file" id="fileInputPix" accept=".csv,.xlsx" class="mt-1 text-sm" multiple />
+        <p id="fileNamePix" class="mt-1 text-sm text-gray-600"></p>
+        <div class="flex gap-2 mt-3">
+          <button id="processarBtnPix" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 text-sm" disabled>Processar</button>
+        </div>
+      
+      </div>
+      
+      
+    </div>
+
+
+    <!-- Toolbar: escolher ano e ações -->
+    <div class="bg-white rounded-xl shadow p-6 mb-6">
+      <div class="flex items-center gap-4 flex-wrap">
+        <label class="text-sm">Ver receitas do ano:</label>
+        <select id="select-anos-receitas" class="rounded border px-2 py-2"></select>
+        <button id="btn-ver-ano-receitas" class="bg-sky-600 text-white rounded px-3 py-2">Ver</button>
+      </div>
+    </div>
+
+    <!-- Cards de Resumo do Ano -->
+    <div id="resumo-cards-receitas" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">💰</span>
+          <span class="text-sm font-medium text-emerald-700">Receita Bruta</span>
+        </div>
+        <div id="card-receita-bruta" class="text-xl font-bold text-emerald-800">R$ 0,00</div>
+        <div id="card-receita-bruta-comp" class="text-xs text-emerald-600 mt-1"></div>
+      </div>
+      <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">📉</span>
+          <span class="text-sm font-medium text-red-700">MDR (Taxas)</span>
+        </div>
+        <div id="card-mdr-total" class="text-xl font-bold text-red-800">R$ 0,00</div>
+        <div id="card-mdr-comp" class="text-xs text-red-600 mt-1"></div>
+      </div>
+      <div class="bg-gradient-to-br from-sky-50 to-sky-100 rounded-xl p-4 border border-sky-200">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">✨</span>
+          <span class="text-sm font-medium text-sky-700">Receita Líquida</span>
+        </div>
+        <div id="card-receita-liquida" class="text-xl font-bold text-sky-800">R$ 0,00</div>
+        <div id="card-receita-liquida-comp" class="text-xs text-sky-600 mt-1"></div>
+      </div>
+      <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">🏆</span>
+          <span class="text-sm font-medium text-purple-700">Melhor Mês</span>
+        </div>
+        <div id="card-melhor-mes" class="text-lg font-bold text-purple-800">--</div>
+        <div id="card-melhor-mes-valor" class="text-xs text-purple-600 mt-1"></div>
+      </div>
+    </div>
+
+    <!-- Comparativo Cartão vs PIX -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-xl shadow p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-lg">💳</span>
+          <h3 class="font-semibold text-gray-800">Cartões</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <div class="text-xs text-gray-500">Receita Bruta</div>
+            <div id="card-cartao-bruta" class="text-lg font-bold text-emerald-600">R$ 0,00</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">MDR</div>
+            <div id="card-cartao-mdr" class="text-lg font-bold text-red-500">R$ 0,00</div>
+          </div>
+        </div>
+        <div class="mt-2 pt-2 border-t">
+          <div class="text-xs text-gray-500">Líquido</div>
+          <div id="card-cartao-liquida" class="text-lg font-bold text-sky-600">R$ 0,00</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-lg">📱</span>
+          <h3 class="font-semibold text-gray-800">PIX</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <div class="text-xs text-gray-500">Receita Bruta</div>
+            <div id="card-pix-bruta" class="text-lg font-bold text-emerald-600">R$ 0,00</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">MDR</div>
+            <div id="card-pix-mdr" class="text-lg font-bold text-red-500">R$ 0,00</div>
+          </div>
+        </div>
+        <div class="mt-2 pt-2 border-t">
+          <div class="text-xs text-gray-500">Líquido</div>
+          <div id="card-pix-liquida" class="text-lg font-bold text-sky-600">R$ 0,00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta de Receita Mensal -->
+    <div class="bg-white rounded-xl shadow p-4 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🎯</span>
+          <h3 class="font-semibold text-gray-800">Meta de Receita Mensal</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="number" id="input-meta-receita" class="w-32 px-2 py-1 border rounded text-sm" placeholder="Meta R$" />
+          <button id="btn-salvar-meta-receita" class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded text-sm">Salvar</button>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="h-6 bg-gray-200 rounded-full overflow-hidden">
+          <div id="barra-meta-receita" class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between mt-2 text-sm">
+          <span id="meta-atual-receita" class="text-gray-600">R$ 0,00</span>
+          <span id="meta-porcentagem-receita" class="font-bold text-emerald-600">0%</span>
+          <span id="meta-alvo-receita" class="text-gray-600">Meta: R$ 0,00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparativo Ano Anterior -->
+    <div class="bg-white rounded-xl shadow p-4 mb-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-lg">📈</span>
+        <h3 class="font-semibold text-gray-800">Comparativo com Ano Anterior</h3>
+        <span class="text-xs text-gray-500">(mês selecionado)</span>
+      </div>
+      <div id="comparativo-ano-anterior" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="text-center text-gray-400 text-sm py-4 col-span-full">Selecione um mês para ver o comparativo</div>
+      </div>
+    </div>
+
+    <!-- Resumo por Tipo de Pagamento com Ticket Médio -->
+    <div class="bg-white rounded-xl shadow p-4 mb-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-lg">💳</span>
+        <h3 class="font-semibold text-gray-800">Resumo por Tipo de Pagamento</h3>
+        <span class="text-xs text-gray-500">(mês selecionado)</span>
+      </div>
+      <div id="resumo-tipos-pagamento" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div class="text-center text-gray-400 text-sm py-4 col-span-full">Selecione um mês para ver o resumo</div>
+      </div>
+    </div>
+
+    <!-- Área principal de resumo (UI movida da Importação) -->
+    <div id="lista-receitas-ano" class="bg-white rounded-xl shadow p-6"></div>
+
+    <!-- Toast de notificação -->
+    <div id="toast-receitas" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-50"></div>
+  </main>
+
+  <!-- Firebase deve ser carregado primeiro -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <!-- Utilitário para verificar dados no Firebase -->
+  <script src="js/firebase-check.js" defer></script>
+  <!-- DataStore (usa Firebase quando disponível) -->
+  <script src="js/data-store.js" defer></script>
+  <script src="js/indexeddb-store.js" defer></script>
+  <script src="js/shared-utils.js" defer></script>
+  <script src="js/ui-utils.js" defer></script>
+  <script src="js/security-utils.js" defer></script>
+  <script src="js/layout.js" defer></script>
+  <script src="js/theme-toggle.js" defer></script>
+  <script src="js/backup-utils.js" defer></script>
+  <script src="js/receitas-firebase-adapter.js" defer></script>
+  <script src="js/receitas.js" defer></script>
+  <!-- Sidebar navigation logic (shared) -->
+  <script src="js/ui/connection-status.js" defer></script>
+  <script src="js/utils/cleanup.js" defer></script>
+  <script src="js/sidebar-nav.js" defer></script>
+</body>
+</html>
+
+
