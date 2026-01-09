@@ -3,233 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Análise Financeira IRANCASH - Demonstração do Resultado do Exercício (DRE) e gráficos de desempenho para Simples Nacional." />
-  <meta name="keywords" content="DRE, análise financeira, Simples Nacional, receitas, despesas, lucro, IRANCASH" />
-  <meta name="author" content="IRANCASH" />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0ea5e9" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="description" content="Análise Financeira IRANCASH - Demonstração do Resultado do Exercício (DRE) e gráficos de desempenho." />
   <title>IRANCASH | Análise Financeira</title>
 
-  <!-- Favicon & PWA -->
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/favicon.svg" />
   <link rel="manifest" href="manifest.json" />
   
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- App Styles -->
   <link rel="stylesheet" href="css/app.css">
-  <script src="js/theme-init.js"></script>
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/ux-improvements.css">
+  <script src="js/theme-init.js"></script>
   
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
-<body class="bg-gray-50 min-h-screen flex" data-page="analise-financeira">
-  <!-- Skip link para acessibilidade -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
+<body class="bg-gray-50 min-h-screen flex text-gray-800" data-page="analise-financeira">
+
+  <!-- Sidebar Mount Point -->
   <aside data-sidebar></aside>
   
-  <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Análise financeira e DRE">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Análise Financeira</h1>
+  <!-- Main Content -->
+  <main id="main-content" class="flex-1 p-4 md:p-8 main-content w-full" role="main">
     
-    <!-- Seletor de Ano -->
-    <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
-      <div class="flex items-center gap-4">
-        <label for="anoSelectDre" class="text-sm font-semibold">Ano:</label>
-        <select id="anoSelectDre" class="border rounded px-3 py-2 bg-white">
-          <option>2024</option>
-          <option selected>2025</option>
-          <option>2026</option>
-        </select>
+    <!-- Page Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Análise Financeira</h1>
+        <p class="text-gray-500 text-sm mt-1">Visão completa do desempenho financeiro (DRE)</p>
       </div>
-      <button id="btnExportarDRE" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Exportar DRE
-      </button>
-    </div>
-
-    <!-- Cards de Indicadores Financeiros -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white rounded-xl shadow p-4">
-        <p class="text-xs text-gray-500 uppercase tracking-wide">Receita Bruta Anual</p>
-        <p id="indicadorReceitaBruta" class="text-2xl font-bold text-emerald-600 mt-1">R$ 0,00</p>
-      </div>
-      <div class="bg-white rounded-xl shadow p-4">
-        <p class="text-xs text-gray-500 uppercase tracking-wide">Lucro Líquido</p>
-        <p id="indicadorLucroLiquido" class="text-2xl font-bold text-sky-600 mt-1">R$ 0,00</p>
-      </div>
-      <div class="bg-white rounded-xl shadow p-4">
-        <p class="text-xs text-gray-500 uppercase tracking-wide">Margem Bruta</p>
-        <p id="indicadorMargemBruta" class="text-2xl font-bold text-amber-600 mt-1">0%</p>
-      </div>
-      <div class="bg-white rounded-xl shadow p-4">
-        <p class="text-xs text-gray-500 uppercase tracking-wide">Margem Líquida</p>
-        <p id="indicadorMargemLiquida" class="text-2xl font-bold text-purple-600 mt-1">0%</p>
-      </div>
-    </div>
-
-    <!-- DRE Resumido -->
-    <div class="bg-white rounded-xl shadow p-6 mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl font-bold text-gray-800">DRE Resumido - Simples Nacional</h2>
-        <span id="periodoResumido" class="text-sm text-gray-500">Ano: 2025</span>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full border-collapse">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Descrição</th>
-              <th class="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-700">Valor (R$)</th>
-              <th class="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-700">% Receita</th>
-            </tr>
-          </thead>
-          <tbody id="dreTableBody">
-            <!-- Preenchido via JavaScript -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- DRE Detalhado por Mês -->
-    <div class="bg-white rounded-xl shadow p-6 mb-6 relative z-0">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold text-gray-800">📅 DRE Detalhado - Mensal</h2>
-        <button id="toggleDreDetalhado" class="text-sky-600 hover:text-sky-700 text-sm font-medium">
-          Expandir/Recolher
+      
+      <div class="flex items-center gap-3 bg-white p-2 rounded-lg shadow-sm border border-gray-100">
+        <div class="flex items-center gap-2 px-2">
+          <label for="anoSelectDre" class="text-sm font-semibold text-gray-600">Ano:</label>
+          <select id="anoSelectDre" class="bg-gray-50 border-gray-200 text-gray-700 text-sm rounded-md focus:ring-sky-500 focus:border-sky-500 py-1.5 pl-2 pr-6">
+            <option>2025</option>
+          </select>
+        </div>
+        <div class="h-6 w-px bg-gray-200"></div>
+        <button id="btnExportarDRE" class="flex items-center gap-2 px-3 py-1.5 bg-sky-50 text-sky-700 hover:bg-sky-100 rounded-md text-sm font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Exportar CSV
         </button>
       </div>
-      <div id="dreDetalhadoContainer" class="overflow-x-auto relative z-0 isolate">
-        <table class="w-full border-collapse text-sm min-w-max" id="dreDetalhadoTable">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border border-gray-300 px-3 py-2 text-left font-semibold text-gray-700 bg-gray-100 min-w-[150px]">Descrição</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Jan</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Fev</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Mar</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Abr</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Mai</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Jun</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Jul</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Ago</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Set</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Out</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Nov</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700 min-w-[100px]">Dez</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-sky-700 bg-sky-50 min-w-[120px]">TOTAL</th>
+    </header>
+
+    <!-- KPI Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Receita Bruta</p>
+        <p id="indicadorReceitaBruta" class="text-2xl font-bold text-gray-900 mt-2">R$ 0,00</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Lucro Líquido</p>
+        <p id="indicadorLucroLiquido" class="text-2xl font-bold text-gray-900 mt-2">R$ 0,00</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Margem Bruta</p>
+        <p id="indicadorMargemBruta" class="text-2xl font-bold text-amber-500 mt-2">0%</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Margem Líquida</p>
+        <p id="indicadorMargemLiquida" class="text-2xl font-bold text-purple-600 mt-2">0%</p>
+      </div>
+    </section>
+
+    <!-- DRE Resumido -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h2 class="text-lg font-bold text-gray-800">DRE Resumido</h2>
+        <span id="periodoResumido" class="text-xs font-medium px-2 py-1 bg-white border rounded text-gray-500">Ano: 2025</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+            <tr>
+              <th class="px-6 py-3 w-1/2">Descrição</th>
+              <th class="px-6 py-3 text-right">Valor (R$)</th>
+              <th class="px-6 py-3 text-right">% Receita</th>
             </tr>
           </thead>
-          <tbody id="dreDetalhadoBody">
-            <!-- Preenchido via JavaScript -->
+          <tbody id="dreTableBody" class="divide-y divide-gray-100">
+            <!-- JS Injected -->
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
+
+    <!-- DRE Detalhado -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden relative z-0">
+      <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h2 class="text-lg font-bold text-gray-800">DRE Mensal Detalhado</h2>
+        <button id="toggleDreDetalhado" class="text-sm text-sky-600 hover:text-sky-700 font-medium focus:outline-none">
+          Expandir / Recolher
+        </button>
+      </div>
+      <!-- Container with isolate to prevent table z-index issues -->
+      <div id="dreDetalhadoContainer" class="overflow-x-auto relative z-0 isolate">
+        <table class="w-full text-sm text-left whitespace-nowrap" id="dreDetalhadoTable">
+          <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+            <tr>
+              <th class="px-4 py-3 sticky left-0 bg-gray-50 z-10 border-r min-w-[180px]">Descrição</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Jan</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Fev</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Mar</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Abr</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Mai</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Jun</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Jul</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Ago</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Set</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Out</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Nov</th>
+              <th class="px-3 py-3 text-right min-w-[90px]">Dez</th>
+              <th class="px-4 py-3 text-right font-bold bg-gray-100 border-l min-w-[110px]">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody id="dreDetalhadoBody" class="divide-y divide-gray-100">
+            <!-- JS Injected -->
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- Despesas por Categoria -->
-    <div class="bg-white rounded-xl shadow p-6 mb-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">📊 Despesas por Categoria</h2>
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+        <h2 class="text-lg font-bold text-gray-800">Despesas por Categoria</h2>
+      </div>
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm" id="despesasCategoriaTable">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border border-gray-300 px-3 py-2 text-left font-semibold text-gray-700">Categoria</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Jan</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Fev</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Mar</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Abr</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Mai</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Jun</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Jul</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Ago</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Set</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Out</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Nov</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">Dez</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-red-700 bg-red-50">TOTAL</th>
-              <th class="border border-gray-300 px-3 py-2 text-right font-semibold text-gray-700">%</th>
+        <table class="w-full text-sm text-left whitespace-nowrap">
+          <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+            <tr>
+              <th class="px-4 py-3 sticky left-0 bg-gray-50 z-10 border-r">Categoria</th>
+              <th class="px-2 py-3 text-right">Jan</th>
+              <th class="px-2 py-3 text-right">Fev</th>
+              <th class="px-2 py-3 text-right">Mar</th>
+              <th class="px-2 py-3 text-right">Abr</th>
+              <th class="px-2 py-3 text-right">Mai</th>
+              <th class="px-2 py-3 text-right">Jun</th>
+              <th class="px-2 py-3 text-right">Jul</th>
+              <th class="px-2 py-3 text-right">Ago</th>
+              <th class="px-2 py-3 text-right">Set</th>
+              <th class="px-2 py-3 text-right">Out</th>
+              <th class="px-2 py-3 text-right">Nov</th>
+              <th class="px-2 py-3 text-right">Dez</th>
+              <th class="px-3 py-3 text-right font-bold bg-gray-100 border-l">TOTAL</th>
+              <th class="px-3 py-3 text-right">%</th>
             </tr>
           </thead>
-          <tbody id="despesasCategoriaBody">
-            <!-- Preenchido via JavaScript -->
+          <tbody id="despesasCategoriaBody" class="divide-y divide-gray-100">
+            <!-- JS Injected -->
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
 
-    <!-- Gráficos de Desempenho -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <!-- Gráfico Receita vs Despesas -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Receita vs Despesas</h3>
-        <div class="relative" style="height: 280px;">
+    <!-- Charts Row 1 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-800 mb-4">Receita vs Despesas</h3>
+        <div class="relative h-64 w-full">
           <canvas id="receitaAnualChart"></canvas>
         </div>
       </div>
-
-      <!-- Gráfico Pizza Despesas por Categoria -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Composição das Despesas</h3>
-        <div class="relative" style="height: 280px;">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-800 mb-4">Composição das Despesas</h3>
+        <div class="relative h-64 w-full">
           <canvas id="despesasPizzaChart"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- Gráfico Lucro Mensal -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-white rounded-xl shadow p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Lucro Líquido Mensal</h3>
-        <div class="relative" style="height: 256px;">
+    <!-- Charts Row 2 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-800 mb-4">Lucro Líquido Mensal</h3>
+        <div class="relative h-64 w-full">
           <canvas id="lucroMensalChart"></canvas>
         </div>
       </div>
-
-      <!-- Gráfico Evolução das Margens -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Evolução das Margens (%)</h3>
-        <div class="relative" style="height: 256px;">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-800 mb-4">Evolução das Margens</h3>
+        <div class="relative h-64 w-full">
           <canvas id="margensChart"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- Gráfico Comparativo Anual -->
-    <div class="bg-white rounded-xl shadow p-6 mb-8">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Comparativo Mensal - Receita, Despesas e Lucro</h3>
-      <p class="text-sm text-gray-500 mb-4">Visão completa do desempenho mensal</p>
-      <div class="relative" style="height: 320px;">
+    <!-- Full Width Chart -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+      <h3 class="text-base font-semibold text-gray-800 mb-4">Comparativo Mensal Completo</h3>
+      <div class="relative h-80 w-full">
         <canvas id="comparativoChart"></canvas>
       </div>
-    </div>
+    </section>
 
-    <!-- Ponto de Equilíbrio -->
-    <div class="bg-white rounded-xl shadow p-6 mb-8">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">📈 Análise de Ponto de Equilíbrio</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-xs text-gray-500 uppercase">Despesas Fixas (Anual)</p>
-          <p id="despesasFixasTotal" class="text-xl font-bold text-gray-800 mt-1">R$ 0,00</p>
+    <!-- Break-even Analysis -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+      <h2 class="text-lg font-bold text-gray-800 mb-6">Análise de Ponto de Equilíbrio</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+          <p class="text-xs font-medium text-gray-500 uppercase">Despesas Fixas</p>
+          <p id="despesasFixasTotal" class="text-xl font-bold text-gray-800 mt-2">R$ 0,00</p>
         </div>
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-xs text-gray-500 uppercase">Despesas Variáveis (Anual)</p>
-          <p id="despesasVariaveisTotal" class="text-xl font-bold text-gray-800 mt-1">R$ 0,00</p>
+        <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+          <p class="text-xs font-medium text-gray-500 uppercase">Despesas Variáveis</p>
+          <p id="despesasVariaveisTotal" class="text-xl font-bold text-gray-800 mt-2">R$ 0,00</p>
         </div>
-        <div class="bg-amber-50 rounded-lg p-4 border-2 border-amber-200">
-          <p class="text-xs text-amber-700 uppercase font-semibold">Ponto de Equilíbrio</p>
-          <p id="pontoEquilibrio" class="text-xl font-bold text-amber-700 mt-1">R$ 0,00</p>
-          <p class="text-xs text-amber-600 mt-1">Receita mínima para cobrir custos</p>
+        <div class="bg-amber-50 rounded-lg p-5 border border-amber-100">
+          <p class="text-xs font-medium text-amber-800 uppercase">Ponto de Equilíbrio</p>
+          <p id="pontoEquilibrio" class="text-xl font-bold text-amber-700 mt-2">R$ 0,00</p>
+          <p class="text-xs text-amber-600 mt-1">Receita necessária para cobrir custos</p>
         </div>
       </div>
-    </div>
+    </section>
+
   </main>
 
-  <!-- Firebase deve ser carregado primeiro -->
+  <!-- Scripts -->
   <script type="module" src="js/firebase-init.js"></script>
-  <!-- DataStore (usa Firebase quando disponível) -->
   <script src="js/data-store.js" defer></script>
   <script src="js/ui/connection-status.js" defer></script>
   <script src="js/utils/cleanup.js" defer></script>
@@ -238,9 +241,9 @@
   <script src="js/ui-utils.js" defer></script>
   <script src="js/security-utils.js" defer></script>
   <script src="js/layout.js" defer></script>
+  <script src="js/sidebar-nav.js" defer></script>
   <script src="js/theme-toggle.js" defer></script>
   <script src="js/backup-utils.js" defer></script>
   <script src="js/analise-financeira.js" defer></script>
 </body>
 </html>
-

@@ -22,45 +22,74 @@
     }).join('');
 
     return `
-<aside class="sidebar-collapsed bg-white shadow-lg flex flex-col lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:z-10" role="complementary" aria-label="Menu lateral">
-  <div class="flex items-center gap-2 px-6 py-6 border-b">
-    <img class="sidebar-logo" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
-    <span class="logo-text text-xl font-bold text-sky-600" aria-hidden="true">IRANCASH</span>
-  </div>
-  <nav class="flex-1 px-4 py-6 space-y-2" role="navigation" aria-label="Navegação principal">
-    ${links}
-  </nav>
-  <div class="px-6 py-4 border-t space-y-3">
-    <button class="theme-toggle-btn" type="button" data-theme-toggle aria-pressed="false" aria-label="Alternar tema escuro">
-      <span data-theme-toggle-icon aria-hidden="true">🌙</span>
-      <span data-theme-toggle-label>Modo escuro</span>
+    <!-- Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+    
+    <!-- Hamburger Button -->
+    <button id="sidebar-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="app-sidebar">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
     </button>
-    <div id="storageUsage" class="storage-indicator hidden" role="status" aria-live="polite">
-      <span class="text-xs">Armazenamento:</span>
-      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div class="bar-fill" style="width: 0%"></div></div>
-      <span class="text-xs" data-storage-percent>0%</span>
-    </div>
-    <div class="text-xs text-gray-400">&copy; 2026 IRANCASH</div>
-  </div>
-</aside>`;
+
+    <!-- Sidebar Drawer -->
+    <aside id="app-sidebar" class="sidebar-drawer" role="complementary" aria-label="Menu lateral">
+      <div class="sidebar-header">
+        <div class="flex items-center gap-2">
+            <img class="sidebar-logo" style="width: 32px; height: 32px;" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+            <span class="logo-text text-lg font-bold text-sky-600">IRANCASH</span>
+        </div>
+      </div>
+      
+      <nav role="navigation" aria-label="Navegação principal">
+        ${links}
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors" type="button" data-theme-toggle aria-pressed="false" aria-label="Alternar tema escuro">
+          <span data-theme-toggle-icon aria-hidden="true">🌙</span>
+          <span data-theme-toggle-label>Modo escuro</span>
+        </button>
+        <div id="storageUsage" class="storage-indicator hidden mt-3" role="status" aria-live="polite">
+          <span class="text-xs text-gray-500">Armazenamento:</span>
+          <div class="bar mt-1 h-1 bg-gray-200 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="bar-fill h-full bg-sky-500 transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <span class="text-xs text-gray-500 mt-1 block text-right" data-storage-percent>0%</span>
+        </div>
+        <div class="text-xs text-gray-400 mt-4 text-center">&copy; 2026 IRANCASH</div>
+      </div>
+    </aside>`;
   }
 
   function mountSidebar() {
+    // Procura por elemento data-sidebar ou cria
     let mountPoint = document.querySelector('[data-sidebar]');
+    
+    // Se não existir, criamos um container DIV para injetar o menu completo
     if (!mountPoint) {
-      console.warn('[Layout] Elemento [data-sidebar] não encontrado. Tentando injetar automaticamente...');
-      // Se não houver ponto de montagem, tenta criar um no início do body
-      const aside = document.createElement('aside');
-      aside.setAttribute('data-sidebar', '');
-      document.body.insertBefore(aside, document.body.firstChild);
-      mountPoint = aside; // Atualiza a referência
+      console.warn('[Layout] Elemento [data-sidebar] não encontrado. Injetando container...');
+      const container = document.createElement('div');
+      container.setAttribute('data-sidebar-container', '');
+      document.body.insertBefore(container, document.body.firstChild);
+      mountPoint = container;
+    } else {
+        // Se existir (é um <aside>), transformamos em div para conter o html completo (overlay + button + aside)
+        // Ou simplesmente substituímos o outerHTML dele pelo novo HTML
+        const container = document.createElement('div');
+        container.setAttribute('data-sidebar-container', '');
+        mountPoint.replaceWith(container);
+        mountPoint = container;
     }
     
-    // Adiciona classe ao body para ajuste de layout
-    document.body.classList.add('with-fixed-sidebar');
+    // Remove classe antiga se existir
+    document.body.classList.remove('with-fixed-sidebar');
     
     const activePage = document.body.dataset.page || 'dashboard';
-    mountPoint.outerHTML = renderSidebar(activePage);
+    mountPoint.innerHTML = renderSidebar(activePage);
+    
+    // Dispara evento customizado avisando que o menu foi montado
+    document.dispatchEvent(new CustomEvent('sidebar:mounted'));
   }
 
   if (document.readyState === 'loading') {

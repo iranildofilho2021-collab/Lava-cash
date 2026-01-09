@@ -2,231 +2,293 @@
 :root{ --sidebar-icon-size:48px; --sidebar-logo-size:60px; --sidebar-collapsed-width:100px; }
 .sidebar-narrow { width: 56px; }
 @media (min-width: 1024px) { .container-max { max-width: 1200px; } }
-.sidebar-link { display:flex; align-items:center; justify-content:flex-start; gap:.75rem; padding:.6rem 1rem; border-radius:.65rem; transition: background-color .18s, box-shadow .18s, transform .18s; font-size:0.95rem; }
-.sidebar-link:hover { background-color: #f0f9ff; box-shadow: 0 6px 18px rgba(2,6,23,0.06); transform: translateY(-2px); }
-.sidebar-link svg { flex-shrink:0; }
-.sidebar-link.active { background: linear-gradient(90deg, rgba(14,165,233,0.12), rgba(56,189,248,0.06)); box-shadow: inset 0 0 0 1px rgba(14,165,233,0.06); }
-.sidebar-icon { width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); color: #0ea5e9; }
-/* Active link label styling (centralizado) */
-.sidebar-link.active > span { color: #0369a1; font-weight:700; }
+/* Sidebar Link Styling (Refined) */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Reduzido de 1rem */
+  padding: 0.6rem 0.8rem; /* Reduzido padding */
+  border-radius: 0.5rem;
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.9rem; /* Reduzido tamanho da fonte */
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #f1f5f9;
+  color: #0ea5e9;
+  transform: translateX(2px); /* Reduzido movimento */
+}
+
+.sidebar-link.active {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  box-shadow: inset 3px 0 0 #0284c7;
+}
+
+.sidebar-link img {
+  width: 20px; /* Reduzido de 24px */
+  height: 20px;
+  object-fit: contain;
+}
 /* fim: css do sidebar */
 
-/* Regras comuns compartilhadas entre páginas */
-body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
-/* Smooth main content transitions to avoid layout jumps when sidebar width changes */
-.main-content { transition: margin .18s ease, padding .18s ease, width .18s ease; }
-.card-hover { transition: transform .18s ease, box-shadow .18s ease; }
-.card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(2,6,23,0.12); }
-.topbar { background: linear-gradient(90deg,#ffffff, #f8fbff); padding: .75rem 1rem; border-radius: .5rem; }
-.btn-primary { transition: transform .12s ease, box-shadow .12s ease, background-color .12s; }
-.btn-primary:hover { transform: translateY(-2px); }
-/* Small utilities */
-.lead-relaxed { line-height:1.45; }
-/* Toast messages */
-.toast { position: fixed; right: 20px; top: 20px; z-index: 60; min-width: 240px; border-radius: 8px; box-shadow: 0 10px 30px rgba(2,6,23,0.12); transform: translateY(-10px); opacity: 0; transition: transform .28s ease, opacity .28s ease; }
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { background: linear-gradient(90deg,#ecfdf5,#dcfce7); border-left: 4px solid #10b981; color: #064e3b; padding: 12px 14px; }
-.toast.error { background: linear-gradient(90deg,#fff1f2,#fee2e2); border-left: 4px solid #ef4444; color: #7f1d1d; padding: 12px 14px; }
+/* Espaçamento responsivo e consistência de layout */
+:root {
+  --spacing-container-padding-mobile: 40px; /* Aumentado para 40px */
+  --spacing-container-padding-desktop: 60px; /* Aumentado para 60px */
+  --spacing-section-gap: 2rem;
+  --spacing-element-gap: 1rem;
+}
+
+/* Container principal ajustável */
+.container-responsive {
+  width: 100%;
+  padding-left: var(--spacing-container-padding-mobile);
+  padding-right: var(--spacing-container-padding-mobile);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .container-responsive {
+    padding-left: var(--spacing-container-padding-desktop);
+    padding-right: var(--spacing-container-padding-desktop);
+  }
+}
+
+/* Ajuste de main content para evitar sobreposição do menu toggle */
+main, .main-content {
+  padding-top: 6rem !important; /* Aumentado para 6rem (aprox 96px) */
+  padding-bottom: 2rem;
+  /* Margens laterais explícitas de 40px no mínimo */
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 1600px; /* Aumentado de 1400px para 1600px para aproveitar melhor telas grandes */
+  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1), padding 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 1025px) {
+  /* Quando o sidebar abre, ele empurra o conteúdo */
+  body.sidebar-open main, 
+  body.sidebar-open .main-content {
+    margin-left: var(--sidebar-width-desktop) !important; /* Empurra para direita */
+    margin-right: auto !important; /* Mantém centralizado no espaço restante? Não, preenche */
+    width: calc(100% - var(--sidebar-width-desktop)) !important;
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+  }
+
+  /* Estado padrão (sidebar fechado/overlay) - Centralizado */
+  main, .main-content {
+    padding-top: 2rem !important;
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+    margin-left: auto !important; /* Força centralização */
+    margin-right: auto !important;
+  }
+}
+
+/* Padronização de Cards */
+.card-standard {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid #f1f5f9;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-standard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Títulos de página padronizados */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .page-title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+/* Transições globais suaves */
+a, button, input, select, .card-standard, .sidebar-link {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Menu Hambúrguer - Ajuste de posição e z-index */
+#sidebar-toggle {
+  top: 0.75rem; /* Ajuste fino */
+  left: 0.75rem;
+  width: 44px; /* Aumentado levemente para touch target */
+  height: 44px;
+}
+
+/* Footer responsivo */
+.footer-standard {
+  margin-top: auto;
+  padding: 2rem 0;
+  border-top: 1px solid #e5e7eb;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+}
 
 /* End of shared rules */
 
-.sidebar-collapsed { width: var(--sidebar-collapsed-width) !important; overflow: hidden; transition: width .32s cubic-bezier(.2,.9,.2,1), box-shadow .32s cubic-bezier(.2,.9,.2,1); }
-/* hide the textual logo when collapsed; reveal on hover */
-.sidebar-collapsed .logo-text{ display: none; opacity: 0; transform: translateX(-6px); transition: opacity .28s cubic-bezier(.2,.9,.2,1), transform .28s cubic-bezier(.2,.9,.2,1); }
-/* collapsed: keep icons aligned to left (user requested left-aligned icons) */
-.sidebar-collapsed .sidebar-link { justify-content: flex-start; padding-left: .6rem; padding-right: .6rem; }
-.sidebar-collapsed .sidebar-link span { display: none; }
-.sidebar-collapsed .sidebar-icon, .sidebar-collapsed .sidebar-logo { display:block; margin:0; }
-.sidebar-collapsed:hover{ width: 16rem !important; }
-.sidebar-collapsed:hover .sidebar-link{ justify-content: flex-start; padding-left: 1rem; padding-right: 1rem; }
-.sidebar-collapsed:hover .sidebar-link span { display: inline-block; opacity: 1; transform: translateX(0); transition: opacity .28s cubic-bezier(.2,.9,.2,1), transform .28s cubic-bezier(.2,.9,.2,1); margin-left: .75rem; }
-.sidebar-collapsed .sidebar-link span { transition: opacity .28s cubic-bezier(.2,.9,.2,1), transform .28s cubic-bezier(.2,.9,.2,1); transform: translateX(-6px); opacity: 0; }
-.sidebar-collapsed:hover .logo-text{ display:inline-block; opacity:1; transform: translateX(0); }
-.sidebar-collapsed .logo-text{ margin-left: .5rem; opacity: 0; }
-
-/* logo image sizing */
-.sidebar-logo{ width:var(--sidebar-logo-size); height:var(--sidebar-logo-size); display:block; transition: width .18s ease, height .18s ease; }
-
-/* when the collapsed sidebar expands (hover), increase the logo size */
-.sidebar-collapsed:hover .sidebar-logo{ width:80px; height:80px; }
-
-/* tweak icon appearance when collapsed: make a circular touch target with proportional shadow */
-.sidebar-collapsed nav{ display:flex; flex-direction:column; gap:0.6rem; align-items:stretch; padding-top:0.6rem; }
-.sidebar-collapsed .sidebar-link{ width:100%; }
-.sidebar-collapsed .sidebar-link .sidebar-icon{
-	display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); /* keep icons large when collapsed */
-    padding:0; /* no circular padding */
-    border-radius:0; /* no circular background */
-    background:transparent; /* ensure icon pixels remain visible */
-    box-shadow: none; /* flat appearance */
-    border: none;
-    margin-left: .35rem;
-    transition: box-shadow .18s ease, padding .18s ease, background .18s ease, margin .18s ease, width .18s ease, height .18s ease, border .18s ease;
-}
-/* when sidebar expands (hover), remove the circular background and shadow so icons sit inline with labels */
-.sidebar-collapsed:hover .sidebar-link .sidebar-icon{
-	/* keep same size when expanded on hover to avoid jump/shrink */
-	padding:0; background:transparent; box-shadow:none; margin-left:0.25rem; width:var(--sidebar-icon-size); height:var(--sidebar-icon-size);
+/* Sidebar Drawer & Hamburger Menu */
+:root {
+  --sidebar-width-desktop: 250px;
+  --sidebar-width-tablet: 250px;
+  --sidebar-width-mobile: 100%;
 }
 
-/* allow using an img for the dashboard icon and style it the same way */
-.sidebar-icon-img{ width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); display:inline-block; object-fit:contain; }
-.sidebar-collapsed .sidebar-link .sidebar-icon-img{
-	display:inline-flex; align-items:center; justify-content:center;
-	padding:0; border-radius:0; background:transparent !important; box-shadow:none !important;
-	margin-left: 0; width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); object-fit:contain;
-	border: none !important;
-}
-.sidebar-collapsed:hover .sidebar-link .sidebar-icon-img{ padding:0; background:transparent !important; box-shadow:none !important; margin-left:0; border: none; width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); }
-
-/* Global icon image cleanup: remove any surrounding white background and ensure transparency
-   Note: if the PNG itself contains white padding, crop should be done on the asset; this rule
-   removes CSS-added padding/borders and forces transparent background. */
-.sidebar-icon-img{ background:transparent !important; padding:0 !important; border:none !important; box-shadow:none !important; }
-
-/* Colorize the Ajuda icon to blue using a CSS filter. If the PNG is multi-color, the result
-   may vary; we target by filename in the src attribute. */
-.sidebar-icon-img[src*="ajuda"]{
-	/* normalize to monochrome then colorize to a blue tone similar to --sidebar icon color */
-	filter: brightness(0) saturate(100%) invert(36%) sepia(95%) saturate(600%) hue-rotate(170deg) brightness(0.95) !important;
+/* Ensure hamburger button is always visible and on top */
+#sidebar-toggle {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10001;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  transition: transform 0.2s ease, background-color 0.2s;
 }
 
-.sidebar-collapsed:hover .sidebar-link .sidebar-icon{ /* removed conflicting small-size rule; icons keep consistent size via --sidebar-icon-size */ padding:0; background:transparent; box-shadow:none; margin-left:0.25rem; width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); border: none; }
-
-/* ensure SVG/feather icons keep visible stroke color when collapsed (prevent them from appearing white) */
-.sidebar-collapsed .sidebar-link svg, .sidebar-collapsed .sidebar-link i, .sidebar-collapsed .sidebar-link .feather {
-	stroke: #0ea5e9 !important;
-	color: #0ea5e9 !important;
-}
-.sidebar-collapsed .sidebar-link svg path, .sidebar-collapsed .sidebar-link svg circle, .sidebar-collapsed .sidebar-link svg rect {
-	stroke: #0ea5e9 !important;
-	fill: none !important;
+#sidebar-toggle:hover {
+  background-color: #f8fafc;
+  transform: scale(1.05);
 }
 
-/* small screens: convert to bottom navigation (mobile app feel) */
-@media (max-width: 1023px){
-  /* Reset fixed sidebar margins for mobile/tablet */
-  body.with-fixed-sidebar main,
-  body.with-fixed-sidebar .main-content {
-    margin-left: 0 !important;
-    margin-bottom: 80px; /* Space for bottom nav */
-    max-width: 100% !important;
-  }
+#sidebar-toggle svg {
+  width: 24px;
+  height: 24px;
+  color: #0f172a;
+}
 
-  /* Make main container full width on smaller screens */
-  .dashboard-container, .container, .container-max {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
+/* Sidebar Drawer */
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: white;
+  z-index: 10000;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  transform: translateX(-105%); /* Hidden by default */
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-  .sidebar-collapsed { 
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    top: auto !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    flex-direction: row !important;
-    overflow-y: hidden !important;
-    overflow-x: auto !important;
-    padding: 0 !important;
-    border-top: 1px solid #e2e8f0;
-    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-    z-index: 9999 !important;
-    position: fixed !important; /* Ensure it sticks to bottom */
-  }
+.sidebar-drawer.is-open {
+  transform: translateX(0);
+}
 
-  /* Hide logo and footer elements on mobile */
-  .sidebar-collapsed > div:first-child, /* Logo container */
-  .sidebar-collapsed > div:last-child { /* Footer/Theme container */
-    display: none !important;
-  }
-
-  /* Adjust nav container for horizontal layout */
-  .sidebar-collapsed nav {
-    flex-direction: row !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    width: 100% !important;
-    padding: 0.5rem !important;
-    gap: 0 !important;
-  }
-
-  /* Adjust links for touch targets */
-  .sidebar-collapsed .sidebar-link {
-    flex-direction: column !important;
-    padding: 0.25rem !important;
-    gap: 0.25rem !important;
-    border-radius: 0.5rem !important;
-    justify-content: center !important;
-    width: auto !important;
-    flex: 1;
-    text-align: center;
-  }
-
-  /* Icons smaller on mobile */
-  .sidebar-collapsed .sidebar-icon,
-  .sidebar-collapsed .sidebar-icon-img {
-    width: 24px !important;
-    height: 24px !important;
-    margin: 0 !important;
-  }
-
-  /* Show labels specific way if needed, or hide */
-  .sidebar-collapsed .sidebar-link span {
-    display: block !important;
-    font-size: 0.65rem !important;
-    opacity: 1 !important;
-    transform: none !important;
-    margin: 0 !important;
-    white-space: nowrap;
-    text-align: center;
-  }
+/* Responsive Widths */
+@media (min-width: 1025px) {
+  .sidebar-drawer { width: var(--sidebar-width-desktop); }
   
-  /* Disable hover expansion on mobile */
-  .sidebar-collapsed:hover {
-    width: 100% !important;
-    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  /* When sidebar is open on desktop, push main content */
+  body.sidebar-open main, 
+  body.sidebar-open .main-content {
+    margin-left: var(--sidebar-width-desktop);
+    width: calc(100% - var(--sidebar-width-desktop));
   }
 }
 
-/* Page transition for smoother navigation when clicking sidebar links
-	 Applied by adding the class .page-exit to the main content element (e.g. <main> or .main-content)
-	 The script in each page will toggle this class before navigating. */
-.main-content.page-exit, main.page-exit {
-	opacity: 0;
-	transform: translateX(8px) scale(0.995);
-	transition: opacity .28s cubic-bezier(.2,.8,.2,1), transform .28s cubic-bezier(.2,.8,.2,1);
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sidebar-drawer { width: var(--sidebar-width-tablet); }
 }
 
-/* small subtle hover for sidebar link active change to feel more modern */
-.sidebar-link {
-	transition: background-color .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s cubic-bezier(.2,.8,.2,1), transform .22s cubic-bezier(.2,.8,.2,1);
-}
-.sidebar-link:active {
-	transform: translateY(1px) scale(0.998);
+@media (max-width: 767px) {
+  .sidebar-drawer { width: var(--sidebar-width-mobile); }
 }
 
-/* Prevent quick collapse/expand flicker when a sidebar link is clicked.
-	When .no-collapse is present on the aside.sidebar-collapsed, keep it
-	visually expanded until navigation completes. JS will add this class
-	on mousedown/touchstart and remove it shortly after navigation.
-*/
-.sidebar-collapsed.no-collapse { width: 16rem !important; }
-.sidebar-collapsed.no-collapse .sidebar-link span { display: inline-block; opacity: 1; transform: translateX(0); }
-.sidebar-collapsed.no-collapse .logo-text { display: inline-block; opacity: 1; transform: translateX(0); }
-.sidebar-collapsed .theme-toggle-btn { justify-content: center; gap: 0; }
-.sidebar-collapsed .theme-toggle-btn [data-theme-toggle-label] { display: none; }
-.sidebar-collapsed:hover .theme-toggle-btn,
-.sidebar-collapsed.no-collapse .theme-toggle-btn { justify-content: flex-start; gap: .5rem; }
-.sidebar-collapsed:hover .theme-toggle-btn [data-theme-toggle-label],
-.sidebar-collapsed.no-collapse .theme-toggle-btn [data-theme-toggle-label] { display: inline-flex; }
+/* Main Content Adjustments - REMOVIDO para evitar conflito com novas regras globais */
+/* As regras globais acima agora controlam isso */
+
+/* Overlay */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar Content Styling */
+/* Sidebar Header Adjustments */
+.sidebar-drawer .sidebar-header {
+  padding: 1rem 1.25rem; /* Padding menor */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  margin-top: 3.5rem; 
+}
+
+.sidebar-logo {
+  width: 36px !important; /* Reduzido logo */
+  height: 36px !important;
+}
+
+.logo-text {
+  font-size: 1.1rem !important; /* Reduzido texto do logo */
+}
+
+.sidebar-drawer nav {
+  padding: 1rem; /* Menos padding interno */
+  gap: 0.25rem; /* Menor espaço entre itens */
+}
+
+/* On desktop, we can align header differently if desired */
+@media (min-width: 1025px) {
+    .sidebar-drawer .sidebar-header { margin-top: 0; }
+    /* Hide the external toggle when sidebar is open? No, keep it for closing. 
+       Maybe move internal toggle? Let's keep it simple. */
+}
+
+
 
 /* Validação de formulários */
 .input-error {
