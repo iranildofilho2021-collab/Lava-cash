@@ -35,8 +35,23 @@
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
   <aside data-sidebar></aside>
   <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Gerenciamento de despesas">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Despesas</h1>
-  <div class="mb-4 md:sticky md:top-6 md:z-40">
+    <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Despesas</h1>
+      
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="quick-action-btn bg-sky-500 hover:bg-sky-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+          <span class="hidden sm:inline">Dashboard</span>
+        </a>
+        <a href="receitas.html" class="quick-action-btn bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          <span class="hidden sm:inline">Receitas</span>
+        </a>
+      </div>
+    </div>
+
+  <div class="mb-4 md:sticky md:top-6 md:z-40 flex items-center gap-2">
     <button id="btn-toggle-form" type="button" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg" aria-expanded="false" aria-controls="form-despesa">+ Lançamentos</button>
   </div>
 
@@ -164,6 +179,9 @@
 
   <!-- Firebase deve ser carregado primeiro -->
   <script type="module" src="js/firebase-init.js"></script>
+  <!-- Auth Service & Guard -->
+  <script src="js/auth-service.js"></script>
+  <script src="js/auth-guard.js"></script>
   <script src="js/despesas-utils.js"></script>
   <!-- DataStore (usa Firebase quando disponível) -->
   <script src="js/data-store.js" defer></script>

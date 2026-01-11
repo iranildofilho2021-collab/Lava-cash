@@ -609,7 +609,476 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
       renderizarCategorias();
       atualizarSelectAnos();
       initBackupSection();
+      initImportConfig();
+      initPeriodosConfig();
+      initDespesasToggle(); 
+      initUsersSection();
+      initSystemSettings(); // New
     })();
+    
+    // ---------- Configurações do Sistema (Dev Only) ----------
+    async function initSystemSettings() {
+        if (!window.AuthService || !window.SettingsService) return;
+        
+        const currentUser = AuthService.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'developer') return;
+
+        const section = document.getElementById('system-settings-section');
+        if (section) section.classList.remove('hidden');
+
+        // Load Settings
+        const settings = await SettingsService.getSettings();
+        
+        // App Name
+        const nameInput = document.getElementById('app-name-input');
+        if (nameInput) nameInput.value = settings.appName || '';
+        
+        document.getElementById('btn-save-app-name')?.addEventListener('click', async () => {
+            const newName = nameInput.value.trim();
+            if(!newName) return showMsg('Nome inválido', true);
+            await SettingsService.saveSettings({ appName: newName });
+            showMsg('Nome da aplicação atualizado!');
+        });
+
+        // Partners
+        renderPartnersTable(settings.partners);
+
+        document.getElementById('btn-save-partners')?.addEventListener('click', async () => {
+            const rows = document.querySelectorAll('#partners-list-body tr');
+            const newPartners = [];
+            
+            rows.forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                newPartners.push({
+                    name: inputs[0].value,
+                    share: Number(inputs[1].value),
+                    investment: Number(inputs[2].value),
+                    role: 'Sócio'
+                });
+            });
+            
+            await SettingsService.saveSettings({ partners: newPartners });
+            showMsg('Dados dos sócios atualizados!');
+        });
+    }
+
+    function renderPartnersTable(partners) {
+        const tbody = document.getElementById('partners-list-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        partners.forEach((p, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="px-3 py-2"><input type="text" class="w-full border rounded p-1" value="${p.name}"></td>
+                <td class="px-3 py-2"><input type="number" class="w-full border rounded p-1 text-center" value="${p.share}"></td>
+                <td class="px-3 py-2"><input type="number" class="w-full border rounded p-1 text-center" value="${p.investment}"></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // ---------- Gestão de Usuários ----------
+    async function initUsersSection() {
+        if (!window.AuthService) return;
+        
+        // Check permission (already protected by page access, but double check)
+        const currentUser = AuthService.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'developer') return;
+
+        const section = document.getElementById('users-section');
+        const tbody = document.getElementById('users-list-body');
+        
+        if (section) section.classList.remove('hidden');
+        
+        try {
+            await renderUsersTable();
+        } catch (err) {
+            console.warn('Erro ao renderizar usuarios:', err);
+        }
+
+        // Make render available globally or attach refresh logic
+        window.refreshUsersTable = renderUsersTable;
+    }
+
+    async function renderUsersTable() {
+        const tbody = document.getElementById('users-list-body');
+        if (!tbody) return;
+        
+        const users = await AuthService.getAllUsers();
+        tbody.innerHTML = '';
+
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Nenhum usuário cadastrado.</td></tr>';
+            return;
+        }
+
+        users.forEach(user => {
+            const isDev = user.role === 'developer';
+            const tr = document.createElement('tr');
+            
+            // Status Badge
+            const statusClass = user.active 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-red-100 text-red-800';
+            const statusLabel = user.active ? 'Ativo' : 'Inativo';
+
+            tr.innerHTML = `
+                <td class="px-3 py-3 whitespace-nowrap text-gray-900">${user.name}</td>
+                <td class="px-3 py-3 whitespace-nowrap text-gray-500">${user.email}</td>
+                <td class="px-3 py-3 whitespace-nowrap text-gray-500 capitalize">
+                    ${!isDev ? `
+                    <select onchange="handleUserAction('role', '${user.email}', this.value)" class="text-sm border-gray-300 rounded focus:ring-sky-500 focus:border-sky-500">
+                        <option value="visualizador" ${user.role === 'visualizador' ? 'selected' : ''}>Visualizador</option>
+                        <option value="cadastrador" ${user.role === 'cadastrador' ? 'selected' : ''}>Cadastrador</option>
+                    </select>
+                    ` : '<span class="font-bold">Developer</span>'}
+                </td>
+                <td class="px-3 py-3 whitespace-nowrap text-center">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass}">
+                        ${statusLabel}
+                    </span>
+                </td>
+                <td class="px-3 py-3 whitespace-nowrap text-right text-sm font-medium">
+                    ${!isDev ? `
+                    <button onclick="handleUserAction('toggle', '${user.email}')" class="text-sky-600 hover:text-sky-900 mr-3">
+                        ${user.active ? 'Bloquear' : 'Ativar'}
+                    </button>
+                    <button onclick="handleUserAction('delete', '${user.email}')" class="text-red-600 hover:text-red-900">
+                        Excluir
+                    </button>
+                    ` : '<span class="text-gray-400 italic">Admin</span>'}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Expose handler globally for the onclick events in HTML string
+    window.handleUserAction = async function(action, email, value) {
+        if (!window.AuthService) return;
+        
+        if (action === 'toggle') {
+            if (await AuthService.toggleUserStatus(email)) {
+                showMsg('Status do usuário atualizado.');
+                await renderUsersTable();
+            }
+        } else if (action === 'delete') {
+            if (confirm(`Tem certeza que deseja excluir o usuário ${email}?`)) {
+                if (await AuthService.deleteUser(email)) {
+                    showMsg('Usuário excluído.');
+                    await renderUsersTable();
+                }
+            }
+        } else if (action === 'role') {
+            if (await AuthService.updateUserRole(email, value)) {
+                showMsg('Nível de acesso atualizado.');
+                // Não precisa re-renderizar tudo se for só select, mas garante consistência
+            }
+        }
+    };
+    
+    // Toggle Genérico
+    function setupToggle(btnId, sectionId, btnTextClosed, btnTextOpened) {
+       const btn = document.getElementById(btnId);
+       const section = document.getElementById(sectionId);
+       if(btn && section) {
+          btn.addEventListener('click', () => {
+             const isClosed = section.classList.contains('max-h-0');
+             if(isClosed) {
+                section.classList.remove('max-h-0', 'opacity-0', '-translate-y-2');
+                section.classList.add('max-h-[2000px]', 'opacity-100', 'translate-y-0');
+                if(btnTextOpened) btn.textContent = btnTextOpened;
+             } else {
+                section.classList.remove('max-h-[2000px]', 'opacity-100', 'translate-y-0');
+                section.classList.add('max-h-0', 'opacity-0', '-translate-y-2');
+                if(btnTextClosed) btn.textContent = btnTextClosed;
+             }
+          });
+       }
+    }
+    
+    function initDespesasToggle() {
+       setupToggle('btn-toggle-despesas', 'despesas-section', 'Gerenciar Despesas', 'Fechar Gerenciar Despesas');
+    }
+
+    // ---------- Configuração de Importação (Mapping) ----------
+    function initImportConfig() {
+      // Toggle logic using generic helper
+      setupToggle('btn-toggle-import-config', 'import-config-content', 'Configurações de Importação', 'Fechar Configurações de Importação');
+
+      // 1. Carregar configuração de linhas de cabeçalho
+
+      const mapCartao = loadMapping('mapping_cartao');
+      const mapPix = loadMapping('mapping_pix');
+      
+      const inputCartao = document.getElementById('headerline-cartao');
+      if (inputCartao) inputCartao.value = mapCartao.headerRow || 2;
+      
+      const inputPix = document.getElementById('headerline-pix');
+      if (inputPix) inputPix.value = mapPix.headerRow || 2;
+      
+      // Salvar botão geral
+      const btnSave = document.getElementById('save-import-config');
+      if (btnSave) {
+        btnSave.addEventListener('click', () => {
+          const vCartao = parseInt(inputCartao.value) || 2;
+          const vPix = parseInt(inputPix.value) || 2;
+          
+          const mc = loadMapping('mapping_cartao');
+          mc.headerRow = vCartao;
+          saveMapping('mapping_cartao', mc);
+          
+          const mp = loadMapping('mapping_pix');
+          mp.headerRow = vPix;
+          saveMapping('mapping_pix', mp);
+          
+          showMsg('Configurações de linha de cabeçalho salvas.');
+        });
+      }
+      
+      // 2. Mapeamento Cartão
+      setupMappingPanel('mapping-cartao', 'mapping_cartao', [
+        { key: 'date', label: 'Data', default: 'Data Venda' },
+        { key: 'time', label: 'Hora', default: 'Hora Venda' },
+        { key: 'valorBruto', label: 'Valor Bruto', default: 'Valor Bruto' },
+        { key: 'mdr', label: 'Taxa (MDR)', default: 'Valor Taxa' },
+        { key: 'valorLiquido', label: 'Valor Líquido', default: 'Valor Liquido' },
+        { key: 'modalidade', label: 'Modalidade (Déb/Cré)', default: 'Modalidade' },
+        { key: 'bandeira', label: 'Bandeira', default: 'Bandeira' },
+        { key: 'nsus', label: 'NSU', default: 'NSU' }
+      ]);
+      
+      // 3. Mapeamento PIX
+      setupMappingPanel('mapping-pix', 'mapping_pix', [
+        { key: 'date', label: 'Data', default: 'Data' },
+        { key: 'valorBruto', label: 'Valor', default: 'Valor' },
+        { key: 'descricao', label: 'Descrição/ID', default: 'Descrição' }
+      ]);
+    }
+    
+    function setupMappingPanel(prefix, storageKey, fields) {
+       const btnOpen = document.getElementById(`open-${prefix}`);
+       const panel = document.getElementById(`${prefix}-panel`);
+       const fileInput = document.getElementById(`${prefix}-sample-file`);
+       const fieldsContainer = `${prefix}-fields`; // ID string for renderMappingUI
+       const btnSave = document.getElementById(`save-${prefix}`);
+       const btnReset = document.getElementById(`reset-${prefix}`);
+       
+       if (!btnOpen || !panel) return;
+       
+       // Toggle panel
+       btnOpen.addEventListener('click', () => {
+         panel.classList.toggle('hidden');
+         // Se abriu e já tem mapping salvo, tenta renderizar (mesmo sem headers novos)
+         if (!panel.classList.contains('hidden')) {
+           // tenta carregar headers salvos ou vazios
+           renderMappingUI(panel.id, fieldsContainer, [], storageKey, fields);
+         }
+       });
+       
+       // Handle file sample
+       if (fileInput) {
+         fileInput.addEventListener('change', async (e) => {
+           const f = e.target.files[0];
+           if (!f) return;
+           try {
+             // Requer ExcelUtils ou processamento simples
+             let headers = [];
+             if (f.name.endsWith('.csv')) {
+                const text = await f.text();
+                // Simples parse CSV linha 1 ou 2
+                const lines = text.split(/\r?\n/);
+                // Pega linha configurada ou detecta
+                const currentMap = loadMapping(storageKey);
+                const rowIdx = (currentMap.headerRow || 2) - 1; 
+                if (lines[rowIdx]) headers = lines[rowIdx].split(/,|;/).map(s => s.replace(/["']/g, '').trim());
+                else if (lines[0]) headers = lines[0].split(/,|;/).map(s => s.replace(/["']/g, '').trim());
+             } else {
+                // Se tiver ExcelUtils global
+                if (window.ExcelUtils) {
+                   const json = await window.ExcelUtils.readExcel(f);
+                   headers = getHeadersFromJson(json, (loadMapping(storageKey).headerRow || 0) - 1);
+                } else {
+                   alert('Biblioteca ExcelUtils não carregada. Tente CSV ou recarregue.');
+                   return;
+                }
+             }
+             
+             if (headers.length > 0) {
+                renderMappingUI(panel.id, fieldsContainer, headers, storageKey, fields);
+                showMsg(`Arquivo lido. ${headers.length} colunas encontradas.`);
+             }
+           } catch (err) {
+             console.error(err);
+             showMsg('Erro ao ler arquivo: ' + err.message, true);
+           }
+         });
+       }
+       
+       // Save
+       if (btnSave) {
+         btnSave.addEventListener('click', () => {
+            const container = document.getElementById(fieldsContainer);
+            const selects = container.querySelectorAll('select');
+            const map = loadMapping(storageKey); // preserve existing props like headerRow
+            selects.forEach(sel => {
+               // find key from label sibling? No, recreate structure or rely on order?
+               // Better: iterate fields definition again and match index
+               // renderMappingUI creates rows in same order as fields
+            });
+            
+            // Re-read from DOM
+            let idx = 0;
+            fields.forEach(f => {
+               if (selects[idx]) {
+                 const val = selects[idx].value;
+                 if (val) map[f.key] = val;
+                 else delete map[f.key];
+                 idx++;
+               }
+            });
+            
+            saveMapping(storageKey, map);
+            showMsg(`Mapeamento ${prefix} salvo.`);
+            panel.classList.add('hidden');
+         });
+       }
+       
+       // Reset
+       if (btnReset) {
+         btnReset.addEventListener('click', () => {
+           if (confirm('Restaurar mapeamento padrão?')) {
+             saveMapping(storageKey, {}); // limpa mas mantém objeto
+             showMsg('Mapeamento resetado.');
+             panel.classList.add('hidden');
+             // reload page or re-render if open
+           }
+         });
+       }
+    }
+
+    // ---------- Configuração de Períodos ----------
+    function initPeriodosConfig() {
+      setupToggle('btn-toggle-periodos', 'periodos-section', 'Configuração de Períodos do Dia', 'Fechar Configuração de Períodos');
+      
+      const container = document.getElementById('periodos-config-container');
+
+      const btnSave = document.getElementById('btn-save-periodos');
+      const btnReset = document.getElementById('btn-reset-periodos');
+      
+      if (!container) return;
+
+      // Add Edit button if not exists (dynamic UI)
+      let btnEdit = document.getElementById('btn-edit-periodos');
+      if (!btnEdit && btnSave) {
+         btnEdit = document.createElement('button');
+         btnEdit.id = 'btn-edit-periodos';
+         btnEdit.className = 'bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2';
+         btnEdit.textContent = 'Editar Regras';
+         // Insert before save
+         btnSave.parentNode.insertBefore(btnEdit, btnSave);
+         // Hide save/reset initially
+         btnSave.classList.add('hidden');
+         btnReset.classList.add('hidden');
+      }
+      
+      // Cancel button
+      let btnCancel = document.getElementById('btn-cancel-periodos');
+      if (!btnCancel && btnSave) {
+         btnCancel = document.createElement('button');
+         btnCancel.id = 'btn-cancel-periodos';
+         btnCancel.className = 'bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded px-4 py-2 hidden';
+         btnCancel.textContent = 'Cancelar';
+         btnSave.parentNode.appendChild(btnCancel);
+      }
+      
+      function render(editable = false) {
+        const config = (window.SharedUtils && window.SharedUtils.getPeriodosConfig) ? window.SharedUtils.getPeriodosConfig() : {};
+        container.innerHTML = '';
+        const order = ['Madrugada', 'Manhã', 'Tarde', 'Noite'];
+        
+        order.forEach(nome => {
+           const range = config[nome] || { start: '00:00', end: '00:00' };
+           const div = document.createElement('div');
+           div.className = 'border rounded p-3 bg-gray-50';
+           div.innerHTML = `
+             <div class="font-semibold text-gray-700 mb-2">${nome}</div>
+             <div class="flex items-center gap-2 mb-2">
+               <label class="text-xs w-10">Início:</label>
+               <input type="time" class="p-start border rounded px-1 text-sm bg-white disabled:bg-gray-100 disabled:text-gray-500" data-period="${nome}" value="${range.start}" ${editable?'':'disabled'}>
+             </div>
+             <div class="flex items-center gap-2">
+               <label class="text-xs w-10">Fim:</label>
+               <input type="time" class="p-end border rounded px-1 text-sm bg-white disabled:bg-gray-100 disabled:text-gray-500" data-period="${nome}" value="${range.end}" ${editable?'':'disabled'}>
+             </div>
+           `;
+           container.appendChild(div);
+        });
+      }
+      
+      render(false);
+
+      if (btnEdit) {
+         btnEdit.addEventListener('click', () => {
+            render(true);
+            btnEdit.classList.add('hidden');
+            btnSave.classList.remove('hidden');
+            btnReset.classList.remove('hidden');
+            btnCancel.classList.remove('hidden');
+         });
+      }
+
+      if (btnCancel) {
+         btnCancel.addEventListener('click', () => {
+            render(false);
+            btnEdit.classList.remove('hidden');
+            btnSave.classList.add('hidden');
+            btnReset.classList.add('hidden');
+            btnCancel.classList.add('hidden');
+         });
+      }
+      
+      if (btnSave) {
+        btnSave.addEventListener('click', () => {
+          const newConfig = {};
+          const cards = container.querySelectorAll('div.border');
+          let hasError = false;
+          
+          cards.forEach(card => {
+             const startIn = card.querySelector('.p-start');
+             const endIn = card.querySelector('.p-end');
+             if (startIn && endIn) {
+               const nome = startIn.dataset.period;
+               newConfig[nome] = { start: startIn.value, end: endIn.value };
+             }
+          });
+          
+          if (!hasError) {
+             if(window.SharedUtils && window.SharedUtils.savePeriodosConfig) {
+                window.SharedUtils.savePeriodosConfig(newConfig);
+             }
+             showMsg('Períodos atualizados com sucesso!');
+             // Return to view mode
+             render(false);
+             btnEdit.classList.remove('hidden');
+             btnSave.classList.add('hidden');
+             btnReset.classList.add('hidden');
+             btnCancel.classList.add('hidden');
+          }
+        });
+      }
+      
+      if (btnReset) {
+        btnReset.addEventListener('click', () => {
+          if (confirm('Restaurar períodos padrão?')) {
+            localStorage.removeItem('config_periodos');
+            render(true); // Keep in edit mode to show changes? Or close? Let's keep in edit mode so user sees what happened
+            showMsg('Períodos restaurados.');
+          }
+        });
+      }
+    }
 
     // ---------- Backup Section ----------
     function initBackupSection() {
@@ -617,8 +1086,7 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
       const inputImport = document.getElementById('input-import-backup');
       const btnClear = document.getElementById('btn-clear-data');
       
-      // Atualiza indicador de storage
-      updateStorageIndicator();
+      // updateStorageIndicator removido da UI
       
       if (btnExport) {
         btnExport.addEventListener('click', () => {
@@ -652,14 +1120,15 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
       
       if (btnClear) {
         btnClear.addEventListener('click', () => {
-          if (window.BackupUtils && typeof window.BackupUtils.clear === 'function') {
-            window.BackupUtils.clear();
-          } else {
-            showMsg('Erro: utilitário de backup não carregado.', true);
+          if(confirm('ATENÇÃO: Esta ação apagará TODOS os dados locais e configurações.\n\nVocê tem certeza que deseja resetar o sistema?')) {
+             // Redirecionar para Reset.html
+             window.location.href = 'Reset.html';
           }
         });
       }
     }
+
+    // initResetButton removed
 
     function updateStorageIndicator() {
       if (!window.BackupUtils || typeof window.BackupUtils.getStorageUsage !== 'function') {

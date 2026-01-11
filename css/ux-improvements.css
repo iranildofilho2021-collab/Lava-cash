@@ -864,55 +864,60 @@ a:focus-visible {
   transform: translateY(-50%) scale(1);
 }
 
-/* ============ MODO COMPACTO ============ */
+/* ============ MODO COMPACTO (REVISADO) ============ */
+/* Redução de 25% no padding (1rem -> 0.75rem) */
 body.compact-mode .bg-white.rounded-xl.shadow.p-4,
-body.compact-mode .bg-white.rounded-xl.shadow.p-5 {
-  padding: 12px !important;
+body.compact-mode .bg-white.rounded-xl.shadow.p-5,
+body.compact-mode .p-4,
+body.compact-mode .p-6 {
+  padding: 0.75rem !important;
 }
 
-body.compact-mode .text-lg {
-  font-size: 0.95rem !important;
-}
+/* Redução de 20% no tamanho das fontes */
+body.compact-mode .text-3xl { font-size: 1.5rem !important; }   /* 1.875rem * 0.8 */
+body.compact-mode .text-2xl { font-size: 1.2rem !important; }   /* 1.5rem * 0.8 */
+body.compact-mode .text-xl { font-size: 1rem !important; }      /* 1.25rem * 0.8 */
+body.compact-mode .text-lg { font-size: 0.9rem !important; }    /* 1.125rem * 0.8 */
+body.compact-mode .text-base, 
+body.compact-mode body { font-size: 0.8rem !important; }        /* 1rem * 0.8 */
+body.compact-mode .text-sm { font-size: 0.7rem !important; }    /* 0.875rem * 0.8 */
 
-body.compact-mode .text-xl {
-  font-size: 1.1rem !important;
-}
+/* Redução de 30% no espaçamento */
+body.compact-mode .gap-4 { gap: 0.7rem !important; }            /* 1rem * 0.7 */
+body.compact-mode .gap-6 { gap: 1.05rem !important; }           /* 1.5rem * 0.7 */
+body.compact-mode .mb-4 { margin-bottom: 0.7rem !important; }
+body.compact-mode .mb-6 { margin-bottom: 1.05rem !important; }
+body.compact-mode .space-y-3 > * + * { margin-top: 0.525rem !important; } /* 0.75rem * 0.7 */
 
-body.compact-mode .text-2xl {
-  font-size: 1.25rem !important;
-}
-
-body.compact-mode .text-3xl {
-  font-size: 1.5rem !important;
-}
-
-body.compact-mode .gap-4 {
-  gap: 0.75rem !important;
-}
-
-body.compact-mode .gap-6 {
-  gap: 1rem !important;
-}
-
-body.compact-mode .mb-4 {
-  margin-bottom: 0.75rem !important;
-}
-
-body.compact-mode .mb-6 {
-  margin-bottom: 1rem !important;
-}
-
-body.compact-mode .space-y-3 > * + * {
-  margin-top: 0.5rem !important;
-}
-
+/* Ajustes específicos de componentes no modo compacto */
 body.compact-mode .month-pill {
-  padding: 8px 10px !important;
+  padding: 0.5rem 0.6rem !important;
   min-height: auto !important;
 }
 
 body.compact-mode #cards-meses-wrapper {
-  gap: 8px !important;
+  gap: 0.7rem !important;
+}
+
+/* ============ CARD SUPERIOR (REDUÇÃO PROPORCIONAL) ============ */
+#card-topo-resumo {
+  /* Redução de 15% na fonte base do card */
+  font-size: 85% !important;
+  /* Redução de 20% no padding (1rem -> 0.8rem) */
+  padding: 0.8rem !important;
+}
+
+/* Redução de 20% nas dimensões do gráfico (9rem -> 7.2rem) */
+#card-topo-resumo .w-36 {
+  width: 7.2rem !important;
+}
+#card-topo-resumo .h-36 {
+  height: 7.2rem !important;
+}
+
+/* Ajustar margens internas para manter alinhamento */
+#card-topo-resumo .mb-3 {
+  margin-bottom: 0.6rem !important; /* 0.75rem * 0.8 */
 }
 
 /* ============ INDICADORES VISUAIS MELHORADOS ============ */

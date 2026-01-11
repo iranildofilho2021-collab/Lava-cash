@@ -522,6 +522,33 @@
     const margemContribuicao = t.receitaBruta > 0 ? 1 - (despVariaveis / t.receitaBruta) : 0;
     const pontoEquilibrio = margemContribuicao > 0 ? despFixas / margemContribuicao : 0;
     
+    // User requested to consider variable expenses in the sum? 
+    // "não deveria somar as daspesas variaveis tbm não ?"
+    // Assuming user wants to see the total expenses (fixed + variable) somewhere or implies the break-even needs to cover everything.
+    // The standard break-even formula covers fixed costs based on the contribution margin (which already accounts for variable costs).
+    // If the user meant "Total Costs Break-even" (Revenue needed to cover Total Costs at current level):
+    // Revenue = Total Costs = Fixed + Variable.
+    // This is satisfied when Profit = 0. That IS the Break-even point calculated above.
+    // However, if the user sees "Despesas Fixas" and "Despesas Variáveis" displayed separately, and thinks "Ponto de Equilíbrio" is just a sum, they might be confused.
+    // I'll stick to the correct formula but maybe the user wants to see "Total Despesas" displayed?
+    // Let's assume the user was questioning if the break-even *value* includes variable expenses. It implicitly does because it's the revenue needed to cover BOTH.
+    // But maybe they want the *calculation* to be `(Fixed + Variable)`. That would be wrong for the formula `Fixed / Margin`.
+    // BUT, if Margin is 1 (no variable costs), then Break-even = Fixed.
+    // If they want `(Fixed + Variable) / Margin`, that's definitely wrong.
+    // Perhaps they simply want to see the SUM of expenses (Fixed + Variable) displayed in the card?
+    // The card currently shows "Ponto de Equilíbrio" (Revenue target).
+    // Let's leave it as is for now as it is mathematically correct, unless they want the break-even to be *calculated* as `(Fixed + Variable) / ...` which would be double counting.
+    // Wait, if I read the prompt again: "o Ponto de Equilíbrio na parte de baixo da pagina - não deveria somar as daspesas variaveis tbm não ? ou esta bom assim".
+    // He asks if it should sum variable expenses too.
+    // Maybe he wants the "Despesas Fixas" box to be "Despesas Totais"?
+    // No, there are 3 boxes: Fixed, Variable, Break-even.
+    // I'll assume the calculation is fine and he is just asking. I will ensure the `despVariaveis` includes CSP as well, which are variable.
+    
+    // Important: `despesasVariaveisMes` currently filters by `d.tipo !== 'Fixo'`.
+    // We should ensure CSP items are considered variable.
+    // The `despesasVariaveisMes` function iterates all expenses. If `tipo` is not 'Fixo', it sums it.
+    // This should include CSP if they are not marked as Fixo.
+    
     if (pontoEqEl) pontoEqEl.textContent = fmtBR(pontoEquilibrio);
   }
 

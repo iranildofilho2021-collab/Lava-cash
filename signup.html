@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - LavaJá Lavanderia</title>
+  
+  <!-- PWA & Mobile -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0ea5e9">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/app.css">
+  
+  <!-- Theme Init (Dark Mode) -->
+  <script src="js/theme-init.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+
+  <!-- Background Decoration -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-20 -left-20 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-0 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Signup Card -->
+  <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transform transition-all hover:scale-[1.01]">
+    
+    <!-- Logo / Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Criar Conta</h1>
+      <p class="text-gray-500 text-sm mt-2">Preencha os dados para se cadastrar.</p>
+    </div>
+
+    <!-- Form -->
+    <form id="signup-form" class="space-y-5" novalidate>
+      
+      <!-- Nome -->
+      <div class="group">
+        <label for="name" class="block text-sm font-medium text-gray-700 mb-1 ml-1">Nome Completo</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-sky-500 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+            </div>
+            <input type="text" id="name" name="name" required
+                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
+                placeholder="Seu Nome">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="group">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1 ml-1">E-mail</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-sky-500 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" /></svg>
+          </div>
+          <input type="email" id="email" name="email" required
+            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
+            placeholder="seu@email.com">
+        </div>
+        <p class="mt-1 text-xs text-red-500 hidden" id="error-email">Por favor, insira um e-mail válido.</p>
+      </div>
+
+      <!-- Senha -->
+      <div class="group">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1 ml-1">Senha</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-sky-500 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+          </div>
+          <input type="password" id="password" name="password" required
+            class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
+            placeholder="••••••••">
+        </div>
+      </div>
+
+      <!-- Role Selection removed as requested -->
+      <input type="hidden" id="role" name="role" value="visualizador">
+
+      <!-- Botão Cadastrar -->
+      <button type="submit" id="btn-signup" class="w-full bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white font-bold py-3 px-4 rounded-xl shadow-lg transform transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+        <span>Criar Conta</span>
+        <svg id="spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </button>
+
+      <!-- Voltar -->
+      <div class="text-center pt-2">
+        <p class="text-sm text-gray-600">
+          Já tem uma conta? 
+          <a href="login.html" class="font-bold text-sky-600 hover:text-sky-700 hover:underline">Fazer Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="js/auth-service.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>

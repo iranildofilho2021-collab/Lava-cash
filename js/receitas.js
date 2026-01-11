@@ -1,50 +1,26 @@
-// Toggle para exibir/ocultar os painéis de importação ao clicar em 'Importar Vendas'
-(function(){
-  const btn = document.getElementById('btn-toggle-import');
-  const panels = document.getElementById('import-panels');
-  if (!btn || !panels) return;
-  const isInitiallyOpen = panels.classList.contains('opacity-100');
-  btn.setAttribute('aria-expanded', isInitiallyOpen ? 'true' : 'false');
-  btn.textContent = isInitiallyOpen ? 'Fechar importação' : 'Importar Vendas';
-
-  const openPanels = () => {
-    panels.classList.remove('max-h-0','opacity-0','-translate-y-2');
-    panels.classList.add('max-h-[1000px]','opacity-100','translate-y-0');
-    const importCfg = document.getElementById('import-config-panel');
-    if (importCfg) {
-      importCfg.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
-      importCfg.classList.add('max-h-0','opacity-0','-translate-y-2');
-      importCfg.classList.remove('md:scale-100');
-      importCfg.classList.add('md:scale-95');
-    }
-    panels.classList.remove('md:scale-95');
-    panels.classList.add('md:scale-100');
-    btn.setAttribute('aria-expanded','true');
-    btn.textContent = 'Fechar importação';
-    const first = panels.querySelector('input, button');
-    if (first) first.focus();
-  };
-
-  const closePanels = () => {
-    panels.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
-    panels.classList.add('max-h-0','opacity-0','-translate-y-2');
-    panels.classList.remove('md:scale-100');
-    panels.classList.add('md:scale-95');
-    btn.setAttribute('aria-expanded','false');
-    btn.textContent = 'Importar Vendas';
-    btn.focus();
-  };
-
-  btn.addEventListener('click', () => {
-    if (panels.classList.contains('opacity-100')) {
-      closePanels();
-    } else {
-      openPanels();
-    }
-  });
-})();
-
-// --- helpers ---
+    // Toggle para exibir/ocultar os painéis de importação ao clicar em 'Importar Vendas'
+    (function(){
+      const btn = document.getElementById('btn-toggle-import');
+      const panels = document.getElementById('import-panels');
+      if(btn && panels){
+        btn.addEventListener('click', ()=>{
+          const isClosed = panels.classList.contains('max-h-0');
+          if(isClosed){
+            // Open
+            panels.classList.remove('max-h-0','opacity-0','-translate-y-2');
+            panels.classList.add('max-h-[1000px]','opacity-100','translate-y-0');
+            panels.classList.remove('md:scale-95'); panels.classList.add('md:scale-100');
+          } else {
+            // Close
+            panels.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
+            panels.classList.add('max-h-0','opacity-0','-translate-y-2');
+            panels.classList.remove('md:scale-100'); panels.classList.add('md:scale-95');
+          }
+        });
+      }
+    })();
+    
+    // --- helpers ---
     async function carregarVendasResumoAsync(){
       try {
         // Prioridade: Firebase > IndexedDB > localStorage > cache em memória
@@ -623,14 +599,10 @@
         container.appendChild(weeklyContainer);
       }
 
-      // container for period totals (período do dia)
+      // container for period totals (período do dia) - REMOVIDO POR SOLICITAÇÃO
       let periodoContainer = container.querySelector('#periodo-totals-rec');
-      if(!periodoContainer){
-        periodoContainer = document.createElement('div');
-        periodoContainer.id = 'periodo-totals-rec';
-        periodoContainer.className = 'mt-4 bg-white rounded p-4 border';
-        container.appendChild(periodoContainer);
-      }
+      if(periodoContainer) periodoContainer.remove();
+
       // container for consistency note
       let consistencyContainer = container.querySelector('#totals-consistency-rec');
       if(!consistencyContainer){
@@ -641,7 +613,7 @@
       }
 
         // checagem de consistência entre as três visões (mensal, dia da semana, período do dia)
-        (function reconcileTotalsUI(){
+        (async function reconcileTotalsUI(){
           try{
             // Se não houver um filtro de mês selecionado corretamente, limpa a nota
             const monthIdx = mesIndex(filtros.mes);
@@ -686,11 +658,17 @@
             const totalSemanal = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'].reduce((acc,k)=> acc + Number(weeklySums[k]||0), 0);
 
             // Total por período: derive usando a função existente (que usa vendasDetalhadas)
-            const periodoSums = getSomaPeriodoPorMes(anoMes);
+            const periodoSums = await getSomaPeriodoPorMes(anoMes);
             const totalPeriodo = ['Madrugada','Manhã','Tarde','Noite'].reduce((acc,k)=> acc + Number(periodoSums[k]||0), 0);
 
             // Diagnóstico adicional: comparar com vendasDetalhadas e vendasResumoDia (contagens e somas)
-            const detalhes = (typeof carregarVendasDetalhadas === 'function') ? carregarVendasDetalhadas() || [] : (JSON.parse(localStorage.getItem('vendasDetalhadas')||'[]')||[]);
+            let detalhes = [];
+            if (typeof window.carregarVendasDetalhadasAsync === 'function') {
+                detalhes = await window.carregarVendasDetalhadasAsync();
+            } else {
+                detalhes = (typeof carregarVendasDetalhadas === 'function') ? carregarVendasDetalhadas() || [] : (JSON.parse(localStorage.getItem('vendasDetalhadas')||'[]')||[]);
+            }
+            
             let countDetalhadas = 0, countWithTime = 0;
             let sumDetalhadasTotal = 0, sumDetalhadasWithTime = 0;
             for(const tx of detalhes){
@@ -850,44 +828,10 @@
               wrap.appendChild(tbl);
             }catch(e){ console.warn('Erro ao renderizar totais semanais', e); }
           })();
-          // render period totals for selected month (Período do Dia)
-          (function renderPeriodoTotals(){
-            try{
-              const wrap = periodoContainer;
-              wrap.innerHTML = '';
-              if(!filtros.mes || filtros.mes === 'Todos'){
-                wrap.innerHTML = `<div class="text-sm text-gray-500">Selecione um mês no filtro acima para ver o total por período do dia.</div>`;
-                return;
-              }
-              const monthIdx = mesIndex(filtros.mes);
-              if(monthIdx === 99){ wrap.innerHTML = `<div class="text-sm text-gray-500">Mês inválido.</div>`; return; }
-              const mesNum = monthIdx + 1;
-              const anoStr = String(ano);
-              const anoMes = `${anoStr}/${String(mesNum).padStart(2,'0')}`;
-              const sums = getSomaPeriodoPorMes(anoMes);
-              // tabela
-              const tbl = document.createElement('table'); tbl.className = 'min-w-full text-sm';
-              tbl.innerHTML = `<thead><tr class='bg-gray-50'>
-                                  <th class='px-2 py-2 text-left'>Período do dia</th>
-                                  <th class='px-2 py-2 text-right'>Total (R$)</th>
-                                </tr></thead><tbody></tbody>`;
-              const tb = tbl.querySelector('tbody');
-              const order = ['Madrugada','Manhã','Tarde','Noite'];
-              order.forEach(nome=>{
-                const tr = document.createElement('tr'); tr.className='odd:bg-white even:bg-gray-50';
-                const val = Number(sums[nome]||0);
-                tr.innerHTML = `<td class='px-2 py-2'>${nome}</td>
-                                <td class='px-2 py-2 text-right font-semibold'>R$ ${val.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>`;
-                tb.appendChild(tr);
-              });
-              const totalSum = order.reduce((acc, k) => acc + Number(sums[k]||0), 0);
-              const trTotal = document.createElement('tr');
-              trTotal.className = 'bg-gray-50 font-semibold';
-              trTotal.innerHTML = `<td class='px-2 py-2'>Total</td>
-                                   <td class='px-2 py-2 text-right'>R$ ${totalSum.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>`;
-              tb.appendChild(trTotal);
-              wrap.appendChild(tbl);
-            }catch(e){ console.warn('Erro ao renderizar totais por período', e); }
+          // render period totals for selected month (Período do Dia) REMOVIDO POR SOLICITACAO
+          (async function renderPeriodoTotals(){
+             // funcionalidade removida, container escondido ou vazio
+             if(periodoContainer) periodoContainer.innerHTML = '';
           })();
 
         // seleção
@@ -1948,21 +1892,38 @@
       }catch(e){ console.warn('getTotalSemanalPorAnoMes falhou', e); return 0; }
     }
 
-    function getTotalPeriodoPorAnoMes(anoMes){
+    async function getTotalPeriodoPorAnoMes(anoMes){
       try{
-        const sums = getSomaPeriodoPorMes(anoMes);
+        const sums = await getSomaPeriodoPorMes(anoMes);
         return ['Madrugada','Manhã','Tarde','Noite'].reduce((acc,k)=> acc + Number(sums[k]||0), 0);
       }catch(e){ console.warn('getTotalPeriodoPorAnoMes falhou', e); return 0; }
     }
 
-    function getSomaPeriodoPorMes(anoMes){
+    async function getSomaPeriodoPorMes(anoMes){
       const zero = { 'Madrugada':0, 'Manhã':0, 'Tarde':0, 'Noite':0 };
       if(!anoMes) return zero;
       try{
-        // Preferência: derivar a partir de vendasDetalhadas, pois contém time por transação.
-        // Se faltar time, tentamos extrair via extractDateTime().
-        const detalhes = carregarVendasDetalhadas() || [];
+        // Preferência: usar o adaptador async se disponível (lida com chunks/firebase)
+        let detalhes = [];
+        if (typeof window.carregarVendasDetalhadasAsync === 'function') {
+           detalhes = await window.carregarVendasDetalhadasAsync();
+        } else {
+           // Fallback manual
+           detalhes = carregarVendasDetalhadas() || [];
+           if (detalhes.length === 0 && window.IRANCASH && window.IRANCASH.DataStore) {
+               const raw = await window.IRANCASH.DataStore.getItemAsync('vendasDetalhadas', []);
+               if (Array.isArray(raw) && raw.length > 0) {
+                   try {
+                       localStorage.setItem('vendasDetalhadas', JSON.stringify(raw));
+                       detalhes = carregarVendasDetalhadas(); 
+                   } catch(e) {}
+               }
+           }
+        }
+        
         const out = { ...zero };
+        if(!detalhes) return out;
+
         for(const tx of detalhes){
           if(!tx) continue;
           // Determina se pertence ao ano/mes pedido
@@ -1984,18 +1945,39 @@
           if(!timeStr){
             const rawDateStr = tx.date || '';
             const ex = extractDateTime(rawDateStr || '');
-            // accept extracted time only when original text contains ':' (explicit time) or 'T' (ISO)
-            // or when rawDateStr contains a fractional numeric token (e.g., '45688 25569.83')
             const hasTimeLike = (typeof rawDateStr === 'string' && (rawDateStr.indexOf(':') !== -1 || rawDateStr.indexOf('T') !== -1));
             const hasFractionSerial = (typeof rawDateStr === 'string' && /\d+\.\d+/.test(rawDateStr));
             if(ex && ex.timeStr && (hasTimeLike || hasFractionSerial)){
               timeStr = ex.timeStr;
             } else {
-              timeStr = null; // don't assume midnight when we don't have explicit time
+              // Fallback: se temos um objeto Date válido 'd' (vindo de dateMs ou parseado), use a hora dele
+              // Isso alinha com a lógica do dashboard.js que extrai hora do Date se não houver string explícita
+              if(d && !isNaN(d.getTime())){
+                 const hh = d.getHours(), mm = d.getMinutes(), ss = d.getSeconds();
+                 // Evita considerar 00:00:00 como hora válida se não tiver certeza (mas aqui 'd' já é nossa melhor aposta)
+                 // No dashboard.js usamos: if(!timeStr){ const hh... timeStr = ... }
+                 timeStr = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+              } else {
+                 timeStr = null;
+              }
             }
           }
-          // treat explicit midnight '00:00:00' as missing time (don't assume period)
-          if(timeStr === '00:00:00') timeStr = null;
+          
+          // Dashboard logic: if(timeStr === '00:00:00') timeStr = null;
+          // MAS, se o timeStr foi derivado explicitamente do objeto Date (que pode ser midnight real), 
+          // devemos permitir '00:00:00' se quisermos que conte como Madrugada.
+          // O dashboard.js na verdade diz: if(timeStr === '00:00:00') timeStr = null;
+          // E depois getPeriodoDoDiaLocal retorna null se timeStr for null.
+          // Se queremos que conte, precisamos que getPeriodoDoDia aceite null ou que timeStr não seja anulado.
+          // Vamos ver getPeriodoDoDia: ele retorna null se !timeStr.
+          // Então se timeStr for '00:00:00', ele é anulado e vira null -> sem período.
+          // Para corrigir isso e contar como Madrugada, devemos NÃO anular se for derivado de d válido.
+          
+          // FIX: Se timeStr é '00:00:00', vamos assumir Madrugada (0h) em vez de anular,
+          // pois muitas vezes a venda ocorre à meia noite ou a importação define assim.
+          // Se for null, continua null.
+          // if(timeStr === '00:00:00') timeStr = null; <--- REMOVIDO para permitir contagem
+          
           const periodo = getPeriodoDoDia(timeStr);
           const valor = Number(tx.valorBruto || tx.value || tx.valor || 0) || 0;
           if(periodo && (periodo in out)){ out[periodo] = (Number(out[periodo])||0) + valor; }
@@ -2331,200 +2313,10 @@
       });
     }
 
-  // Config / mapping UI wiring
-  const btnSaveCartao = document.getElementById('save-mapping-cartao');
-  const btnResetCartao = document.getElementById('reset-mapping-cartao');
+    // Config / mapping UI wiring removida
 
-  const btnSavePix = document.getElementById('save-mapping-pix');
-  const btnResetPix = document.getElementById('reset-mapping-pix');
+    // Configuração de importação removida (migrada para Configurações)
 
-    // when files selected, try to read first file header to populate mapping selects
-    async function tryPopulateCartaoMapping(headerRowOverride){
-      if(!arquivosSelecionadosCartao || arquivosSelecionadosCartao.length===0) return;
-      try{
-        const {headers} = await readFirstFileHeaders(arquivosSelecionadosCartao[0], headerRowOverride);
-        renderMappingUI('mapping-cartao-panel','mapping-cartao-fields', headers, 'mapping_cartao', [
-          {key:'date', label:'Data (data da venda)', default:''},
-          {key:'time', label:'Hora (hora da venda)', default:''},
-          {key:'status', label:'Status (aprovada/negada)', default:''},
-          {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
-          {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
-          {key:'valorMdr', label:'Valor MDR', default:''},
-          {key:'valorLiquido', label:'Valor Líquido', default:''}
-        ]);
-      }catch(e){ console.warn('Não foi possível detectar cabeçalho (cartão):', e); }
-    }
-
-    async function tryPopulatePixMapping(headerRowOverride){
-      if(!arquivosSelecionadosPix || arquivosSelecionadosPix.length===0) return;
-      try{
-        const {headers} = await readFirstFileHeaders(arquivosSelecionadosPix[0], headerRowOverride);
-        // use the same default mapping fields/labels as Cartão so PIX mapping panel shows the same options
-        renderMappingUI('mapping-pix-panel','mapping-pix-fields', headers, 'mapping_pix', [
-          {key:'date', label:'Data (data da venda)', default:''},
-          {key:'time', label:'Hora (hora da venda)', default:''},
-          {key:'status', label:'Status (aprovada/negada)', default:''},
-          {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
-          {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
-          {key:'valorMdr', label:'Valor MDR', default:''},
-          {key:'valorLiquido', label:'Valor Líquido', default:''}
-        ]);
-      }catch(e){ console.warn('Não foi possível detectar cabeçalho (pix):', e); }
-    }
-
-    if(fileInputCartao){ fileInputCartao.addEventListener('change', tryPopulateCartaoMapping); }
-    if(fileInputPix){ fileInputPix.addEventListener('change', tryPopulatePixMapping); }
-
-    // import config panel wiring
-    const btnOpenImportConfig = document.getElementById('btn-open-import-config');
-    const importConfigPanel = document.getElementById('import-config-panel');
-    const inputHeaderCartao = document.getElementById('headerline-cartao');
-    const inputHeaderPix = document.getElementById('headerline-pix');
-    const btnSaveImportConfig = document.getElementById('save-import-config');
-    const btnOpenMappingCartao = document.getElementById('open-mapping-cartao');
-    const btnOpenMappingPix = document.getElementById('open-mapping-pix');
-
-    if(btnOpenImportConfig){ btnOpenImportConfig.addEventListener('click', ()=>{
-      if(!importConfigPanel) return;
-      const isOpen = importConfigPanel.classList.contains('opacity-100');
-      const panels = document.getElementById('import-panels');
-      const btnToggle = document.getElementById('btn-toggle-import');
-      if(!isOpen){
-        // open import-config-panel (add open classes)
-        importConfigPanel.classList.remove('max-h-0','opacity-0','-translate-y-2');
-        importConfigPanel.classList.add('max-h-[1000px]','opacity-100','translate-y-0');
-        importConfigPanel.classList.remove('md:scale-95'); importConfigPanel.classList.add('md:scale-100');
-        // close import panels
-        if(panels){ panels.classList.remove('max-h-[1000px]','opacity-100','translate-y-0'); panels.classList.add('max-h-0','opacity-0','-translate-y-2'); panels.classList.remove('md:scale-100'); panels.classList.add('md:scale-95'); }
-        if(btnToggle) btnToggle.textContent = 'Importar Vendas';
-      } else {
-        // close import-config-panel
-        importConfigPanel.classList.remove('max-h-[1000px]','opacity-100','translate-y-0');
-        importConfigPanel.classList.add('max-h-0','opacity-0','-translate-y-2');
-        importConfigPanel.classList.remove('md:scale-100'); importConfigPanel.classList.add('md:scale-95');
-      }
-    }); }
-
-    // load saved header rows into inputs if exist
-    try{
-      const savedCartao = loadMapping('mapping_cartao') || {};
-      if(savedCartao.headerRow !== undefined && savedCartao.headerRow !== null){ inputHeaderCartao.value = (Number(savedCartao.headerRow) + 1); }
-      const savedPix = loadMapping('mapping_pix') || {};
-      if(savedPix.headerRow !== undefined && savedPix.headerRow !== null){ inputHeaderPix.value = (Number(savedPix.headerRow) + 1); }
-    }catch(e){}
-
-    if(btnSaveImportConfig){ btnSaveImportConfig.addEventListener('click', ()=>{
-      const cartaoVal = Number(inputHeaderCartao.value);
-      const pixVal = Number(inputHeaderPix.value);
-      if(!Number.isFinite(cartaoVal) || cartaoVal < 1){ alert('Linha do cabeçalho (Cartões) deve ser um número inteiro >= 1'); return; }
-      if(!Number.isFinite(pixVal) || pixVal < 1){ alert('Linha do cabeçalho (PIX) deve ser um número inteiro >= 1'); return; }
-      const mc = loadMapping('mapping_cartao') || {}; mc.headerRow = Math.max(0, Math.floor(cartaoVal)-1); saveMapping('mapping_cartao', mc);
-      const mp = loadMapping('mapping_pix') || {}; mp.headerRow = Math.max(0, Math.floor(pixVal)-1); saveMapping('mapping_pix', mp);
-      // after saving config, collapse mapping panels (they use hidden)
-      const mcp = document.getElementById('mapping-cartao-panel'); if(mcp) mcp.classList.add('hidden');
-      const mpp = document.getElementById('mapping-pix-panel'); if(mpp) mpp.classList.add('hidden');
-      // also collapse the import-config-panel using transitions
-      const importCfg = document.getElementById('import-config-panel'); if(importCfg){ importCfg.classList.remove('max-h-[1000px]','opacity-100','translate-y-0'); importCfg.classList.add('max-h-0','opacity-0','-translate-y-2'); importCfg.classList.remove('md:scale-100'); importCfg.classList.add('md:scale-95'); }
-      alert('Configurações de importação salvas.');
-    }); }
-
-    if(btnOpenMappingCartao){ btnOpenMappingCartao.addEventListener('click', async ()=>{
-      const panel = document.getElementById('mapping-cartao-panel');
-      if(panel && !panel.classList.contains('hidden')){ panel.classList.add('hidden'); return; }
-      // if no file selected in upload, show sample file input and wait for user to pick a file
-      if(!arquivosSelecionadosCartao || arquivosSelecionadosCartao.length===0){
-        // reveal panel and let user choose sample file
-        document.getElementById('mapping-cartao-panel')?.classList.remove('hidden');
-        const sampleInput = document.getElementById('mapping-cartao-sample-file');
-        if(sampleInput){
-          sampleInput.value = null;
-          sampleInput.onchange = async (e)=>{
-            const f = e.target.files && e.target.files[0]; if(!f) return;
-            try{ const {headers} = await readFirstFileHeaders(f, loadMapping('mapping_cartao')?.headerRow); renderMappingUI('mapping-cartao-panel','mapping-cartao-fields', headers, 'mapping_cartao', [
-                {key:'date', label:'Data (data da venda)', default:''},
-                {key:'time', label:'Hora (hora da venda)', default:''},
-                {key:'status', label:'Status (aprovada/negada)', default:''},
-                {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
-                {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
-                {key:'valorMdr', label:'Valor MDR', default:''},
-                {key:'valorLiquido', label:'Valor Líquido', default:''}
-              ]);
-            }catch(err){ console.warn('Erro ao ler arquivo amostra (cartão):', err); alert('Erro ao ler arquivo amostra.'); }
-          };
-        }
-        return;
-      }
-      // ensure import-config-panel is expanded so mapping panel buttons are visible
-      try{
-        const importCfg = document.getElementById('import-config-panel');
-        if(importCfg){ importCfg.classList.remove('max-h-0','opacity-0','-translate-y-2'); importCfg.classList.add('max-h-[1000px]','opacity-100','translate-y-0'); importCfg.classList.remove('md:scale-95'); importCfg.classList.add('md:scale-100'); }
-      }catch(e){}
-      const m = loadMapping('mapping_cartao') || {}; const hv = (m.headerRow !== undefined ? m.headerRow : (Number(inputHeaderCartao.value||2)-1));
-      await tryPopulateCartaoMapping(hv);
-      document.getElementById('mapping-cartao-panel')?.classList.remove('hidden');
-    }); }
-
-    if(btnOpenMappingPix){ btnOpenMappingPix.addEventListener('click', async ()=>{
-      const panel = document.getElementById('mapping-pix-panel');
-      if(panel && !panel.classList.contains('hidden')){ panel.classList.add('hidden'); return; }
-      if(!arquivosSelecionadosPix || arquivosSelecionadosPix.length===0){
-        document.getElementById('mapping-pix-panel')?.classList.remove('hidden');
-        const sampleInput = document.getElementById('mapping-pix-sample-file');
-        if(sampleInput){
-          sampleInput.value = null;
-          sampleInput.onchange = async (e)=>{
-            const f = e.target.files && e.target.files[0]; if(!f) return;
-            try{ const {headers} = await readFirstFileHeaders(f, loadMapping('mapping_pix')?.headerRow); 
-              // use the same default mapping fields/labels as Cartão
-              renderMappingUI('mapping-pix-panel','mapping-pix-fields', headers, 'mapping_pix', [
-                {key:'date', label:'Data (data da venda)', default:''},
-                {key:'time', label:'Hora (hora da venda)', default:''},
-                {key:'status', label:'Status (aprovada/negada)', default:''},
-                {key:'valorBruto', label:'Valor (valor da venda atualizado)', default:''},
-                {key:'modalidade', label:'Modalidade (credito/debito)', default:''},
-                {key:'valorMdr', label:'Valor MDR', default:''},
-                {key:'valorLiquido', label:'Valor Líquido', default:''}
-              ]);
-            }catch(err){ console.warn('Erro ao ler arquivo amostra (pix):', err); alert('Erro ao ler arquivo amostra.'); }
-          };
-        }
-        return;
-      }
-      // ensure import-config-panel is expanded so mapping panel buttons are visible
-      try{
-        const importCfg = document.getElementById('import-config-panel');
-        if(importCfg){ importCfg.classList.remove('max-h-0','opacity-0','-translate-y-2'); importCfg.classList.add('max-h-[1000px]','opacity-100','translate-y-0'); importCfg.classList.remove('md:scale-95'); importCfg.classList.add('md:scale-100'); }
-      }catch(e){}
-      const m = loadMapping('mapping_pix') || {}; const hv = (m.headerRow !== undefined ? m.headerRow : (Number(inputHeaderPix.value||2)-1));
-      await tryPopulatePixMapping(hv);
-      document.getElementById('mapping-pix-panel')?.classList.remove('hidden');
-    }); }
-
-    
-
-    // save mapping: reads selects inside fields container and stores map
-    if(btnSaveCartao){ btnSaveCartao.addEventListener('click', ()=>{
-      const container = document.getElementById('mapping-cartao-fields'); if(!container) return;
-      const selects = Array.from(container.querySelectorAll('select'));
-      const keys = ['date','time','status','valorBruto','modalidade','valorMdr','valorLiquido'];
-      const map = {};
-      selects.forEach((s,i)=>{ if(keys[i]) map[keys[i]] = s.value; });
-      saveMapping('mapping_cartao', map);
-      alert('Modelo de Cartão salvo.');
-    }); }
-    if(btnResetCartao){ btnResetCartao.addEventListener('click', ()=>{ localStorage.removeItem('mapping_cartao'); alert('Modelo de Cartão resetado.'); }); }
-
-    if(btnSavePix){ btnSavePix.addEventListener('click', ()=>{
-      const container = document.getElementById('mapping-pix-fields'); if(!container) return;
-      const selects = Array.from(container.querySelectorAll('select'));
-      // save the full set of mapping keys (same as Cartão) so PIX mapping persists the same fields
-      const keys = ['date','time','status','valorBruto','modalidade','valorMdr','valorLiquido'];
-      const map = {};
-      selects.forEach((s,i)=>{ if(keys[i]) map[keys[i]] = s.value; });
-      saveMapping('mapping_pix', map);
-      alert('Modelo de PIX salvo.');
-    }); }
-    if(btnResetPix){ btnResetPix.addEventListener('click', ()=>{ localStorage.removeItem('mapping_pix'); alert('Modelo de PIX resetado.'); }); }
 
     // ===== Processar Cartões =====
     if(processarBtnCartao){
@@ -2599,9 +2391,31 @@
                 const rawTime = row[idxTime];
                 const combined = (rawDate ? String(rawDate) : '') + (rawTime ? (' ' + String(rawTime)) : '');
                 const dt = extractDateTime(combined || rawDate);
+                
+                // Validação de horário obrigatório (Cartão)
+                let finalTime = dt && dt.timeStr ? dt.timeStr : (rawTime || null);
+                if (!finalTime) {
+                    // Tenta extrair da string raw se o extractDateTime falhou
+                    if (rawTime && String(rawTime).trim().match(/\d{1,2}:\d{1,2}/)) {
+                        finalTime = String(rawTime).trim();
+                    }
+                }
+
+                if (!finalTime) {
+                    // Erro: Horário obrigatório não encontrado
+                    const identificador = `Linha ${i + 1} (Data: ${rawDate || 'N/A'}, Valor: ${valorBruto})`;
+                    const msgErro = `Erro na importação de Cartões:\n\n` +
+                        `A venda na ${identificador} não possui um horário válido.\n` +
+                        `O campo de horário é OBRIGATÓRIO para todas as vendas.\n\n` +
+                        `Por favor, corrija o arquivo adicionando o horário nesta venda e tente importar novamente.`;
+                    
+                    alert(msgErro);
+                    throw new Error(msgErro); // Interrompe o processamento
+                }
+
                 // push raw object with known amount fields; normalization will occur in addVendasDetalhadasBulk
                 // store the raw combined date/time string so normalizeVendaDetalhada can re-parse if initial extract failed
-                const rawObj = { date: combined || rawDate, dateMs: dt && dt.dateObj ? dt.dateObj.getTime() : null, time: dt && dt.timeStr ? dt.timeStr : (rawTime || null), valorBruto: valorBruto, mdr: valorMDR, valorLiquido: (parseNumber(row[idxValorLiquido]) || (valorBruto - valorMDR)), source: 'cartao', tipoPagamento };
+                const rawObj = { date: combined || rawDate, dateMs: dt && dt.dateObj ? dt.dateObj.getTime() : null, time: finalTime, valorBruto: valorBruto, mdr: valorMDR, valorLiquido: (parseNumber(row[idxValorLiquido]) || (valorBruto - valorMDR)), source: 'cartao', tipoPagamento };
                   detalheBuffer.push(rawObj);
               }catch(e){ /* ignore */ }
 
@@ -2727,10 +2541,32 @@
               try{
                 // PIX: data e hora costumam vir juntas na mesma célula (ex: '2025-01-15 13:45:00')
                 const dt = extractDateTime(dataRaw);
+                
+                // Validação de horário obrigatório (PIX)
+                let finalTime = dt && dt.timeStr ? dt.timeStr : null;
+                
+                // Se não encontrou no extractDateTime, tenta extrair da string raw usando regex simples
+                if (!finalTime && dataRaw && String(dataRaw).match(/\d{1,2}:\d{1,2}/)) {
+                   const match = String(dataRaw).match(/(\d{1,2}:\d{1,2}(?::\d{1,2})?)/);
+                   if (match) finalTime = match[1];
+                }
+
+                if (!finalTime) {
+                    // Erro: Horário obrigatório não encontrado
+                    const identificador = `Linha ${i + 1} (Data: ${dataRaw || 'N/A'}, Valor: ${valorBruto})`;
+                    const msgErro = `Erro na importação de PIX:\n\n` +
+                        `A venda na ${identificador} não possui um horário válido.\n` +
+                        `O campo de horário é OBRIGATÓRIO para todas as vendas.\n\n` +
+                        `Por favor, verifique se a coluna de Data contém o horário (ex: "dd/mm/aaaa HH:mm") e tente importar novamente.`;
+                    
+                    alert(msgErro);
+                    throw new Error(msgErro); // Interrompe o processamento
+                }
+
                 // store original dataRaw so normalizeVendaDetalhada can attempt robust parsing
-                const rawObj = { date: dataRaw, dateMs: dt && dt.dateObj ? dt.dateObj.getTime() : null, time: dt && dt.timeStr ? dt.timeStr : null, valorBruto: valorBruto, mdr: valorMDR, valorLiquido: valorLiquido, source: 'pix', tipoPagamento };
+                const rawObj = { date: dataRaw, dateMs: dt && dt.dateObj ? dt.dateObj.getTime() : null, time: finalTime, valorBruto: valorBruto, mdr: valorMDR, valorLiquido: valorLiquido, source: 'pix', tipoPagamento };
                 detalheBuffer.push(rawObj);
-              }catch(e){ /* ignore */ }
+              }catch(e){ if(e.message && e.message.startsWith('Erro na importação')) throw e; /* rethrow validation errors */ }
 
               const keyDia = `${anoMesDia}||${tipoPagamento}`;
               if(!resumoPorDia[keyDia]) resumoPorDia[keyDia] = {receitaBruta:0, mdr:0, anoMesDia, anoMes, source:'pix', tipoPagamento};

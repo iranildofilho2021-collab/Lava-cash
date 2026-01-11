@@ -69,6 +69,7 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helveti
 @media (max-width: 640px){
 	/* on small screens fallback to sensible fixed min-width and allow horizontal scrolling */
 	.month-pill{ flex: 0 0 auto; min-width: 140px; width: auto; }
+	.months-scroll{ padding: 0.25rem 16px; }
 }
 
 /* --- Panels do dashboard --- */
@@ -136,8 +137,8 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helveti
 
 /* ============ DONUT CHART ============ */
 #pizzaAtual {
-  max-height: 144px !important;
-  height: 144px !important;
+  max-height: 208px !important;
+  height: 208px !important;
 }
 
 /* ============ MELHOR INDICADOR BADGE ============ */

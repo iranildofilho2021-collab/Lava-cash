@@ -8,7 +8,7 @@
   <meta name="author" content="IRANCASH" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0ea5e9" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <title>IRANCASH | Configurações</title>
 
   <!-- Favicon & PWA -->
@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/theme-init.js"></script>
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/ux-improvements.css">
@@ -54,7 +55,7 @@
     </div>
 
     <!-- Categorias -->
-  <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+    <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
       <span class="text-gray-500 mb-2">Gerenciar Categorias de Despesas</span>
       <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias"></div>
       <div class="flex gap-2 w-full max-w-lg">
@@ -63,9 +64,97 @@
       </div>
     </div>
 
+    <!-- Configurações de Importação (Movido de Receitas) -->
+    <!-- Botão Toggle -->
+    <div class="mb-4">
+      <button id="btn-toggle-import-config" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Configurações de Importação</button>
+    </div>
+    
+    <!-- Painel Expansível -->
+    <div id="import-config-content" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (Cartões)</label>
+          <input id="headerline-cartao" type="number" min="1" value="2" class="mt-1 w-full rounded border px-3 py-2" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha onde está o cabeçalho para arquivos de cartão.</div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Linha do cabeçalho (PIX)</label>
+          <input id="headerline-pix" type="number" min="1" value="2" class="mt-1 w-full rounded border px-3 py-2" />
+          <div class="text-xs text-gray-500 mt-1">Informe o número da linha onde está o cabeçalho para arquivos PIX.</div>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <button id="save-import-config" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2">Salvar configurações</button>
+      </div>
+      
+      <!-- Mapeamento de Colunas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
+        <!-- Cartão -->
+        <div class="border rounded-lg p-4">
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-medium text-gray-700">Mapeamento (Cartões)</span>
+            <div class="flex gap-2">
+               <button id="open-mapping-cartao" class="text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded hover:bg-sky-200">Configurar</button>
+               <button id="reset-mapping-cartao" class="text-xs border px-2 py-1 rounded hover:bg-gray-50">Resetar</button>
+            </div>
+          </div>
+          <div id="mapping-cartao-panel" class="hidden">
+             <div class="text-xs text-gray-500 mb-2">Selecione um arquivo de exemplo para popular:</div>
+             <input id="mapping-cartao-sample-file" type="file" accept=".csv,.xlsx" class="text-xs mb-3 w-full" />
+             <div id="mapping-cartao-fields" class="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto"></div>
+             <button id="save-mapping-cartao" class="mt-3 w-full bg-sky-600 text-white text-xs py-2 rounded hover:bg-sky-700">Salvar Modelo Cartão</button>
+          </div>
+        </div>
+        
+        <!-- PIX -->
+        <div class="border rounded-lg p-4">
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-medium text-gray-700">Mapeamento (PIX)</span>
+            <div class="flex gap-2">
+               <button id="open-mapping-pix" class="text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded hover:bg-sky-200">Configurar</button>
+               <button id="reset-mapping-pix" class="text-xs border px-2 py-1 rounded hover:bg-gray-50">Resetar</button>
+            </div>
+          </div>
+          <div id="mapping-pix-panel" class="hidden">
+             <div class="text-xs text-gray-500 mb-2">Selecione um arquivo de exemplo para popular:</div>
+             <input id="mapping-pix-sample-file" type="file" accept=".csv,.xlsx" class="text-xs mb-3 w-full" />
+             <div id="mapping-pix-fields" class="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto"></div>
+             <button id="save-mapping-pix" class="mt-3 w-full bg-sky-600 text-white text-xs py-2 rounded hover:bg-sky-700">Salvar Modelo PIX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuração de Períodos -->
+    <!-- Botão Toggle -->
+    <div class="mb-4">
+      <button id="btn-toggle-periodos" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Configuração de Períodos do Dia</button>
+    </div>
+    
+    <!-- Painel Expansível -->
+    <div id="periodos-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full">
+      <p class="text-sm text-gray-500 mb-4">Defina os horários de início e fim para cada período (Madrugada, Manhã, Tarde, Noite).</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full" id="periodos-config-container">
+        <!-- Preenchido via JS -->
+      </div>
+      
+      <div class="mt-4 flex gap-2">
+        <button id="btn-save-periodos" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2">Salvar Períodos</button>
+        <button id="btn-reset-periodos" class="border hover:bg-gray-50 text-gray-700 font-medium rounded px-4 py-2">Restaurar Padrão</button>
+      </div>
+    </div>
+
     <!-- Gerenciar Despesas -->
-    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
-      <h2 class="text-lg font-semibold mb-3">Gerenciar Despesas</h2>
+    <!-- Botão Toggle -->
+    <div class="mb-4">
+      <button id="btn-toggle-despesas" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Despesas</button>
+    </div>
+    
+    <!-- Painel Expansível -->
+    <div id="despesas-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
       <div class="flex flex-wrap items-center gap-3 mb-4 w-full">
         <label class="text-sm">Ver despesas do ano:</label>
         <select id="select-anos-despesas" class="rounded border px-2 py-2"></select>
@@ -74,21 +163,72 @@
       <div id="lista-despesas-ano" class="w-full overflow-x-auto"></div>
     </div>
 
+    <!-- Configurações do Sistema (Apenas Developer) -->
+    <div id="system-settings-section" class="hidden bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 border-l-4 border-indigo-500">
+      <h2 class="text-lg font-semibold mb-3 text-indigo-700">⚙️ Configurações do Sistema</h2>
+      <p class="text-sm text-gray-500 mb-4">Personalize o nome da aplicação e os dados dos sócios.</p>
+      
+      <div class="w-full space-y-6">
+          <!-- Nome do App -->
+          <div>
+              <label class="block text-sm font-medium text-gray-700">Nome da Aplicação</label>
+              <div class="flex gap-2 mt-1">
+                  <input type="text" id="app-name-input" class="flex-1 rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" placeholder="LavaJá Lavanderia">
+                  <button id="btn-save-app-name" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">Salvar</button>
+              </div>
+          </div>
+
+          <!-- Sócios -->
+          <div>
+              <h3 class="text-md font-medium text-gray-800 mb-2">Sócios e Investimentos</h3>
+              <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200 text-sm">
+                      <thead class="bg-gray-50">
+                          <tr>
+                              <th class="px-3 py-2 text-left">Nome</th>
+                              <th class="px-3 py-2 text-center">Participação (%)</th>
+                              <th class="px-3 py-2 text-center">Investimento (%)</th>
+                          </tr>
+                      </thead>
+                      <tbody id="partners-list-body" class="bg-white divide-y divide-gray-200">
+                          <!-- JS Populated -->
+                      </tbody>
+                  </table>
+              </div>
+              <button id="btn-save-partners" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 w-full md:w-auto">Salvar Alterações dos Sócios</button>
+          </div>
+      </div>
+    </div>
+
+    <!-- Gerenciamento de Usuários (Apenas Developer) -->
+    <div id="users-section" class="hidden bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full border-l-4 border-purple-500">
+      <h2 class="text-lg font-semibold mb-3 text-purple-700">👥 Gestão de Usuários</h2>
+      <p class="text-sm text-gray-500 mb-4">Aprovar cadastros e gerenciar permissões de acesso.</p>
+      
+      <div class="w-full overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead class="bg-gray-50">
+                  <tr>
+                      <th class="px-3 py-2 text-left font-medium text-gray-500">Nome</th>
+                      <th class="px-3 py-2 text-left font-medium text-gray-500">Email</th>
+                      <th class="px-3 py-2 text-left font-medium text-gray-500">Role</th>
+                      <th class="px-3 py-2 text-center font-medium text-gray-500">Status</th>
+                      <th class="px-3 py-2 text-right font-medium text-gray-500">Ações</th>
+                  </tr>
+              </thead>
+              <tbody id="users-list-body" class="bg-white divide-y divide-gray-200">
+                  <!-- JS populated -->
+              </tbody>
+          </table>
+      </div>
+    </div>
+
     <!-- Backup e Restauração -->
     <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
       <h2 class="text-lg font-semibold mb-3">💾 Backup e Restauração de Dados</h2>
       <p class="text-sm text-gray-500 mb-4">Faça backup dos seus dados ou restaure de um arquivo anterior.</p>
       
-      <div id="storage-info" class="w-full mb-4 p-3 bg-gray-50 rounded-lg">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-sm font-medium">Uso do armazenamento local</span>
-          <span id="storage-percent-text" class="text-sm font-semibold">0%</span>
-        </div>
-        <div class="progress-bar">
-          <div id="storage-bar-fill" class="progress-fill" style="width: 0%"></div>
-        </div>
-        <p class="text-xs text-gray-500 mt-2">Limite aproximado: 5 MB</p>
-      </div>
+      <!-- Indicador de storage removido conforme solicitado -->
 
       <div class="flex flex-wrap gap-3 w-full">
         <button id="btn-export-backup" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded px-4 py-2 transition">
@@ -121,25 +261,30 @@
     </div>
 
     <!-- Atalhos -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
-        <svg width="32" height="32" fill="none" aria-hidden="true">
-          <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
-        </svg>
-        <span class="text-lg font-semibold">Importar Dados</span>
-      </a>
-      <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
-        <svg width="32" height="32" fill="none" aria-hidden="true">
-          <path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="text-lg font-semibold">Adicionar Despesa</span>
-      </a>
+    <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
+        <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+          <svg width="32" height="32" fill="none" aria-hidden="true">
+            <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
+          </svg>
+          <span class="text-lg font-semibold">Importar Dados</span>
+        </a>
+        <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+          <svg width="32" height="32" fill="none" aria-hidden="true">
+            <path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-lg font-semibold">Adicionar Despesa</span>
+        </a>
+      </div>
     </div>
   </main>
 
   <!-- Firebase deve ser carregado primeiro -->
   <script type="module" src="js/firebase-init.js"></script>
+  <!-- Auth Service & Guard -->
+  <script src="js/auth-service.js"></script>
+  <script src="js/auth-guard.js"></script>
   <!-- DataStore (usa Firebase quando disponível) -->
   <script src="js/data-store.js" defer></script>
   <script src="js/ui/connection-status.js" defer></script>
@@ -150,6 +295,7 @@
   <script src="js/layout.js" defer></script>
   <script src="js/theme-toggle.js" defer></script>
   <script src="js/backup-utils.js" defer></script>
+  <script src="js/settings-service.js" defer></script>
   <script src="js/configuracoes.js" defer></script>
   <!-- Intercepta cliques no sidebar para animação sutil antes de navegar -->
   <!-- Sidebar navigation logic extracted to `js/sidebar-nav.js` (loaded below) -->

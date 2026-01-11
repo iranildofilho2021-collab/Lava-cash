@@ -121,7 +121,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <!-- Combined card: valores + pizza donut -->
-        <div class="bg-white rounded-xl shadow p-4">
+        <div id="card-topo-resumo" class="bg-white rounded-xl shadow p-4">
           <div class="flex items-center justify-between mb-3">
             <div>
               <h3 class="text-xl font-semibold text-gray-800">Até o momento</h3>
@@ -167,7 +167,7 @@
             </div>
             
             <!-- Donut Chart à direita -->
-            <div class="w-36 h-36 relative">
+            <div class="w-52 h-52 relative">
               <canvas id="pizzaAtual"></canvas>
             </div>
           </div>
@@ -378,62 +378,40 @@
         </div>
       </div>
 
-      <!-- other charts (kept as two columns) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-white rounded-xl shadow p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">☀️ Vendas por Período</h3>
-              <div class="text-sm text-gray-500">distribuição por faixa horária</div>
+      <!-- Charts Row 1 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <h3 class="text-base font-semibold text-gray-800">Vendas por Periodo do Dia</h3>
+            <div class="flex items-center gap-2 text-xs">
+              <label for="vendasPeriodoMesSelect" class="text-gray-500">Mes</label>
+              <select id="vendasPeriodoMesSelect" class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-xs"></select>
             </div>
           </div>
-          <div id="vendas-periodo-conteudo" style="height: 220px;">
-            <!-- Canvas vendasPeriodoChart criado dinamicamente -->
+          <div id="vendas-periodo-conteudo" class="relative h-80 w-full">
+            <canvas id="vendasPeriodoChart"></canvas>
           </div>
         </div>
-        <div class="bg-white rounded-xl shadow p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">📅 Vendas por Dia</h3>
-              <div class="text-sm text-gray-500">receita bruta do mês selecionado</div>
-            </div>
-          </div>
-          <div style="height: 220px;">
-            <canvas id="vendasDiaSemanaChart"></canvas>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Composição das Despesas</h3>
+          <div class="relative h-80 w-full">
+            <canvas id="despesasPizzaChart"></canvas>
           </div>
         </div>
       </div>
 
-      <!-- Full-width 12-month fluxo financeiro chart as the last chart -->
-      <div class="mt-6">
-        <div class="bg-white rounded-xl shadow p-4">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">📊 Fluxo Financeiro</h3>
-              <div class="text-sm text-gray-500">evolução do ano selecionado (Janeiro a Dezembro)</div>
-            </div>
+      <!-- Charts Row 2 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Lucro Líquido Mensal</h3>
+          <div class="relative h-80 w-full">
+            <canvas id="lucroMensalChart"></canvas>
           </div>
-          <!-- Resumo do Ano -->
-          <div id="resumoAnoFluxo" class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-            <div class="summary-box-new sum-rec p-2 rounded-lg text-center">
-              <div class="text-xs text-gray-500 uppercase">Total Receita</div>
-              <div id="fluxoTotalReceita" class="text-base font-bold text-emerald-600">R$ 0</div>
-            </div>
-            <div class="summary-box-new sum-desp p-2 rounded-lg text-center">
-              <div class="text-xs text-gray-500 uppercase">Total Despesa</div>
-              <div id="fluxoTotalDespesa" class="text-base font-bold text-red-600">R$ 0</div>
-            </div>
-            <div class="summary-box-new sum-saldo p-2 rounded-lg text-center border">
-              <div class="text-xs text-gray-500 uppercase">Saldo Anual</div>
-              <div id="fluxoSaldoAnual" class="text-base font-bold text-sky-600">R$ 0</div>
-            </div>
-            <div class="bg-gray-50 p-2 rounded-lg text-center">
-              <div class="text-xs text-gray-500 uppercase">Média Mensal</div>
-              <div id="fluxoMediaMensal" class="text-base font-bold text-purple-600">R$ 0</div>
-            </div>
-          </div>
-          <div style="height: 250px;">
-            <canvas id="fluxoChart"></canvas>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Evolução das Margens</h3>
+          <div class="relative h-80 w-full">
+            <canvas id="margensChart"></canvas>
           </div>
         </div>
       </div>
@@ -442,10 +420,14 @@
 
     <!-- Firebase deve ser carregado primeiro -->
   <script type="module" src="js/firebase-init.js"></script>
+  <!-- Auth Service & Guard -->
+  <script src="js/auth-service.js"></script>
+  <script src="js/auth-guard.js"></script>
   <!-- Utilitário para verificar dados no Firebase -->
   <script src="js/firebase-check.js" defer></script>
   <!-- DataStore (usa Firebase quando disponível) -->
   <script src="js/data-store.js" defer></script>
+  <script src="js/settings-service.js" defer></script>
   <!-- carregar o script do dashboard no fim do body para manter ordem e performance -->
   <script src="js/indexeddb-store.js" defer></script>
   <script src="js/shared-utils.js" defer></script>
@@ -454,6 +436,8 @@
   <script src="js/layout.js" defer></script>
   <script src="js/theme-toggle.js" defer></script>
   <script src="js/backup-utils.js" defer></script>
+  <!-- Adaptador Firebase para Receitas (necessário para carregar vendas detalhadas no dashboard) -->
+  <script src="js/receitas-firebase-adapter.js" defer></script>
   <script src="js/dashboard.js" defer></script>
   <script src="js/ui/connection-status.js" defer></script>
   <script src="js/utils/cleanup.js" defer></script>
@@ -461,4 +445,3 @@
   <script src="js/sidebar-nav.js" defer></script>
 </body>
 </html>
-

@@ -36,6 +36,23 @@ body {
   border-color: var(--border-color) !important;
 }
 
+/* Card Specific Fixes for Dark Mode */
+[data-theme="dark"] .summary-box-new {
+  background-color: var(--card-muted) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .summary-box-new.sum-rec {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+[data-theme="dark"] .summary-box-new.sum-desp {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+[data-theme="dark"] .summary-box-new.sum-saldo {
+  background-color: rgba(14, 165, 233, 0.1) !important;
+}
+
+[data-theme="dark"] .text-gray-900,
 [data-theme="dark"] .text-gray-800,
 [data-theme="dark"] .text-gray-700,
 [data-theme="dark"] .text-gray-600 {
@@ -46,6 +63,23 @@ body {
 [data-theme="dark"] .text-gray-400 {
   color: var(--text-muted) !important;
 }
+
+/* Color adjustments for Dark Mode legibility */
+[data-theme="dark"] .text-sky-600 { color: #38bdf8 !important; } /* sky-400 */
+[data-theme="dark"] .text-red-600 { color: #f87171 !important; } /* red-400 */
+[data-theme="dark"] .text-emerald-600 { color: #34d399 !important; } /* emerald-400 */
+[data-theme="dark"] .text-green-700 { color: #4ade80 !important; } /* green-400 */
+[data-theme="dark"] .text-red-700 { color: #f87171 !important; } /* red-400 */
+[data-theme="dark"] .text-amber-600 { color: #fbbf24 !important; } /* amber-400 */
+[data-theme="dark"] .text-purple-600 { color: #c084fc !important; } /* purple-400 */
+
+/* Background badge adjustments for Dark Mode */
+[data-theme="dark"] .bg-green-100 { background-color: rgba(74, 222, 128, 0.2) !important; }
+[data-theme="dark"] .bg-red-100 { background-color: rgba(248, 113, 113, 0.2) !important; }
+[data-theme="dark"] .bg-emerald-100 { background-color: rgba(52, 211, 153, 0.2) !important; }
+[data-theme="dark"] .bg-sky-100 { background-color: rgba(56, 189, 248, 0.2) !important; }
+[data-theme="dark"] .bg-amber-100 { background-color: rgba(251, 191, 36, 0.2) !important; }
+[data-theme="dark"] .bg-purple-100 { background-color: rgba(192, 132, 252, 0.2) !important; }
 
 [data-theme="dark"] .border,
 [data-theme="dark"] .border-gray-100,

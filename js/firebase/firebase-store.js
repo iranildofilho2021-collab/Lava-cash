@@ -194,6 +194,8 @@ const FirebaseStore = {
       'categorias', 'despesas', 'vendasResumo', 'vendasResumoDia',
       'importConfig', 'mappingCartao', 'mappingPix', 'irancash_theme', 'investimentoInicial'
     ];
+    // vendasDetalhadas é removido daqui pois o receitas-firebase-adapter.js gerencia isso com chunking
+    // para evitar o erro de limite de 1MB do Firestore
     let migrated = 0;
     try {
       for (const key of KEYS_TO_MIGRATE) {

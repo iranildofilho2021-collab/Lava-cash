@@ -295,6 +295,36 @@ function montarAnoSelect(){
 // selected month/year set by clicking a card. If null -> dashboard shows current month (or anoSelect value for year)
 let selectedYear = null;
 let selectedMonthIndex = null;
+let selectionUpdateToken = 0;
+let selectionFrame = null;
+let lastSelectionKey = null;
+let lastSelectionAt = 0;
+
+const vendasPeriodoMesSelect = document.getElementById('vendasPeriodoMesSelect');
+let vendasPeriodoSelectBound = false;
+
+function atualizarSelectPeriodoMes() {
+  if (!vendasPeriodoMesSelect) return;
+  const ano = selectedYear || (anoSelect && anoSelect.value) || new Date().getFullYear();
+  const mIdx = (selectedMonthIndex !== null && selectedMonthIndex !== undefined) ? Number(selectedMonthIndex) : new Date().getMonth();
+  vendasPeriodoMesSelect.innerHTML = '';
+  for (let m = 0; m < 12; m += 1) {
+    const opt = document.createElement('option');
+    opt.value = String(m);
+    opt.textContent = `${PT_MESES[m]} ${String(ano).slice(-2)}`;
+    if (m === mIdx) opt.selected = true;
+    vendasPeriodoMesSelect.appendChild(opt);
+  }
+
+  if (!vendasPeriodoSelectBound) {
+    vendasPeriodoMesSelect.addEventListener('change', () => {
+      const year = (anoSelect && anoSelect.value) ? anoSelect.value : new Date().getFullYear();
+      const month = Number(vendasPeriodoMesSelect.value);
+      setSelectedMonth(year, month);
+    });
+    vendasPeriodoSelectBound = true;
+  }
+}
 
 // define seleção inicial como o último mês com dados
 (function definirSelecaoInicial(){
@@ -305,6 +335,12 @@ let selectedMonthIndex = null;
 })();
 
 function setSelectedMonth(year, mIdx){
+  const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+  const key = `${String(year)}-${String(mIdx)}`;
+  if (lastSelectionKey === key && (now - lastSelectionAt) < 150) return;
+  lastSelectionKey = key;
+  lastSelectionAt = now;
+
   selectedYear = String(year);
   selectedMonthIndex = (mIdx === null || mIdx === undefined) ? null : Number(mIdx);
   // highlight card
@@ -316,19 +352,28 @@ function setSelectedMonth(year, mIdx){
     else c.classList.remove('selected');
   }
   // refresh charts for new selection (não altera o fluxo financeiro que sempre mostra últimos 6 meses a partir do mês atual)
-  atualizarResumoAtual();
-  atualizarComparacao();
-  atualizarParaAcontecer();
-  atualizarTop5Despesas();
-  // render synchronous attempt first (localStorage)
-  atualizarVendasPorDiaSemana();
-  atualizarVendasPorPeriodo();
+  const token = ++selectionUpdateToken;
+  if (selectionFrame) cancelAnimationFrame(selectionFrame);
+  selectionFrame = requestAnimationFrame(() => {
+    if (token !== selectionUpdateToken) return;
+    atualizarResumoAtual();
+    atualizarComparacao();
+    atualizarParaAcontecer();
+    atualizarTop5Despesas();
+    atualizarSelectPeriodoMes();
+    // render synchronous attempt first (localStorage)
+    atualizarVendasPorDiaSemana();
+    atualizarVendasPorPeriodo();
+  });
   // se não houver dados no localStorage, tentar carregar do IndexedDB e re-renderizar quando pronto
   try{
     const maybe = carregarVendasResumoDia();
     if(!Array.isArray(maybe) || maybe.length===0){
       if (typeof carregarVendasResumoDiaAsync === 'function'){
-        carregarVendasResumoDiaAsync().then(()=>{ try{ atualizarVendasPorDiaSemana(); atualizarVendasPorPeriodo(); setTimeout(alignChartBottomAxes, 80); }catch(e){} });
+        carregarVendasResumoDiaAsync().then(()=>{ 
+          if (token !== selectionUpdateToken) return;
+          try{ atualizarVendasPorDiaSemana(); atualizarVendasPorPeriodo(); setTimeout(alignChartBottomAxes, 80); }catch(e){} 
+        });
       }
     }
   }catch(e){}
@@ -1041,7 +1086,61 @@ function carregarVendasResumoDiaAsync(){
 
 // tenta carregar vendasDetalhadas do localStorage suportando formatos compact/ultra/canônico
 function carregarVendasDetalhadasFromLS(){
-  try{
+  // Tenta usar a função global do receitas.js se disponível (síncrona)
+  // Isso garante consistência com o que o receitas.js vê
+  if (typeof window.carregarVendasDetalhadas === 'function') {
+      const globalData = window.carregarVendasDetalhadas();
+      if (globalData && globalData.length > 0) return globalData;
+  }
+  
+  try {
+    // 1. Tentar ler chunks (formato fragmentado para grandes volumes)
+    const chunksMeta = localStorage.getItem('vendasDetalhadas_chunks');
+    if (chunksMeta) {
+        try {
+            const keys = JSON.parse(chunksMeta) || [];
+            let out = [];
+            for (const k of keys) {
+                try { 
+                    const part = JSON.parse(localStorage.getItem(k) || '[]'); 
+                    if (Array.isArray(part)) out = out.concat(part); 
+                } catch(e) {}
+            }
+            // Expandir formato compacto se necessário
+            if (out.length > 0) {
+                const first = out[0];
+                // Formato objeto compacto {d, t, v...}
+                if (first && (first.d !== undefined || first.v !== undefined)) {
+                     return out.map(it => ({ 
+                         date: it.d||'', 
+                         time: it.t||'', 
+                         dateMs: (it.ms!=null)?Number(it.ms):null, 
+                         valorBruto: (it.v!=null)?(Number(it.v)/100):0, 
+                         mdr: (it.m!=null)?(Number(it.m)/100):0, 
+                         source: it.s||'', 
+                         tipoPagamento: it.p||'', 
+                         id: it.id||'' 
+                     }));
+                }
+                // Formato array ultra-compacto [d, t, v...]
+                if (Array.isArray(first)) {
+                     return out.map(a => ({ 
+                         date: a[0]||'', 
+                         time: a[1]||'', 
+                         dateMs: null, 
+                         valorBruto: (a[2]!=null)?Number(a[2])/100:0, 
+                         source: a[3]||'', 
+                         tipoPagamento: a[4]||'', 
+                         mdr: (a[5]!=null)?Number(a[5])/100:0, 
+                         id: `${a[0]||''} ${a[1]||''}||${((a[2]!=null)?(Number(a[2])/100).toFixed(2):'0.00')}||${a[3]||''}||${a[4]||''}` 
+                     }));
+                }
+            }
+            return out;
+        } catch(e) {}
+    }
+
+    // 2. Fallback para chave única (formato legado ou pequeno volume)
     const raw = JSON.parse(localStorage.getItem('vendasDetalhadas') || '[]') || [];
     if(!Array.isArray(raw)) return [];
     if(raw.length===0) return [];
@@ -1060,6 +1159,10 @@ function carregarVendasDetalhadasFromLS(){
 }
 
 function getPeriodoDoDiaLocal(timeStr){
+  // Usa função compartilhada se disponível, senão usa lógica local (legado)
+  if (typeof window.getPeriodoDoDia === 'function') {
+    return window.getPeriodoDoDia(timeStr);
+  }
   try{
     if(!timeStr) return null;
     const s = String(timeStr).trim().replace('h',':');
@@ -1069,8 +1172,7 @@ function getPeriodoDoDiaLocal(timeStr){
       if(dt && !isNaN(dt.getTime())){
         const hh = dt.getHours(), mm = dt.getMinutes(), ss = dt.getSeconds();
         const t = hh*3600 + mm*60 + ss;
-        if(t===0) return 'Madrugada';
-        if(t>=1 && t<=5*3600+59*60+59) return 'Madrugada';
+        if(t>=0 && t<=5*3600+59*60+59) return 'Madrugada';
         if(t>=6*3600 && t<=11*3600+59*60+59) return 'Manhã';
         if(t>=12*3600 && t<=17*3600+59*60+59) return 'Tarde';
         if(t>=18*3600 && t<=24*3600) return 'Noite';
@@ -1080,8 +1182,7 @@ function getPeriodoDoDiaLocal(timeStr){
     }
     const hh = Number(m[1]||0), mm = Number(m[2]||0), ss = Number(m[3]||0);
     const t = hh*3600 + mm*60 + ss;
-    if(t===0) return 'Madrugada';
-    if(t>=1 && t<=5*3600+59*60+59) return 'Madrugada';
+    if(t>=0 && t<=5*3600+59*60+59) return 'Madrugada';
     if(t>=6*3600 && t<=11*3600+59*60+59) return 'Manhã';
     if(t>=12*3600 && t<=17*3600+59*60+59) return 'Tarde';
     if(t>=18*3600 && t<=24*3600) return 'Noite';
@@ -1089,11 +1190,11 @@ function getPeriodoDoDiaLocal(timeStr){
   }catch(e){ return null; }
 }
 
-function getSomaPeriodoPorMesFromDetalhes(anoMes){
+function getSomaPeriodoPorMesFromDetalhes(anoMes, dadosDetalhados = null){
   const zero = { 'Madrugada':0, 'Manhã':0, 'Tarde':0, 'Noite':0 };
   if(!anoMes) return zero;
   try{
-    const detalhes = carregarVendasDetalhadasFromLS();
+    const detalhes = dadosDetalhados || carregarVendasDetalhadasFromLS();
     const out = { ...zero };
     for(const tx of detalhes){
       if(!tx) continue;
@@ -1116,7 +1217,7 @@ function getSomaPeriodoPorMesFromDetalhes(anoMes){
   }catch(e){ return zero; }
 }
 
-function atualizarVendasPorPeriodo(){
+async function atualizarVendasPorPeriodo(){
   const container = document.getElementById('vendas-periodo-conteudo');
   if(!container) return;
   let canvas = document.getElementById('vendasPeriodoChart');
@@ -1129,7 +1230,35 @@ function atualizarVendasPorPeriodo(){
   const anoRef = selectedYear || String(hoje.getFullYear());
   const mRef = (selectedMonthIndex !== null && selectedMonthIndex !== undefined) ? Number(selectedMonthIndex) : hoje.getMonth();
   const anoMesStr = `${String(anoRef)}/${String(mRef+1).padStart(2,'0')}`;
-  const sums = getSomaPeriodoPorMesFromDetalhes(anoMesStr);
+  
+  // Tentar carregar dados detalhados se estiverem vazios no LocalStorage
+  let dadosDetalhados = null;
+  try {
+      // Prioridade: usar o adaptador do Firebase se disponível (ele sabe lidar com chunks e cache)
+      if (typeof window.carregarVendasDetalhadasAsync === 'function') {
+          dadosDetalhados = await window.carregarVendasDetalhadasAsync();
+      } else {
+          // Fallback: tentar ler do LocalStorage ou DataStore manualmente
+          const fromLS = carregarVendasDetalhadasFromLS();
+          if (!fromLS || fromLS.length === 0) {
+              if (window.IRANCASH && window.IRANCASH.DataStore) {
+                  // Nota: isso pode falhar se os dados estiverem em chunks (formato complexo)
+                  // Por isso adicionamos js/receitas-firebase-adapter.js ao index.html
+                  const raw = await window.IRANCASH.DataStore.getItemAsync('vendasDetalhadas', []);
+                  if (Array.isArray(raw) && raw.length > 0) {
+                      try {
+                          localStorage.setItem('vendasDetalhadas', JSON.stringify(raw));
+                          dadosDetalhados = carregarVendasDetalhadasFromLS(); 
+                      } catch(e) {}
+                  }
+              }
+          } else {
+              dadosDetalhados = fromLS;
+          }
+      }
+  } catch(e) { console.warn('Erro ao tentar carregar vendas detalhadas async', e); }
+
+  const sums = getSomaPeriodoPorMesFromDetalhes(anoMesStr, dadosDetalhados);
 
   const labels = ['Madrugada','Manhã','Tarde','Noite'];
   const icones = ['🌙','☀️','🌤️','🌃'];
@@ -1461,6 +1590,7 @@ function atualizarRankingMeses() {
 // -------- Boot --------
 function refreshAll(){
   montarCardsMeses();
+  atualizarSelectPeriodoMes();
   atualizarResumoAtual();
   atualizarComparacao();
   atualizarFluxoFinanceiro();
@@ -1472,6 +1602,10 @@ function refreshAll(){
   atualizarMeta();
   atualizarComparativoAnual();
   atualizarRankingMeses();
+  
+  // Novos Gráficos (restaurados)
+  atualizarNovosGraficos();
+
   // atualizar também o gráfico de períodos (Madrugada/Manhã/Tarde/Noite)
   // para que a visualização esteja sincronizada com o mês selecionado
   if (typeof atualizarVendasPorPeriodo === 'function') atualizarVendasPorPeriodo();
@@ -1483,32 +1617,173 @@ function refreshAll(){
   setTimeout(aplicarAnimacoesCards, 50);
 }
 
-// -------- MODO COMPACTO --------
-const btnModoCompacto = document.getElementById('btnModoCompacto');
-if (btnModoCompacto) {
-  // Carregar estado salvo
-  const compactoSalvo = localStorage.getItem('modoCompacto') === 'true';
-  if (compactoSalvo) {
-    document.body.classList.add('compact-mode');
-    btnModoCompacto.classList.add('active');
+// -------- NOVOS GRÁFICOS RESTAURADOS --------
+let receitaAnualInstance = null;
+let despesasPizzaInstance = null;
+let lucroMensalInstance = null;
+let margensInstance = null;
+
+function atualizarNovosGraficos() {
+  const ano = selectedYear || anoSelect.value || new Date().getFullYear();
+  const mAtual = (selectedMonthIndex !== null && selectedMonthIndex !== undefined) ? Number(selectedMonthIndex) : new Date().getMonth();
+
+  // Dados Anuais
+  const labels = [];
+  const receitas = [];
+  const despesas = [];
+  const lucros = [];
+  const margens = [];
+
+  for (let m = 0; m < 12; m++) {
+    labels.push(PT_MESES[m].slice(0, 3));
+    const r = receitaBrutaMes(ano, m);
+    const d = despesaMes(ano, m);
+    receitas.push(r);
+    despesas.push(d);
+    lucros.push(r - d);
+    margens.push(r > 0 ? ((r - d) / r) * 100 : 0);
   }
-  
-  btnModoCompacto.addEventListener('click', () => {
-    document.body.classList.toggle('compact-mode');
-    const isCompact = document.body.classList.contains('compact-mode');
-    btnModoCompacto.classList.toggle('active', isCompact);
-    localStorage.setItem('modoCompacto', isCompact);
+
+  // 1. Receita vs Despesas (Barra Agrupada)
+  const ctxRec = document.getElementById('receitaAnualChart');
+  if (ctxRec) {
+    if (receitaAnualInstance) receitaAnualInstance.destroy();
+    receitaAnualInstance = new Chart(ctxRec.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Receita', data: receitas, backgroundColor: '#10b981', borderRadius: 4 },
+          { label: 'Despesa', data: despesas, backgroundColor: '#ef4444', borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  // 2. Composição das Despesas (Pizza do Mês Selecionado)
+  const ctxPizza = document.getElementById('despesasPizzaChart');
+  if (ctxPizza) {
+    // Calcular despesas por categoria do mês
+    const despesasLista = lerDespesas() || [];
+    const catMap = {};
+    despesasLista.forEach(d => {
+      if (String(d.ano) === String(ano) && PT_MESES.indexOf(d.mes) === mAtual) {
+        catMap[d.categoria] = (catMap[d.categoria] || 0) + Number(d.valor || 0);
+      }
+    });
     
-    // Redimensionar charts após mudar modo
-    setTimeout(() => {
-      Object.values(Chart.instances).forEach(chart => {
-        try { chart.resize(); } catch(e) {}
-      });
-    }, 100);
-  });
+    // Se não tiver dados no mês, mostrar vazio
+    const labelsPizza = Object.keys(catMap);
+    const dataPizza = Object.values(catMap);
+
+    if (despesasPizzaInstance) despesasPizzaInstance.destroy();
+    despesasPizzaInstance = new Chart(ctxPizza.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: labelsPizza.length ? labelsPizza : ['Sem dados'],
+        datasets: [{
+          data: dataPizza.length ? dataPizza : [1],
+          backgroundColor: dataPizza.length ? ['#ef4444', '#f97316', '#eab308', '#22c55e', '#0ea5e9', '#6366f1', '#ec4899'] : ['#e5e7eb']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } }
+      }
+    });
+  }
+
+  // 3. Lucro Líquido Mensal (Linha)
+  const ctxLucro = document.getElementById('lucroMensalChart');
+  if (ctxLucro) {
+    if (lucroMensalInstance) lucroMensalInstance.destroy();
+    lucroMensalInstance = new Chart(ctxLucro.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Lucro Líquido',
+          data: lucros,
+          borderColor: '#0ea5e9',
+          backgroundColor: 'rgba(14, 165, 233, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: false } }
+      }
+    });
+  }
+
+  // 4. Evolução das Margens (Linha)
+  const ctxMargem = document.getElementById('margensChart');
+  if (ctxMargem) {
+    if (margensInstance) margensInstance.destroy();
+    margensInstance = new Chart(ctxMargem.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Margem %',
+          data: margens,
+          borderColor: '#8b5cf6',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, max: 100 } }
+      }
+    });
+  }
 }
 
-// -------- ANIMAÇÕES DE CARDS --------
+// -------- MODO COMPACTO (Único modo disponível) --------
+const btnModoCompacto = document.getElementById('btnModoCompacto');
+// Forçar modo compacto sempre ativo
+document.body.classList.add('compact-mode');
+localStorage.setItem('modoCompacto', 'true');
+
+if (btnModoCompacto) {
+  btnModoCompacto.classList.add('active');
+  // Remover toggle, deixar apenas indicador visual ou remover botão do DOM se preferir
+  // Aqui vamos manter como indicador fixo ou remover o listener de toggle
+  btnModoCompacto.style.display = 'none'; // Ocultar botão pois é o único modo
+}
+
+// Remover lógica de Normal/Detalhado anterior
+const btnModoNormal = document.getElementById('btnModoNormal');
+const btnModoDetalhado = document.getElementById('btnModoDetalhado');
+const dashboardContainer = document.querySelector('.dashboard-container');
+
+if(btnModoNormal) btnModoNormal.style.display = 'none';
+if(btnModoDetalhado) btnModoDetalhado.style.display = 'none';
+
+if (dashboardContainer) {
+  // Garantir classes limpas
+  dashboardContainer.classList.remove('dashboard-detalhado');
+  dashboardContainer.classList.remove('dashboard-compact'); // compact-mode está no body
+}
+
+// Re-renderizar charts para garantir tamanho correto
+setTimeout(() => {
+  Object.values(Chart.instances).forEach(chart => {
+    try { chart.resize(); } catch(e) {}
+  });
+}, 100);
 function aplicarAnimacoesCards() {
   // Adicionar classe de transição aos cards principais
   const cards = document.querySelectorAll('.bg-white.rounded-xl.shadow');
@@ -1554,12 +1829,12 @@ if (typeof MutationObserver !== 'undefined') {
 
 // -------- Eventos de Sincronização --------
 window.addEventListener('irancash:vendasResumo:synced', () => {
-  if (window.UiUtils) window.UiUtils.showToast('Dados de vendas atualizados!', 'info', 2000);
+  // Toast removido
   refreshAll();
 });
 
 window.addEventListener('irancash:despesas:synced', () => {
-  if (window.UiUtils) window.UiUtils.showToast('Dados de despesas atualizados!', 'info', 2000);
+  // Toast removido
   refreshAll();
 });
 
@@ -1834,65 +2109,9 @@ function atualizarComparacaoAnual() {
   });
 }
 
-// -------- MODO DE VISUALIZAÇÃO: Normal/Detalhado --------
-const btnModoNormal = document.getElementById('btnModoNormal');
-const btnModoDetalhado = document.getElementById('btnModoDetalhado');
-const dashboardContainer = document.querySelector('.dashboard-container');
-
-function setModoVisualizacao(modo) {
-  if (!dashboardContainer) return;
-  
-  if (modo === 'detalhado') {
-    dashboardContainer.classList.add('dashboard-detalhado');
-    dashboardContainer.classList.remove('dashboard-compact');
-    if (btnModoDetalhado) {
-      btnModoDetalhado.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
-      btnModoDetalhado.classList.remove('text-gray-500');
-    }
-    if (btnModoNormal) {
-      btnModoNormal.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
-      btnModoNormal.classList.add('text-gray-500');
-    }
-    localStorage.setItem('dashboardModo', 'detalhado');
-  } else {
-    dashboardContainer.classList.remove('dashboard-detalhado');
-    dashboardContainer.classList.remove('dashboard-compact');
-    if (btnModoNormal) {
-      btnModoNormal.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
-      btnModoNormal.classList.remove('text-gray-500');
-    }
-    if (btnModoDetalhado) {
-      btnModoDetalhado.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
-      btnModoDetalhado.classList.add('text-gray-500');
-    }
-    localStorage.setItem('dashboardModo', 'normal');
-  }
-  
-  // Re-renderizar gráficos para ajustar tamanho
-  setTimeout(() => {
-    if (fluxoInstance) fluxoInstance.resize();
-    if (pizzaInstance) pizzaInstance.resize();
-    if (compInstance) compInstance.resize();
-    if (vendasDiaSemanaInstance) vendasDiaSemanaInstance.resize();
-    if (vendasPeriodoInstance) vendasPeriodoInstance.resize();
-  }, 100);
-}
-
-if (btnModoNormal) {
-  btnModoNormal.addEventListener('click', () => setModoVisualizacao('normal'));
-}
-
-if (btnModoDetalhado) {
-  btnModoDetalhado.addEventListener('click', () => setModoVisualizacao('detalhado'));
-}
-
-// Restaurar modo salvo
-const modoSalvo = localStorage.getItem('dashboardModo');
-if (modoSalvo === 'detalhado') {
-  setModoVisualizacao('detalhado');
-} else {
-  setModoVisualizacao('normal');
-}
+// -------- MODO DE VISUALIZAÇÃO: Normal/Detalhado (REMOVIDO) --------
+// Código removido para manter apenas o modo compacto conforme solicitado.
+// As referências a btnModoNormal e btnModoDetalhado foram tratadas acima.
 
 // -------- MELHORIA 6: Touch Gestures para Swipe --------
 let touchStartX = 0;

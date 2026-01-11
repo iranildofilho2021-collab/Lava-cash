@@ -50,13 +50,7 @@
           <span data-theme-toggle-icon aria-hidden="true">🌙</span>
           <span data-theme-toggle-label>Modo escuro</span>
         </button>
-        <div id="storageUsage" class="storage-indicator hidden mt-3" role="status" aria-live="polite">
-          <span class="text-xs text-gray-500">Armazenamento:</span>
-          <div class="bar mt-1 h-1 bg-gray-200 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div class="bar-fill h-full bg-sky-500 transition-all duration-500" style="width: 0%"></div>
-          </div>
-          <span class="text-xs text-gray-500 mt-1 block text-right" data-storage-percent>0%</span>
-        </div>
+        <!-- Armazenamento removido conforme solicitado -->
         <div class="text-xs text-gray-400 mt-4 text-center">&copy; 2026 IRANCASH</div>
       </div>
     </aside>`;

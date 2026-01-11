@@ -553,6 +553,10 @@
               const vendasResumoDia = await getItemAsync('vendasResumoDia', []);
               if (Array.isArray(vendasResumoDia)) safeSetItem('vendasResumoDia', JSON.stringify(vendasResumoDia));
 
+              // Carrega vendasDetalhadas (importante para gráficos por período)
+              const vendasDetalhadas = await getItemAsync('vendasDetalhadas', []);
+              if (Array.isArray(vendasDetalhadas)) safeSetItem('vendasDetalhadas', JSON.stringify(vendasDetalhadas));
+
               console.log('[DataStore] Inicializado com Firebase - Todos os dados estão na nuvem! ☁️');
               return;
             }

@@ -283,6 +283,28 @@
 
     window._receitasAdapterInitialized = true;
     console.log('[ReceitasAdapter] Adaptador configurado com sucesso.');
+
+    // 4. Migração Inicial Automática com Chunking
+    // O firebase-store.js não migra vendasDetalhadas automaticamente para evitar erro de tamanho.
+    // O adaptador assume essa responsabilidade aqui, usando a lógica de chunking.
+    (async () => {
+      try {
+        if (window.FirebaseStore && await window.FirebaseStore.isAvailable()) {
+           const localRaw = localStorage.getItem('vendasDetalhadas');
+           if (localRaw) {
+             const remoteData = await window.FirebaseStore.getItem('vendasDetalhadas');
+             // Se não existe remoto, ou se o local parece mais novo (simplificação: apenas se não existir remoto para evitar overwrite acidental)
+             if (!remoteData) {
+               console.log('[ReceitasAdapter] Migrando vendasDetalhadas local -> Firebase com chunking...');
+               const vendas = JSON.parse(localRaw);
+               if (Array.isArray(vendas) && vendas.length > 0) {
+                 await window.salvarVendasDetalhadas(vendas);
+               }
+             }
+           }
+        }
+      } catch(e) { console.warn('[ReceitasAdapter] Erro na migração inicial:', e); }
+    })();
   }
 
 })();

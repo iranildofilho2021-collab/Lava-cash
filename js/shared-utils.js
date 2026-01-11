@@ -240,6 +240,105 @@
   }
 
   /**
+   * Lê vendas detalhadas (async - busca do Firebase primeiro, suporta chunks)
+   * @returns {Promise<Array>} Lista de vendas detalhadas expandida
+   */
+  async function lerVendasDetalhadasAsync() {
+    // 1. Tentar cache em memória
+    if(global._vendasDetalhadas_inMemory && Array.isArray(global._vendasDetalhadas_inMemory)) {
+      return global._vendasDetalhadas_inMemory.slice();
+    }
+    
+    // 2. Tentar ler do Firebase (fonte da verdade)
+    if (global.FirebaseStore && await global.FirebaseStore.isAvailable()) {
+      try {
+        const remoteData = await global.FirebaseStore.getItem('vendasDetalhadas');
+        
+        if (remoteData) {
+          // Caso 1: Dados salvos em chunks (formato novo)
+          if (remoteData.format === 'chunked') {
+            let fullData = [];
+            
+            // Carregar chunks em paralelo
+            const promises = [];
+            for (let i = 0; i < remoteData.chunkCount; i++) {
+               promises.push(global.FirebaseStore.getItem(`vendasDetalhadas_chunk_${i}`));
+            }
+            
+            const chunks = await Promise.all(promises);
+            
+            // Montar array completo
+            chunks.forEach(chunk => {
+              if (chunk && Array.isArray(chunk.data)) {
+                fullData = fullData.concat(chunk.data);
+              }
+            });
+            
+            // Expandir formato compacto
+            const expanded = fullData.map(it => ({ 
+              date: it.d || '', 
+              time: it.t || '', 
+              dateMs: (it.ms != null)?Number(it.ms):null, 
+              valorBruto: (it.v!=null)?(Number(it.v)/100):0, 
+              mdr: (it.m!=null)?(Number(it.m)/100):0, 
+              source: it.s||'', 
+              tipoPagamento: it.p||'', 
+              id: it.id||'' 
+            }));
+            
+            // Atualizar cache em memória
+            global._vendasDetalhadas_inMemory = expanded;
+            return expanded;
+          }
+          
+          // Caso 2: Dados salvos em formato compacto único (formato anterior)
+          if (remoteData.format === 'compact' && Array.isArray(remoteData.data)) {
+             const expanded = remoteData.data.map(it => ({ 
+              date: it.d || '', 
+              time: it.t || '', 
+              dateMs: (it.ms != null)?Number(it.ms):null, 
+              valorBruto: (it.v!=null)?(Number(it.v)/100):0, 
+              mdr: (it.m!=null)?(Number(it.m)/100):0, 
+              source: it.s||'', 
+              tipoPagamento: it.p||'', 
+              id: it.id||'' 
+            }));
+            global._vendasDetalhadas_inMemory = expanded;
+            return expanded;
+          }
+        }
+      } catch(e) {
+        console.warn('[SharedUtils] Erro ao carregar detalhadas do Firebase:', e);
+      }
+    }
+    
+    // 3. Fallback para IndexedDB se disponível
+    if (global.IndexedDBStore) {
+        try {
+            const idbData = await global.IndexedDBStore.getItem('vendasDetalhadas');
+            if (idbData && idbData.format === 'compact' && Array.isArray(idbData.data)) {
+                const expanded = idbData.data.map(it => ({ 
+                  date: it.d || '', 
+                  time: it.t || '', 
+                  dateMs: (it.ms != null)?Number(it.ms):null, 
+                  valorBruto: (it.v!=null)?(Number(it.v)/100):0, 
+                  mdr: (it.m!=null)?(Number(it.m)/100):0, 
+                  source: it.s||'', 
+                  tipoPagamento: it.p||'', 
+                  id: it.id||'' 
+                }));
+                global._vendasDetalhadas_inMemory = expanded;
+                return expanded;
+            }
+        } catch(e) {}
+    }
+
+    // 4. Fallback final para localStorage
+    // Nota: localStorage pode não ter o dado completo se for grande
+    return [];
+  }
+
+  /**
    * Salva despesas
    * @param {Array} despesas - Lista de despesas
    * @returns {boolean}
@@ -455,42 +554,265 @@
     }
   }
 
+  // ========== MAPEAMENTO DE IMPORTAÇÃO ==========
+
+  function loadMapping(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+  }
+
+  function saveMapping(key, map) {
+    try { localStorage.setItem(key, JSON.stringify(map)); } catch (e) {}
+  }
+
+  function applyMappingIndex(headers, mappingValue, fallbackIndex) {
+    if (!mappingValue) return fallbackIndex;
+    if (String(mappingValue).startsWith('__idx__')) {
+      const n = Number(String(mappingValue).replace('__idx__', ''));
+      return Number.isFinite(n) ? n : fallbackIndex;
+    }
+    // try find header name
+    const idx = headers.indexOf(String(mappingValue));
+    return idx >= 0 ? idx : fallbackIndex;
+  }
+
+  function normalizeForMatch(s) {
+    if (!s) return '';
+    try { return String(s).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, ''); } catch (e) { return String(s).toLowerCase(); }
+  }
+
+  function autoMapHeaders(headers, defaults) {
+    const map = {};
+    const norm = headers.map(h => normalizeForMatch(h || ''));
+
+    function findByWords(words) {
+      for (let i = 0; i < norm.length; i++) {
+        const h = norm[i];
+        for (const w of words) {
+          if (w && h.includes(w)) return headers[i];
+        }
+      }
+      return null;
+    }
+    // heuristics per key
+    defaults.forEach(d => {
+      const k = d.key;
+      let found = null;
+      if (k === 'date') {
+        found = findByWords(['data', 'date', 'emissao', 'emissão', 'timestamp', 'dia']);
+      } else if (k === 'time') {
+        found = findByWords(['hora', 'time', 'horario']);
+      } else if (k === 'status') {
+        found = findByWords(['status', 'situacao', 'situação', 'estado', 'estado da']);
+      } else if (k === 'valorBruto') {
+        found = findByWords(['valor da venda atualizado', 'valor da venda original', 'valor da venda', 'valor atualizado', 'valor original', 'valor bruto', 'valor', 'amount', 'valorvenda']);
+      } else if (k === 'modalidade') {
+        found = findByWords(['modalidade', 'tipo', 'tipo de pagamento', 'forma']);
+      } else if (k === 'valorMdr' || k === 'mdr') {
+        found = findByWords(['mdr', 'taxa mdr', 'taxa mdr', 'taxa', 'taxa mdr']);
+      } else if (k === 'valorLiquido') {
+        found = findByWords(['valor liquido', 'valor líquido', 'liquido', 'liquidado', 'liquido', 'liquid']);
+      }
+      // fallback: try to find words from key name
+      if (!found) { found = findByWords([normalizeForMatch(k)]); }
+      // if still not found, try to guess by index common patterns (e.g., valorBruto prefer column 4 etc.) -- use header index if present
+      if (!found) {
+        // no header match, try numeric fallback: look for header containing 'valor' for valor fields
+        if (k === 'valorBruto' || k === 'valorLiquido' || k === 'valorMdr') {
+          found = findByWords(['valor']);
+        }
+      }
+      if (found) { map[k] = found; }
+    });
+    // special case: if time wasn't found but date was found (common when date and time are in same cell), map time to the same header as date
+    if (!map.time && map.date) { map.time = map.date; }
+    return map;
+  }
+
+  function renderMappingUI(panelId, fieldsContainerId, headers, storageKey, defaults) {
+    const panel = document.getElementById(panelId);
+    const container = document.getElementById(fieldsContainerId);
+    if (!panel || !container) return;
+    container.innerHTML = '';
+    const mapping = loadMapping(storageKey) || {};
+    // if saved mapping only contains headerRow (from import config) treat it as empty so auto-detect runs
+    const userMappingKeys = Object.keys(mapping).filter(k => k !== 'headerRow');
+    const auto = (userMappingKeys.length === 0) ? autoMapHeaders(headers, defaults) : {};
+    const options = [''].concat(headers);
+    // also offer numeric index options up to headers length-1
+    for (const f of defaults) {
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2';
+      const label = document.createElement('div'); label.className = 'w-36 text-xs text-gray-600'; label.textContent = f.label;
+      const sel = document.createElement('select'); sel.className = 'map-select rounded border px-2 py-1 text-sm flex-1';
+      // option for automatic index by header name
+      sel.innerHTML = options.map(o => `<option value="${o}">${o || '(nenhum)'}</option>`).join('') +
+        Array.from({ length: Math.max(0, Math.min(30, headers.length + 5)) }).map((_, i) => `<option value="__idx__${i}">Índice ${i}</option>`).join('');
+      // set current value from mapping, auto-detect or default
+      const current = (mapping[f.key] || auto[f.key] || f.default);
+      if (current !== undefined && current !== null) { sel.value = current; }
+      row.appendChild(label); row.appendChild(sel);
+      container.appendChild(row);
+    }
+    // show panel
+    panel.classList.remove('hidden');
+  }
+
+  function detectHeaderRow(json) {
+    if (!Array.isArray(json) || json.length === 0) return 0;
+    // Heuristic: header usually contains string keys like 'Data', 'Valor', 'Status'
+    // We scan first 10 rows
+    const keywords = ['data', 'date', 'valor', 'amount', 'status', 'tipo', 'modalidade', 'bandeira', 'receita', 'venda'];
+    let best = { idx: 0, score: 0 };
+    for (let i = 0; i < Math.min(10, json.length); i++) {
+      const row = json[i];
+      if (!Array.isArray(row)) continue;
+      let score = 0;
+      row.forEach(cell => {
+        if (typeof cell === 'string') {
+          const s = cell.toLowerCase();
+          if (keywords.some(k => s.includes(k))) score++;
+        }
+      });
+      if (score > best.score) best = { idx: i, score };
+    }
+    return best.idx;
+  }
+
+  function getHeadersFromJson(json, overrideHeaderRow) {
+    const hr = (typeof overrideHeaderRow === 'number' && !isNaN(overrideHeaderRow)) ? overrideHeaderRow : detectHeaderRow(json);
+    const headerRow = json[hr] || [];
+    return headerRow.map(h => h == null ? '' : String(h).trim());
+  }
+
+  // ========== CONFIGURAÇÃO DE PERÍODOS ==========
+
+  const DEFAULT_PERIODOS = {
+    'Madrugada': { start: '00:00', end: '05:59' },
+    'Manhã': { start: '06:00', end: '11:59' },
+    'Tarde': { start: '12:00', end: '17:59' },
+    'Noite': { start: '18:00', end: '23:59' }
+  };
+
+  function getPeriodosConfig() {
+    return getStorageItemSync('config_periodos', DEFAULT_PERIODOS);
+  }
+
+  function savePeriodosConfig(config) {
+    setStorageItem('config_periodos', config);
+  }
+
+  /**
+   * Converte horário "HH:MM" para segundos
+   */
+  function timeToSeconds(timeStr) {
+    if (!timeStr) return 0;
+    const parts = timeStr.split(':');
+    const h = Number(parts[0] || 0);
+    const m = Number(parts[1] || 0);
+    const s = Number(parts[2] || 0);
+    return (h * 3600) + (m * 60) + s;
+  }
+
+  /**
+   * Determina o período do dia baseado na configuração
+   * @param {string|null} timeStr - Horário no formato HH:MM ou HH:MM:SS
+   * @returns {string|null} Nome do período ou null
+   */
+  function getPeriodoDoDia(timeStr) {
+    try {
+      if (!timeStr) return null;
+      
+      // Normaliza timeStr (remove 'h', extrai HH:MM:SS)
+      const m = String(timeStr).trim().replace('h', ':').match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/);
+      let t = 0;
+      
+      if (!m) {
+        // Fallback para tentar extrair de Date string
+        const dt = new Date(String(timeStr));
+        if (dt && !isNaN(dt.getTime())) {
+          const hh = dt.getHours(), mm = dt.getMinutes(), ss = dt.getSeconds();
+          t = (hh * 3600) + (mm * 60) + ss;
+        } else {
+          return null;
+        }
+      } else {
+        const hh = Number(m[1] || 0);
+        const mm = Number(m[2] || 0);
+        const ss = Number(m[3] || 0);
+        t = (hh * 3600) + (mm * 60) + ss;
+      }
+
+      const config = getPeriodosConfig();
+      
+      for (const [nome, range] of Object.entries(config)) {
+        const start = timeToSeconds(range.start);
+        // Ajusta fim para incluir segundos (ex: 05:59 -> 05:59:59)
+        const endParts = range.end.split(':');
+        const endH = Number(endParts[0]);
+        const endM = Number(endParts[1]);
+        const endS = 59; // Sempre assume final do minuto
+        const end = (endH * 3600) + (endM * 60) + endS;
+
+        if (t >= start && t <= end) {
+          return nome;
+        }
+      }
+      
+      return 'Madrugada'; // Default fallback se nenhum bater (ex: 24:00 ou config buraco)
+    } catch (e) {
+      return null;
+    }
+  }
+
   // ========== EXPORTAÇÃO ==========
 
   global.SharedUtils = {
-    // Constantes
+    // ... (existentes)
     PT_MESES,
-    // Formatação
     numBR,
     fmtBR,
     genId,
-    // Storage
     getStorageItem,
     setStorageItem,
     getStorageItemSync,
-    // Dados
     lerVendasResumo,
     lerVendasResumoAsync,
+    lerVendasDetalhadasAsync, // Novo
     lerDespesas,
     lerDespesasAsync,
     salvarDespesas,
     carregarVendasResumoDia,
-    // Datas
     anoDe,
     mesNumDe,
     monthNameToIndex,
     daysInMonth,
-    // Cálculos
     receitaBrutaMes,
     despesaMes,
     anosDisponiveis,
-    ultimoAnoMesComDados
+    ultimoAnoMesComDados,
+    
+    // Novos (Mapping)
+    loadMapping,
+    saveMapping,
+    applyMappingIndex,
+    renderMappingUI,
+    detectHeaderRow,
+    getHeadersFromJson,
+    
+    // Novos (Periodos)
+    getPeriodosConfig,
+    savePeriodosConfig,
+    getPeriodoDoDia
   };
 
-  // Aliases globais para compatibilidade
-  global.numBR = numBR;
-  global.fmtBR = fmtBR;
-  global.genId = genId;
-  global.PT_MESES = PT_MESES;
+  // Aliases globais para compatibilidade com código existente em receitas.js
+  global.loadMapping = loadMapping;
+  global.saveMapping = saveMapping;
+  global.applyMappingIndex = applyMappingIndex;
+  global.renderMappingUI = renderMappingUI;
+  global.detectHeaderRow = detectHeaderRow;
+  global.getHeadersFromJson = getHeadersFromJson;
+  global.getPeriodoDoDia = getPeriodoDoDia; // Substitui o local
+  global.getPeriodoDoDiaLocal = getPeriodoDoDia; // Alias para dashboard
 
 })(window);
