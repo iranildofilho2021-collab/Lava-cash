@@ -381,25 +381,19 @@
       <!-- Charts Row 1 -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <div class="flex items-center justify-between gap-3 mb-4">
-            <h3 class="text-base font-semibold text-gray-800">Vendas por Periodo do Dia</h3>
-            <div class="flex items-center gap-2 text-xs">
-              <label for="vendasPeriodoMesSelect" class="text-gray-500">Mes</label>
-              <select id="vendasPeriodoMesSelect" class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-xs"></select>
-            </div>
-          </div>
-          <div id="vendas-periodo-conteudo" class="relative h-80 w-full">
-            <canvas id="vendasPeriodoChart"></canvas>
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Vendas por Dia da Semana</h3>
+          <div class="relative h-80 w-full">
+            <canvas id="vendasDiaSemanaChart"></canvas>
           </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="text-base font-semibold text-gray-800 mb-4">Composição das Despesas</h3>
-          <div class="relative h-80 w-full">
-            <canvas id="despesasPizzaChart"></canvas>
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Periodo do Dia</h3>
+          <div class="relative h-80 w-full" id="vendas-periodo-conteudo">
+            <canvas id="vendasPeriodoChart"></canvas>
           </div>
         </div>
-      </div>
 
+      </div>
       <!-- Charts Row 2 -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
@@ -409,17 +403,19 @@
           </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="text-base font-semibold text-gray-800 mb-4">Evolução das Margens</h3>
+          <h3 class="text-base font-semibold text-gray-800 mb-4">Composição das Despesas</h3>
           <div class="relative h-80 w-full">
-            <canvas id="margensChart"></canvas>
+            <canvas id="despesasPizzaChart"></canvas>
           </div>
         </div>
+      </div>
       </div>
       </div>
     </main>
 
     <!-- Firebase deve ser carregado primeiro -->
   <script type="module" src="js/firebase-init.js"></script>
+  <script src="js/firebase-sync.js" defer></script>
   <!-- Auth Service & Guard -->
   <script src="js/auth-service.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -445,3 +441,11 @@
   <script src="js/sidebar-nav.js" defer></script>
 </body>
 </html>
+
+
+
+
+
+
+
+

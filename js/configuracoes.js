@@ -679,7 +679,7 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
     }
 
     // ---------- Gestão de Usuários ----------
-    async function initUsersSection() {
+    function initUsersSection() {
         if (!window.AuthService) return;
         
         // Check permission (already protected by page access, but double check)
@@ -691,21 +691,17 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
         
         if (section) section.classList.remove('hidden');
         
-        try {
-            await renderUsersTable();
-        } catch (err) {
-            console.warn('Erro ao renderizar usuarios:', err);
-        }
+        renderUsersTable();
 
         // Make render available globally or attach refresh logic
         window.refreshUsersTable = renderUsersTable;
     }
 
-    async function renderUsersTable() {
+    function renderUsersTable() {
         const tbody = document.getElementById('users-list-body');
         if (!tbody) return;
         
-        const users = await AuthService.getAllUsers();
+        const users = AuthService.getAllUsers();
         tbody.innerHTML = '';
 
         if (users.length === 0) {
@@ -755,23 +751,23 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
     }
 
     // Expose handler globally for the onclick events in HTML string
-    window.handleUserAction = async function(action, email, value) {
+    window.handleUserAction = function(action, email, value) {
         if (!window.AuthService) return;
         
         if (action === 'toggle') {
-            if (await AuthService.toggleUserStatus(email)) {
+            if (AuthService.toggleUserStatus(email)) {
                 showMsg('Status do usuário atualizado.');
-                await renderUsersTable();
+                renderUsersTable();
             }
         } else if (action === 'delete') {
             if (confirm(`Tem certeza que deseja excluir o usuário ${email}?`)) {
-                if (await AuthService.deleteUser(email)) {
+                if (AuthService.deleteUser(email)) {
                     showMsg('Usuário excluído.');
-                    await renderUsersTable();
+                    renderUsersTable();
                 }
             }
         } else if (action === 'role') {
-            if (await AuthService.updateUserRole(email, value)) {
+            if (AuthService.updateUserRole(email, value)) {
                 showMsg('Nível de acesso atualizado.');
                 // Não precisa re-renderizar tudo se for só select, mas garante consistência
             }

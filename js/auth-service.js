@@ -35,75 +35,29 @@
     };
 
     // ========== DATABASE SIMULATION ==========
-    let dataStoreReady = null;
 
-    async function ensureDataStoreReady() {
-        if (!global.IRANCASH || !global.IRANCASH.DataStore || !global.IRANCASH.DataStore.initAsync) {
-            return false;
-        }
-        if (!dataStoreReady) {
-            dataStoreReady = global.IRANCASH.DataStore.initAsync()
-                .then(() => true)
-                .catch(() => false);
-        }
-        return dataStoreReady;
+    function getUsersDB() {
+        const raw = localStorage.getItem(USERS_DB_KEY);
+        return raw ? JSON.parse(raw) : [];
     }
 
-    async function getUsersDB() {
-        await ensureDataStoreReady();
-        if (global.IRANCASH && global.IRANCASH.DataStore && global.IRANCASH.DataStore.getItemAsync) {
-            try {
-                const users = await global.IRANCASH.DataStore.getItemAsync(USERS_DB_KEY, []);
-                if (Array.isArray(users)) return users;
-            } catch (err) {
-                console.warn('[AuthService] Erro ao ler usuarios do DataStore:', err);
-            }
-        }
-        try {
-            const raw = localStorage.getItem(USERS_DB_KEY);
-            return raw ? JSON.parse(raw) : [];
-        } catch (err) {
-            console.warn('[AuthService] Erro ao ler usuarios do localStorage:', err);
-            return [];
-        }
+    function saveUsersDB(users) {
+        localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
     }
 
-    async function saveUsersDB(users) {
-        let saved = false;
-        await ensureDataStoreReady();
-        if (global.IRANCASH && global.IRANCASH.DataStore && global.IRANCASH.DataStore.setItemAsync) {
-            try {
-                saved = await global.IRANCASH.DataStore.setItemAsync(USERS_DB_KEY, users);
-            } catch (err) {
-                console.warn('[AuthService] Erro ao salvar usuarios no DataStore:', err);
-            }
-        }
-
-        if (!saved) {
-            try {
-                localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
-                saved = true;
-            } catch (err) {
-                console.warn('[AuthService] Erro ao salvar usuarios no localStorage:', err);
-            }
-        }
-
-        return saved;
-    }
-
-    async function findUser(emailOrLogin) {
+    function findUser(emailOrLogin) {
         // Check Hardcoded Dev first
         if (emailOrLogin === DEV_CREDENTIALS.login || emailOrLogin === DEV_CREDENTIALS.email) {
             return DEV_CREDENTIALS;
         }
         
-        const users = await getUsersDB();
+        const users = getUsersDB();
         return users.find(u => u.email === emailOrLogin);
     }
 
     // ========== AUTHENTICATION ==========
 
-    async function login(emailOrLogin, password) {
+    function login(emailOrLogin, password) {
         // 1. Check Developer (Always Active)
         if (emailOrLogin === DEV_CREDENTIALS.login || emailOrLogin === DEV_CREDENTIALS.email) {
              if (password === DEV_CREDENTIALS.password) {
@@ -116,7 +70,7 @@
         }
 
         // 2. Check Database Users
-        const user = await findUser(emailOrLogin);
+        const user = findUser(emailOrLogin);
         if (user && user.password === password) { 
             // Check Approval (Agora é opcional, mas se o admin bloquear, deve respeitar)
             if (user.active === false) { // Se for explicitamente false (bloqueado)
@@ -141,8 +95,8 @@
         window.location.href = 'login.html';
     }
 
-    async function register(userData) {
-        const users = await getUsersDB();
+    function register(userData) {
+        const users = getUsersDB();
         
         // Check duplicatas
         if (users.some(u => u.email === userData.email)) {
@@ -165,47 +119,46 @@
         };
 
         users.push(newUser);
-        const saved = await saveUsersDB(users);
-        if (!saved) {
-            return { success: false, message: 'Falha ao salvar no banco de dados.' };
-        }
+        saveUsersDB(users);
 
         return { success: true, user: newUser, message: 'Cadastro realizado com sucesso!' };
     }
 
     // ========== USER MANAGEMENT (DEV ONLY) ==========
 
-    async function getAllUsers() {
-        const users = await getUsersDB();
-        return users.map(u => ({...u, password: '***'})); // Hide passwords
+    function getAllUsers() {
+        return getUsersDB().map(u => ({...u, password: '***'})); // Hide passwords
     }
 
-    async function toggleUserStatus(email) {
-        const users = await getUsersDB();
+    function toggleUserStatus(email) {
+        const users = getUsersDB();
         const user = users.find(u => u.email === email);
         if (user) {
             user.active = !user.active;
-            return await saveUsersDB(users);
+            saveUsersDB(users);
+            return true;
         }
         return false;
     }
     
-    async function deleteUser(email) {
-        let users = await getUsersDB();
+    function deleteUser(email) {
+        let users = getUsersDB();
         const initialLen = users.length;
         users = users.filter(u => u.email !== email);
         if (users.length !== initialLen) {
-            return await saveUsersDB(users);
+            saveUsersDB(users);
+            return true;
         }
         return false;
     }
 
-    async function updateUserRole(email, newRole) {
-        const users = await getUsersDB();
+    function updateUserRole(email, newRole) {
+        const users = getUsersDB();
         const user = users.find(u => u.email === email);
         if (user && ROLES[newRole]) {
             user.role = newRole;
-            return await saveUsersDB(users);
+            saveUsersDB(users);
+            return true;
         }
         return false;
     }

@@ -5,6 +5,9 @@
  */
 (function(global) {
   'use strict';
+  const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+  const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
 
   const DB_NAME = 'IranCashDB';
   const DB_VERSION = 1;
@@ -36,7 +39,7 @@
 
       request.onsuccess = (event) => {
         db = event.target.result;
-        console.log('[IndexedDB] Conexão estabelecida');
+        log('[IndexedDB] Conexão estabelecida');
         resolve(db);
       };
 
@@ -47,7 +50,7 @@
         if (!database.objectStoreNames.contains(STORE_NAME)) {
           const store = database.createObjectStore(STORE_NAME, { keyPath: 'key' });
           store.createIndex('key', 'key', { unique: true });
-          console.log('[IndexedDB] Object store criado');
+          log('[IndexedDB] Object store criado');
         }
       };
     });
@@ -251,7 +254,7 @@
         const request = store.clear();
 
         request.onsuccess = () => {
-          console.log('[IndexedDB] Dados limpos');
+          log('[IndexedDB] Dados limpos');
           resolve(true);
         };
 
@@ -318,7 +321,7 @@
     let migrated = 0;
     let errors = 0;
 
-    console.log('[IndexedDB] Iniciando migração do localStorage...');
+    log('[IndexedDB] Iniciando migração do localStorage...');
 
     for (const key of KEYS_TO_MIGRATE) {
       try {
@@ -335,7 +338,7 @@
               value = localValue;
             }
             await setItem(key, value);
-            console.log('[IndexedDB] Migrado:', key);
+            log('[IndexedDB] Migrado:', key);
             migrated++;
           }
         }
@@ -354,7 +357,7 @@
           if (existingValue === null) {
             const value = JSON.parse(localStorage.getItem(key));
             await setItem(key, value);
-            console.log('[IndexedDB] Migrado chunk:', key);
+            log('[IndexedDB] Migrado chunk:', key);
             migrated++;
           }
         } catch (error) {
@@ -363,7 +366,7 @@
       }
     }
 
-    console.log(`[IndexedDB] Migração concluída: ${migrated} itens migrados, ${errors} erros`);
+    log(`[IndexedDB] Migração concluída: ${migrated} itens migrados, ${errors} erros`);
     
     return { migrated, errors };
   }
@@ -411,3 +414,4 @@
   }
 
 })(window);
+

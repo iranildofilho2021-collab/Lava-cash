@@ -26,8 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
             setLoading(true);
             
             try {
+                // Simular delay
+                await new Promise(r => setTimeout(r, 1000));
+                
                 if (typeof AuthService !== 'undefined') {
-                    const result = await AuthService.register({
+                    const result = AuthService.register({
                         name,
                         email,
                         password,

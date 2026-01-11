@@ -24,6 +24,10 @@ let db = null;
 let auth = null;
 let initialized = false;
 
+const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
+
 /**
  * Inicializa o Store com as instâncias do Firebase
  * @param {Object} firebaseApp - Instância do App Firebase inicializado
@@ -40,7 +44,7 @@ export async function initStore(firebaseApp) {
       db = initializeFirestore(firebaseApp, {
         localCache: persistentLocalCache()
       });
-      console.log('[FirebaseStore] Persistência offline habilitada (LocalCache)');
+      log('[FirebaseStore] Persistência offline habilitada (LocalCache)');
     } catch (err) {
       // Fallback se já tiver sido inicializado ou erro
       if (err.code === 'failed-precondition' || err.message.includes('already exists')) {
@@ -52,7 +56,7 @@ export async function initStore(firebaseApp) {
     }
 
     initialized = true;
-    console.log('[FirebaseStore] Store inicializado com sucesso');
+    log('[FirebaseStore] Store inicializado com sucesso');
     
     // Expõe API global para compatibilidade com código legado
     exposeGlobalAPI();
@@ -83,7 +87,7 @@ const FirebaseStore = {
         updatedAt: serverTimestamp()
       };
       await setDoc(docRef, docData, { merge: true });
-      console.log(`[FirebaseStore] Item salvo: ${key}`);
+      log(`[FirebaseStore] Item salvo: ${key}`);
       return true;
     } catch (error) {
       console.error(`[FirebaseStore] Erro ao salvar ${key}:`, error);
@@ -99,7 +103,7 @@ const FirebaseStore = {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        console.log(`[FirebaseStore] Item carregado: ${key}`);
+        log(`[FirebaseStore] Item carregado: ${key}`);
         return data.value !== undefined ? data.value : defaultValue;
       }
       // Fallback localStorage
@@ -116,7 +120,7 @@ const FirebaseStore = {
     try {
       const docRef = getDocRef('data', key);
       await deleteDoc(docRef);
-      console.log(`[FirebaseStore] Item removido: ${key}`);
+      log(`[FirebaseStore] Item removido: ${key}`);
       try { localStorage.removeItem(key); } catch(e){}
       return true;
     } catch (error) {
@@ -161,7 +165,7 @@ const FirebaseStore = {
         batch.delete(doc.ref);
       });
       await batch.commit();
-      console.log('[FirebaseStore] Todos os dados removidos');
+      log('[FirebaseStore] Todos os dados removidos');
       try { localStorage.clear(); } catch(e){}
       return true;
     } catch (error) {
@@ -211,7 +215,7 @@ const FirebaseStore = {
           } catch(e) {}
         }
       }
-      console.log(`[FirebaseStore] Migração: ${migrated} itens`);
+      log(`[FirebaseStore] Migração: ${migrated} itens`);
     } catch(e) {
       console.error('Erro migração:', e);
     }
@@ -227,3 +231,4 @@ const FirebaseStore = {
 function exposeGlobalAPI() {
   window.FirebaseStore = FirebaseStore;
 }
+

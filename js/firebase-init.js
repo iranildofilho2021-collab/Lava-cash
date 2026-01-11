@@ -20,8 +20,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { firebaseConfig } from './firebase/firebase-config.js';
 import { initStore } from './firebase/firebase-store.js';
 
+const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
+
 async function initFirebase() {
-  console.log('[FirebaseInit] Iniciando (Modular)...');
+  log('[FirebaseInit] Iniciando (Modular)...');
   
   try {
     // Validação básica da config
@@ -31,7 +35,7 @@ async function initFirebase() {
 
     // Inicializa App
     const app = initializeApp(firebaseConfig);
-    console.log('[FirebaseInit] App inicializado');
+    log('[FirebaseInit] App inicializado');
 
     // Inicializa Store (Firestore + Auth)
     await initStore(app);
@@ -49,3 +53,4 @@ async function initFirebase() {
 
 // Inicia
 initFirebase();
+

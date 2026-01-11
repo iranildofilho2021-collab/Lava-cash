@@ -5,6 +5,9 @@
  */
 (function(global) {
   'use strict';
+  const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+  const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
 
   // ========== CONSTANTES ==========
   const MAX_STORAGE_SIZE = 4.5 * 1024 * 1024; // 4.5MB limite seguro
@@ -275,7 +278,7 @@
       console.warn('[Security] Data integrity issues found:', integrity.issues);
     }
     
-    console.log('[Security] Module initialized');
+    log('[Security] Module initialized');
   }
 
   // Inicializa quando DOM estiver pronto
@@ -309,3 +312,4 @@
   };
 
 })(window);
+

@@ -4,6 +4,9 @@
  */
 (function(global) {
   'use strict';
+  const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+  const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
 
   /**
    * Verifica onde os dados estão sendo salvos
@@ -110,9 +113,10 @@
   global.verificarDadosFirebase = verificarOndeDadosSalvos;
   global.migrarParaFirebase = migrarParaFirebase;
 
-  console.log('✅ Utilitários Firebase carregados!');
-  console.log('📝 Use no console:');
-  console.log('   - verificarDadosFirebase() - Verifica onde os dados estão salvos');
-  console.log('   - migrarParaFirebase() - Migra dados locais para Firebase');
+  log('✅ Utilitários Firebase carregados!');
+  log('📝 Use no console:');
+  log('   - verificarDadosFirebase() - Verifica onde os dados estão salvos');
+  log('   - migrarParaFirebase() - Migra dados locais para Firebase');
 
 })(window);
+

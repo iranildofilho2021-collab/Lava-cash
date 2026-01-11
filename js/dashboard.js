@@ -295,36 +295,6 @@ function montarAnoSelect(){
 // selected month/year set by clicking a card. If null -> dashboard shows current month (or anoSelect value for year)
 let selectedYear = null;
 let selectedMonthIndex = null;
-let selectionUpdateToken = 0;
-let selectionFrame = null;
-let lastSelectionKey = null;
-let lastSelectionAt = 0;
-
-const vendasPeriodoMesSelect = document.getElementById('vendasPeriodoMesSelect');
-let vendasPeriodoSelectBound = false;
-
-function atualizarSelectPeriodoMes() {
-  if (!vendasPeriodoMesSelect) return;
-  const ano = selectedYear || (anoSelect && anoSelect.value) || new Date().getFullYear();
-  const mIdx = (selectedMonthIndex !== null && selectedMonthIndex !== undefined) ? Number(selectedMonthIndex) : new Date().getMonth();
-  vendasPeriodoMesSelect.innerHTML = '';
-  for (let m = 0; m < 12; m += 1) {
-    const opt = document.createElement('option');
-    opt.value = String(m);
-    opt.textContent = `${PT_MESES[m]} ${String(ano).slice(-2)}`;
-    if (m === mIdx) opt.selected = true;
-    vendasPeriodoMesSelect.appendChild(opt);
-  }
-
-  if (!vendasPeriodoSelectBound) {
-    vendasPeriodoMesSelect.addEventListener('change', () => {
-      const year = (anoSelect && anoSelect.value) ? anoSelect.value : new Date().getFullYear();
-      const month = Number(vendasPeriodoMesSelect.value);
-      setSelectedMonth(year, month);
-    });
-    vendasPeriodoSelectBound = true;
-  }
-}
 
 // define seleção inicial como o último mês com dados
 (function definirSelecaoInicial(){
@@ -335,12 +305,6 @@ function atualizarSelectPeriodoMes() {
 })();
 
 function setSelectedMonth(year, mIdx){
-  const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-  const key = `${String(year)}-${String(mIdx)}`;
-  if (lastSelectionKey === key && (now - lastSelectionAt) < 150) return;
-  lastSelectionKey = key;
-  lastSelectionAt = now;
-
   selectedYear = String(year);
   selectedMonthIndex = (mIdx === null || mIdx === undefined) ? null : Number(mIdx);
   // highlight card
@@ -352,28 +316,19 @@ function setSelectedMonth(year, mIdx){
     else c.classList.remove('selected');
   }
   // refresh charts for new selection (não altera o fluxo financeiro que sempre mostra últimos 6 meses a partir do mês atual)
-  const token = ++selectionUpdateToken;
-  if (selectionFrame) cancelAnimationFrame(selectionFrame);
-  selectionFrame = requestAnimationFrame(() => {
-    if (token !== selectionUpdateToken) return;
-    atualizarResumoAtual();
-    atualizarComparacao();
-    atualizarParaAcontecer();
-    atualizarTop5Despesas();
-    atualizarSelectPeriodoMes();
-    // render synchronous attempt first (localStorage)
-    atualizarVendasPorDiaSemana();
-    atualizarVendasPorPeriodo();
-  });
+  atualizarResumoAtual();
+  atualizarComparacao();
+  atualizarParaAcontecer();
+  atualizarTop5Despesas();
+  // render synchronous attempt first (localStorage)
+  atualizarVendasPorDiaSemana();
+  atualizarVendasPorPeriodo();
   // se não houver dados no localStorage, tentar carregar do IndexedDB e re-renderizar quando pronto
   try{
     const maybe = carregarVendasResumoDia();
     if(!Array.isArray(maybe) || maybe.length===0){
       if (typeof carregarVendasResumoDiaAsync === 'function'){
-        carregarVendasResumoDiaAsync().then(()=>{ 
-          if (token !== selectionUpdateToken) return;
-          try{ atualizarVendasPorDiaSemana(); atualizarVendasPorPeriodo(); setTimeout(alignChartBottomAxes, 80); }catch(e){} 
-        });
+        carregarVendasResumoDiaAsync().then(()=>{ try{ atualizarVendasPorDiaSemana(); atualizarVendasPorPeriodo(); setTimeout(alignChartBottomAxes, 80); }catch(e){} });
       }
     }
   }catch(e){}
@@ -1590,7 +1545,6 @@ function atualizarRankingMeses() {
 // -------- Boot --------
 function refreshAll(){
   montarCardsMeses();
-  atualizarSelectPeriodoMes();
   atualizarResumoAtual();
   atualizarComparacao();
   atualizarFluxoFinanceiro();
@@ -1709,7 +1663,7 @@ function atualizarNovosGraficos() {
       data: {
         labels,
         datasets: [{
-          label: 'Lucro Líquido',
+          label: 'Lucro L?quido',
           data: lucros,
           borderColor: '#0ea5e9',
           backgroundColor: 'rgba(14, 165, 233, 0.1)',
@@ -1720,7 +1674,23 @@ function atualizarNovosGraficos() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: { y: { beginAtZero: false } }
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: {
+              callback: function(val){ return fmtBR(val); }
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context){
+                return context.dataset.label + ': ' + fmtBR(context.raw);
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -2172,3 +2142,5 @@ function hideSkeletonLoading() {
     }
   });
 }
+
+

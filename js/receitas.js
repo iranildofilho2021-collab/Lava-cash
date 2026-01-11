@@ -317,6 +317,57 @@
       try{ idbPut('vendasResumo', v).then(()=>{ try{ localStorage.setItem('vendasResumo_idb','1'); }catch(e){} }).catch(()=>{}); }catch(e){}
       try{ window._vendasResumo_inMemory = Array.isArray(v) ? v.slice() : null; }catch(e){}
     }
+    async function salvarVendasPeriodoDoDia(v){
+      if (window.FirebaseStore && window.FirebaseStore.isAvailable) {
+        try {
+          const isAvailable = await window.FirebaseStore.isAvailable();
+          if (isAvailable) {
+            await window.FirebaseStore.setItem('vendasPeriodoDoDia', v);
+            console.log('[Receitas] vendasPeriodoDoDia salvo no Firebase');
+          }
+        } catch (err) {
+          console.warn('[Receitas] Erro ao salvar vendasPeriodoDoDia no Firebase:', err);
+        }
+      }
+
+      try{ localStorage.setItem('vendasPeriodoDoDia', JSON.stringify(v)); }catch(e){}
+      try{ localStorage.setItem('vendasPeriodoDoDia_last_update', String(Date.now())); }catch(e){}
+      try{ window._vendasPeriodoDoDia_inMemory = Array.isArray(v) ? v.slice() : null; }catch(e){}
+    }
+
+    async function carregarVendasPeriodoDoDiaAsync(){
+      try{
+        if (window._vendasPeriodoDoDia_inMemory && Array.isArray(window._vendasPeriodoDoDia_inMemory)) {
+          return window._vendasPeriodoDoDia_inMemory.slice();
+        }
+        if (window.FirebaseStore && window.FirebaseStore.isAvailable) {
+          try {
+            const isAvailable = await window.FirebaseStore.isAvailable();
+            if (isAvailable) {
+              const dados = await window.FirebaseStore.getItem('vendasPeriodoDoDia', []);
+              if (dados && Array.isArray(dados)) {
+                try { localStorage.setItem('vendasPeriodoDoDia', JSON.stringify(dados)); } catch(e){}
+                window._vendasPeriodoDoDia_inMemory = dados.slice();
+                return dados;
+              }
+            }
+          } catch(e) {}
+        }
+        const local = JSON.parse(localStorage.getItem('vendasPeriodoDoDia') || '[]') || [];
+        if (Array.isArray(local)) return local;
+        return [];
+      }catch(e){ return []; }
+    }
+
+    function carregarVendasPeriodoDoDia(){
+      try{
+        if (window._vendasPeriodoDoDia_inMemory && Array.isArray(window._vendasPeriodoDoDia_inMemory)) {
+          return window._vendasPeriodoDoDia_inMemory.slice();
+        }
+        const local = JSON.parse(localStorage.getItem('vendasPeriodoDoDia') || '[]') || [];
+        return Array.isArray(local) ? local : [];
+      }catch(e){ return []; }
+    }
     // Armazenamento por dia (detalhado) - novo comportamento: gravamos vendas por dia em vendasResumoDia
     function carregarVendasResumoDia(){
       try {
@@ -601,7 +652,12 @@
 
       // container for period totals (perÃ­odo do dia) - REMOVIDO POR SOLICITAÃ‡ÃƒO
       let periodoContainer = container.querySelector('#periodo-totals-rec');
-      if(periodoContainer) periodoContainer.remove();
+      if(!periodoContainer){
+        periodoContainer = document.createElement('div');
+        periodoContainer.id = 'periodo-totals-rec';
+        periodoContainer.className = 'mt-4 bg-white rounded p-4 border';
+        container.appendChild(periodoContainer);
+      }
 
       // container for consistency note
       let consistencyContainer = container.querySelector('#totals-consistency-rec');
@@ -830,8 +886,43 @@
           })();
           // render period totals for selected month (PerÃ­odo do Dia) REMOVIDO POR SOLICITACAO
           (async function renderPeriodoTotals(){
-             // funcionalidade removida, container escondido ou vazio
-             if(periodoContainer) periodoContainer.innerHTML = '';
+            try{
+              const wrap = periodoContainer;
+              if(!wrap) return;
+              wrap.innerHTML = '';
+              if(!filtros.mes || filtros.mes === 'Todos'){
+                wrap.innerHTML = `<div class="text-sm text-gray-500">Selecione um mês no filtro acima para ver o total por período do dia.</div>`;
+                return;
+              }
+              const monthIdx = mesIndex(filtros.mes);
+              if(monthIdx === 99){ wrap.innerHTML = `<div class="text-sm text-gray-500">Mês inválido.</div>`; return; }
+              const mesNum = monthIdx + 1;
+              const anoStr = String(ano);
+              const anoMes = `${anoStr}/${String(mesNum).padStart(2,'0')}`;
+              const sums = await getSomaPeriodoPorMes(anoMes);
+              updateVendasPeriodoDoDiaForMonth(anoMes, sums);
+
+              const tbl = document.createElement('table'); tbl.className = 'min-w-full text-sm';
+              tbl.innerHTML = `<thead><tr class='bg-gray-50'><th class='px-2 py-2 text-left'>Periodo do Dia</th><th class='px-2 py-2 text-right'>Total (R$)</th></tr></thead><tbody></tbody>`;
+              const tb = tbl.querySelector('tbody');
+              const config = (window.SharedUtils && window.SharedUtils.getPeriodosConfig) ? window.SharedUtils.getPeriodosConfig() : {};
+              let order = Object.keys(config || {});
+              if(order.length === 0) order = ['Madrugada','Manhã','Tarde','Noite'];
+              order.forEach(p => {
+                const tr = document.createElement('tr'); tr.className = 'odd:bg-white even:bg-gray-50';
+                const val = Number(sums[p] || 0);
+                tr.innerHTML = `<td class='px-2 py-2'>${p}</td><td class='px-2 py-2 text-right font-semibold'>R$ ${val.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>`;
+                tb.appendChild(tr);
+              });
+              const totalSum = order.reduce((acc, p) => acc + Number(sums[p] || 0), 0);
+              const trTotal = document.createElement('tr');
+              trTotal.className = 'bg-gray-50 font-semibold';
+              trTotal.innerHTML = `<td class='px-2 py-2'>Total</td><td class='px-2 py-2 text-right'>R$ ${totalSum.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>`;
+              tb.appendChild(trTotal);
+              wrap.appendChild(tbl);
+            }catch(e){
+              if(periodoContainer) periodoContainer.innerHTML = '<div class="text-sm text-red-600">Erro ao calcular períodos.</div>';
+            }
           })();
 
         // seleÃ§Ã£o
@@ -1706,8 +1797,10 @@
 
         const daily = Array.from(map.values());
         await salvarVendasResumoDia(daily);
-        // atualizar resumo mensal tambÃ©m
+        // atualizar resumo mensal tamb
         computeMonthlyResumoFromDaily();
+        // atualizar resumo por periodo do dia tambem
+        await computeVendasPeriodoDoDiaFromDetalhadas();
         return daily;
       }catch(e){ console.warn('Erro em rebuildDailyFromDetalhadas', e); return []; }
     }
@@ -1814,6 +1907,10 @@
     // Retorna 'Madrugada', 'ManhÃ£', 'Tarde' ou 'Noite' dado um timeStr 'HH:MM:SS'
     function getPeriodoDoDia(timeStr){
       try{
+        if (window.SharedUtils && typeof window.SharedUtils.getPeriodoDoDia === 'function') {
+          const fromConfig = window.SharedUtils.getPeriodoDoDia(timeStr);
+          if (fromConfig) return fromConfig;
+        }
         if(!timeStr) return null;
         const m = String(timeStr).trim().replace('h',':').match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/);
         if(!m){ 
@@ -1823,7 +1920,7 @@
             const hh = dt.getHours(), mm = dt.getMinutes(), ss = dt.getSeconds();
             const t = (hh*3600)+(mm*60)+(ss);
             if(t>=1 && t<= 5*3600 + 59*60 + 59) return 'Madrugada';
-            if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'ManhÃ£';
+            if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhã';
             if(t>=12*3600 && t<= 17*3600 + 59*60 + 59) return 'Tarde';
             if(t>=18*3600 && t<= 24*3600) return 'Noite';
             return 'Madrugada'; // fallback
@@ -1832,11 +1929,11 @@
         }
         const hh = Number(m[1]||0), mm = Number(m[2]||0), ss = Number(m[3]||0);
         const t = (hh*3600)+(mm*60)+(ss);
-        // 00:00:01 a 05:59:59 - Madrugada (observando que 00:00:00 puro cai fora; vamos considerar 00:00:00 como Madrugada tambÃ©m)
+        // 00:00:01 a 05:59:59 - Madrugada (observando que 00:00:00 puro cai fora; vamos considerar 00:00:00 como Madrugada tambÇ¸m)
         if(t>=1 && t<= 5*3600 + 59*60 + 59) return 'Madrugada';
         if(t===0) return 'Madrugada';
-        // 06:00:00 a 11:59:59 - ManhÃ£
-        if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'ManhÃ£';
+        // 06:00:00 a 11:59:59 - Manhã
+        if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhã';
         // 12:00:00 a 17:59:59 - Tarde
         if(t>=12*3600 && t<= 17*3600 + 59*60 + 59) return 'Tarde';
         // 18:00:00 a 24:00:00 - Noite
@@ -1986,6 +2083,74 @@
       }catch(e){ return zero; }
     }
 
+    async function computeVendasPeriodoDoDiaFromDetalhadas(){
+      try{
+        let detalhes = [];
+        if (typeof window.carregarVendasDetalhadasAsync === 'function') {
+          detalhes = await window.carregarVendasDetalhadasAsync();
+        } else {
+          detalhes = carregarVendasDetalhadas() || [];
+        }
+
+        const map = new Map();
+        for(const tx of detalhes){
+          if(!tx) continue;
+          let d = null;
+          if(tx.dateMs){ d = new Date(Number(tx.dateMs)); } else if(tx.date){ d = parseToJSDate(tx.date) || new Date(tx.date); }
+          if(!d || isNaN(d.getTime())){
+            const ex = extractDateTime(tx.date || tx.time || '');
+            d = ex.dateObj;
+          }
+          if(!d || isNaN(d.getTime())) continue;
+          const anoMes = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}`;
+
+          let timeStr = tx.time || null;
+          if(!timeStr){
+            const rawDateStr = tx.date || '';
+            const ex = extractDateTime(rawDateStr || '');
+            const hasTimeLike = (typeof rawDateStr === 'string' && (rawDateStr.indexOf(':') !== -1 || rawDateStr.indexOf('T') !== -1));
+            const hasFractionSerial = (typeof rawDateStr === 'string' && /\d+\.\d+/.test(rawDateStr));
+            if(ex && ex.timeStr && (hasTimeLike || hasFractionSerial)){
+              timeStr = ex.timeStr;
+            } else if(d && !isNaN(d.getTime())) {
+              const hh = d.getHours(), mm = d.getMinutes(), ss = d.getSeconds();
+              timeStr = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+            }
+          }
+
+          const periodo = getPeriodoDoDia(timeStr);
+          if(!periodo) continue;
+          const key = `${anoMes}||${periodo}`;
+          const val = Number(tx.valorBruto || tx.value || tx.valor || 0) || 0;
+          const cur = map.get(key) || { anoMes, periodo, total: 0 };
+          cur.total = (Number(cur.total) || 0) + val;
+          map.set(key, cur);
+        }
+
+        const out = Array.from(map.values());
+        await salvarVendasPeriodoDoDia(out);
+        return out;
+      }catch(e){
+        console.warn('computeVendasPeriodoDoDiaFromDetalhadas falhou', e);
+        return [];
+      }
+    }
+
+    async function updateVendasPeriodoDoDiaForMonth(anoMes, sums){
+      try{
+        if(!anoMes) return;
+        const current = await carregarVendasPeriodoDoDiaAsync();
+        const filtered = Array.isArray(current) ? current.filter(x => x && x.anoMes !== anoMes) : [];
+        const config = (window.SharedUtils && window.SharedUtils.getPeriodosConfig) ? window.SharedUtils.getPeriodosConfig() : {};
+        let order = Object.keys(config || {});
+        if(order.length === 0) order = ['Madrugada','Manhã','Tarde','Noite'];
+        order.forEach(p => {
+          filtered.push({ anoMes: anoMes, periodo: p, total: Number(sums[p] || 0) || 0 });
+        });
+        await salvarVendasPeriodoDoDia(filtered);
+      }catch(e){ /* ignore */ }
+    }
+
     // Export vendasDetalhadas as downloadable JSON file
     function exportVendasDetalhadas(){
       try{
@@ -2032,6 +2197,7 @@
         if(typeof rebuildDailyFromDetalhadas === 'function') try{ rebuildDailyFromDetalhadas(); console.info('rebuildDailyFromDetalhadas OK'); }catch(e){ console.warn('rebuildDailyFromDetalhadas falhou', e); }
         if(typeof computeMonthlyResumoFromDaily === 'function') try{ computeMonthlyResumoFromDaily(); console.info('computeMonthlyResumoFromDaily OK'); }catch(e){ console.warn('computeMonthlyResumoFromDaily falhou', e); }
         if(typeof computeWeekdaySumsPerMonth === 'function') try{ computeWeekdaySumsPerMonth(); console.info('computeWeekdaySumsPerMonth OK'); }catch(e){ console.warn('computeWeekdaySumsPerMonth falhou', e); }
+        if(typeof computeVendasPeriodoDoDiaFromDetalhadas === 'function') try{ computeVendasPeriodoDoDiaFromDetalhadas(); console.info('computeVendasPeriodoDoDiaFromDetalhadas OK'); }catch(e){ console.warn('computeVendasPeriodoDoDiaFromDetalhadas falhou', e); }
         atualizarSelectAnos(); const sel = document.getElementById('select-anos-receitas'); if(sel && sel.value) renderizarReceitasAno(sel.value);
         return true;
       }catch(e){ console.error('forceRebuildFromDetalhadas falhou', e); return false; }
@@ -3127,3 +3293,28 @@ function atualizarComponentesExtras(ano, mesFiltro) {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

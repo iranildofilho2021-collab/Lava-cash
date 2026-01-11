@@ -4,6 +4,9 @@
  */
 (function() {
   'use strict';
+  const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+  const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
 
   // Aguarda inicialização do Firebase
   window.addEventListener('firebase:initialized', setupAdapter);
@@ -19,7 +22,7 @@
   function setupAdapter() {
     if (window._receitasAdapterInitialized) return;
     
-    console.log('[ReceitasAdapter] Inicializando adaptador Firebase para Receitas...');
+    log('[ReceitasAdapter] Inicializando adaptador Firebase para Receitas...');
 
     // 1. Intercepta salvamento de Vendas Detalhadas
     // A função original salvarVendasDetalhadas pode estar definida no escopo global ou dentro de um closure
@@ -29,7 +32,7 @@
     const originalSalvarVendasDetalhadas = window.salvarVendasDetalhadas;
     
     window.salvarVendasDetalhadas = async function(vendas) {
-      console.log('[ReceitasAdapter] Salvando vendas detalhadas no Firebase...', vendas ? vendas.length : 0);
+      log('[ReceitasAdapter] Salvando vendas detalhadas no Firebase...', vendas ? vendas.length : 0);
       
       // Atualiza cache em memória explicitamente para garantir UI responsiva mesmo se localStorage falhar
       try { window._vendasDetalhadas_inMemory = Array.isArray(vendas) ? vendas.slice() : []; } catch(e){}
@@ -79,7 +82,7 @@
                console.warn(`[ReceitasAdapter] Payload muito grande (${(sizeBytes/1024/1024).toFixed(2)} MB). Dividindo em chunks...`);
                
                // Se o tamanho exceder 900KB, vamos dividir em múltiplos documentos (chunks)
-               console.log('[ReceitasAdapter] Iniciando salvamento em chunks...');
+               log('[ReceitasAdapter] Iniciando salvamento em chunks...');
                
                // Ordenar por data decrescente (mais recentes primeiro) para facilitar visualização nos chunks
                compact.sort((a,b) => (b.ms || 0) - (a.ms || 0));
@@ -108,12 +111,12 @@
                        data: chunks[i]
                    });
                }
-               console.log(`[ReceitasAdapter] Salvo em ${chunks.length} chunks com sucesso.`);
+               log(`[ReceitasAdapter] Salvo em ${chunks.length} chunks com sucesso.`);
             } else {
                await window.FirebaseStore.setItem('vendasDetalhadas', { format:'compact', data: compact });
             }
 
-            console.log('[ReceitasAdapter] Vendas detalhadas sincronizadas com Firebase');
+            log('[ReceitasAdapter] Vendas detalhadas sincronizadas com Firebase');
           } catch (err) {
             console.error('[ReceitasAdapter] Erro ao salvar vendas no Firebase:', err);
           }
@@ -154,7 +157,7 @@
           if (remoteData) {
             // Caso 1: Dados salvos em chunks (formato novo)
             if (remoteData.format === 'chunked') {
-              console.log(`[ReceitasAdapter] Carregando ${remoteData.count} itens de ${remoteData.chunkCount} chunks do Firebase...`);
+              log(`[ReceitasAdapter] Carregando ${remoteData.count} itens de ${remoteData.chunkCount} chunks do Firebase...`);
               let fullData = [];
               
               // Carregar chunks em paralelo
@@ -239,6 +242,7 @@
     const originalSetItem = localStorage.setItem;
     localStorage.setItem = function(key, value) {
       originalSetItem.apply(this, [key, value]);
+      if (window.__firebaseSyncing) return;
       
       if (key === 'despesas') {
         // Envia para Firebase em background
@@ -255,8 +259,8 @@
       if (key === 'vendasResumo') {
         try {
           const parsed = JSON.parse(value);
-          // OTIMIZAÇÃO: Atualiza cache em memória imediatamente para evitar race condition na UI
-          // Isso resolve o bug onde a exclusão de itens antigos precisava ser feita duas vezes
+          // OTIMIZACAO: Atualiza cache em memoria imediatamente para evitar race condition na UI
+          // Isso resolve o bug onde a exclusao de itens antigos precisava ser feita duas vezes
           window._vendasResumo_inMemory = parsed;
           
           if (window.FirebaseStore) {
@@ -270,7 +274,7 @@
       if (key === 'vendasResumoDia') {
          try {
            const parsed = JSON.parse(value);
-           window._vendasResumoDia_inMemory = parsed; // Otimização
+           window._vendasResumoDia_inMemory = parsed;
            
            if (window.FirebaseStore) {
              window.FirebaseStore.isAvailable().then(avail => {
@@ -279,10 +283,22 @@
            }
          } catch(e) {}
       }
-    };
 
+      if (key === 'vendasPeriodoDoDia') {
+        try {
+          const parsed = JSON.parse(value);
+          window._vendasPeriodoDoDia_inMemory = parsed;
+
+          if (window.FirebaseStore) {
+            window.FirebaseStore.isAvailable().then(avail => {
+              if (avail) window.FirebaseStore.setItem('vendasPeriodoDoDia', parsed);
+            });
+          }
+        } catch(e) {}
+      }
+    };
     window._receitasAdapterInitialized = true;
-    console.log('[ReceitasAdapter] Adaptador configurado com sucesso.');
+    log('[ReceitasAdapter] Adaptador configurado com sucesso.');
 
     // 4. Migração Inicial Automática com Chunking
     // O firebase-store.js não migra vendasDetalhadas automaticamente para evitar erro de tamanho.
@@ -295,7 +311,7 @@
              const remoteData = await window.FirebaseStore.getItem('vendasDetalhadas');
              // Se não existe remoto, ou se o local parece mais novo (simplificação: apenas se não existir remoto para evitar overwrite acidental)
              if (!remoteData) {
-               console.log('[ReceitasAdapter] Migrando vendasDetalhadas local -> Firebase com chunking...');
+               log('[ReceitasAdapter] Migrando vendasDetalhadas local -> Firebase com chunking...');
                const vendas = JSON.parse(localRaw);
                if (Array.isArray(vendas) && vendas.length > 0) {
                  await window.salvarVendasDetalhadas(vendas);
@@ -308,3 +324,9 @@
   }
 
 })();
+
+
+
+
+
+

@@ -60,9 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
       setLoading(true);
       
       try {
+        // Simular delay de rede
+        await new Promise(r => setTimeout(r, 800));
+
         // Usar AuthService
         if (typeof AuthService !== 'undefined') {
-            const result = await AuthService.login(email, password);
+            const result = AuthService.login(email, password);
             
             if (result.success) {
                 window.location.href = 'index.html';

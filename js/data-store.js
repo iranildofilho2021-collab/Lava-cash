@@ -6,6 +6,9 @@
  */
 (function initDataStore(global) {
   'use strict';
+  const IRANCASH_DEBUG = (typeof window !== 'undefined' && window.localStorage && localStorage.getItem('irancash_debug') === 'true');
+  const log = IRANCASH_DEBUG ? console.log.bind(console) : function() {};
+
   
   if (!global) return;
 
@@ -538,7 +541,7 @@
               // Migra dados locais para Firebase na primeira vez (executa uma vez)
               if (!global._firebaseMigrated) {
                 const migrationResult = await global.FirebaseStore.migrateFromLocalStorage();
-                console.log('[DataStore] Migração para Firebase:', migrationResult.migrated, 'itens migrados');
+                log('[DataStore] Migração para Firebase:', migrationResult.migrated, 'itens migrados');
                 global._firebaseMigrated = true;
               }
               
@@ -557,7 +560,7 @@
               const vendasDetalhadas = await getItemAsync('vendasDetalhadas', []);
               if (Array.isArray(vendasDetalhadas)) safeSetItem('vendasDetalhadas', JSON.stringify(vendasDetalhadas));
 
-              console.log('[DataStore] Inicializado com Firebase - Todos os dados estão na nuvem! ☁️');
+              log('[DataStore] Inicializado com Firebase - Todos os dados estão na nuvem! ☁️');
               return;
             }
           } catch (firebaseErr) {
@@ -574,7 +577,7 @@
         await global.IndexedDBStore.init();
         await loadCategoriesAsync();
         await loadDespesasAsync();
-        console.log('[DataStore] Inicializado com IndexedDB (local)');
+        log('[DataStore] Inicializado com IndexedDB (local)');
         return;
       }
 
@@ -633,7 +636,7 @@
       if (typeof IndexedDBStore !== 'undefined' && IndexedDBStore.setItem) {
         IndexedDBStore.setItem(DESPESAS_KEY, limpas).catch(e => console.warn('Erro ao salvar no IndexedDB:', e));
       }
-      console.log(`[DataStore] ${removidas} despesa(s) duplicada(s) removida(s)`);
+      log(`[DataStore] ${removidas} despesa(s) duplicada(s) removida(s)`);
     }
     return removidas;
   }
@@ -677,3 +680,4 @@
   };
   
 })(window);
+
