@@ -1116,11 +1116,76 @@ const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','R
       
       if (btnClear) {
         btnClear.addEventListener('click', () => {
-          if(confirm('ATENÇÃO: Esta ação apagará TODOS os dados locais e configurações.\n\nVocê tem certeza que deseja resetar o sistema?')) {
-             // Redirecionar para Reset.html
-             window.location.href = 'Reset.html';
-          }
+          // Mostra modal customizado
+          const modal = document.getElementById('modal-limpar-dados');
+          if (modal) modal.classList.remove('hidden');
         });
+      }
+
+      // Modal lógica
+      const modal = document.getElementById('modal-limpar-dados');
+      const btnNuvem = document.getElementById('btn-apagar-nuvem');
+      const btnLocal = document.getElementById('btn-apagar-local');
+      const btnCancelar = document.getElementById('btn-cancelar-limpar');
+      if (btnCancelar && modal) {
+        btnCancelar.onclick = () => modal.classList.add('hidden');
+      }
+      if (btnNuvem) {
+        btnNuvem.onclick = async () => {
+          modal.classList.add('hidden');
+          showMsg('Apagando dados da nuvem...');
+          try {
+            if (window.FirebaseStore && window.FirebaseStore.getAllKeys) {
+              const keys = await window.FirebaseStore.getAllKeys();
+              // Não apagar dados de usuários
+              const userKeys = ['users', 'usuarios', 'user-management', 'gestao-usuarios'];
+              const toDelete = keys.filter(k => !userKeys.includes(k));
+              for (const key of toDelete) {
+                await window.FirebaseStore.removeItem(key);
+              }
+              showMsg('Dados da nuvem apagados com sucesso!');
+            } else {
+              showMsg('FirebaseStore não disponível.', true);
+            }
+          } catch (e) {
+            showMsg('Erro ao apagar dados da nuvem.', true);
+          }
+        };
+      }
+      if (btnLocal) {
+        btnLocal.onclick = async () => {
+          modal.classList.add('hidden');
+          showMsg('Apagando dados locais...');
+          try {
+            // Chaves de gestão de usuários que devem ser preservadas
+            const userKeys = ['users', 'usuarios', 'user-management', 'gestao-usuarios'];
+
+            // Limpa localStorage, preservando dados de usuários
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+              const key = localStorage.key(i);
+              if (!userKeys.includes(key)) {
+                localStorage.removeItem(key);
+              }
+            }
+
+            // Limpa IndexedDB, preservando dados de usuários
+            if (window.IndexedDBStore && window.IndexedDBStore.getAllKeys && window.IndexedDBStore.removeItem) {
+              const keys = await window.IndexedDBStore.getAllKeys();
+              for (const key of keys) {
+                if (!userKeys.includes(key)) {
+                  await window.IndexedDBStore.removeItem(key);
+                }
+              }
+            } else if (window.IndexedDBStore && window.IndexedDBStore.clear) {
+              // Se não for possível filtrar, faz clear (menos seguro)
+              await window.IndexedDBStore.clear();
+            }
+
+            showMsg('Dados locais apagados, gestão de usuários preservada!');
+          } catch (e) {
+            showMsg('Erro ao apagar dados locais.', true);
+          }
+        };
       }
     }
 

@@ -1,3 +1,9 @@
+// Esconde o item 'Configurações' do menu por padrão até o AuthGuard decidir se mostra
+const hideConfigStyle = document.createElement('style');
+hideConfigStyle.id = 'hide-configuracoes-sidebar-style';
+hideConfigStyle.innerHTML = 'a[href="configuracoes.html"], a[href="configuracoes.html"] * { display: none !important; }';
+document.head.appendChild(hideConfigStyle);
+
 (function(){
   const NAV_ITEMS = [
     { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'assets/dashboard-symbol.png', alt: 'Dashboard' },
@@ -36,7 +42,7 @@
     <aside id="app-sidebar" class="sidebar-drawer" role="complementary" aria-label="Menu lateral">
       <div class="sidebar-header">
         <div class="flex items-center gap-2">
-            <img class="sidebar-logo" style="width: 32px; height: 32px;" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="lazy" decoding="async" />
+            <img class="sidebar-logo" style="width: 32px; height: 32px;" src="assets/irancash-logo.png" alt="IRANCASH logo" loading="eager" decoding="async" />
             <span class="logo-text text-lg font-bold text-sky-600">IRANCASH</span>
         </div>
       </div>
@@ -84,6 +90,17 @@
     
     // Dispara evento customizado avisando que o menu foi montado
     document.dispatchEvent(new CustomEvent('sidebar:mounted'));
+
+    // Após AuthService estar pronto, se for developer, mostra o item
+    if (window.AuthService && typeof window.AuthService.whenReady === 'function') {
+      window.AuthService.whenReady().then(() => {
+        const user = window.AuthService.getCurrentUser && window.AuthService.getCurrentUser();
+        if (user && user.role === 'developer') {
+          const style = document.getElementById('hide-configuracoes-sidebar-style');
+          if (style) style.remove();
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

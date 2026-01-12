@@ -1,3 +1,47 @@
+/* ============ MELHORIAS DE RESPONSIVIDADE MOBILE AVANÇADAS ============ */
+@media (max-width: 640px) {
+  /* Empilhar grids e cards verticalmente */
+  .grid,
+  .dashboard-container > .grid,
+  .main-content > .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* Botões e inputs ocupam largura total */
+  button,
+  .btn,
+  input,
+  select,
+  textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Títulos menores */
+  h1, .text-3xl, .page-title {
+    font-size: 1.3rem !important;
+    line-height: 1.6rem !important;
+  }
+  h2, .text-2xl {
+    font-size: 1.1rem !important;
+    line-height: 1.4rem !important;
+  }
+
+  /* Scroll horizontal em tabelas grandes */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  thead, tbody, tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+}
 /* ===========================================
    UX IMPROVEMENTS - IRANCASH
    Loading states, skeletons, animations

@@ -1663,7 +1663,7 @@ function atualizarNovosGraficos() {
       data: {
         labels,
         datasets: [{
-          label: 'Lucro L?quido',
+          label: 'Lucro Líquido',
           data: lucros,
           borderColor: '#0ea5e9',
           backgroundColor: 'rgba(14, 165, 233, 0.1)',
