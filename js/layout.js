@@ -1,6 +1,6 @@
 (function(){
   const NAV_ITEMS = [
-    { id: 'dashboard', label: 'Dashboard', href: 'index.html', icon: 'assets/dashboard-symbol.png', alt: 'Dashboard' },
+    { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'assets/dashboard-symbol.png', alt: 'Dashboard' },
     { id: 'receitas', label: 'Receitas', href: 'receitas.html', icon: 'assets/receitas-symbol.png', alt: 'Receitas' },
     { id: 'despesas', label: 'Despesas', href: 'despesas.html', icon: 'assets/despesas-symbol.png', alt: 'Despesas' },
     { id: 'analise-financeira', label: 'Análise Financeira', href: 'analise-financeira.html', icon: 'assets/analise-financeira-symbol.png', alt: 'Análise Financeira' },

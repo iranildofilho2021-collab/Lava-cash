@@ -16,18 +16,20 @@
 
         if (typeof AuthService.whenReady === 'function') { await AuthService.whenReady(); }
         const user = AuthService.getCurrentUser();
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+        const isLoginPage = (currentPage === 'index.html') || currentPage.includes('login');
+        const isSignupPage = currentPage.includes('signup');
 
         // 1. Redirecionar se não logado
-        if (!user && !currentPage.includes('login') && !currentPage.includes('signup')) {
-            window.location.href = 'login.html';
+        if (!user && !isLoginPage && !isSignupPage) {
+            window.location.href = 'index.html';
             return;
         }
 
         // 2. Bloquear acesso direto a páginas restritas (URL Manipulation)
         if (!AuthService.canAccessPage(currentPage)) {
             alert('Acesso negado: Você não tem permissão para acessar esta página.');
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
             return;
         }
 

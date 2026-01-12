@@ -1198,7 +1198,7 @@ async function atualizarVendasPorPeriodo(){
           if (!fromLS || fromLS.length === 0) {
               if (window.IRANCASH && window.IRANCASH.DataStore) {
                   // Nota: isso pode falhar se os dados estiverem em chunks (formato complexo)
-                  // Por isso adicionamos js/receitas-firebase-adapter.js ao index.html
+                  // Por isso adicionamos js/receitas-firebase-adapter.js ao dashboard.html
                   const raw = await window.IRANCASH.DataStore.getItemAsync('vendasDetalhadas', []);
                   if (Array.isArray(raw) && raw.length > 0) {
                       try {

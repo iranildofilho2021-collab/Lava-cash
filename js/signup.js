@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (result.success) {
                     alert('Conta criada com sucesso! Faca login para continuar.');
-                    window.location.href = 'login.html';
+                    window.location.href = 'index.html';
                 } else {
                     alert(result.message || 'Erro ao criar conta.');
                     setLoading(false);

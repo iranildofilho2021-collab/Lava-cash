@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await AuthService.login(email, password);
             
             if (result.success) {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             } else {
                 showError('password', result.message || 'Credenciais invalidas.');
                 setLoading(false);
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof AuthService !== 'undefined' && typeof AuthService.loginWithGoogle === 'function') {
           const result = await AuthService.loginWithGoogle();
           if (result.success) {
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
             return;
           }
           showError('email', result.message || 'Falha ao entrar com Google.');

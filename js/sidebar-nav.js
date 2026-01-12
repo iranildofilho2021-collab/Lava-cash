@@ -88,7 +88,7 @@
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#')) return;
     
-    const currentPath = location.pathname.replace(/\/$/, '/index.html');
+    const currentPath = location.pathname.replace(/\/$/, '/dashboard.html');
     const targetPath = href;
     
     if (currentPath.endsWith(targetPath)) {

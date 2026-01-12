@@ -395,7 +395,7 @@
         await mod.signOut(auth);
       } catch (e) {}
     }
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   }
 
   function getCurrentUser() {
