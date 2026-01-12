@@ -13,6 +13,7 @@
     if (key === '__firebaseSyncInstalled' || key === '__firebaseSyncing' || key === '__firebaseSyncPatched') return false;
     if (key.indexOf('/') !== -1) return false;
     if (key.indexOf('firestore_') === 0 || key.indexOf('firebase_') === 0 || key.indexOf('goog:') === 0) return false;
+    if (key === 'irancash_users_db') return false;
     if (key.indexOf('btc_moldou.') === 0 || key.indexOf('esg_esposa.') === 0 || key.indexOf('ddr_iguala.') === 0) return false;
     if (key === 'vendasDetalhadas' || key === 'vendasDetalhadas_chunks' || key === 'vendasDetalhadas_format') return false;
     if (key.indexOf('vendasDetalhadas_chunk_') === 0) return false;
@@ -181,5 +182,6 @@
     syncAllLocalToFirebase();
   }
 })();
+
 
 

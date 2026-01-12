@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - LavaJá Lavanderia</title>
+  <title>Login - LavaJǭ Lavanderia</title>
   
   <!-- PWA & Mobile -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -38,8 +38,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
         </svg>
       </div>
-      <h1 class="text-2xl font-bold text-gray-800">LavaJá Lavanderia</h1>
-      <p class="text-gray-500 text-sm mt-2">Bem-vindo de volta! Faça login para continuar.</p>
+      <h1 class="text-2xl font-bold text-gray-800">LavaJǭ Lavanderia</h1>
+      <p class="text-gray-500 text-sm mt-2">Bem-vindo de volta! Faca login para continuar.</p>
     </div>
 
     <!-- Form -->
@@ -56,7 +56,7 @@
             class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
             placeholder="seu@email.com">
         </div>
-        <p class="mt-1 text-xs text-red-500 hidden" id="error-email">Por favor, insira um e-mail válido.</p>
+        <p class="mt-1 text-xs text-red-500 hidden" id="error-email">Por favor, insira um e-mail valido.</p>
       </div>
 
       <!-- Senha -->
@@ -70,7 +70,7 @@
           </div>
           <input type="password" id="password" name="password" required
             class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
-            placeholder="••••••••">
+            placeholder="********">
           <!-- Toggle Password -->
           <button type="button" id="btn-toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
             <svg id="icon-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -80,10 +80,10 @@
         <div class="flex justify-end mt-1">
            <a href="#" class="text-xs font-medium text-sky-600 hover:text-sky-700 hover:underline">Esqueceu a senha?</a>
         </div>
-        <p class="mt-1 text-xs text-red-500 hidden" id="error-password">A senha é obrigatória.</p>
+        <p class="mt-1 text-xs text-red-500 hidden" id="error-password">A senha e obrigatoria.</p>
       </div>
 
-      <!-- Botão Entrar -->
+      <!-- Botao Entrar -->
       <button type="submit" id="btn-login" class="w-full bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white font-bold py-3 px-4 rounded-xl shadow-lg transform transition-all active:scale-[0.98] flex items-center justify-center gap-2">
         <span>Entrar</span>
         <svg id="spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -92,11 +92,28 @@
         </svg>
       </button>
 
+      <div class="flex items-center gap-3">
+        <div class="h-px flex-1 bg-gray-200"></div>
+        <span class="text-xs text-gray-400">ou</span>
+        <div class="h-px flex-1 bg-gray-200"></div>
+      </div>
+
+      <button type="button" id="btn-google-login" class="w-full bg-white border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
+        <span class="inline-flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 text-white text-xs font-bold flex items-center justify-center">G</span>
+          Entrar com Google
+        </span>
+        <svg id="spinner-google" class="animate-spin h-5 w-5 text-gray-500 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </button>
+
       <!-- Cadastro -->
       <div class="text-center pt-2">
         <p class="text-sm text-gray-600">
-          Não tem uma conta? 
-          <a href="signup.html" class="font-bold text-sky-600 hover:text-sky-700 hover:underline">Cadastre-se</a>
+          Nao tem conta?
+          <a href="signup.html" class="font-bold text-sky-600 hover:text-sky-700 hover:underline">Criar conta</a>
         </p>
       </div>
     </form>
@@ -104,7 +121,7 @@
   
   <!-- Footer -->
   <div class="absolute bottom-4 text-center w-full">
-     <p class="text-xs text-gray-400">&copy; 2026 LavaJá Lavanderia. Todos os direitos reservados.</p>
+     <p class="text-xs text-gray-400">&copy; 2026 LavaJǭ Lavanderia. Todos os direitos reservados.</p>
   </div>
 
   <!-- Scripts -->
@@ -118,14 +135,14 @@
     // Load App Name
     document.addEventListener('DOMContentLoaded', async () => {
         const nameEl = document.querySelector('h1.text-2xl');
-        if(nameEl && window.SettingsService) {
+        if (nameEl && window.SettingsService) {
             // Try sync first
             const syncName = SettingsService.getAppNameSync();
-            if(syncName) nameEl.textContent = syncName;
+            if (syncName) nameEl.textContent = syncName;
             
             // Then async update
             const settings = await SettingsService.getSettings();
-            if(settings.appName) {
+            if (settings.appName) {
                 nameEl.textContent = settings.appName;
                 document.title = `Login - ${settings.appName}`;
             }
@@ -134,4 +151,3 @@
   </script>
 </body>
 </html>
-

@@ -7,13 +7,14 @@
     'use strict';
 
     // Aguarda carregamento do AuthService
-    function checkAuth() {
+    async function checkAuth() {
         if (!window.AuthService) {
             // Se carregou antes do AuthService, espera um pouco
             setTimeout(checkAuth, 10);
             return;
         }
 
+        if (typeof AuthService.whenReady === 'function') { await AuthService.whenReady(); }
         const user = AuthService.getCurrentUser();
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
@@ -129,3 +130,4 @@
     checkAuth();
 
 })();
+

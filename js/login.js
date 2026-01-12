@@ -1,10 +1,10 @@
 /**
- * Lógica da Página de Login (Atualizado para AuthService)
- * Gerencia validação, feedback visual e integração com autenticação
+ * Logica da Pagina de Login (Atualizado para AuthService)
+ * Gerencia validacao, feedback visual e integracao com autenticacao
  */
 
 // Removendo imports diretos do Firebase para usar o AuthService
-// import { auth } from './firebase-init.js'; 
+// import { auth } from './firebase-init.js';
 // import { signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordInput = document.getElementById('password');
   const btnLogin = document.getElementById('btn-login');
   const spinner = document.getElementById('spinner');
+  const btnGoogle = document.getElementById('btn-google-login');
+  const spinnerGoogle = document.getElementById('spinner-google');
   const btnTogglePassword = document.getElementById('btn-toggle-password');
   
   // Toggle Password Visibility
@@ -40,17 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = passwordInput.value.trim();
       let isValid = true;
       
-      // Validação Especial para 'Teste'
+      // Validacao especial para "Teste"
       const isDevLogin = (email === 'Teste');
       
-      // Basic Validation (Se não for o login especial 'Teste')
+      // Basic Validation (se nao for o login especial "Teste")
       if (!isDevLogin && (!email || !isValidEmail(email))) {
-        showError('email', 'Por favor, insira um e-mail válido.');
+        showError('email', 'Por favor, insira um e-mail valido.');
         isValid = false;
       }
       
       if (!password) {
-        showError('password', 'A senha é obrigatória.');
+        showError('password', 'A senha e obrigatoria.');
         isValid = false;
       }
       
@@ -65,17 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Usar AuthService
         if (typeof AuthService !== 'undefined') {
-            const result = AuthService.login(email, password);
+            const result = await AuthService.login(email, password);
             
             if (result.success) {
                 window.location.href = 'index.html';
             } else {
-                showError('password', result.message || 'Credenciais inválidas.');
+                showError('password', result.message || 'Credenciais invalidas.');
                 setLoading(false);
             }
         } else {
-            console.error('AuthService não carregado!');
-            showError('email', 'Erro interno: Serviço de autenticação indisponível.');
+            console.error('AuthService nao carregado!');
+            showError('email', 'Erro interno: Servico de autenticacao indisponivel.');
             setLoading(false);
         }
         
@@ -84,6 +86,33 @@ document.addEventListener('DOMContentLoaded', () => {
         showError('password', 'Ocorreu um erro ao tentar entrar. Tente novamente.');
         setLoading(false);
       }
+    });
+  }
+
+  if (btnGoogle) {
+    btnGoogle.addEventListener('click', async () => {
+      hideError('email');
+      hideError('password');
+
+      setGoogleLoading(true);
+
+      try {
+        if (typeof AuthService !== 'undefined' && typeof AuthService.loginWithGoogle === 'function') {
+          const result = await AuthService.loginWithGoogle();
+          if (result.success) {
+            window.location.href = 'index.html';
+            return;
+          }
+          showError('email', result.message || 'Falha ao entrar com Google.');
+        } else {
+          showError('email', 'Login com Google indisponivel.');
+        }
+      } catch (error) {
+        console.error('Google login error:', error);
+        showError('email', 'Erro ao entrar com Google.');
+      }
+
+      setGoogleLoading(false);
     });
   }
   
@@ -130,6 +159,26 @@ document.addEventListener('DOMContentLoaded', () => {
       btnLogin.disabled = false;
       btnLogin.querySelector('span').textContent = 'Entrar';
       spinner.classList.add('hidden');
+    }
+
+    if (btnGoogle) {
+      btnGoogle.disabled = isLoading;
+      btnGoogle.classList.toggle('opacity-70', isLoading);
+    }
+  }
+
+  function setGoogleLoading(isLoading) {
+    if (btnGoogle) {
+      btnGoogle.disabled = isLoading;
+      btnGoogle.classList.toggle('opacity-70', isLoading);
+    }
+
+    if (spinnerGoogle) {
+      spinnerGoogle.classList.toggle('hidden', !isLoading);
+    }
+
+    if (btnLogin) {
+      btnLogin.disabled = isLoading;
     }
   }
 });
