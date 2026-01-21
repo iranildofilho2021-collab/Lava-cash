@@ -102,15 +102,16 @@
         <span id="periodoResumido" class="text-xs font-medium px-2 py-1 bg-white border rounded text-gray-500">Ano: 2025</span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left">
-          <thead class="bg-gray-50 text-gray-500 font-medium border-b">
-            <tr>
-              <th class="px-6 py-3 w-1/2">Descrição</th>
-              <th class="px-6 py-3 text-right">Valor (R$)</th>
-              <th class="px-6 py-3 text-right">% Receita</th>
-            </tr>
-          </thead>
-          <tbody id="dreTableBody" class="divide-y divide-gray-100">
+        <div class="overflow-x-auto custom-table-scroll">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+              <tr>
+                <th class="px-6 py-3 w-1/2 sticky left-0 bg-gray-50 z-10">Descrição</th>
+                <th class="px-6 py-3 text-right">Valor (R$)</th>
+                <th class="px-6 py-3 text-right">% Receita</th>
+              </tr>
+            </thead>
+            <tbody id="dreTableBody" class="divide-y divide-gray-100">
             <!-- JS Injected -->
           </tbody>
         </table>
@@ -159,15 +160,16 @@
         <h2 class="text-lg font-bold text-gray-800">Despesas por Categoria</h2>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left whitespace-nowrap">
-          <thead class="bg-gray-50 text-gray-500 font-medium border-b">
-            <tr>
-              <th class="px-4 py-3 sticky left-0 bg-gray-50 z-10 border-r">Categoria</th>
-              <th class="px-2 py-3 text-right">Jan</th>
-              <th class="px-2 py-3 text-right">Fev</th>
-              <th class="px-2 py-3 text-right">Mar</th>
-              <th class="px-2 py-3 text-right">Abr</th>
-              <th class="px-2 py-3 text-right">Mai</th>
+        <div class="overflow-x-auto custom-table-scroll">
+          <table class="w-full text-sm text-left whitespace-nowrap">
+            <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+              <tr>
+                <th class="px-4 py-3 sticky left-0 bg-gray-50 z-10 border-r">Categoria</th>
+                <th class="px-2 py-3 text-right">Jan</th>
+                <th class="px-2 py-3 text-right">Fev</th>
+                <th class="px-2 py-3 text-right">Mar</th>
+                <th class="px-2 py-3 text-right">Abr</th>
+                <th class="px-2 py-3 text-right">Mai</th>
               <th class="px-2 py-3 text-right">Jun</th>
               <th class="px-2 py-3 text-right">Jul</th>
               <th class="px-2 py-3 text-right">Ago</th>

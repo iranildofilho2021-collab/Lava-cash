@@ -52,7 +52,7 @@
   <aside data-sidebar></aside>
   
   <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Painel de Investimentos Iniciais">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-2">
        <h1 class="text-3xl font-bold text-gray-800">Investimento Inicial</h1>
        <div class="flex gap-2">
          <div class="flex items-center gap-2 mr-2">
@@ -82,123 +82,65 @@
 
     <!-- Formulário de Lançamento (Movido para cá) -->
     <form id="form-investimento" class="bg-white rounded-xl shadow-lg border border-sky-100 p-6 mb-8 grid grid-cols-1 md:grid-cols-12 gap-6 max-h-0 opacity-0 overflow-hidden transition-all duration-500 ease-in-out">
-      <div class="md:col-span-12 flex justify-between items-center border-b pb-4 mb-2">
-         <h3 class="text-lg font-bold text-gray-800">Novo Registro de Investimento</h3>
-         <button type="button" id="btn-close-form" class="text-gray-400 hover:text-gray-600">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-         </button>
-      </div>
-      
-      <div class="md:col-span-4">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Categoria <span class="text-red-500">*</span></label>
-        <div class="relative">
-           <select id="categoria-investimento" class="w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow appearance-none" required>
-             <option value="">Selecione uma categoria...</option>
-             <option value="Equipamentos">Equipamentos e Maquinário</option>
-             <option value="Infraestrutura">Obras e Infraestrutura</option>
-             <option value="Tecnologia">Tecnologia e Software</option>
-             <option value="Mobiliário">Mobiliário e Decoração</option>
-             <option value="Legalização">Legalização e Documentos</option>
-             <option value="Marketing">Marketing Inicial</option>
-             <option value="Estoque">Estoque Inicial</option>
-             <option value="Outros">Outros</option>
-           </select>
-           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-           </div>
+      <!-- Coluna Principal do Formulário -->
+      <div class="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="categoria-investimento" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+          <select id="categoria-investimento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
+            <option value="">Selecione...</option>
+            <!-- Opções via JS -->
+          </select>
+        </div>
+        <div>
+          <label for="data-investimento" class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+          <input type="date" id="data-investimento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" required />
+        </div>
+        <div>
+          <label for="valor-investimento" class="block text-sm font-medium text-gray-700 mb-1">Valor</label>
+          <input type="number" id="valor-investimento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" min="0" step="0.01" required />
+        </div>
+        <div>
+          <label for="descricao-investimento" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+          <input type="text" id="descricao-investimento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" maxlength="100" required />
+        </div>
+        <div>
+          <label for="status-investimento" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select id="status-investimento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
+            <option value="Realizado">Realizado</option>
+            <option value="Planejado">Planejado</option>
+            <option value="Parcelado">Parcelado</option>
+          </select>
+        </div>
+        <div id="container-parcelas" class="hidden">
+          <label for="qtd-parcelas" class="block text-sm font-medium text-gray-700 mb-1">Qtd. Parcelas</label>
+          <input type="number" id="qtd-parcelas" class="w-full border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring-sky-500" min="1" max="60" value="1" />
+          <div id="info-prestacao" class="text-xs text-gray-500 mt-1"></div>
         </div>
       </div>
-      
-      <div class="md:col-span-4">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Data <span class="text-red-500">*</span></label>
-        <input id="data-investimento" type="date" class="w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow" required />
-      </div>
-      
-      <div class="md:col-span-4">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Valor (R$) <span class="text-red-500">*</span></label>
-        <div class="relative">
-           <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 font-medium">R$</span>
-           <input id="valor-investimento" type="number" class="w-full rounded-lg border-gray-300 bg-gray-50 pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow font-semibold text-gray-800" placeholder="0,00" min="0" step="0.01" required />
+      <!-- Coluna de Rateio e Ações -->
+      <div class="md:col-span-4 flex flex-col gap-6">
+        <div class="bg-sky-50 border border-sky-100 rounded-lg p-4 mb-2">
+          <div class="font-semibold text-sky-700 mb-2">Rateio Sócios</div>
+          <div class="flex flex-col gap-1 text-sm">
+            <div class="flex justify-between"><span>Iranildo Filho (14%)</span><span id="rateio-iranildo">R$ 0,00</span></div>
+            <div class="flex justify-between"><span>Elder de Medeiros (43%)</span><span id="rateio-elder">R$ 0,00</span></div>
+            <div class="flex justify-between"><span>Leonardo Hermes (43%)</span><span id="rateio-leonardo">R$ 0,00</span></div>
+            <div class="flex justify-between font-bold border-t pt-1 mt-1"><span>Total</span><span id="rateio-total">R$ 0,00</span></div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-auto">
+          <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 flex-1 transition-colors">Salvar</button>
+          <button type="button" id="btn-cancelar-form" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded px-4 py-2 flex-1 transition-colors">Cancelar</button>
         </div>
       </div>
-      
-      <div class="md:col-span-8">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Descrição Detalhada <span class="text-red-500">*</span></label>
-        <input id="descricao-investimento" type="text" class="w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow" placeholder="Ex: Compra de 3 Lavadoras Industriais Modelo X" required />
-      </div>
-
-      <div class="md:col-span-4">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-        <select id="status-investimento" class="w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow">
-          <option value="Realizado">Realizado (Pago)</option>
-          <option value="Planejado">Planejado (Futuro)</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Parcelado">Parcelado</option>
-        </select>
-      </div>
-
-      <!-- Parcelas (Dinâmico) -->
-      <div id="container-parcelas" class="md:col-span-4 hidden animate-fade-in">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Nº Parcelas</label>
-        <input id="qtd-parcelas" type="number" min="2" max="120" value="2" class="w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow" />
-        <p id="info-prestacao" class="text-xs text-sky-600 font-bold mt-1 text-right"></p>
-      </div>
-
-      <!-- Tabela de Rateio entre Sócios -->
-      <div class="md:col-span-12 bg-gray-50 rounded-lg p-4 border border-gray-200 mt-2">
-        <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-          Rateio do Investimento
-        </h4>
-        <div class="overflow-x-auto">
-          <table class="w-full text-xs text-left">
-            <thead class="bg-gray-100 text-gray-600 font-semibold border-b">
-              <tr>
-                <th class="px-3 py-2">Sócio</th>
-                <th class="px-3 py-2 text-center">Part. %</th>
-                <th class="px-3 py-2 text-center">Inv. %</th>
-                <th class="px-3 py-2 text-right">Valor (R$)</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
-              <tr>
-                <td class="px-3 py-2 font-medium">Iranildo Filho</td>
-                <td class="px-3 py-2 text-center text-gray-500">34%</td>
-                <td class="px-3 py-2 text-center font-bold text-sky-600">14%</td>
-                <td class="px-3 py-2 text-right font-mono" id="rateio-iranildo">R$ 0,00</td>
-              </tr>
-              <tr>
-                <td class="px-3 py-2 font-medium">Elder de Medeiros</td>
-                <td class="px-3 py-2 text-center text-gray-500">33%</td>
-                <td class="px-3 py-2 text-center font-bold text-sky-600">43%</td>
-                <td class="px-3 py-2 text-right font-mono" id="rateio-elder">R$ 0,00</td>
-              </tr>
-              <tr>
-                <td class="px-3 py-2 font-medium">Leonardo Hermes</td>
-                <td class="px-3 py-2 text-center text-gray-500">33%</td>
-                <td class="px-3 py-2 text-center font-bold text-sky-600">43%</td>
-                <td class="px-3 py-2 text-right font-mono" id="rateio-leonardo">R$ 0,00</td>
-              </tr>
-            </tbody>
-            <tfoot class="bg-gray-50 font-bold text-gray-800 border-t">
-              <tr>
-                <td class="px-3 py-2" colspan="3">Total</td>
-                <td class="px-3 py-2 text-right font-mono" id="rateio-total">R$ 0,00</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="text-[10px] text-gray-400 mt-2 text-right">* Valores calculados com base na prestação (se parcelado) ou total.</p>
-      </div>
-      
-      <div class="md:col-span-12 flex justify-end gap-3 pt-4 border-t mt-2">
-        <button type="button" id="btn-cancelar-form" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors">Cancelar</button>
-        <button type="submit" class="px-8 py-2.5 rounded-lg bg-sky-600 text-white font-bold hover:bg-sky-700 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Salvar Registro</button>
-      </div>
+      <button type="button" id="btn-close-form" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 bg-white rounded-full p-1 shadow focus:outline-none" title="Fechar formulário" tabindex="-1">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </form>
     </form>
 
     <!-- Painel de Resumo Consolidado -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 cards-graficos-print">
        <!-- Total Investido -->
        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
           <div class="flex items-center gap-3 mb-2">
@@ -227,7 +169,7 @@
        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200 shadow-sm">
           <div class="flex items-center gap-3 mb-2">
              <div class="p-2 bg-purple-200 rounded-lg text-purple-700">
-               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 002 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
              </div>
              <span class="text-sm font-semibold text-purple-800 uppercase tracking-wide">Maior Custo</span>
           </div>
@@ -249,7 +191,7 @@
     </div>
 
     <!-- Seção de Gráficos -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 graficos-print cards-graficos-print">
        <!-- Gráfico de Distribuição (Pizza) -->
        <div class="bg-white p-6 rounded-xl shadow-sm border lg:col-span-1">
           <h3 class="text-lg font-bold text-gray-800 mb-4">Distribuição por Categoria</h3>
@@ -259,7 +201,7 @@
        </div>
        
        <!-- Gráfico de Cronograma Financeiro (Barra/Linha) -->
-       <div class="bg-white p-6 rounded-xl shadow-sm border lg:col-span-2">
+       <div class="bg-white p-6 rounded-xl shadow-sm border lg:col-span-1">
           <h3 class="text-lg font-bold text-gray-800 mb-4">Cronograma de Desembolso</h3>
           <div class="relative h-64">
              <canvas id="chart-cronograma"></canvas>
@@ -267,10 +209,8 @@
        </div>
     </div>
 
-    <!-- Formulário de Lançamento (Movido para cima) -->
-
     <!-- Filtros e Tabela -->
-    <div class="bg-white rounded-xl shadow-sm border mb-8 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border mb-8 overflow-hidden tabelas-print">
       <!-- Toolbar de Filtros -->
       <div class="p-4 border-b bg-gray-50 flex flex-wrap gap-4 items-center justify-between">
          <div class="flex items-center gap-3">
@@ -316,7 +256,7 @@
     </div>
 
     <!-- Tabela de Resumo de Rateio Total -->
-    <div class="bg-white rounded-xl shadow-sm border mb-8 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border mb-8 overflow-hidden tabelas-print">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
             <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
                 <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -324,14 +264,15 @@
             </h3>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
+            <div class="overflow-x-auto custom-table-scroll">
+              <table class="w-full text-sm text-left">
                 <thead class="bg-gray-50 text-gray-600 font-semibold border-b">
-                    <tr>
-                        <th class="px-6 py-3">Sócio</th>
-                        <th class="px-6 py-3 text-center">Participação (%)</th>
-                        <th class="px-6 py-3 text-center">Investimento (%)</th>
-                        <th class="px-6 py-3 text-right">Valor Total (R$)</th>
-                    </tr>
+                  <tr>
+                    <th class="px-6 py-3 sticky left-0 bg-gray-50 z-10">Sócio</th>
+                    <th class="px-6 py-3 text-center">Participação (%)</th>
+                    <th class="px-6 py-3 text-center">Investimento (%)</th>
+                    <th class="px-6 py-3 text-right">Valor Total (R$)</th>
+                  </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
                     <tr>

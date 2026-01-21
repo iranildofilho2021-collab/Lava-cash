@@ -107,12 +107,39 @@
   }
 
   // --- UI Setup ---
-  function setupUI() {
+  async function setupUI() {
     // Toggle Form
     const btnToggle = document.getElementById('btn-toggle-form');
     const btnClose = document.getElementById('btn-close-form');
     const btnCancel = document.getElementById('btn-cancelar-form');
     const form = document.getElementById('form-investimento');
+
+    // Popular categorias de investimento inicial no select
+    async function popularCategoriasInvestimento() {
+      const select = document.getElementById('categoria-investimento');
+      if (!select) return;
+      // Limpa opções
+      select.innerHTML = '<option value="">Selecione...</option>';
+      let categorias = [];
+      if (window.carregarCategoriasInvestimentoAsync) {
+        categorias = await window.carregarCategoriasInvestimentoAsync();
+      } else if (window.parent && window.parent.carregarCategoriasInvestimentoAsync) {
+        categorias = await window.parent.carregarCategoriasInvestimentoAsync();
+      } else {
+        categorias = [
+          'Equipamentos', 'Infraestrutura', 'Marketing', 'Taxas', 'Reformas', 'Tecnologia', 'Veículos', 'Outros'
+        ];
+      }
+      categorias.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        select.appendChild(opt);
+      });
+    }
+
+    // Popular ao abrir o formulário
+    if(btnToggle) btnToggle.addEventListener('click', () => { popularCategoriasInvestimento(); toggleForm(true); });
     
     const toggleForm = (show) => {
       if(show) {
@@ -131,7 +158,7 @@
       }
     };
 
-    if(btnToggle) btnToggle.addEventListener('click', () => toggleForm(true));
+    // (acima já foi substituído)
     if(btnClose) btnClose.addEventListener('click', () => toggleForm(false));
     if(btnCancel) btnCancel.addEventListener('click', () => toggleForm(false));
 
@@ -228,6 +255,15 @@
         }
 
         await salvarInvestimentosAsync();
+        // Zera os campos de rateio dos sócios
+        const cellIranildo = document.getElementById('rateio-iranildo');
+        const cellElder = document.getElementById('rateio-elder');
+        const cellLeonardo = document.getElementById('rateio-leonardo');
+        const cellTotalRateio = document.getElementById('rateio-total');
+        if(cellIranildo) cellIranildo.textContent = 'R$ 0,00';
+        if(cellElder) cellElder.textContent = 'R$ 0,00';
+        if(cellLeonardo) cellLeonardo.textContent = 'R$ 0,00';
+        if(cellTotalRateio) cellTotalRateio.textContent = 'R$ 0,00';
         toggleForm(false);
         renderAll();
         // Feedback visual simples
@@ -254,7 +290,20 @@
     const btnPdf = document.getElementById('btn-export-pdf');
     if(btnPdf) {
       btnPdf.addEventListener('click', () => {
+        // Melhorar largura do PDF para visualização
+        const tabela = document.getElementById('investimento-inicial-tabela');
+        if (tabela) {
+          tabela.style.width = '1400px';
+          tabela.style.maxWidth = '1400px';
+        }
         window.print();
+        // Restaurar após impressão
+        if (tabela) {
+          setTimeout(() => {
+            tabela.style.width = '';
+            tabela.style.maxWidth = '';
+          }, 1000);
+        }
       });
     }
   }

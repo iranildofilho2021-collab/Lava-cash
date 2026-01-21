@@ -1,3 +1,30 @@
+@media (max-width: 640px) {
+  main[role="main"], .dashboard-container {
+    padding-top: 3.5rem !important;
+  }
+}
+@media (max-width: 640px) {
+  .dashboard-header-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+  .dashboard-header-top h1 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.25rem;
+  }
+  .dashboard-header-top .quick-action-btn {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+}
+@media (max-width: 640px) {
+  #mesPrev, #mesNext {
+    display: none !important;
+  }
+}
 /* Estilos específicos do dashboard extraídos de index.html */
 body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
 .card-hover{ transition: transform .18s ease, box-shadow .18s ease; }
@@ -27,13 +54,29 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helveti
 .scrollbar-thin::-webkit-scrollbar{ height: 6px; }
 .scrollbar-thin::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:10px; }
 
+
 /* months wrapper: ensure arrows overlay and proper spacing */
 .months-wrap { position: relative; }
 .months-scroll { padding: 0.25rem 48px; }
 
 /* overlay arrow buttons styles (kept hidden when not needed) */
-#mesPrev, #mesNext { z-index: 30; border: 1px solid rgba(0,0,0,0.06); }
+#mesPrev, #mesNext { z-index: 30; border: 1px solid rgba(0,0,0,0.06); transition: top 0.2s, left 0.2s, right 0.2s; }
 #mesPrev.hidden, #mesNext.hidden { display: none !important; }
+
+@media (max-width: 640px) {
+  /* Em telas pequenas, as setas ficam fora da área dos cards */
+  .months-scroll { padding: 0.25rem 8px; }
+  #mesPrev {
+    left: -18px !important;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #mesNext {
+    right: -18px !important;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 
 /* Summary boxes (Entrou / Saiu / Sobrou) */
 .summary-box{ background: #f8fafc; }

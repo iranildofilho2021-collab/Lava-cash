@@ -1,3 +1,96 @@
+// ---------- Categorias de Investimento Inicial ----------
+const categoriasInvestimentoFallback = [
+  'Equipamentos', 'Infraestrutura', 'Marketing', 'Taxas', 'Reformas', 'Tecnologia', 'Veículos', 'Outros'
+];
+
+async function carregarCategoriasInvestimentoAsync() {
+  if (categoriaStore && typeof categoriaStore.loadCategoriesInvestimento === 'function') {
+    return categoriaStore.loadCategoriesInvestimento();
+  }
+  if (typeof IndexedDBStore !== 'undefined' && IndexedDBStore.getItem) {
+    try {
+      const data = await IndexedDBStore.getItem('categorias_investimento');
+      if (Array.isArray(data) && data.length) return data;
+    } catch (err) { console.warn('[Configuracoes] IndexedDB categorias_investimento:', err); }
+  }
+  try {
+    const data = JSON.parse(localStorage.getItem('categorias_investimento'));
+    if (Array.isArray(data) && data.length) return data;
+  } catch (err) { console.warn('[Configuracoes] localStorage categorias_investimento:', err); }
+  return categoriasInvestimentoFallback.slice();
+}
+
+async function salvarCategoriasInvestimentoAsync(categorias) {
+  if (categoriaStore && typeof categoriaStore.saveCategoriesInvestimento === 'function') {
+    return categoriaStore.saveCategoriesInvestimento(categorias);
+  }
+  localStorage.setItem('categorias_investimento', JSON.stringify(categorias));
+  if (typeof IndexedDBStore !== 'undefined' && IndexedDBStore.setItem) {
+    try {
+      await IndexedDBStore.setItem('categorias_investimento', categorias);
+    } catch (e) { showMsg('Erro ao salvar categorias de investimento no IndexedDB.', true); }
+  }
+  return categorias;
+}
+
+async function renderizarCategoriasInvestimento() {
+  const lista = document.getElementById('lista-categorias-investimento');
+  if (!lista) return;
+  const categorias = await carregarCategoriasInvestimentoAsync();
+  lista.innerHTML = '';
+  categorias.forEach((cat, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'bg-emerald-50 rounded px-2 py-1 text-sm inline-flex items-center';
+    chip.innerHTML = `<span>${cat}</span>`;
+    const btn = document.createElement('button');
+    btn.textContent = '✕';
+    btn.className = 'ml-2 text-red-500 hover:text-red-600';
+    btn.title = 'Remover';
+    btn.onclick = async () => {
+      const novas = (await carregarCategoriasInvestimentoAsync()).filter((_, idx) => idx !== i);
+      await salvarCategoriasInvestimentoAsync(novas);
+      renderizarCategoriasInvestimento();
+      showMsg('Categoria de investimento removida.');
+    };
+    chip.appendChild(btn);
+    lista.appendChild(chip);
+  });
+}
+
+async function adicionarCategoriaInvestimento() {
+  const input = document.getElementById('novaCategoriaInvestimento');
+  const valor = input.value.trim();
+  if (!valor) { showMsg('Informe um nome de categoria de investimento.', true); return; }
+  const categorias = await carregarCategoriasInvestimentoAsync();
+  const jaExiste = categorias.some(c => c.toLowerCase() === valor.toLowerCase());
+  if (jaExiste) { showMsg('Esta categoria de investimento já existe.', true); return; }
+  categorias.push(valor);
+  await salvarCategoriasInvestimentoAsync(categorias);
+  renderizarCategoriasInvestimento();
+  input.value = '';
+  showMsg('Categoria de investimento adicionada.');
+}
+
+// Toggle dos painéis
+document.addEventListener('DOMContentLoaded', function() {
+  const btnToggleInvest = document.getElementById('btn-toggle-categorias-investimento');
+  const sectionInvest = document.getElementById('categorias-investimento-section');
+  if (btnToggleInvest && sectionInvest) {
+    btnToggleInvest.addEventListener('click', () => {
+      const aberto = !sectionInvest.classList.contains('max-h-0');
+      if (aberto) {
+        sectionInvest.classList.add('max-h-0', 'opacity-0', '-translate-y-2');
+        sectionInvest.classList.remove('max-h-[1000px]', 'opacity-100', 'translate-y-0');
+      } else {
+        sectionInvest.classList.remove('max-h-0', 'opacity-0', '-translate-y-2');
+        sectionInvest.classList.add('max-h-[1000px]', 'opacity-100', 'translate-y-0');
+        renderizarCategoriasInvestimento();
+      }
+    });
+  }
+  const btnAddInvest = document.getElementById('adicionarCategoriaInvestimento');
+  if (btnAddInvest) btnAddInvest.addEventListener('click', adicionarCategoriaInvestimento);
+});
 const categoriaStore = (window.IRANCASH && window.IRANCASH.DataStore) ? window.IRANCASH.DataStore : null;
 const categoriasFallback = ['Conta de Agua','Energia','Suprimentos','Aluguel','Royalties','Seguro','Contadora','DAS-Impostos','Emprestimo','Salario','INSS','VmPay'];
 

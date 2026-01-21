@@ -123,21 +123,22 @@
     <!-- Tabela -->
     <div class="bg-white rounded-xl shadow p-6 mb-8">
       <h2 class="text-xl font-bold text-gray-700 mb-4">Tabela de Despesas</h2>
-      <table class="min-w-full divide-y divide-gray-200 text-sm">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-2 py-2 text-left">Ano</th>
-            <th class="px-2 py-2 text-left">Mês</th>
-            <th class="px-2 py-2 text-left">Dia</th>
-            <th class="px-2 py-2 text-left">Tipo</th>
-            <th class="px-2 py-2 text-left">Categoria</th>
-            <th class="px-2 py-2 text-left">Descrição</th>
-            <th class="px-2 py-2 text-right">Valor (R$)</th>
-            <th class="px-2 py-2 text-center">Comprovante</th>
-            <th class="px-2 py-2 text-left">Ações</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
+      <div class="overflow-x-auto custom-table-scroll">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-2 py-2 text-left sticky left-0 bg-gray-50 z-10">Ano</th>
+              <th class="px-2 py-2 text-left">Mês</th>
+              <th class="px-2 py-2 text-left">Dia</th>
+              <th class="px-2 py-2 text-left">Tipo</th>
+              <th class="px-2 py-2 text-left">Categoria</th>
+              <th class="px-2 py-2 text-left">Descrição</th>
+              <th class="px-2 py-2 text-right">Valor (R$)</th>
+              <th class="px-2 py-2 text-center">Comprovante</th>
+              <th class="px-2 py-2 text-left">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
           <tr>
             <td class="px-2 py-2">-</td>
             <td class="px-2 py-2">-</td>

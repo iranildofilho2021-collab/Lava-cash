@@ -891,11 +891,11 @@
               if(!wrap) return;
               wrap.innerHTML = '';
               if(!filtros.mes || filtros.mes === 'Todos'){
-                wrap.innerHTML = `<div class="text-sm text-gray-500">Selecione um mês no filtro acima para ver o total por período do dia.</div>`;
+                wrap.innerHTML = `<div class="text-sm text-gray-500">Selecione um mï¿½s no filtro acima para ver o total por perï¿½odo do dia.</div>`;
                 return;
               }
               const monthIdx = mesIndex(filtros.mes);
-              if(monthIdx === 99){ wrap.innerHTML = `<div class="text-sm text-gray-500">Mês inválido.</div>`; return; }
+              if(monthIdx === 99){ wrap.innerHTML = `<div class="text-sm text-gray-500">Mï¿½s invï¿½lido.</div>`; return; }
               const mesNum = monthIdx + 1;
               const anoStr = String(ano);
               const anoMes = `${anoStr}/${String(mesNum).padStart(2,'0')}`;
@@ -907,7 +907,7 @@
               const tb = tbl.querySelector('tbody');
               const config = (window.SharedUtils && window.SharedUtils.getPeriodosConfig) ? window.SharedUtils.getPeriodosConfig() : {};
               let order = Object.keys(config || {});
-              if(order.length === 0) order = ['Madrugada','Manhã','Tarde','Noite'];
+              if(order.length === 0) order = ['Madrugada','Manhï¿½','Tarde','Noite'];
               order.forEach(p => {
                 const tr = document.createElement('tr'); tr.className = 'odd:bg-white even:bg-gray-50';
                 const val = Number(sums[p] || 0);
@@ -921,7 +921,7 @@
               tb.appendChild(trTotal);
               wrap.appendChild(tbl);
             }catch(e){
-              if(periodoContainer) periodoContainer.innerHTML = '<div class="text-sm text-red-600">Erro ao calcular períodos.</div>';
+              if(periodoContainer) periodoContainer.innerHTML = '<div class="text-sm text-red-600">Erro ao calcular perï¿½odos.</div>';
             }
           })();
 
@@ -1920,7 +1920,7 @@
             const hh = dt.getHours(), mm = dt.getMinutes(), ss = dt.getSeconds();
             const t = (hh*3600)+(mm*60)+(ss);
             if(t>=1 && t<= 5*3600 + 59*60 + 59) return 'Madrugada';
-            if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhã';
+            if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhï¿½';
             if(t>=12*3600 && t<= 17*3600 + 59*60 + 59) return 'Tarde';
             if(t>=18*3600 && t<= 24*3600) return 'Noite';
             return 'Madrugada'; // fallback
@@ -1932,8 +1932,8 @@
         // 00:00:01 a 05:59:59 - Madrugada (observando que 00:00:00 puro cai fora; vamos considerar 00:00:00 como Madrugada tambÇ¸m)
         if(t>=1 && t<= 5*3600 + 59*60 + 59) return 'Madrugada';
         if(t===0) return 'Madrugada';
-        // 06:00:00 a 11:59:59 - Manhã
-        if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhã';
+        // 06:00:00 a 11:59:59 - Manhï¿½
+        if(t>=6*3600 && t<= 11*3600 + 59*60 + 59) return 'Manhï¿½';
         // 12:00:00 a 17:59:59 - Tarde
         if(t>=12*3600 && t<= 17*3600 + 59*60 + 59) return 'Tarde';
         // 18:00:00 a 24:00:00 - Noite
@@ -2143,7 +2143,7 @@
         const filtered = Array.isArray(current) ? current.filter(x => x && x.anoMes !== anoMes) : [];
         const config = (window.SharedUtils && window.SharedUtils.getPeriodosConfig) ? window.SharedUtils.getPeriodosConfig() : {};
         let order = Object.keys(config || {});
-        if(order.length === 0) order = ['Madrugada','Manhã','Tarde','Noite'];
+        if(order.length === 0) order = ['Madrugada','Manhï¿½','Tarde','Noite'];
         order.forEach(p => {
           filtered.push({ anoMes: anoMes, periodo: p, total: Number(sums[p] || 0) || 0 });
         });

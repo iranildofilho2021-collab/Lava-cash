@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
   <meta name="description" content="Configurações IRANCASH - Personalize moeda, fuso horário e gerencie categorias de despesas do sistema." />
   <meta name="keywords" content="configurações, categorias, despesas, moeda, fuso horário, IRANCASH" />
   <meta name="author" content="IRANCASH" />
@@ -26,21 +26,21 @@
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/ux-improvements.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex" data-page="configuracoes">
+<body class="bg-gray-50 min-h-screen flex flex-col" data-page="configuracoes">
   <!-- Skip link para acessibilidade -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Pular para o conteúdo principal</a>
   <aside data-sidebar></aside>
-  <main id="main-content" class="flex-1 p-6 main-content" role="main" aria-label="Configurações do sistema">
+  <main id="main-content" class="flex-1 p-2 sm:p-4 md:p-6 main-content max-w-full w-full mx-auto" role="main" aria-label="Configurações do sistema">
     <!-- Preferências -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start w-full">
         <label for="sel-moeda" class="text-gray-500">Moeda</label>
         <select id="sel-moeda" class="mt-2 w-full rounded border px-3 py-2">
           <option value="BRL">BRL (R$)</option>
           <option value="USD">USD ($)</option>
         </select>
       </div>
-      <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+      <div class="bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start w-full">
         <label for="sel-fuso" class="text-gray-500">Fuso horário</label>
         <select id="sel-fuso" class="mt-2 w-full rounded border px-3 py-2">
           <option>America/Fortaleza</option>
@@ -49,31 +49,44 @@
       </div>
     </div>
 
+
     <!-- Botão para mostrar/ocultar gerenciamento de categorias -->
-    <div class="mb-4 md:sticky md:top-6 md:z-40">
-      <button id="btn-toggle-categorias" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Categorias de Despesas</button>
+    <div class="mb-4 w-full flex flex-col gap-2 md:flex-row md:gap-4">
+      <button id="btn-toggle-categorias" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Categorias de Despesas</button>
+      <button id="btn-toggle-categorias-investimento" class="w-full md:w-auto inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Categorias de Investimento Inicial</button>
     </div>
 
+
     <!-- Categorias -->
-    <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+    <div id="categorias-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
       <span class="text-gray-500 mb-2">Gerenciar Categorias de Despesas</span>
       <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias"></div>
-      <div class="flex gap-2 w-full max-w-lg">
+      <div class="flex flex-col sm:flex-row gap-2 w-full max-w-lg">
         <input type="text" id="novaCategoria" class="flex-1 rounded border px-3 py-2" placeholder="Nova categoria" />
         <button id="adicionarCategoria" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-6 py-2">Adicionar</button>
       </div>
     </div>
 
+    <!-- Categorias de Investimento Inicial -->
+    <div id="categorias-investimento-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
+      <span class="text-gray-500 mb-2">Gerenciar Categorias de Investimento Inicial</span>
+      <div class="flex flex-wrap gap-2 mb-2" id="lista-categorias-investimento"></div>
+      <div class="flex flex-col sm:flex-row gap-2 w-full max-w-lg">
+        <input type="text" id="novaCategoriaInvestimento" class="flex-1 rounded border px-3 py-2" placeholder="Nova categoria de investimento" />
+        <button id="adicionarCategoriaInvestimento" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded px-6 py-2">Adicionar</button>
+      </div>
+    </div>
+
     <!-- Configurações de Importação (Movido de Receitas) -->
     <!-- Botão Toggle -->
-    <div class="mb-4">
+    <div class="mb-4 w-full">
       <button id="btn-toggle-import-config" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Configurações de Importação</button>
     </div>
     
     <!-- Painel Expansível -->
-    <div id="import-config-content" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full">
+    <div id="import-config-content" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 w-full">
         <div>
           <label class="text-sm font-medium">Linha do cabeçalho (Cartões)</label>
           <input id="headerline-cartao" type="number" min="1" value="2" class="mt-1 w-full rounded border px-3 py-2" />
@@ -90,9 +103,9 @@
       </div>
       
       <!-- Mapeamento de Colunas -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 w-full mt-6">
         <!-- Cartão -->
-        <div class="border rounded-lg p-4">
+        <div class="border rounded-lg p-2 sm:p-4">
           <div class="flex justify-between items-center mb-3">
             <span class="font-medium text-gray-700">Mapeamento (Cartões)</span>
             <div class="flex gap-2">
@@ -109,7 +122,7 @@
         </div>
         
         <!-- PIX -->
-        <div class="border rounded-lg p-4">
+        <div class="border rounded-lg p-2 sm:p-4">
           <div class="flex justify-between items-center mb-3">
             <span class="font-medium text-gray-700">Mapeamento (PIX)</span>
             <div class="flex gap-2">
@@ -129,15 +142,15 @@
 
     <!-- Configuração de Períodos -->
     <!-- Botão Toggle -->
-    <div class="mb-4">
+    <div class="mb-4 w-full">
       <button id="btn-toggle-periodos" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Configuração de Períodos do Dia</button>
     </div>
     
     <!-- Painel Expansível -->
-    <div id="periodos-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full">
+    <div id="periodos-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
       <p class="text-sm text-gray-500 mb-4">Defina os horários de início e fim para cada período (Madrugada, Manhã, Tarde, Noite).</p>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full" id="periodos-config-container">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 w-full" id="periodos-config-container">
         <!-- Preenchido via JS -->
       </div>
       
@@ -149,13 +162,13 @@
 
     <!-- Gerenciar Despesas -->
     <!-- Botão Toggle -->
-    <div class="mb-4">
+    <div class="mb-4 w-full">
       <button id="btn-toggle-despesas" class="w-full md:w-auto inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded px-4 py-2 shadow-lg">Gerenciar Despesas</button>
     </div>
     
     <!-- Painel Expansível -->
-    <div id="despesas-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
-      <div class="flex flex-wrap items-center gap-3 mb-4 w-full">
+    <div id="despesas-section" class="max-h-0 opacity-0 -translate-y-2 overflow-hidden transition-all duration-500 ease-[cubic-bezier(.2,1.2,.2,1)] bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
+      <div class="flex flex-col sm:flex-row flex-wrap items-center gap-3 mb-4 w-full">
         <label class="text-sm">Ver despesas do ano:</label>
         <select id="select-anos-despesas" class="rounded border px-2 py-2"></select>
         <button id="btn-ver-ano" class="bg-sky-600 hover:bg-sky-700 text-white rounded px-3 py-2">Ver</button>
@@ -164,7 +177,7 @@
     </div>
 
     <!-- Configurações do Sistema (Apenas Developer) -->
-    <div id="system-settings-section" class="hidden bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 border-l-4 border-indigo-500">
+    <div id="system-settings-section" class="hidden bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 border-l-4 border-indigo-500 w-full">
       <h2 class="text-lg font-semibold mb-3 text-indigo-700">⚙️ Configurações do Sistema</h2>
       <p class="text-sm text-gray-500 mb-4">Personalize o nome da aplicação e os dados dos sócios.</p>
       
@@ -172,36 +185,36 @@
           <!-- Nome do App -->
           <div>
               <label class="block text-sm font-medium text-gray-700">Nome da Aplicação</label>
-              <div class="flex gap-2 mt-1">
+                <div class="flex flex-col sm:flex-row gap-2 mt-1 w-full">
                   <input type="text" id="app-name-input" class="flex-1 rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" placeholder="LavaJá Lavanderia">
-                  <button id="btn-save-app-name" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">Salvar</button>
+                  <button id="btn-save-app-name" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 w-full sm:w-auto">Salvar</button>
               </div>
           </div>
 
           <!-- Sócios -->
           <div>
               <h3 class="text-md font-medium text-gray-800 mb-2">Sócios e Investimentos</h3>
-              <div class="overflow-x-auto">
+                <div class="overflow-x-auto w-full">
                   <table class="min-w-full divide-y divide-gray-200 text-sm">
-                      <thead class="bg-gray-50">
-                          <tr>
-                              <th class="px-3 py-2 text-left">Nome</th>
-                              <th class="px-3 py-2 text-center">Participação (%)</th>
-                              <th class="px-3 py-2 text-center">Investimento (%)</th>
-                          </tr>
-                      </thead>
-                      <tbody id="partners-list-body" class="bg-white divide-y divide-gray-200">
-                          <!-- JS Populated -->
-                      </tbody>
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-3 py-2 text-left">Nome</th>
+                        <th class="px-3 py-2 text-center">Participação (%)</th>
+                        <th class="px-3 py-2 text-center">Investimento (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody id="partners-list-body" class="bg-white divide-y divide-gray-200">
+                      <!-- JS Populated -->
+                    </tbody>
                   </table>
-              </div>
-              <button id="btn-save-partners" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 w-full md:w-auto">Salvar Alterações dos Sócios</button>
+                </div>
+                <button id="btn-save-partners" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 w-full sm:w-auto">Salvar Alterações dos Sócios</button>
           </div>
       </div>
     </div>
 
     <!-- Gerenciamento de Usuários (Apenas Developer) -->
-    <div id="users-section" class="hidden bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8 w-full border-l-4 border-purple-500">
+    <div id="users-section" class="hidden bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full border-l-4 border-purple-500">
       <h2 class="text-lg font-semibold mb-3 text-purple-700">👥 Gestão de Usuários</h2>
       <p class="text-sm text-gray-500 mb-4">Aprovar cadastros e gerenciar permissões de acesso.</p>
       
@@ -224,13 +237,13 @@
     </div>
 
     <!-- Backup e Restauração -->
-    <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start mb-8">
+    <div class="bg-white rounded-xl shadow p-4 sm:p-6 flex flex-col items-start mb-8 w-full">
       <h2 class="text-lg font-semibold mb-3">💾 Backup e Restauração de Dados</h2>
       <p class="text-sm text-gray-500 mb-4">Faça backup dos seus dados ou restaure de um arquivo anterior.</p>
       
       <!-- Indicador de storage removido conforme solicitado -->
 
-      <div class="flex flex-wrap gap-3 w-full">
+      <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full">
         <button id="btn-export-backup" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded px-4 py-2 transition">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -274,16 +287,16 @@
     </div>
 
     <!-- Atalhos -->
-    <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
-        <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-6 flex items-center gap-4 transition">
+    <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center w-full">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 flex-1 w-full">
+        <a href="receitas.html" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-4 sm:p-6 flex items-center gap-4 transition w-full">
           <svg width="32" height="32" fill="none" aria-hidden="true">
             <path d="M16 4v16m0 0l-6-6m6 6l6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <rect x="4" y="20" width="24" height="8" rx="2" fill="white" fill-opacity="0.2"/>
           </svg>
           <span class="text-lg font-semibold">Importar Dados</span>
         </a>
-        <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-6 flex items-center gap-4 transition">
+        <a href="despesas.html" class="bg-red-500 hover:bg-red-600 text-white rounded-xl p-4 sm:p-6 flex items-center gap-4 transition w-full">
           <svg width="32" height="32" fill="none" aria-hidden="true">
             <path d="M8 16h16M16 8v16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
