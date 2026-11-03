@@ -1,0 +1,3906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investimento Inicial | LAVACASH</title>
+
+  <meta name="description" content="Gestão de investimento inicial da lavanderia">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260613-table-filter-header-v1">
+  <script src="js/vendor-loader.js?v=20260621-performance-v2" defer></script>
+</head>
+<body data-page="investimento-inicial">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando investimentos...</div>
+  </div>
+
+  <!-- Sidebar Toggle -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link" data-page="receitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link" data-page="despesas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link" data-page="analise-financeira">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link active" data-page="investimento-inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link" id="linkConfig" data-page="configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link" data-page="ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Usuário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Visualizador</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">💰 Investimento Inicial</h1>
+        <p id="investimentoPageSubtitle" class="page-subtitle">Registre todos os investimentos para abrir a lavanderia</p>
+      </div>
+      <div class="header-actions">
+        <button id="btnExportarSociosPdf" type="button" class="btn btn-secondary">
+          PDF Sócios
+        </button>
+        <button id="btnExportarSociosExcel" type="button" class="btn btn-secondary">
+          Excel Sócios
+        </button>
+        <button id="btnPagamentoLucros" type="button" class="btn btn-success">
+          Pagamento de Lucros
+        </button>
+        <button id="btnNovoInvestimento" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Nova Movimentação
+        </button>
+      </div>
+    </header>
+
+    <section id="investimentoMobileApp" class="investimento-mobile-app" aria-label="Investimento inicial no celular">
+      <div class="investimento-mobile-hero">
+        <div class="investimento-mobile-eyebrow">Investimento inicial</div>
+        <h2 id="mobileTotalInvestido">R$ 0,00</h2>
+        <p id="mobileInvestimentoResumo">0 itens cadastrados</p>
+        <div class="investimento-mobile-actions">
+          <button id="btnMobileNovoInvestimento" type="button" class="investimento-mobile-primary">
+            Nova movimentação
+          </button>
+          <button id="btnMobileNovoSocio" type="button" class="investimento-mobile-secondary">
+            Novo sócio
+          </button>
+          <button id="btnMobilePagamentoLucros" type="button" class="investimento-mobile-secondary">
+            Pagar lucros
+          </button>
+        </div>
+      </div>
+
+      <div class="investimento-mobile-kpis">
+        <article class="investimento-mobile-kpi">
+          <span>Itens</span>
+          <strong id="mobileTotalItens">0</strong>
+        </article>
+        <article class="investimento-mobile-kpi">
+          <span>Maior aporte</span>
+          <strong id="mobileMaiorInvestimento">R$ 0,00</strong>
+        </article>
+        <article class="investimento-mobile-kpi">
+          <span>Sócios</span>
+          <strong id="mobileSociosTotal">0</strong>
+        </article>
+        <article class="investimento-mobile-kpi">
+          <span>Rateio</span>
+          <strong id="mobileSociosDistribuido">0,00%</strong>
+        </article>
+        <article class="investimento-mobile-kpi">
+          <span>Recuperado</span>
+          <strong id="mobileRecuperacaoInvestimento">R$ 0,00</strong>
+        </article>
+      </div>
+
+      <nav class="investimento-mobile-tabs" aria-label="Seções de investimento">
+        <button type="button" class="active" data-investimento-mobile-tab="investimentos">Investimentos</button>
+        <button type="button" data-investimento-mobile-tab="socios">Sócios</button>
+        <button type="button" data-investimento-mobile-tab="rateio">Rateio</button>
+      </nav>
+
+      <section id="mobileSectionInvestimentos" class="investimento-mobile-section active" data-investimento-mobile-section="investimentos">
+        <div class="investimento-mobile-section-header">
+          <div>
+            <h3>Movimentações cadastradas</h3>
+            <p>Consulte aportes, retiradas, reembolsos e ajustes por sócio.</p>
+          </div>
+          <input type="search" id="buscaMobile" class="investimento-mobile-search" placeholder="Buscar investimento">
+        </div>
+        <div id="mobileInvestimentosList" class="investimento-mobile-list"></div>
+      </section>
+
+      <section id="mobileSectionSocios" class="investimento-mobile-section" data-investimento-mobile-section="socios">
+        <div class="investimento-mobile-section-header">
+          <div>
+            <h3>Sócios da loja</h3>
+            <p>Percentual investido, rateio mensal e aporte atual.</p>
+          </div>
+        </div>
+        <div id="mobileSociosAviso" class="investimento-mobile-notice"></div>
+        <div id="mobileSociosList" class="investimento-mobile-list"></div>
+      </section>
+
+      <section id="mobileSectionRateio" class="investimento-mobile-section" data-investimento-mobile-section="rateio">
+        <div class="investimento-mobile-section-header">
+          <div>
+            <h3>Rateio mensal</h3>
+            <p>Lucro ou prejuízo mensal dividido pelo percentual de cada sócio.</p>
+          </div>
+        </div>
+        <div id="mobileRateioList" class="investimento-mobile-list"></div>
+      </section>
+    </section>
+
+    <!-- Summary Cards -->
+    <div id="investimentoSummaryCards" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      <div class="glass-card investimento-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-label">Total Aportado</p>
+            <p class="stat-value" id="totalInvestido">R$ 0,00</p>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card investimento-card investimento-payback-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-label">Recuperação do Investimento</p>
+            <p class="stat-value" id="recuperacaoInvestimento">R$ 0,00</p>
+            <p id="recuperacaoInvestimentoMeta" class="text-xs" style="color: var(--color-text-muted);">Baseado em pagamentos de lucros</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card investimento-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-label">Movimentações</p>
+            <p class="stat-value" id="totalItens">0</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card investimento-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-label">Maior Lançamento</p>
+            <p class="stat-value" id="maiorInvestimento">R$ 0,00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Partners -->
+    <div class="glass-card investimento-panel mb-6">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Sócios da Loja</h2>
+          <p id="sociosHeaderDescription" class="text-sm mt-1" style="color: var(--color-text-muted);">
+            Defina quem são os sócios desta lavanderia, quanto cada um investiu e qual percentual será usado no rateio e na divisão do lucro.
+          </p>
+        </div>
+        <button id="btnNovoSocio" type="button" class="btn btn-secondary hidden">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Novo Sócio
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="glass-card investimento-card">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 8v6M23 11h-6"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <p class="stat-label">Sócios Cadastrados</p>
+              <p class="stat-value" id="sociosTotal">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card investimento-card">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 20V10"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 20V4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 20v-4"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+                <p class="stat-label">Rateio Distribuído</p>
+              <p class="stat-value" id="sociosDistribuido">0,00%</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card investimento-card">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+                <p class="stat-label">Rateio Disponível</p>
+              <p class="stat-value" id="sociosDisponivel">100,00%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sociosAviso" class="mb-4 p-4 rounded-xl" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.18); color: var(--color-text-secondary);"></div>
+
+      <div id="listaSocios" class="grid grid-cols-1 xl:grid-cols-2 gap-4"></div>
+
+      <div id="semSocios" class="empty-state hidden" style="padding: 2.5rem 1rem;">
+        <div class="text-4xl mb-2">🤝</div>
+        <h4 class="empty-state-title">Nenhum sócio configurado</h4>
+        <p class="empty-state-text">Cadastre os sócios da lavanderia para acompanhar a participação de cada um no investimento inicial.</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="glass-card investimento-panel">
+      <div class="card-header">
+        <h2 class="card-title">Movimentações Societárias</h2>
+        <div class="flex gap-2">
+          <input type="text" id="busca" placeholder="Buscar..." class="input-glass" style="max-width: 200px;">
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Data</th>
+              <th>Valor</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaInvestimentos">
+            <tr>
+              <td colspan="6" class="text-center" style="color: var(--color-text-muted); padding: 3rem;">
+                Nenhuma movimentação cadastrada
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="glass-card investimento-panel mt-6">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Rateio Mensal de Lucro / Prejuízo por Sócio</h2>
+          <p class="text-sm mt-1" style="color: var(--color-text-muted);">
+            Lucro / prejuízo mensal = receitas - despesas. O % de rateio dos sócios é aplicado somente sobre esse resultado.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-container rateio-mensal-container">
+        <table id="tabelaRateioMensal" class="data-table">
+          <thead id="theadRateioMensal">
+            <tr>
+              <th class="rateio-col-mes" scope="col"><span class="rateio-header-label">Mês</span></th>
+              <th class="rateio-col-valor" scope="col"><span class="rateio-header-label">Receitas</span></th>
+              <th class="rateio-col-valor" scope="col"><span class="rateio-header-label">Despesas</span></th>
+              <th class="rateio-col-resultado" scope="col"><span class="rateio-header-label">Lucro / Prejuízo</span></th>
+            </tr>
+          </thead>
+          <tbody id="tbodyRateioMensal">
+            <tr>
+              <td colspan="4" class="text-center" style="color: var(--color-text-muted); padding: 3rem;">
+                Nenhum dado mensal disponível para rateio
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Nova Movimentação -->
+  <div id="modalInvestimento" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Nova Movimentação</h3>
+        <button class="modal-close" onclick="fecharModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="formInvestimento">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tipoMovimentacao" class="form-label">Tipo de movimentação *</label>
+              <select id="tipoMovimentacao" class="form-input" required>
+                <option value="investimento_inicial">Investimento inicial</option>
+                <option value="aporte_adicional">Aporte adicional</option>
+                <option value="retirada_lucro">Retirada de lucro</option>
+                <option value="pagamento_lucro">Pagamento de lucros</option>
+                <option value="reembolso">Reembolso</option>
+                <option value="ajuste_manual">Ajuste manual</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="categoria" class="form-label">Categoria *</label>
+              <select id="categoria" class="form-input" required>
+                <option value="">Selecione...</option>
+                <option value="equipamentos">Equipamentos</option>
+                <option value="moveis">Móveis e Utensílios</option>
+                <option value="reformas">Reformas</option>
+                <option value="instalacoes">Instalações</option>
+                <option value="tecnologia">Tecnologia</option>
+                <option value="marketing">Marketing Inicial</option>
+                <option value="distribuicao_lucros">Distribuição de lucros</option>
+                <option value="documentacao">Documentação</option>
+                <option value="estoque">Estoque Inicial</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="data" class="form-label">Data *</label>
+              <input type="date" id="data" class="form-input" required>
+            </div>
+
+            <div id="competenciaPagamentoGroup" class="form-group hidden">
+              <label for="competenciaPagamento" class="form-label">Mês de referência *</label>
+              <input type="month" id="competenciaPagamento" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="socioMovimentacao" class="form-label">Sócio vinculado</label>
+              <select id="socioMovimentacao" class="form-input">
+                <option value="">Ratear automaticamente</option>
+              </select>
+            </div>
+
+            <div class="form-group span-2">
+              <label for="descricao" class="form-label">Descrição *</label>
+              <input type="text" id="descricao" class="form-input" placeholder="Ex: Máquina de lavar industrial" required>
+            </div>
+
+            <div class="form-group">
+              <label for="valor" class="form-label">Valor (R$) *</label>
+              <input type="number" id="valor" class="form-input" placeholder="0,00" step="0.01" min="0.01" required>
+            </div>
+
+            <div class="form-group">
+              <label for="fornecedor" class="form-label">Fornecedor</label>
+              <input type="text" id="fornecedor" class="form-input" placeholder="Nome do fornecedor">
+            </div>
+
+            <div class="form-group span-2">
+              <label for="observacoes" class="form-label">Observações</label>
+              <textarea id="observacoes" class="form-input" rows="2" placeholder="Informações adicionais"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn btn-success">Salvar Movimentação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalDetalhamentoInvestimento" class="modal-overlay">
+    <div class="modal" style="max-width: 760px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="detalhamentoInvestimentoTitle">Rateio do Investimento</h3>
+          <p class="text-sm mt-1" id="detalhamentoInvestimentoMeta" style="color: var(--color-text-muted);"></p>
+        </div>
+        <button class="modal-close" onclick="fecharModalDetalhamentoInvestimento()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-4 p-4 rounded-xl" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.18);">
+          <p class="text-sm font-medium" id="detalhamentoInvestimentoResumo" style="color: var(--color-text-primary);"></p>
+        </div>
+
+        <div class="table-container detalhe-investimento-table">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Sócio</th>
+                <th>% Investido</th>
+                <th>Valor Pago</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyDetalhamentoInvestimento">
+              <tr>
+                <td colspan="3" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+                  Nenhum detalhamento disponível
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="fecharModalDetalhamentoInvestimento()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalExtratoSocio" class="modal-overlay">
+    <div class="modal" style="max-width: 920px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="extratoSocioTitle">Extrato do Sócio</h3>
+          <p class="text-sm mt-1" id="extratoSocioMeta" style="color: var(--color-text-muted);"></p>
+        </div>
+        <button class="modal-close" onclick="fecharModalExtratoSocio()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div id="extratoSocioResumo" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4"></div>
+        <div class="table-container detalhe-investimento-table">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data / Mês</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyExtratoSocio">
+              <tr>
+                <td colspan="5" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+                  Nenhum lançamento encontrado para este sócio.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="fecharModalExtratoSocio()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sócio -->
+  <div id="modalSocio" class="modal-overlay">
+    <div class="modal" style="max-width: 560px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="modalSocioTitle">Novo Sócio</h3>
+          <p class="text-sm mt-1" id="modalSocioContext" style="color: var(--color-text-muted);"></p>
+        </div>
+        <button class="modal-close" onclick="fecharModalSocio()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="formSocio">
+        <input type="hidden" id="socioId">
+
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group span-2">
+              <label for="socioUserId" class="form-label">Usuário vinculado</label>
+              <select id="socioUserId" class="form-input">
+                <option value="">Selecione...</option>
+              </select>
+              <p class="text-xs mt-2" id="socioUsuariosInfo" style="color: var(--color-text-muted);"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="socioNome" class="form-label">Nome do sócio *</label>
+              <input type="text" id="socioNome" class="form-input" placeholder="Nome completo" required>
+            </div>
+
+            <div class="form-group">
+              <label for="socioEmail" class="form-label">E-mail do sócio *</label>
+              <input type="email" id="socioEmail" class="form-input" placeholder="email@exemplo.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="socioPercentualInvestido" class="form-label">% Investido *</label>
+              <input type="number" id="socioPercentualInvestido" class="form-input" placeholder="0,00" step="0.01" min="0.01" max="100" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Uso do % investido</label>
+              <div class="form-input" style="display: flex; align-items: center; min-height: 48px;">Define quanto deste sócio compõe o investimento inicial da loja</div>
+            </div>
+
+            <div class="form-group">
+              <label for="socioPercentual" class="form-label">% de Rateio *</label>
+              <input type="number" id="socioPercentual" class="form-input" placeholder="0,00" step="0.01" min="0.01" max="100" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Uso do % de rateio</label>
+              <div class="form-input" style="display: flex; align-items: center; min-height: 48px;">Define a participação deste sócio no rateio e na divisão do lucro</div>
+            </div>
+
+            <div class="form-group span-2">
+              <label for="socioObservacoes" class="form-label">Observações</label>
+              <textarea id="socioObservacoes" class="form-input" rows="3" placeholder="Ex: participação societária definida em contrato"></textarea>
+            </div>
+          </div>
+
+          <div class="mt-4 p-4 rounded-xl" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.18);">
+            <p class="text-sm font-medium" id="socioPreview" style="color: var(--color-text-primary);">
+              Informe o % investido e o % de rateio para calcular o aporte atual e a distribuição configurada.
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="fecharModalSocio()">Cancelar</button>
+          <button type="submit" class="btn btn-success">Salvar Sócio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    body[data-page="investimento-inicial"] .investimento-panel {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.82) 0%, rgba(30, 41, 59, 0.74) 100%);
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border-color: rgba(148, 163, 184, 0.28);
+      box-shadow: 0 16px 32px rgba(2, 6, 23, 0.16);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-card .stat-label {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    body[data-page="investimento-inicial"] .investimento-card .stat-value {
+      color: #f8fafc;
+      text-shadow: 0 1px 0 rgba(15, 23, 42, 0.3);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-payback-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.14), rgba(16, 185, 129, 0.10));
+      border: 1px solid rgba(56, 189, 248, 0.22);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-payback-progress {
+      height: 0.45rem;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.36);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-payback-progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #0ea5e9, #10b981);
+    }
+
+    body[data-page="investimento-inicial"] .investimento-payback-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.45rem;
+      color: var(--color-text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    body[data-page="investimento-inicial"] .investimento-panel .card-title,
+    body[data-page="investimento-inicial"] .investimento-panel .card-header h2,
+    body[data-page="investimento-inicial"] .investimento-panel .card-header p,
+    body[data-page="investimento-inicial"] .investimento-panel .empty-state-title,
+    body[data-page="investimento-inicial"] .investimento-panel .empty-state-text {
+      color: #e2e8f0 !important;
+    }
+
+    body[data-page="investimento-inicial"] #sociosAviso {
+      background: rgba(15, 23, 42, 0.86) !important;
+      border-color: rgba(56, 189, 248, 0.22) !important;
+      color: #cbd5e1 !important;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th,
+    #modalDetalhamentoInvestimento .data-table th,
+    #modalDetalhamentoInvestimento .data-table td {
+      white-space: nowrap;
+    }
+
+    body[data-page="investimento-inicial"] .rateio-mensal-container {
+      overflow-x: auto;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal {
+      width: max-content;
+      min-width: 100%;
+      table-layout: auto;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th,
+    body[data-page="investimento-inicial"] #tabelaRateioMensal td {
+      white-space: nowrap;
+      word-break: normal;
+      text-align: center;
+      vertical-align: middle;
+      padding: 0.75rem 0.6rem;
+      font-size: 0.8125rem;
+      line-height: 1.25;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal thead th {
+      height: 4rem;
+      padding-top: 0.85rem;
+      padding-bottom: 0.85rem;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-header-label,
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-header-socio {
+      min-height: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      text-align: center;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-header-nome,
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-header-percentual {
+      display: block;
+      white-space: nowrap;
+      line-height: 1.15;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-header-percentual {
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th:first-child,
+    body[data-page="investimento-inicial"] #tabelaRateioMensal td:first-child {
+      min-width: 6.5rem;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th:nth-child(2),
+    body[data-page="investimento-inicial"] #tabelaRateioMensal td:nth-child(2) {
+      min-width: 8.5rem;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th:nth-child(3),
+    body[data-page="investimento-inicial"] #tabelaRateioMensal td:nth-child(3),
+    body[data-page="investimento-inicial"] #tabelaRateioMensal th:nth-child(4),
+    body[data-page="investimento-inicial"] #tabelaRateioMensal td:nth-child(4) {
+      min-width: 9rem;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-col-resultado {
+      min-width: 10rem;
+    }
+
+    body[data-page="investimento-inicial"] #tabelaRateioMensal .rateio-col-socio {
+      min-width: 11.5rem;
+    }
+
+    #modalDetalhamentoInvestimento .table-container {
+      box-shadow: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    body[data-page="investimento-inicial"] .rateio-positivo {
+      color: var(--color-success);
+      font-weight: 700;
+    }
+
+    body[data-page="investimento-inicial"] .rateio-negativo {
+      color: var(--color-danger);
+      font-weight: 700;
+    }
+
+    body[data-page="investimento-inicial"] .rateio-neutro {
+      color: var(--color-text-secondary);
+      font-weight: 600;
+    }
+
+    #modalInvestimento .modal,
+    #modalDetalhamentoInvestimento .modal,
+    #modalExtratoSocio .modal,
+    #modalSocio .modal {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 0.98) 100%);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    #modalInvestimento .form-label,
+    #modalDetalhamentoInvestimento .form-label,
+    #modalExtratoSocio .form-label,
+    #modalSocio .form-label {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    #modalInvestimento .form-input,
+    #modalSocio .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.82);
+      color: #f8fafc;
+      font-size: 1rem;
+      transition: all var(--transition-normal);
+    }
+
+    #modalInvestimento .form-input::placeholder,
+    #modalSocio .form-input::placeholder {
+      color: rgba(203, 213, 225, 0.78);
+    }
+
+    #modalInvestimento .form-input:focus,
+    #modalSocio .form-input:focus {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.92);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+      background: rgba(15, 23, 42, 0.92);
+    }
+
+    #modalInvestimento select.form-input,
+    #modalSocio select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1.1rem;
+      padding-right: 2.5rem;
+    }
+
+    #modalInvestimento select.form-input option,
+    #modalSocio select.form-input option {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    #modalInvestimento input[type="date"].form-input {
+      color-scheme: dark;
+    }
+
+    #modalInvestimento input[type="date"].form-input::-webkit-calendar-picker-indicator {
+      filter: invert(0.92) brightness(1.1);
+      cursor: pointer;
+    }
+
+    #modalSocio #modalSocioContext,
+    #modalSocio #socioUsuariosInfo {
+      color: #cbd5e1 !important;
+    }
+
+    #modalSocio #socioPreview {
+      color: #f8fafc;
+    }
+
+    .rateio-status-select {
+      min-width: 7.25rem;
+      margin-left: 0.45rem;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 999px;
+      padding: 0.25rem 0.55rem;
+      background: rgba(15, 23, 42, 0.72);
+      color: #e2e8f0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    .rateio-status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 0.45rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .rateio-status-chip.pendente { color: #92400e; background: rgba(245, 158, 11, 0.16); }
+    .rateio-status-chip.pago { color: #047857; background: rgba(16, 185, 129, 0.16); }
+    .rateio-status-chip.compensado { color: #1d4ed8; background: rgba(59, 130, 246, 0.16); }
+
+    #investimentoMobileApp {
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+      body[data-page="investimento-inicial"] {
+        background:
+          radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.26), transparent 28rem),
+          radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.18), transparent 22rem),
+          #07111f;
+      }
+
+      body[data-page="investimento-inicial"] .main-content {
+        padding: 0 !important;
+      }
+
+      body[data-page="investimento-inicial"] .main-content > :not(#investimentoMobileApp) {
+        display: none !important;
+      }
+
+      body[data-page="investimento-inicial"] #investimentoMobileApp {
+        display: block;
+        min-height: calc(100vh - var(--mobile-header-h));
+        padding: 0.85rem 0.95rem calc(var(--mobile-bottom-nav-h) + var(--mobile-safe-bottom) + 1.5rem);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-hero,
+      body[data-page="investimento-inicial"] .investimento-mobile-kpi,
+      body[data-page="investimento-inicial"] .investimento-mobile-card,
+      body[data-page="investimento-inicial"] .investimento-mobile-notice,
+      body[data-page="investimento-inicial"] .investimento-mobile-tabs {
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        box-shadow: 0 18px 42px rgba(2, 6, 23, 0.28);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        padding: 1.25rem;
+        background:
+          linear-gradient(135deg, rgba(14, 165, 233, 0.24), rgba(139, 92, 246, 0.18)),
+          rgba(15, 23, 42, 0.86);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-hero::after {
+        content: "";
+        position: absolute;
+        right: -3rem;
+        top: -3rem;
+        width: 9rem;
+        height: 9rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-eyebrow {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.18);
+        color: #bae6fd;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-hero h2 {
+        position: relative;
+        z-index: 1;
+        margin: 1rem 0 0.25rem;
+        color: #ffffff;
+        font-size: 2.15rem;
+        font-weight: 850;
+        line-height: 1.05;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-hero p {
+        position: relative;
+        z-index: 1;
+        color: #cbd5e1;
+        font-size: 0.9rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-actions {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+        margin-top: 1rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-primary,
+      body[data-page="investimento-inicial"] .investimento-mobile-secondary {
+        min-height: 46px;
+        border: 0;
+        border-radius: 16px;
+        padding: 0.75rem 0.8rem;
+        font-size: 0.9rem;
+        font-weight: 800;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-primary {
+        background: linear-gradient(135deg, #38bdf8, #2563eb);
+        color: white;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-secondary {
+        background: rgba(255, 255, 255, 0.12);
+        color: #e0f2fe;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-primary:disabled,
+      body[data-page="investimento-inicial"] .investimento-mobile-secondary:disabled {
+        cursor: not-allowed;
+        opacity: 0.48;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-kpis {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 0.9rem 0;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-kpi {
+        min-height: 88px;
+        border-radius: 22px;
+        padding: 0.9rem;
+        background: rgba(15, 23, 42, 0.72);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-kpi span {
+        display: block;
+        color: #94a3b8;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-kpi strong {
+        display: block;
+        margin-top: 0.5rem;
+        color: #f8fafc;
+        font-size: 1.18rem;
+        font-weight: 850;
+        line-height: 1.1;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-tabs {
+        position: sticky;
+        top: calc(var(--mobile-header-h) + 0.5rem);
+        z-index: 30;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.35rem;
+        margin: 0.85rem 0;
+        padding: 0.35rem;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.88);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-tabs button {
+        border: 0;
+        border-radius: 14px;
+        padding: 0.68rem 0.45rem;
+        background: transparent;
+        color: #94a3b8;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-tabs button.active {
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.95), rgba(37, 99, 235, 0.92));
+        color: white;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-section {
+        display: none;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-section.active {
+        display: block;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-section-header {
+        display: grid;
+        gap: 0.75rem;
+        margin: 1rem 0 0.75rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-section-header h3 {
+        color: #f8fafc;
+        font-size: 1.1rem;
+        font-weight: 850;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-section-header p {
+        margin-top: 0.2rem;
+        color: #94a3b8;
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-search {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 16px;
+        padding: 0 0.95rem;
+        background: rgba(15, 23, 42, 0.84);
+        color: #f8fafc;
+        font-size: 0.95rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-list {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card {
+        border-radius: 22px;
+        padding: 1rem;
+        background: rgba(15, 23, 42, 0.78);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.8rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-title {
+        color: #f8fafc;
+        font-size: 1rem;
+        font-weight: 850;
+        line-height: 1.28;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-subtitle,
+      body[data-page="investimento-inicial"] .investimento-mobile-muted {
+        color: #94a3b8;
+        font-size: 0.78rem;
+        line-height: 1.35;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-value {
+        color: #38bdf8;
+        font-size: 1.15rem;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        width: fit-content;
+        padding: 0.35rem 0.62rem;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.14);
+        color: #7dd3fc;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
+        margin: 0.85rem 0;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-metric {
+        border-radius: 16px;
+        padding: 0.72rem;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-metric span {
+        display: block;
+        color: #94a3b8;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-metric strong {
+        display: block;
+        margin-top: 0.28rem;
+        color: #f8fafc;
+        font-size: 0.96rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-payback {
+        margin: 0.85rem 0;
+        border: 1px solid rgba(56, 189, 248, 0.18);
+        border-radius: 18px;
+        padding: 0.72rem;
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.13), rgba(16, 185, 129, 0.09));
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-payback-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-payback-row span {
+        color: #94a3b8;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-payback-row strong {
+        color: #f8fafc;
+        font-size: 0.95rem;
+        text-align: right;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.45rem;
+        margin-top: 0.85rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-actions.two-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-actions button {
+        min-height: 40px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.065);
+        color: #e2e8f0;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-card-actions button.danger {
+        color: #fecaca;
+        background: rgba(239, 68, 68, 0.1);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-notice {
+        margin-bottom: 0.8rem;
+        border-radius: 18px;
+        padding: 0.85rem;
+        background: rgba(14, 165, 233, 0.09);
+        color: #cbd5e1;
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-empty {
+        border: 1px dashed rgba(148, 163, 184, 0.22);
+        border-radius: 22px;
+        padding: 1.4rem 1rem;
+        background: rgba(15, 23, 42, 0.58);
+        color: #cbd5e1;
+        text-align: center;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-empty strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #f8fafc;
+        font-size: 1rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-rateio-partners {
+        display: grid;
+        gap: 0.45rem;
+        margin-top: 0.8rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-rateio-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.7rem;
+        align-items: center;
+        border-radius: 14px;
+        padding: 0.7rem;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-rateio-row strong {
+        color: #f8fafc;
+        font-size: 0.86rem;
+      }
+
+      body[data-page="investimento-inicial"] .investimento-mobile-rateio-row span {
+        color: #94a3b8;
+        font-size: 0.72rem;
+      }
+
+      body[data-page="investimento-inicial"] .modal-overlay.active {
+        align-items: flex-end !important;
+        padding: 0 !important;
+      }
+
+      body[data-page="investimento-inicial"] #modalInvestimento .modal,
+      body[data-page="investimento-inicial"] #modalDetalhamentoInvestimento .modal,
+      body[data-page="investimento-inicial"] #modalExtratoSocio .modal,
+      body[data-page="investimento-inicial"] #modalSocio .modal {
+        width: 100% !important;
+        max-width: none !important;
+        max-height: 92vh !important;
+        margin: 0 !important;
+        border-radius: 26px 26px 0 0 !important;
+        overflow-y: auto !important;
+      }
+
+      body[data-page="investimento-inicial"] .modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: inherit;
+      }
+
+      body[data-page="investimento-inicial"] .form-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      body[data-page="investimento-inicial"] .form-group.span-2 {
+        grid-column: auto !important;
+      }
+
+      body[data-page="investimento-inicial"] .modal-footer {
+        position: sticky;
+        bottom: 0;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 0.65rem;
+        background: inherit;
+      }
+
+      body[data-page="investimento-inicial"] .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 46px;
+      }
+    }
+
+    /* ================================================
+       LIGHT THEME — investimento-inicial
+       ================================================ */
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel {
+      background: rgba(255, 255, 255, 0.88) !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-card {
+      background: rgba(255, 255, 255, 0.97) !important;
+      border-color: rgba(0, 0, 0, 0.09) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-card .stat-label {
+      color: #475569 !important;
+      font-weight: 500 !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-card .stat-value {
+      color: #0f172a !important;
+      text-shadow: none !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-payback-card {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.10), rgba(16, 185, 129, 0.08)) !important;
+      border-color: rgba(14, 165, 233, 0.20) !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-payback-progress {
+      background: rgba(15, 23, 42, 0.10) !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-payback-detail,
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-payback-meta {
+      color: #475569 !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel .card-title,
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel .card-header h2,
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel .card-header p,
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel .empty-state-title,
+    html[data-theme="light"] body[data-page="investimento-inicial"] .investimento-panel .empty-state-text {
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] body[data-page="investimento-inicial"] #sociosAviso {
+      background: rgba(14, 165, 233, 0.07) !important;
+      border-color: rgba(14, 165, 233, 0.20) !important;
+      color: #475569 !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento .modal,
+    html[data-theme="light"] #modalDetalhamentoInvestimento .modal,
+    html[data-theme="light"] #modalExtratoSocio .modal,
+    html[data-theme="light"] #modalSocio .modal {
+      background: #f8fafc !important;
+      border-color: rgba(0, 0, 0, 0.10) !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento .form-label,
+    html[data-theme="light"] #modalDetalhamentoInvestimento .form-label,
+    html[data-theme="light"] #modalExtratoSocio .form-label,
+    html[data-theme="light"] #modalSocio .form-label {
+      color: #475569 !important;
+      font-weight: 500 !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento .form-input,
+    html[data-theme="light"] #modalSocio .form-input {
+      background: rgba(255, 255, 255, 0.90) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento .form-input::placeholder,
+    html[data-theme="light"] #modalSocio .form-input::placeholder {
+      color: rgba(100, 116, 139, 0.7) !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento .form-input:focus,
+    html[data-theme="light"] #modalSocio .form-input:focus {
+      background: #ffffff !important;
+      border-color: rgba(14, 165, 233, 0.55) !important;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12) !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento select.form-input,
+    html[data-theme="light"] #modalSocio select.form-input {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 0.75rem center !important;
+      background-size: 1.1rem !important;
+      padding-right: 2.5rem !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento select.form-input option,
+    html[data-theme="light"] #modalSocio select.form-input option {
+      background: #ffffff !important;
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento input[type="date"].form-input {
+      color-scheme: light !important;
+    }
+
+    html[data-theme="light"] #modalInvestimento input[type="date"].form-input::-webkit-calendar-picker-indicator {
+      filter: none !important;
+    }
+
+    html[data-theme="light"] #modalSocio #modalSocioContext,
+    html[data-theme="light"] #modalSocio #socioUsuariosInfo {
+      color: #475569 !important;
+    }
+
+    html[data-theme="light"] #modalSocio #socioPreview {
+      color: #0f172a !important;
+    }
+  </style>
+
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/indexeddb-store.js"></script>
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/laundry-service.js"></script>
+  <script src="js/finance-dedupe.js?v=20260903-owner-performance-v1"></script>
+  <script src="js/sidebar-filter.js?v=20260409-3"></script>
+  <script src="js/socios-investimentos.js?v=20260621-pagamentos-lucro-v1"></script>
+
+  <script>
+    // Utilitário de toast inline
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;border-radius:.5rem;font-size:.9rem;font-weight:500;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:opacity .4s;';
+      t.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
+    }
+
+    // Init UserSystem
+    UserSystem.init();
+
+    // Check auth
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser || !currentUser.aprovado) {
+      window.location.href = './index.html';
+    }
+
+    // MIGRAÇÃO de dados antigos
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        const antiga = `investimento_${lav.id}`;
+        const nova = `${lav.id}_investimento`;
+        if (localStorage.getItem(antiga) && !localStorage.getItem(nova)) {
+          localStorage.setItem(nova, localStorage.getItem(antiga));
+          localStorage.removeItem(antiga);
+        }
+      });
+
+      // Migrar investimentoInicial para primeira lavanderia
+      const investSemPrefixo = localStorage.getItem('investimentoInicial');
+      if (investSemPrefixo && lavanderias.length > 0) {
+        const primeira = lavanderias[0].id;
+        const chaveNova = `${primeira}_investimento`;
+        if (!localStorage.getItem(chaveNova)) {
+          localStorage.setItem(chaveNova, investSemPrefixo);
+        }
+      }
+    })();
+
+    // Setup user info
+    document.getElementById('userName').textContent = currentUser?.nome || 'Usuário';
+    document.getElementById('userRole').textContent = 'Proprietário';
+    const isVisualizador = false;
+
+    if (isVisualizador) {
+      document.getElementById('btnNovoInvestimento')?.classList.add('hidden');
+      document.getElementById('btnPagamentoLucros')?.classList.add('hidden');
+      document.getElementById('investimentoPageSubtitle')?.classList.add('hidden');
+      document.getElementById('sociosHeaderDescription')?.classList.add('hidden');
+    }
+
+    // Hide config for non-developers
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+    const minhasLavanderias = UserSystem.getMinhasLavanderias();
+    const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+    lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+      `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+    ).join('');
+
+    lavanderiaSelect.addEventListener('change', async (e) => {
+      UserSystem.selecionarLavanderia(e.target.value);
+      if (typeof window._investimentosUnsubscribe === 'function') window._investimentosUnsubscribe();
+      if (typeof window._rateioStatusUnsubscribe === 'function') window._rateioStatusUnsubscribe();
+      window._investimentosUnsubscribe = null;
+      window._rateioStatusUnsubscribe = null;
+      _firebaseSyncSetup = false;
+      _rateioStatusSyncSetup = false;
+      rateioSummaryLaundryId = '';
+      rateioSummaryMonths = [];
+      rateioUsingSummary = false;
+      await Promise.all([
+        setupFirebaseSync(),
+        hydrateRateioStatusMap(),
+        hydrateRateioFinanceiro(e.target.value, { force: true })
+      ]);
+      setupFirebaseSyncRateioStatus();
+      renderInvestimentos();
+    });
+
+
+
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    function getLavanderiaAtualId() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      return selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+    }
+
+    // Storage key
+    function getStorageKey() {
+      const lavId = getLavanderiaAtualId();
+      return `${lavId}_investimento`;
+    }
+
+    // Get investimentos
+    function getInvestimentos() {
+      const key = getStorageKey();
+      try {
+        return normalizarMovimentacoesSocietarias(JSON.parse(localStorage.getItem(key) || '[]'));
+      } catch(e) {
+        console.error('[Investimento] Dados corrompidos no localStorage:', e);
+        return [];
+      }
+    }
+
+    // Save investimentos
+    async function saveInvestimentos(investimentos) {
+      const key = getStorageKey();
+      const normalizados = normalizarMovimentacoesSocietarias(investimentos);
+      localStorage.setItem(key, JSON.stringify(normalizados));
+
+      // Salvar no Firebase
+      if (window.FirebaseStore && window.FirebaseStore.isAvailable) {
+        try {
+          const available = await window.FirebaseStore.isAvailable();
+          if (available) {
+            await window.FirebaseStore.setItem(key, normalizados);
+          }
+        } catch (err) {
+          console.warn('[Investimento] Erro ao sincronizar com Firebase:', err);
+        }
+      }
+    }
+
+    function round2(value) {
+      return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+    }
+
+    function normalizarTipoMovimentacao(tipo) {
+      return window.LavaCashSocios?.normalizarTipoMovimentacao(tipo) || 'investimento_inicial';
+    }
+
+    function getTipoMovimentacaoLabel(tipo) {
+      return window.LavaCashSocios?.getTipoMovimentacaoLabel(tipo) || 'Investimento inicial';
+    }
+
+    function getTipoMovimentacaoMeta(tipo) {
+      return window.LavaCashSocios?.getTipoMovimentacaoMeta?.(tipo) || {};
+    }
+
+    function isPagamentoLucro(tipo) {
+      return Boolean(getTipoMovimentacaoMeta(normalizarTipoMovimentacao(tipo)).pagamentoLucro);
+    }
+
+    function normalizarMovimentacoesSocietarias(movimentacoes) {
+      return (Array.isArray(movimentacoes) ? movimentacoes : []).map(item => ({
+        ...item,
+        tipoMovimentacao: normalizarTipoMovimentacao(item?.tipoMovimentacao || item?.tipo || 'investimento_inicial'),
+        socioId: item?.socioId || ''
+      }));
+    }
+
+    function getRateioStatusKey() {
+      return `${getLavanderiaAtualId()}_rateio_socios_status`;
+    }
+
+    function getRateioStatusMap() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(getRateioStatusKey()) || '{}');
+        return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    async function saveRateioStatusMap(statusMap) {
+      const key = getRateioStatusKey();
+      localStorage.setItem(key, JSON.stringify(statusMap || {}));
+      if (window.FirebaseStore && window.FirebaseStore.setItem) {
+        try {
+          const available = typeof window.FirebaseStore.isAvailable === 'function'
+            ? await window.FirebaseStore.isAvailable()
+            : true;
+          if (available) await window.FirebaseStore.setItem(key, statusMap || {});
+        } catch (err) {
+          console.warn('[Investimento] Erro ao salvar status do rateio no Firebase:', err);
+        }
+      }
+    }
+
+    async function hydrateRateioStatusMap() {
+      if (!window.FirebaseStore || !window.FirebaseStore.getItem) return;
+      try {
+        const remote = await window.FirebaseStore.getItem(getRateioStatusKey(), null);
+        if (remote && typeof remote === 'object' && !Array.isArray(remote)) {
+          localStorage.setItem(getRateioStatusKey(), JSON.stringify(remote));
+          renderTabelaRateioMensal();
+        }
+      } catch (err) {
+        console.warn('[Investimento] Erro ao carregar status do rateio:', err);
+      }
+    }
+
+    let _rateioStatusSyncSetup = false;
+    function setupFirebaseSyncRateioStatus() {
+      if (_rateioStatusSyncSetup) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem) return;
+      _rateioStatusSyncSetup = true;
+      const key = getRateioStatusKey();
+      window._rateioStatusUnsubscribe = window.FirebaseStore.subscribe(key, remote => {
+        if (!remote || typeof remote !== 'object' || Array.isArray(remote)) return;
+        localStorage.setItem(key, JSON.stringify(remote));
+        renderTabelaRateioMensal();
+        renderSocios();
+      });
+    }
+
+    function fmtPercentual(value) {
+      return Number(round2(value)).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '%';
+    }
+
+    function getTotalInvestidoAtual() {
+      return getInvestimentos().reduce((sum, investimento) => {
+        const meta = window.LavaCashSocios?.getTipoMovimentacaoMeta?.(investimento.tipoMovimentacao);
+        return meta?.capital ? sum + (Number(investimento.valor) || 0) : sum;
+      }, 0);
+    }
+
+    function getLavanderiaAtual() {
+      const lavanderiaId = document.getElementById('lavanderiaSelect')?.value || UserSystem.getLavanderiaSelecionada()?.id;
+      if (!lavanderiaId) {
+        return null;
+      }
+
+      return UserSystem.getLavanderias().find(lavanderia => lavanderia.id === lavanderiaId) || null;
+    }
+
+    function getSociosLavanderiaAtual() {
+      return getLavanderiaAtual()?.socios || [];
+    }
+
+    function getSocioPercentualRateio(socio) {
+      return round2(Number(socio?.percentualRateio ?? socio?.percentual ?? 0));
+    }
+
+    function getSocioPercentualInvestido(socio) {
+      return round2(Number(socio?.percentualInvestido ?? socio?.percentualInvestimento ?? socio?.percentual ?? 0));
+    }
+
+    function getUsuariosElegiveisSocios(lavanderiaId = getLavanderiaAtual()?.id) {
+      if (!lavanderiaId) {
+        return [];
+      }
+
+      return UserSystem.getUsuariosComAcessoLavanderia(lavanderiaId);
+    }
+
+    function podeGerenciarSocios(lavanderiaId = getLavanderiaAtual()?.id) {
+      return Boolean(lavanderiaId && UserSystem.podeGerenciarLavanderia(lavanderiaId));
+    }
+
+    let editandoSocioId = null;
+
+    function populateSocioUsuarios(selectedUserId = '') {
+      const lavanderia = getLavanderiaAtual();
+      const select = document.getElementById('socioUserId');
+      const info = document.getElementById('socioUsuariosInfo');
+
+      if (!select || !info) {
+        return;
+      }
+
+      if (!lavanderia) {
+        select.innerHTML = '<option value="">Selecione uma lavanderia...</option>';
+        info.textContent = 'Selecione uma lavanderia para gerenciar os sócios.';
+        return;
+      }
+
+      const usuariosElegiveis = getUsuariosElegiveisSocios(lavanderia.id);
+      const sociosAtuais = getSociosLavanderiaAtual();
+      const ocupados = new Set(
+        sociosAtuais
+          .filter(socio => socio.id !== editandoSocioId)
+          .map(socio => socio.userId)
+      );
+
+      const options = ['<option value="">Sem vínculo com usuário</option>'];
+
+      usuariosElegiveis.forEach(user => {
+        const indisponivel = ocupados.has(user.id);
+        const selected = selectedUserId === user.id ? 'selected' : '';
+        const disabled = indisponivel ? 'disabled' : '';
+        const suffix = indisponivel ? ' (já cadastrado)' : '';
+        options.push(`<option value="${user.id}" ${selected} ${disabled}>${user.nome} - ${user.email}${suffix}</option>`);
+      });
+
+      if (selectedUserId && !usuariosElegiveis.some(user => user.id === selectedUserId)) {
+        const socioAtual = sociosAtuais.find(socio => socio.id === editandoSocioId);
+        const nomeAtual = socioAtual?.nome || 'Sócio atual';
+        options.push(`<option value="${selectedUserId}" selected>${nomeAtual} (sem acesso atual)</option>`);
+      }
+
+      select.innerHTML = options.join('');
+      info.textContent = usuariosElegiveis.length
+        ? 'Opcional: selecione um usuário aprovado para preencher nome/e-mail automaticamente.'
+        : 'Nenhum usuário aprovado com acesso a esta lavanderia está disponível. Cadastre o sócio por nome e e-mail.';
+    }
+
+    function preencherDadosSocioPorUsuario() {
+      const userId = document.getElementById('socioUserId')?.value;
+      if (!userId) return;
+      const usuario = getUsuariosElegiveisSocios(getLavanderiaAtual()?.id).find(item => item.id === userId);
+      if (!usuario) return;
+      const nomeEl = document.getElementById('socioNome');
+      const emailEl = document.getElementById('socioEmail');
+      if (nomeEl) nomeEl.value = usuario.nome || '';
+      if (emailEl) emailEl.value = usuario.email || '';
+    }
+
+    function populateSocioMovimentacao(selectedSocioId = '') {
+      const select = document.getElementById('socioMovimentacao');
+      if (!select) return;
+
+      const socios = getSociosLavanderiaAtual();
+      const tipo = normalizarTipoMovimentacao(document.getElementById('tipoMovimentacao')?.value);
+      const regra = getTipoMovimentacaoMeta(tipo).rateioLucro
+        ? 'Ratear automaticamente pelo % de rateio'
+        : 'Ratear automaticamente pelo % investido';
+
+      select.innerHTML = `
+        <option value="">${regra}</option>
+        ${socios.map(socio => `<option value="${socio.id}">${socio.nome || 'Sócio'} — lançamento individual</option>`).join('')}
+      `;
+      select.value = selectedSocioId || '';
+    }
+
+    function updateSocioPreview() {
+      const preview = document.getElementById('socioPreview');
+      if (!preview) {
+        return;
+      }
+
+      const percentualInvestido = round2(Number.parseFloat(String(document.getElementById('socioPercentualInvestido')?.value || '0').replace(',', '.')) || 0);
+      const percentualRateio = round2(Number.parseFloat(String(document.getElementById('socioPercentual')?.value || '0').replace(',', '.')) || 0);
+      const totalInvestido = getTotalInvestidoAtual();
+      const totalOutrosInvestido = round2(
+        getSociosLavanderiaAtual()
+          .filter(socio => socio.id !== editandoSocioId)
+          .reduce((sum, socio) => sum + getSocioPercentualInvestido(socio), 0)
+      );
+      const totalOutrosRateio = round2(
+        getSociosLavanderiaAtual()
+          .filter(socio => socio.id !== editandoSocioId)
+          .reduce((sum, socio) => sum + getSocioPercentualRateio(socio), 0)
+      );
+      const percentualInvestidoRestante = round2(100 - (totalOutrosInvestido + percentualInvestido));
+      const percentualRateioRestante = round2(100 - (totalOutrosRateio + percentualRateio));
+      const valorAporteAtual = totalInvestido * (percentualInvestido / 100);
+
+      if (percentualInvestido <= 0 && percentualRateio <= 0) {
+        preview.textContent = 'Informe o % investido e o % de rateio para calcular o aporte atual e a distribuição configurada.';
+        preview.style.color = 'var(--color-text-primary)';
+        return;
+      }
+
+      preview.textContent = `Com ${fmtPercentual(percentualInvestido)} investido, este sócio representa hoje ${fmtBR(valorAporteAtual)} do total investido. O rateio configurado em ${fmtPercentual(percentualRateio)} deixa ${fmtPercentual(Math.max(percentualRateioRestante, 0))} disponíveis para rateio e ${fmtPercentual(Math.max(percentualInvestidoRestante, 0))} para investimento.`;
+      preview.style.color = percentualInvestidoRestante < 0 || percentualRateioRestante < 0 ? 'var(--color-danger)' : 'var(--color-text-primary)';
+    }
+
+    function getResumoSociosCompleto() {
+      return window.LavaCashSocios?.calcularResumoSocios({
+        socios: getSociosLavanderiaAtual(),
+        movimentacoes: getInvestimentos(),
+        resultadosMensais: getResultadosMensaisRateio(),
+        statusRateio: getRateioStatusMap()
+      }) || { totalAportadoGeral: 0, socios: [] };
+    }
+
+    function getResumoSocioPorId(socioId) {
+      return getResumoSociosCompleto().socios.find(item => item.socioId === socioId) || null;
+    }
+
+    function getSaldoSocioLabel(saldo) {
+      if (saldo > 0) return 'A receber';
+      if (saldo < 0) return 'A compensar';
+      return 'Quitado';
+    }
+
+    function calcularPaybackSocio(resumoSocio) {
+      const totalAportado = round2(Math.max(0, Number(resumoSocio?.totalAportado || 0)));
+      const pagamentosLucro = round2(Math.max(0, Number(resumoSocio?.pagamentosLucro || 0)));
+      const valorRecuperado = round2(Math.min(pagamentosLucro, totalAportado));
+      const valorRestante = round2(Math.max(totalAportado - pagamentosLucro, 0));
+      const percentualRecuperado = totalAportado > 0
+        ? round2(Math.min((pagamentosLucro / totalAportado) * 100, 100))
+        : 0;
+
+      return {
+        totalAportado,
+        pagamentosLucro,
+        valorRecuperado,
+        valorRestante,
+        percentualRecuperado
+      };
+    }
+
+    function calcularPaybackGeral() {
+      const resumo = getResumoSociosCompleto();
+      return calcularPaybackSocio({
+        totalAportado: resumo.totalAportadoGeral,
+        pagamentosLucro: resumo.totalPagamentosLucro
+      });
+    }
+
+    function renderPaybackSocioCard(payback) {
+      const progresso = Math.max(0, Math.min(payback.percentualRecuperado, 100));
+      return `
+        <div class="rounded-xl p-3 investimento-payback-card">
+          <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">Recuperação de Investimento</p>
+          <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtBR(payback.valorRecuperado)}</p>
+          <p class="investimento-payback-detail">Pagamentos de lucros: ${fmtBR(payback.pagamentosLucro)}</p>
+          <div class="investimento-payback-progress" aria-label="Progresso de recuperação do investimento">
+            <span style="width: ${progresso}%;"></span>
+          </div>
+          <div class="investimento-payback-meta">
+            <span>de ${fmtBR(payback.totalAportado)}</span>
+            <strong>${fmtPercentual(progresso)}</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPaybackSocioMobile(payback) {
+      const progresso = Math.max(0, Math.min(payback.percentualRecuperado, 100));
+      return `
+        <div class="investimento-mobile-payback">
+          <div class="investimento-mobile-payback-row">
+            <span>Payback</span>
+            <strong>${fmtBR(payback.valorRecuperado)}</strong>
+          </div>
+          <p class="investimento-payback-detail">Pagamentos de lucros: ${fmtBR(payback.pagamentosLucro)}</p>
+          <div class="investimento-payback-progress mt-2" aria-label="Progresso de recuperação do investimento">
+            <span style="width: ${progresso}%;"></span>
+          </div>
+          <div class="investimento-payback-meta">
+            <span>de ${fmtBR(payback.totalAportado)}</span>
+            <strong>${fmtPercentual(progresso)}</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSocios() {
+      const lavanderia = getLavanderiaAtual();
+      const lista = document.getElementById('listaSocios');
+      const emptyState = document.getElementById('semSocios');
+      const aviso = document.getElementById('sociosAviso');
+      const btnNovoSocio = document.getElementById('btnNovoSocio');
+      const totalSociosEl = document.getElementById('sociosTotal');
+      const distribuidoEl = document.getElementById('sociosDistribuido');
+      const disponivelEl = document.getElementById('sociosDisponivel');
+
+      if (!lista || !emptyState || !aviso || !btnNovoSocio || !totalSociosEl || !distribuidoEl || !disponivelEl) {
+        return;
+      }
+
+      if (!lavanderia) {
+        totalSociosEl.textContent = '0';
+        distribuidoEl.textContent = '0,00%';
+        disponivelEl.textContent = '100,00%';
+        btnNovoSocio.classList.add('hidden');
+        lista.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        aviso.textContent = 'Selecione uma lavanderia para visualizar ou configurar os sócios desta loja.';
+        aviso.style.background = 'rgba(14, 165, 233, 0.08)';
+        aviso.style.border = '1px solid rgba(14, 165, 233, 0.18)';
+        aviso.style.color = 'var(--color-text-secondary)';
+        return;
+      }
+
+      const socios = lavanderia.socios || [];
+      const usuariosElegiveis = getUsuariosElegiveisSocios(lavanderia.id);
+      const usuariosMap = new Map(usuariosElegiveis.map(user => [user.id, user]));
+      const podeEditar = podeGerenciarSocios(lavanderia.id);
+      const totalInvestido = getTotalInvestidoAtual();
+      const resumoSocios = getResumoSociosCompleto();
+      const resumoMap = new Map(resumoSocios.socios.map(item => [item.socioId, item]));
+      const totalRateio = round2(socios.reduce((sum, socio) => sum + getSocioPercentualRateio(socio), 0));
+      const totalInvestidoPercentual = round2(socios.reduce((sum, socio) => sum + getSocioPercentualInvestido(socio), 0));
+      const percentualDisponivel = round2(100 - totalRateio);
+      const sociosSemAcesso = socios.filter(socio => !usuariosMap.has(socio.userId));
+
+      totalSociosEl.textContent = String(socios.length);
+      distribuidoEl.textContent = fmtPercentual(totalRateio);
+      disponivelEl.textContent = fmtPercentual(Math.max(percentualDisponivel, 0));
+      disponivelEl.style.color = percentualDisponivel < 0 ? 'var(--color-danger)' : '';
+
+      btnNovoSocio.classList.toggle('hidden', !podeEditar);
+      btnNovoSocio.disabled = false;
+      btnNovoSocio.title = '';
+
+      if (totalRateio > 100 && totalInvestidoPercentual > 100) {
+        aviso.textContent = 'A soma do % investido e do % de rateio está acima de 100%. Ajuste os percentuais antes de seguir usando essa loja como base.';
+        aviso.style.background = 'rgba(239, 68, 68, 0.08)';
+        aviso.style.border = '1px solid rgba(239, 68, 68, 0.18)';
+        aviso.style.color = 'var(--color-danger)';
+      } else if (totalInvestidoPercentual > 100) {
+        aviso.textContent = 'A soma do % investido está acima de 100%. Ajuste os aportes dos sócios.';
+        aviso.style.background = 'rgba(239, 68, 68, 0.08)';
+        aviso.style.border = '1px solid rgba(239, 68, 68, 0.18)';
+        aviso.style.color = 'var(--color-danger)';
+      } else if (totalRateio > 100) {
+        aviso.textContent = 'A soma do % de rateio está acima de 100%. Ajuste o rateio antes de seguir usando essa loja como base.';
+        aviso.style.background = 'rgba(239, 68, 68, 0.08)';
+        aviso.style.border = '1px solid rgba(239, 68, 68, 0.18)';
+        aviso.style.color = 'var(--color-danger)';
+      } else if (sociosSemAcesso.length > 0) {
+        aviso.textContent = 'Há sócios vinculados a usuários que não têm mais acesso a esta lavanderia. Atualize ou remova esses vínculos para manter a regra de acesso.';
+        aviso.style.background = 'rgba(245, 158, 11, 0.08)';
+        aviso.style.border = '1px solid rgba(245, 158, 11, 0.18)';
+        aviso.style.color = '#b45309';
+      } else if (podeEditar && usuariosElegiveis.length === 0) {
+        aviso.textContent = 'Não há usuários elegíveis para vínculo, mas você pode cadastrar sócios manualmente com nome e e-mail.';
+        aviso.style.background = 'rgba(245, 158, 11, 0.08)';
+        aviso.style.border = '1px solid rgba(245, 158, 11, 0.18)';
+        aviso.style.color = '#b45309';
+      } else if (!podeEditar) {
+        aviso.textContent = 'Apenas administradores e desenvolvedores vinculados a esta lavanderia podem alterar a composição societária.';
+        aviso.style.background = 'rgba(14, 165, 233, 0.08)';
+        aviso.style.border = '1px solid rgba(14, 165, 233, 0.18)';
+        aviso.style.color = 'var(--color-text-secondary)';
+      } else {
+        aviso.textContent = `Os sócios desta loja são limitados aos usuários aprovados com acesso a ${lavanderia.nome}.`;
+        aviso.style.background = 'rgba(14, 165, 233, 0.08)';
+        aviso.style.border = '1px solid rgba(14, 165, 233, 0.18)';
+        aviso.style.color = 'var(--color-text-secondary)';
+      }
+
+      if (!socios.length) {
+        lista.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      lista.innerHTML = socios.map(socio => {
+        const usuarioAtual = usuariosMap.get(socio.userId);
+        const nome = usuarioAtual?.nome || socio.nome || 'Usuário não encontrado';
+        const email = usuarioAtual?.email || socio.email || 'E-mail não informado';
+        const percentualRateio = getSocioPercentualRateio(socio);
+        const percentualInvestido = getSocioPercentualInvestido(socio);
+        const resumoSocio = resumoMap.get(socio.id) || {};
+        const valorAporte = resumoSocio.totalAportado ?? (totalInvestido * (percentualInvestido / 100));
+        const percentualInvestidoReal = resumoSocio.percentualInvestidoReal ?? 0;
+        const lucroDevido = resumoSocio.lucroPrejuizoDevido ?? 0;
+        const valorRetirado = resumoSocio.valorRetirado ?? 0;
+        const saldoSocio = resumoSocio.saldo ?? 0;
+        const paybackSocio = calcularPaybackSocio(resumoSocio);
+        const possuiAcesso = Boolean(usuarioAtual);
+        const emailMarkup = isVisualizador
+          ? ''
+          : `<p class="text-sm" style="color: var(--color-text-muted);">${email}</p>`;
+
+        return `
+          <div class="glass-card investimento-card investimento-socio-card" style="padding: 1.25rem;">
+            <div class="flex justify-between items-start gap-4 mb-4">
+              <div>
+                <p class="font-semibold text-lg" style="color: var(--color-text-primary);">${nome}</p>
+                ${emailMarkup}
+              </div>
+              <span class="badge ${possuiAcesso ? 'badge-success' : 'badge-warning'}">${possuiAcesso ? 'Com acesso' : 'Sem acesso atual'}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+              <div class="rounded-xl p-3" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">% Investido</p>
+                <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtPercentual(percentualInvestido)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">% de Rateio</p>
+                <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtPercentual(percentualRateio)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">Aporte Atual</p>
+                <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtBR(valorAporte)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">% Real</p>
+                <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtPercentual(percentualInvestidoReal)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">Lucro/Prejuízo Devido</p>
+                <p class="text-xl font-bold ${getValorRateioClass(lucroDevido)}">${fmtBR(lucroDevido)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">Já Retirado</p>
+                <p class="text-xl font-bold" style="color: var(--color-text-primary);">${fmtBR(valorRetirado)}</p>
+              </div>
+              <div class="rounded-xl p-3" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.12);">
+                <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">${getSaldoSocioLabel(saldoSocio)}</p>
+                <p class="text-xl font-bold ${getValorRateioClass(saldoSocio)}">${fmtBR(Math.abs(saldoSocio))}</p>
+              </div>
+              ${renderPaybackSocioCard(paybackSocio)}
+            </div>
+
+            <p class="text-sm mb-4" style="color: var(--color-text-secondary);">${socio.observacoes || 'Sem observações cadastradas.'}</p>
+
+            ${podeEditar ? `
+              <div class="flex justify-end gap-2">
+                <button type="button" onclick="visualizarExtratoSocio('${socio.id}')" class="btn-icon btn-icon-primary" title="Extrato do sócio">
+                  📄
+                </button>
+                <button type="button" onclick="editarSocio('${socio.id}')" class="btn-icon btn-icon-primary" title="Editar sócio">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                </button>
+                <button type="button" onclick="excluirSocio('${socio.id}')" class="btn-icon btn-icon-danger" title="Excluir sócio">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            ` : `
+              <div class="flex justify-end gap-2">
+                <button type="button" onclick="visualizarExtratoSocio('${socio.id}')" class="btn btn-secondary">Ver extrato</button>
+              </div>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function abrirModalSocio(socioId = null) {
+      const lavanderia = getLavanderiaAtual();
+      if (!lavanderia) {
+        alert('Selecione uma lavanderia para gerenciar os sócios.');
+        return;
+      }
+
+      if (!podeGerenciarSocios(lavanderia.id)) {
+        alert('Apenas administrador ou desenvolvedor com acesso à lavanderia pode editar os sócios.');
+        return;
+      }
+
+      const socio = socioId ? getSociosLavanderiaAtual().find(item => item.id === socioId) : null;
+      editandoSocioId = socio?.id || null;
+
+      document.getElementById('modalSocioTitle').textContent = socio ? 'Editar Sócio' : 'Novo Sócio';
+      document.getElementById('modalSocioContext').textContent = lavanderia.nome;
+      document.getElementById('socioId').value = socio?.id || '';
+      document.getElementById('socioNome').value = socio?.nome || '';
+      document.getElementById('socioEmail').value = socio?.email || '';
+      document.getElementById('socioPercentualInvestido').value = socio ? getSocioPercentualInvestido(socio) : '';
+      document.getElementById('socioPercentual').value = socio ? getSocioPercentualRateio(socio) : '';
+      document.getElementById('socioObservacoes').value = socio?.observacoes || '';
+
+      populateSocioUsuarios(socio?.userId || '');
+      if (socio?.userId) {
+        document.getElementById('socioUserId').value = socio.userId;
+      }
+
+      updateSocioPreview();
+      document.getElementById('modalSocio').classList.add('active');
+    }
+
+    window.fecharModalSocio = function() {
+      document.getElementById('modalSocio').classList.remove('active');
+      document.getElementById('formSocio').reset();
+      editandoSocioId = null;
+      document.getElementById('socioUsuariosInfo').textContent = '';
+      updateSocioPreview();
+    }
+
+    window.editarSocio = function(id) {
+      abrirModalSocio(id);
+    }
+
+    window.excluirSocio = function(id) {
+      const lavanderia = getLavanderiaAtual();
+      if (!lavanderia) {
+        return;
+      }
+
+      if (!podeGerenciarSocios(lavanderia.id)) {
+        alert('Você não tem permissão para excluir sócios desta lavanderia.');
+        return;
+      }
+
+      if (!confirm('Tem certeza que deseja excluir este sócio da lavanderia?')) {
+        return;
+      }
+
+      const sociosAtualizados = getSociosLavanderiaAtual().filter(socio => socio.id !== id);
+      const result = UserSystem.atualizarLavanderia(lavanderia.id, { socios: sociosAtualizados });
+
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      renderSocios();
+      renderTabelaRateioMensal();
+    }
+
+    // Format currency
+    function fmtBR(n) {
+      return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+
+    // Format date
+    function fmtData(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    function parseValorSeguro(valor) {
+      if (typeof valor === 'number') {
+        return Number.isFinite(valor) ? valor : 0;
+      }
+
+      if (valor == null) {
+        return 0;
+      }
+
+      const textoOriginal = String(valor).trim();
+      if (!textoOriginal) {
+        return 0;
+      }
+
+      const textoLimpo = textoOriginal
+        .replace(/R\$\s?/gi, '')
+        .replace(/\s+/g, '');
+
+      if (textoLimpo.includes(',')) {
+        const normalizado = textoLimpo.replace(/\./g, '').replace(',', '.');
+        const parsed = Number(normalizado);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      const parsed = Number(textoLimpo);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function parseDataLocal(valor) {
+      if (!valor) return null;
+
+      if (valor instanceof Date) {
+        return Number.isNaN(valor.getTime()) ? null : new Date(valor.getTime());
+      }
+
+      if (typeof valor === 'number') {
+        const dataNumero = new Date(valor);
+        return Number.isNaN(dataNumero.getTime()) ? null : dataNumero;
+      }
+
+      const texto = String(valor).trim();
+      if (!texto) return null;
+
+      const matchBr = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$/);
+      if (matchBr) {
+        const [, dia, mes, ano, hora = '0', minuto = '0', segundo = '0'] = matchBr;
+        const dataBr = new Date(Number(ano), Number(mes) - 1, Number(dia), Number(hora), Number(minuto), Number(segundo));
+        return Number.isNaN(dataBr.getTime()) ? null : dataBr;
+      }
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) {
+        const dataIso = new Date(`${texto}T00:00:00`);
+        return Number.isNaN(dataIso.getTime()) ? null : dataIso;
+      }
+
+      const data = new Date(texto);
+      return Number.isNaN(data.getTime()) ? null : data;
+    }
+
+    const MESES_RATEIO = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+    const rateioFinanceiroArrayCache = Object.create(null);
+    const rateioFinanceiroFirebaseSubscriptions = new Set();
+    let rateioUsingSummary = false;
+    let rateioSummaryLaundryId = '';
+    let rateioSummaryMonths = [];
+
+    function waitForRateioStore(timeoutMs = 5000) {
+      if (window.FirebaseStore?.getDashboardSummary) return Promise.resolve(true);
+      return new Promise(resolve => {
+        let finished = false;
+        const done = () => {
+          if (finished) return;
+          finished = true;
+          window.removeEventListener('firebase:initialized', onReady);
+          resolve(Boolean(window.FirebaseStore?.getDashboardSummary));
+        };
+        const onReady = () => done();
+        window.addEventListener('firebase:initialized', onReady, { once: true });
+        setTimeout(done, timeoutMs);
+      });
+    }
+
+    async function loadRateioSummary(lavanderiaId) {
+      const currentYear = new Date().getFullYear();
+      const first = await window.FirebaseStore.getDashboardSummary(lavanderiaId, currentYear);
+      const years = [...new Set((first?.years || [currentYear]).map(Number).filter(Number.isInteger))];
+      if (!years.includes(currentYear)) years.push(currentYear);
+      const summaries = await Promise.all(years.map(year => (
+        year === currentYear ? Promise.resolve(first) : window.FirebaseStore.getDashboardSummary(lavanderiaId, year)
+      )));
+      rateioSummaryMonths = summaries.flatMap(summary => (summary?.months || []).map(item => ({
+        key: `${summary.year}-${String(item.month).padStart(2, '0')}`,
+        receitas: round2(Number(item.revenue || 0)),
+        despesas: round2(Number(item.expense || 0)),
+        lucroPrejuizo: calcularLucroPrejuizoMensal(item.revenue, item.expense)
+      }))).filter(item => item.receitas > 0 || item.despesas > 0);
+      rateioSummaryLaundryId = lavanderiaId;
+      rateioUsingSummary = true;
+    }
+
+    function getRateioFinanceiroStorageKeys(lavanderiaId = getLavanderiaAtualId()) {
+      return {
+        receitasKey: `${lavanderiaId}_receitas`,
+        despesasKey: `${lavanderiaId}_despesas`
+      };
+    }
+
+    function readRateioArrayFromLocalStorage(key) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function mergeRateioFinanceiroById(origem, destino) {
+      const normalized = window.LavaCashFinanceDedupe?.dedupeFinanceArray?.([
+        ...(Array.isArray(origem) ? origem : []),
+        ...(Array.isArray(destino) ? destino : [])
+      ], 'rateio');
+      if (normalized) return normalized.items;
+
+      const merged = [];
+      const seen = new Set();
+
+      [...(Array.isArray(origem) ? origem : []), ...(Array.isArray(destino) ? destino : [])].forEach(item => {
+        if (!item || typeof item !== 'object') return;
+        const key = item.id
+          ? `id:${item.id}`
+          : [item.data, item.valor, item.categoria, item.descricao, item.tipo]
+              .map(value => String(value ?? '')).join('|');
+        if (seen.has(key)) return;
+        seen.add(key);
+        merged.push(item);
+      });
+
+      return merged;
+    }
+
+    function getCachedRateioFinanceiroArray(key) {
+      if (Array.isArray(rateioFinanceiroArrayCache[key])) {
+        return rateioFinanceiroArrayCache[key];
+      }
+
+      const data = readRateioArrayFromLocalStorage(key);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      rateioFinanceiroArrayCache[key] = normalized ? normalized.items : data;
+      return rateioFinanceiroArrayCache[key];
+    }
+
+    function persistRateioFinanceiroArray(key, data) {
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      const safeData = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      rateioFinanceiroArrayCache[key] = safeData;
+      const keepLocalCopy = window.LavaCashFinanceDedupe?.shouldKeepLocalStorageCopy?.(key) !== false;
+
+      if (window.IndexedDBStore && window.IndexedDBStore.setItem) {
+        window.IndexedDBStore.setItem(key, safeData)
+          .then(() => {
+            if (!keepLocalCopy) {
+              try { localStorage.removeItem(key); } catch (error) {}
+            }
+          })
+          .catch(() => {
+            if (!keepLocalCopy) {
+              try { localStorage.setItem(key, JSON.stringify(safeData)); } catch (error) {}
+            }
+          });
+      }
+
+      if (keepLocalCopy || !window.IndexedDBStore?.setItem) {
+        try {
+          localStorage.setItem(key, JSON.stringify(safeData));
+        } catch (error) {
+          console.warn(`[Investimento] Não foi possível salvar o cache financeiro ${key} no localStorage:`, error);
+        }
+      }
+    }
+
+    async function hydrateRateioFinanceiroArray(key, { force = false } = {}) {
+      if (!force && Array.isArray(rateioFinanceiroArrayCache[key])) {
+        return rateioFinanceiroArrayCache[key];
+      }
+
+      let firebaseData = null;
+      let indexedDBData = null;
+
+      if (window.FirebaseStore && window.FirebaseStore.getItem) {
+        try {
+          const isAvailable = typeof window.FirebaseStore.isAvailable === 'function'
+            ? await window.FirebaseStore.isAvailable()
+            : true;
+          if (isAvailable) {
+            firebaseData = await window.FirebaseStore.getItem(key, null);
+          }
+        } catch (error) {}
+      }
+
+      if (window.IndexedDBStore && window.IndexedDBStore.getItem) {
+        try {
+          indexedDBData = await window.IndexedDBStore.getItem(key, null);
+        } catch (error) {}
+      }
+
+      const mergedRemoteIndexedDB = mergeRateioFinanceiroById(firebaseData, indexedDBData);
+      const merged = mergeRateioFinanceiroById(mergedRemoteIndexedDB, readRateioArrayFromLocalStorage(key));
+      persistRateioFinanceiroArray(key, merged);
+      return merged;
+    }
+
+    async function hydrateRateioFinanceiro(lavanderiaId = getLavanderiaAtualId(), options = {}) {
+      try {
+        if (await waitForRateioStore()) {
+          if (!rateioUsingSummary || rateioSummaryLaundryId !== lavanderiaId || options.force) {
+            await loadRateioSummary(lavanderiaId);
+          }
+          renderTabelaRateioMensal();
+          return;
+        }
+      } catch (error) {
+        console.warn('[Investimento] Resumo do Supabase indisponível; usando cache local.', error);
+        rateioUsingSummary = false;
+      }
+      const { receitasKey, despesasKey } = getRateioFinanceiroStorageKeys(lavanderiaId);
+      await Promise.all([
+        hydrateRateioFinanceiroArray(receitasKey, options),
+        hydrateRateioFinanceiroArray(despesasKey, options)
+      ]);
+      renderTabelaRateioMensal();
+    }
+
+    function getReceitasLavanderiaAtual() {
+      return getCachedRateioFinanceiroArray(`${getLavanderiaAtualId()}_receitas`);
+    }
+
+    function getDespesasLavanderiaAtual() {
+      return getCachedRateioFinanceiroArray(`${getLavanderiaAtualId()}_despesas`);
+    }
+
+    function getSociosOrdenadosPorPercentualInvestido() {
+      return [...getSociosLavanderiaAtual()].sort((a, b) => {
+        const byPercent = getSocioPercentualInvestido(b) - getSocioPercentualInvestido(a);
+        if (byPercent !== 0) return byPercent;
+        return String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR');
+      });
+    }
+
+    function getSociosOrdenadosPorPercentualRateio() {
+      return [...getSociosLavanderiaAtual()].sort((a, b) => {
+        const byPercent = getSocioPercentualRateio(b) - getSocioPercentualRateio(a);
+        if (byPercent !== 0) return byPercent;
+        return String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR');
+      });
+    }
+
+    function getTotalPercentualInvestidoConfigurado(socios = getSociosLavanderiaAtual()) {
+      return round2(socios.reduce((sum, socio) => sum + getSocioPercentualInvestido(socio), 0));
+    }
+
+    function getTotalPercentualRateioConfigurado(socios = getSociosLavanderiaAtual()) {
+      return round2(socios.reduce((sum, socio) => sum + getSocioPercentualRateio(socio), 0));
+    }
+
+    function getSociosOrdenadosPorTipoMovimentacao(tipoMovimentacao) {
+      return normalizarTipoMovimentacao(tipoMovimentacao) === 'retirada_lucro'
+        ? getSociosOrdenadosPorPercentualRateio()
+        : getSociosOrdenadosPorPercentualInvestido();
+    }
+
+    function criarSnapshotRateioInvestimento(valorInvestimento, tipoMovimentacao = 'investimento_inicial', socioId = '') {
+      const socios = getSociosOrdenadosPorTipoMovimentacao(tipoMovimentacao);
+      const socioSelecionado = socioId ? socios.find(socio => socio.id === socioId) : null;
+
+      if (socioSelecionado) {
+        return {
+          sociosSnapshot: [{
+            socioId: socioSelecionado.id,
+            nome: socioSelecionado.nome || 'Sócio',
+            percentualInvestido: 100,
+            percentualRateio: 100,
+            percentual: 100,
+            valorPago: round2(valorInvestimento)
+          }],
+          totalPercentualInvestido: 100,
+          percentualNaoVinculado: 0,
+          valorNaoVinculado: 0
+        };
+      }
+
+      const sociosSnapshot = socios.map(socio => {
+        const usarRateio = Boolean(getTipoMovimentacaoMeta(tipoMovimentacao).rateioLucro);
+        const percentualInvestido = getSocioPercentualInvestido(socio);
+        const percentualRateio = getSocioPercentualRateio(socio);
+        const percentual = usarRateio ? percentualRateio : percentualInvestido;
+        return {
+          socioId: socio.id,
+          nome: socio.nome || 'Sócio',
+          percentualInvestido,
+          percentualRateio,
+          percentual,
+          valorPago: round2(valorInvestimento * (percentual / 100))
+        };
+      });
+
+      const totalPercentualInvestido = round2(
+        sociosSnapshot.reduce((sum, socio) => sum + (Number(socio.percentual) || 0), 0)
+      );
+      const percentualNaoVinculado = round2(Math.max(0, 100 - totalPercentualInvestido));
+      const valorNaoVinculado = round2(valorInvestimento * (percentualNaoVinculado / 100));
+
+      return {
+        sociosSnapshot,
+        totalPercentualInvestido,
+        percentualNaoVinculado,
+        valorNaoVinculado
+      };
+    }
+
+    function formatarMesAnoRateio(key) {
+      const [ano, mes] = String(key).split('-');
+      const mesIndex = Number(mes) - 1;
+      return `${MESES_RATEIO[mesIndex] || mes}/${ano}`;
+    }
+
+    function getValorRateioClass(valor) {
+      if (valor > 0) return 'rateio-positivo';
+      if (valor < 0) return 'rateio-negativo';
+      return 'rateio-neutro';
+    }
+
+    function calcularLucroPrejuizoMensal(receitas, despesas) {
+      return round2(parseValorSeguro(receitas) - parseValorSeguro(despesas));
+    }
+
+    function getResultadosMensaisRateio() {
+      if (rateioUsingSummary) {
+        return rateioSummaryMonths.slice().sort((a, b) => b.key.localeCompare(a.key));
+      }
+      const mapa = new Map();
+
+      const garantirMes = (data) => {
+        const key = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+        if (!mapa.has(key)) {
+          mapa.set(key, { key, receitas: 0, despesas: 0 });
+        }
+        return mapa.get(key);
+      };
+
+      getReceitasLavanderiaAtual().forEach(receita => {
+        const data = parseDataLocal(receita?.data);
+        if (!data) return;
+        const mes = garantirMes(data);
+        mes.receitas += parseValorSeguro(receita?.valor);
+      });
+
+      getDespesasLavanderiaAtual().forEach(despesa => {
+        const data = parseDataLocal(despesa?.data);
+        if (!data) return;
+        const mes = garantirMes(data);
+        mes.despesas += parseValorSeguro(despesa?.valor);
+      });
+
+      return Array.from(mapa.values())
+        .map(item => ({
+          ...item,
+          receitas: round2(item.receitas),
+          despesas: round2(item.despesas),
+          lucroPrejuizo: calcularLucroPrejuizoMensal(item.receitas, item.despesas)
+        }))
+        .filter(item => item.receitas > 0 || item.despesas > 0)
+        .sort((a, b) => b.key.localeCompare(a.key));
+    }
+
+    function getValorRetiradoSocioNoMes(socioId, mesKey) {
+      return getInvestimentos().reduce((sum, mov) => {
+        if (!isPagamentoLucro(mov.tipoMovimentacao)) return sum;
+        const competencia = window.LavaCashSocios?.getCompetenciaMovimentacao?.(mov) || String(mov.data || '').slice(0, 7);
+        if (competencia !== mesKey) return sum;
+        const snapshot = Array.isArray(mov.rateioSocios) && mov.rateioSocios.length
+          ? { sociosSnapshot: mov.rateioSocios }
+          : criarSnapshotRateioInvestimento(Number(mov.valor || 0), mov.tipoMovimentacao, mov.socioId || '');
+        const item = snapshot.sociosSnapshot.find(socio => socio.socioId === socioId);
+        return round2(sum + (Number(item?.valorPago) || 0));
+      }, 0);
+    }
+
+    function renderStatusRateioControl(mesKey, socioId, valorSocio) {
+      const statusMap = getRateioStatusMap();
+      const retiradoNoMes = getValorRetiradoSocioNoMes(socioId, mesKey);
+      const status = window.LavaCashSocios?.getStatusRateio(statusMap, mesKey, socioId, valorSocio, retiradoNoMes)
+        || (valorSocio > 0 ? 'pendente' : 'compensado');
+      const label = window.LavaCashSocios?.getStatusRateioLabel(status) || status;
+      const lavanderia = getLavanderiaAtual();
+      const podeEditar = Boolean(lavanderia && podeGerenciarSocios(lavanderia.id));
+
+      if (!podeEditar) {
+        return `<span class="rateio-status-chip ${status}">${label}</span>`;
+      }
+
+      const statuses = window.LavaCashSocios?.STATUS_RATEIO || { pendente: 'Pendente', pago: 'Pago', compensado: 'Compensado' };
+      return `
+        <select class="rateio-status-select" onchange="atualizarStatusRateio('${mesKey}', '${socioId}', this.value)">
+          ${Object.entries(statuses).map(([value, text]) =>
+            `<option value="${value}" ${value === status ? 'selected' : ''}>${text}</option>`
+          ).join('')}
+        </select>
+      `;
+    }
+
+    function renderTabelaRateioMensal() {
+      const thead = document.getElementById('theadRateioMensal');
+      const tbody = document.getElementById('tbodyRateioMensal');
+      if (!thead || !tbody) {
+        return;
+      }
+      scheduleRenderInvestimentoMobile();
+
+      const socios = getSociosOrdenadosPorPercentualRateio();
+
+      thead.innerHTML = `
+        <tr>
+          <th class="rateio-col-mes" scope="col"><span class="rateio-header-label">Mês</span></th>
+          <th class="rateio-col-valor" scope="col"><span class="rateio-header-label">Receitas</span></th>
+          <th class="rateio-col-valor" scope="col"><span class="rateio-header-label">Despesas</span></th>
+          <th class="rateio-col-resultado" scope="col"><span class="rateio-header-label">Lucro / Prejuízo</span></th>
+          ${socios.map(socio => `
+            <th class="rateio-col-socio" scope="col">
+              <span class="rateio-header-socio">
+                <span class="rateio-header-nome">${escapeHtml(socio.nome || 'Sócio')}</span>
+                <span class="rateio-header-percentual">${fmtPercentual(getSocioPercentualRateio(socio))}</span>
+              </span>
+            </th>
+          `).join('')}
+        </tr>
+      `;
+
+      const colspan = 4 + socios.length;
+
+      if (!socios.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${colspan}" class="text-center" style="color: var(--color-text-muted); padding: 3rem;">
+              Cadastre sócios para calcular o rateio mensal do lucro ou do prejuízo.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const resultados = getResultadosMensaisRateio();
+      if (!resultados.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${colspan}" class="text-center" style="color: var(--color-text-muted); padding: 3rem;">
+              Nenhum mês com receitas ou despesas foi encontrado para a lavanderia atual.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const totalReceitas = round2(resultados.reduce((sum, item) => sum + item.receitas, 0));
+      const totalDespesas = round2(resultados.reduce((sum, item) => sum + item.despesas, 0));
+      const totalLucroPrejuizo = calcularLucroPrejuizoMensal(totalReceitas, totalDespesas);
+
+      tbody.innerHTML = resultados.map(item => {
+        const statusLabel = item.lucroPrejuizo >= 0 ? 'Lucro' : 'Prejuízo';
+        const statusClass = getValorRateioClass(item.lucroPrejuizo);
+
+        return `
+          <tr>
+            <td>${formatarMesAnoRateio(item.key)}</td>
+            <td class="rateio-positivo">${fmtBR(item.receitas)}</td>
+            <td class="rateio-negativo">${fmtBR(item.despesas)}</td>
+            <td class="${statusClass}">${statusLabel} ${fmtBR(item.lucroPrejuizo)}</td>
+            ${socios.map(socio => {
+              const valorSocio = round2(item.lucroPrejuizo * (getSocioPercentualRateio(socio) / 100));
+              return `<td class="${getValorRateioClass(valorSocio)}">${fmtBR(valorSocio)}${renderStatusRateioControl(item.key, socio.id, valorSocio)}</td>`;
+            }).join('')}
+          </tr>
+        `;
+      }).join('') + `
+        <tr style="background: rgba(15, 23, 42, 0.55);">
+          <td><strong>Total</strong></td>
+          <td class="rateio-positivo"><strong>${fmtBR(totalReceitas)}</strong></td>
+          <td class="rateio-negativo"><strong>${fmtBR(totalDespesas)}</strong></td>
+          <td class="${getValorRateioClass(totalLucroPrejuizo)}"><strong>${totalLucroPrejuizo >= 0 ? 'Lucro' : 'Prejuízo'} ${fmtBR(totalLucroPrejuizo)}</strong></td>
+          ${socios.map(socio => {
+            const valorTotalSocio = round2(totalLucroPrejuizo * (getSocioPercentualRateio(socio) / 100));
+            return `<td class="${getValorRateioClass(valorTotalSocio)}"><strong>${fmtBR(valorTotalSocio)}</strong></td>`;
+          }).join('')}
+        </tr>
+      `;
+
+      if (window.IRANCASH && typeof window.IRANCASH.applyResponsiveTableLabels === 'function') {
+        window.IRANCASH.applyResponsiveTableLabels(document.querySelector('.rateio-mensal-container'));
+      }
+    }
+
+    window.atualizarStatusRateio = async function(mesKey, socioId, status) {
+      const statusNormalizado = window.LavaCashSocios?.normalizarStatusRateio(status) || '';
+      if (!statusNormalizado) return;
+      const statusMap = getRateioStatusMap();
+      statusMap[`${mesKey}::${socioId}`] = statusNormalizado;
+      await saveRateioStatusMap(statusMap);
+      renderTabelaRateioMensal();
+      renderSocios();
+      showToast('Status do rateio atualizado.', 'success');
+    }
+
+    window.visualizarExtratoSocio = function(socioId) {
+      const resumo = getResumoSocioPorId(socioId);
+      if (!resumo) {
+        alert('Sócio não encontrado.');
+        return;
+      }
+
+      document.getElementById('extratoSocioTitle').textContent = `Extrato — ${resumo.nome}`;
+      document.getElementById('extratoSocioMeta').textContent = isVisualizador
+        ? `${fmtPercentual(resumo.percentualRateioConfigurado)} de rateio`
+        : `${resumo.email || 'E-mail não informado'} · ${fmtPercentual(resumo.percentualRateioConfigurado)} de rateio`;
+
+      const saldoLabel = getSaldoSocioLabel(resumo.saldo);
+      document.getElementById('extratoSocioResumo').innerHTML = [
+        ['Total aportado', fmtBR(resumo.totalAportado), 'rateio-positivo'],
+        ['% investido real', fmtPercentual(resumo.percentualInvestidoReal), 'rateio-neutro'],
+        ['% rateio configurado', fmtPercentual(resumo.percentualRateioConfigurado), 'rateio-neutro'],
+        ['Lucro/prejuízo devido', fmtBR(resumo.lucroPrejuizoDevido), getValorRateioClass(resumo.lucroPrejuizoDevido)],
+        ['Já retirado', fmtBR(resumo.valorRetirado), 'rateio-negativo'],
+        [saldoLabel, fmtBR(Math.abs(resumo.saldo)), getValorRateioClass(resumo.saldo)]
+      ].map(([label, value, klass]) => `
+        <div class="rounded-xl p-3" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.14);">
+          <p class="text-xs uppercase tracking-wide" style="color: var(--color-text-muted);">${label}</p>
+          <p class="text-xl font-bold ${klass}">${value}</p>
+        </div>
+      `).join('');
+
+      const tbody = document.getElementById('tbodyExtratoSocio');
+      tbody.innerHTML = resumo.extrato.length
+        ? resumo.extrato.map(item => {
+            const statusLabel = item.status ? (window.LavaCashSocios?.getStatusRateioLabel(item.status) || item.status) : '-';
+            const dataLabel = item.origem === 'rateio' ? formatarMesAnoRateio(item.data) : fmtData(item.data);
+            return `
+              <tr>
+                <td>${dataLabel}</td>
+                <td>${item.tipoLabel}</td>
+                <td>${item.descricao || '-'}</td>
+                <td>${item.status ? `<span class="rateio-status-chip ${item.status}">${statusLabel}</span>` : '-'}</td>
+                <td class="${getValorRateioClass(item.valor)}">${fmtBR(item.valor)}</td>
+              </tr>
+            `;
+          }).join('')
+        : `
+          <tr>
+            <td colspan="5" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+              Nenhum lançamento encontrado para este sócio.
+            </td>
+          </tr>
+        `;
+
+      document.getElementById('modalExtratoSocio')?.classList.add('active');
+    }
+
+    window.fecharModalExtratoSocio = function() {
+      document.getElementById('modalExtratoSocio')?.classList.remove('active');
+    }
+
+    function getRelatorioSociosData() {
+      const lavanderia = getLavanderiaAtual();
+      const resumo = getResumoSociosCompleto();
+      const resultados = getResultadosMensaisRateio();
+      const socios = getSociosOrdenadosPorPercentualRateio();
+
+      return {
+        lavanderiaNome: lavanderia?.nome || 'Lavanderia',
+        geradoEm: new Date().toLocaleString('pt-BR'),
+        resumo,
+        socios: resumo.socios,
+        rateioMensal: resultados.map(item => ({
+          ...item,
+          socios: socios.map(socio => {
+            const valor = round2(item.lucroPrejuizo * (getSocioPercentualRateio(socio) / 100));
+            const status = window.LavaCashSocios?.getStatusRateio(
+              getRateioStatusMap(),
+              item.key,
+              socio.id,
+              valor,
+              getValorRetiradoSocioNoMes(socio.id, item.key)
+            ) || (valor > 0 ? 'pendente' : 'compensado');
+            return {
+              socioId: socio.id,
+              nome: socio.nome || 'Sócio',
+              percentualRateio: getSocioPercentualRateio(socio),
+              valor,
+              status,
+              statusLabel: window.LavaCashSocios?.getStatusRateioLabel(status) || status
+            };
+          })
+        }))
+      };
+    }
+
+    function baixarBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    async function exportarRelatorioSociosExcel() {
+      const data = getRelatorioSociosData();
+      const filename = `lavacash-socios-${getLavanderiaAtualId()}-${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+      if (!window.ExcelJS) {
+        try {
+          await window.LavaCashVendorLoader?.loadExcelJS?.();
+        } catch (error) {
+          console.warn('[Investimento] Falha ao carregar ExcelJS:', error);
+        }
+      }
+
+      if (!window.ExcelJS) {
+        const csv = [
+          ['Sócio','E-mail','Total aportado','% investido real','% rateio','Lucro/prejuízo devido','Já retirado','Saldo'].join(';'),
+          ...data.socios.map(socio => [
+            socio.nome,
+            socio.email,
+            socio.totalAportado,
+            socio.percentualInvestidoReal,
+            socio.percentualRateioConfigurado,
+            socio.lucroPrejuizoDevido,
+            socio.valorRetirado,
+            socio.saldo
+          ].join(';'))
+        ].join('\n');
+        baixarBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), filename.replace('.xlsx', '.csv'));
+        return;
+      }
+
+      const workbook = new ExcelJS.Workbook();
+      workbook.creator = 'LAVACASH';
+      workbook.created = new Date();
+
+      const wsResumo = workbook.addWorksheet('Sócios');
+      wsResumo.columns = [
+        { header: 'Sócio', key: 'nome', width: 28 },
+        { header: 'E-mail', key: 'email', width: 32 },
+        { header: 'Total aportado', key: 'totalAportado', width: 16 },
+        { header: '% investido real', key: 'percentualInvestidoReal', width: 18 },
+        { header: '% rateio', key: 'percentualRateioConfigurado', width: 14 },
+        { header: 'Lucro/prejuízo devido', key: 'lucroPrejuizoDevido', width: 22 },
+        { header: 'Já retirado', key: 'valorRetirado', width: 16 },
+        { header: 'Saldo', key: 'saldo', width: 16 }
+      ];
+      data.socios.forEach(socio => wsResumo.addRow(socio));
+
+      const wsRateio = workbook.addWorksheet('Rateio Mensal');
+      wsRateio.columns = [
+        { header: 'Mês', key: 'mes', width: 12 },
+        { header: 'Receitas', key: 'receitas', width: 16 },
+        { header: 'Despesas', key: 'despesas', width: 16 },
+        { header: 'Lucro/Prejuízo', key: 'lucroPrejuizo', width: 18 },
+        { header: 'Sócio', key: 'socio', width: 28 },
+        { header: '% rateio', key: 'percentualRateio', width: 14 },
+        { header: 'Valor', key: 'valor', width: 16 },
+        { header: 'Status', key: 'status', width: 14 }
+      ];
+      data.rateioMensal.forEach(mes => {
+        mes.socios.forEach(socio => wsRateio.addRow({
+          mes: formatarMesAnoRateio(mes.key),
+          receitas: mes.receitas,
+          despesas: mes.despesas,
+          lucroPrejuizo: mes.lucroPrejuizo,
+          socio: socio.nome,
+          percentualRateio: socio.percentualRateio,
+          valor: socio.valor,
+          status: socio.statusLabel
+        }));
+      });
+
+      const wsExtrato = workbook.addWorksheet('Extratos');
+      wsExtrato.columns = [
+        { header: 'Sócio', key: 'socio', width: 28 },
+        { header: 'Data/Mês', key: 'data', width: 14 },
+        { header: 'Tipo', key: 'tipo', width: 22 },
+        { header: 'Descrição', key: 'descricao', width: 36 },
+        { header: 'Status', key: 'status', width: 14 },
+        { header: 'Valor', key: 'valor', width: 16 }
+      ];
+      data.socios.forEach(socio => {
+        socio.extrato.forEach(item => wsExtrato.addRow({
+          socio: socio.nome,
+          data: item.origem === 'rateio' ? formatarMesAnoRateio(item.data) : fmtData(item.data),
+          tipo: item.tipoLabel,
+          descricao: item.descricao,
+          status: item.status ? (window.LavaCashSocios?.getStatusRateioLabel(item.status) || item.status) : '',
+          valor: item.valor
+        }));
+      });
+
+      [wsResumo, wsRateio, wsExtrato].forEach(sheet => {
+        sheet.getRow(1).font = { bold: true };
+        sheet.views = [{ state: 'frozen', ySplit: 1 }];
+      });
+
+      const buffer = await workbook.xlsx.writeBuffer();
+      baixarBlob(new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), filename);
+    }
+
+    function exportarRelatorioSociosPdf() {
+      const data = getRelatorioSociosData();
+      const sociosRows = data.socios.map(socio => `
+        <tr>
+          <td>${escapeHtml(socio.nome)}</td>
+          <td>${isVisualizador ? '' : escapeHtml(socio.email || '')}</td>
+          <td>${fmtBR(socio.totalAportado)}</td>
+          <td>${fmtPercentual(socio.percentualInvestidoReal)}</td>
+          <td>${fmtPercentual(socio.percentualRateioConfigurado)}</td>
+          <td>${fmtBR(socio.lucroPrejuizoDevido)}</td>
+          <td>${fmtBR(socio.valorRetirado)}</td>
+          <td>${getSaldoSocioLabel(socio.saldo)} ${fmtBR(Math.abs(socio.saldo))}</td>
+        </tr>
+      `).join('');
+
+      const rateioRows = data.rateioMensal.flatMap(mes => mes.socios.map(socio => `
+        <tr>
+          <td>${formatarMesAnoRateio(mes.key)}</td>
+          <td>${fmtBR(mes.lucroPrejuizo)}</td>
+          <td>${escapeHtml(socio.nome)}</td>
+          <td>${fmtPercentual(socio.percentualRateio)}</td>
+          <td>${fmtBR(socio.valor)}</td>
+          <td>${socio.statusLabel}</td>
+        </tr>
+      `)).join('');
+
+      const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+        <title>Relatório de Sócios LAVACASH</title>
+        <style>
+          body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;}
+          h1{margin:0 0 4px;font-size:24px;} h2{margin:24px 0 10px;font-size:16px;}
+          .meta{color:#64748b;font-size:12px;margin-bottom:18px;}
+          table{width:100%;border-collapse:collapse;margin-bottom:16px;}
+          th,td{border:1px solid #e2e8f0;padding:7px 8px;font-size:11px;text-align:left;}
+          th{background:#f1f5f9;font-weight:700;}
+          @media print{button{display:none;}}
+        </style></head><body>
+        <button onclick="window.print()">Imprimir / salvar PDF</button>
+        <h1>Relatório de Sócios — LAVACASH</h1>
+        <div class="meta">${escapeHtml(data.lavanderiaNome)} · Gerado em ${data.geradoEm}</div>
+        <h2>Resumo por sócio</h2>
+        <table><thead><tr><th>Sócio</th><th>E-mail</th><th>Total aportado</th><th>% real</th><th>% rateio</th><th>Lucro/prejuízo devido</th><th>Já retirado</th><th>Saldo</th></tr></thead><tbody>${sociosRows || '<tr><td colspan="8">Sem sócios.</td></tr>'}</tbody></table>
+        <h2>Rateio mensal</h2>
+        <table><thead><tr><th>Mês</th><th>Lucro/prejuízo total</th><th>Sócio</th><th>% rateio</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rateioRows || '<tr><td colspan="6">Sem rateio mensal.</td></tr>'}</tbody></table>
+        </body></html>`;
+
+      const win = window.open('', '_blank', 'width=1100,height=800');
+      if (!win) {
+        alert('Pop-up bloqueado. Permita pop-ups para exportar o PDF.');
+        return;
+      }
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+    }
+
+    function preencherModalDetalhamentoInvestimento(investimento) {
+      const titulo = document.getElementById('detalhamentoInvestimentoTitle');
+      const meta = document.getElementById('detalhamentoInvestimentoMeta');
+      const resumo = document.getElementById('detalhamentoInvestimentoResumo');
+      const tbody = document.getElementById('tbodyDetalhamentoInvestimento');
+
+      if (!titulo || !meta || !resumo || !tbody) {
+        return;
+      }
+
+      const valorInvestimento = parseValorSeguro(investimento?.valor);
+      const snapshotSalvo = Array.isArray(investimento?.rateioSocios) && investimento.rateioSocios.length
+        ? investimento.rateioSocios
+        : null;
+      const snapshotAtual = criarSnapshotRateioInvestimento(valorInvestimento, investimento?.tipoMovimentacao, investimento?.socioId || '');
+      const sociosRateio = snapshotSalvo || snapshotAtual.sociosSnapshot;
+      const totalPercentualInvestido = snapshotSalvo
+        ? round2(Number(investimento?.percentualInvestidoConfigurado) || sociosRateio.reduce((sum, socio) => sum + (Number(socio.percentualInvestido) || 0), 0))
+        : snapshotAtual.totalPercentualInvestido;
+      const percentualNaoVinculado = snapshotSalvo
+        ? round2(Number(investimento?.percentualNaoVinculado) || Math.max(0, 100 - totalPercentualInvestido))
+        : snapshotAtual.percentualNaoVinculado;
+      const totalPagoSocios = round2(sociosRateio.reduce((sum, socio) => sum + (Number(socio.valorPago) || 0), 0));
+      const totalNaoVinculado = snapshotSalvo
+        ? round2(Number(investimento?.valorNaoVinculado) || (valorInvestimento * (percentualNaoVinculado / 100)))
+        : snapshotAtual.valorNaoVinculado;
+
+      titulo.textContent = investimento?.descricao || 'Rateio do Investimento';
+      meta.textContent = `${fmtData(investimento?.data)} • ${getTipoMovimentacaoLabel(investimento?.tipoMovimentacao)} • ${investimento?.categoria || 'Sem categoria'} • ${fmtBR(valorInvestimento)}`;
+      resumo.textContent = snapshotSalvo
+        ? 'Valores salvos no momento em que este investimento foi registrado.'
+        : 'Valores calculados com base no % investido atual dos sócios da lavanderia selecionada.';
+
+      if (!sociosRateio.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="3" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+              Nenhum sócio cadastrado para ratear este investimento.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = sociosRateio.map(socio => {
+        const percentualInvestido = round2(Number(socio.percentualInvestido) || 0);
+        const valorPago = round2(Number(socio.valorPago) || 0);
+        return `
+          <tr>
+            <td>${socio.nome || 'Sócio'}</td>
+            <td>${fmtPercentual(percentualInvestido)}</td>
+            <td class="text-right ${getValorRateioClass(valorPago)}">${fmtBR(valorPago)}</td>
+          </tr>
+        `;
+      }).join('') + (percentualNaoVinculado > 0 ? `
+        <tr style="background: rgba(15, 23, 42, 0.55);">
+          <td>Não vinculado</td>
+          <td>${fmtPercentual(percentualNaoVinculado)}</td>
+          <td class="text-right rateio-neutro">${fmtBR(totalNaoVinculado)}</td>
+        </tr>
+      ` : '') + `
+        <tr style="background: rgba(15, 23, 42, 0.75);">
+          <td><strong>Total</strong></td>
+          <td><strong>${fmtPercentual(round2(Math.min(totalPercentualInvestido, 100) + percentualNaoVinculado))}</strong></td>
+          <td class="text-right ${getValorRateioClass(round2(totalPagoSocios + totalNaoVinculado))}"><strong>${fmtBR(round2(totalPagoSocios + totalNaoVinculado))}</strong></td>
+        </tr>
+      `;
+    }
+
+    let investimentoMobileRenderScheduled = false;
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function setInvestimentoMobileTab(tabName) {
+      document.querySelectorAll('[data-investimento-mobile-tab]').forEach(button => {
+        button.classList.toggle('active', button.dataset.investimentoMobileTab === tabName);
+      });
+      document.querySelectorAll('[data-investimento-mobile-section]').forEach(section => {
+        section.classList.toggle('active', section.dataset.investimentoMobileSection === tabName);
+      });
+    }
+
+    function scheduleRenderInvestimentoMobile() {
+      if (investimentoMobileRenderScheduled) return;
+      investimentoMobileRenderScheduled = true;
+      const run = () => {
+        investimentoMobileRenderScheduled = false;
+        renderInvestimentoMobile();
+      };
+      window.requestAnimationFrame ? window.requestAnimationFrame(run) : setTimeout(run, 0);
+    }
+
+    function renderInvestimentoMobile() {
+      const app = document.getElementById('investimentoMobileApp');
+      if (!app) return;
+
+      const investimentos = getInvestimentos();
+      const buscaDesktop = document.getElementById('busca');
+      const buscaMobile = document.getElementById('buscaMobile');
+      const termoBusca = String(buscaMobile?.value || buscaDesktop?.value || '').trim().toLowerCase();
+      const investimentosFiltrados = termoBusca
+        ? investimentos.filter(inv =>
+            String(inv.categoria || '').toLowerCase().includes(termoBusca) ||
+            String(inv.descricao || '').toLowerCase().includes(termoBusca) ||
+            String(inv.fornecedor || '').toLowerCase().includes(termoBusca)
+          )
+        : investimentos;
+
+      if (buscaMobile && buscaDesktop && buscaMobile.value !== buscaDesktop.value && !document.activeElement?.isSameNode(buscaMobile)) {
+        buscaMobile.value = buscaDesktop.value;
+      }
+
+      const totalInvestido = getTotalInvestidoAtual();
+      const maiorInvestimento = investimentos.length ? Math.max(...investimentos.map(inv => Number(inv.valor) || 0)) : 0;
+      const lavanderia = getLavanderiaAtual();
+      const socios = getSociosLavanderiaAtual();
+      const resumoSocios = getResumoSociosCompleto();
+      const resumoSociosMap = new Map(resumoSocios.socios.map(item => [item.socioId, item]));
+      const podeEditarSocios = Boolean(lavanderia && podeGerenciarSocios(lavanderia.id));
+      const totalRateio = round2(socios.reduce((sum, socio) => sum + getSocioPercentualRateio(socio), 0));
+      const podeEditarInvestimentos = !isVisualizador;
+
+      document.getElementById('mobileTotalInvestido').textContent = fmtBR(totalInvestido);
+      document.getElementById('mobileInvestimentoResumo').textContent = `${investimentos.length} ${investimentos.length === 1 ? 'movimentação cadastrada' : 'movimentações cadastradas'}`;
+      document.getElementById('mobileTotalItens').textContent = String(investimentos.length);
+      document.getElementById('mobileMaiorInvestimento').textContent = fmtBR(maiorInvestimento);
+      document.getElementById('mobileSociosTotal').textContent = String(socios.length);
+      document.getElementById('mobileSociosDistribuido').textContent = fmtPercentual(totalRateio);
+      document.getElementById('mobileRecuperacaoInvestimento').textContent = fmtBR(calcularPaybackGeral().valorRecuperado);
+
+      const btnMobileNovoInvestimento = document.getElementById('btnMobileNovoInvestimento');
+      if (btnMobileNovoInvestimento) {
+        btnMobileNovoInvestimento.hidden = !podeEditarInvestimentos;
+        btnMobileNovoInvestimento.disabled = !podeEditarInvestimentos;
+      }
+
+      const btnMobileNovoSocio = document.getElementById('btnMobileNovoSocio');
+      if (btnMobileNovoSocio) {
+        btnMobileNovoSocio.hidden = !podeEditarSocios;
+        btnMobileNovoSocio.disabled = !podeEditarSocios;
+      }
+
+      const btnMobilePagamentoLucros = document.getElementById('btnMobilePagamentoLucros');
+      if (btnMobilePagamentoLucros) {
+        btnMobilePagamentoLucros.hidden = !podeEditarInvestimentos;
+        btnMobilePagamentoLucros.disabled = !podeEditarInvestimentos;
+      }
+
+      const investimentosList = document.getElementById('mobileInvestimentosList');
+      if (investimentosList) {
+        investimentosList.innerHTML = investimentosFiltrados.length
+          ? investimentosFiltrados.map(inv => {
+              const categoria = escapeHtml(inv.categoria || 'Sem categoria');
+              const tipo = escapeHtml(getTipoMovimentacaoLabel(inv.tipoMovimentacao));
+              const descricao = escapeHtml(inv.descricao || 'Investimento sem descrição');
+              const fornecedor = escapeHtml(inv.fornecedor || 'Fornecedor não informado');
+              return `
+                <article class="investimento-mobile-card">
+                  <div class="investimento-mobile-card-header">
+                    <div>
+                      <span class="investimento-mobile-chip">${tipo}</span>
+                      <h4 class="investimento-mobile-card-title mt-2">${descricao}</h4>
+                      <p class="investimento-mobile-card-subtitle">${fmtData(inv.data)} · ${categoria} · ${fornecedor}</p>
+                    </div>
+                    <strong class="investimento-mobile-value">${fmtBR(inv.valor)}</strong>
+                  </div>
+                  ${inv.observacoes ? `<p class="investimento-mobile-muted mt-3">${escapeHtml(inv.observacoes)}</p>` : ''}
+                  <div class="investimento-mobile-card-actions ${podeEditarInvestimentos ? '' : 'two-actions'}">
+                    <button type="button" onclick="visualizarRateioInvestimento('${inv.id}')">Rateio</button>
+                    ${podeEditarInvestimentos ? `<button type="button" onclick="editarInvestimento('${inv.id}')">Editar</button>` : ''}
+                    ${podeEditarInvestimentos ? `<button type="button" class="danger" onclick="excluirInvestimento('${inv.id}')">Excluir</button>` : ''}
+                  </div>
+                </article>
+              `;
+            }).join('')
+          : `
+            <div class="investimento-mobile-empty">
+              <strong>${termoBusca ? 'Nenhuma movimentação encontrada' : 'Nenhuma movimentação cadastrada'}</strong>
+              <span>${termoBusca ? 'Tente outro termo de busca.' : 'Use o botão Nova movimentação para registrar o primeiro lançamento.'}</span>
+            </div>
+          `;
+      }
+
+      const mobileSociosAviso = document.getElementById('mobileSociosAviso');
+      if (mobileSociosAviso) {
+        mobileSociosAviso.textContent = document.getElementById('sociosAviso')?.textContent || 'Configure os sócios para acompanhar o rateio.';
+      }
+
+      const sociosList = document.getElementById('mobileSociosList');
+      if (sociosList) {
+        sociosList.innerHTML = socios.length
+          ? socios.map(socio => {
+              const nome = escapeHtml(socio.nome || 'Sócio');
+              const email = isVisualizador ? '' : escapeHtml(socio.email || 'E-mail não informado');
+              const percentualInvestido = getSocioPercentualInvestido(socio);
+              const percentualRateio = getSocioPercentualRateio(socio);
+              const resumoSocio = resumoSociosMap.get(socio.id) || {};
+              const valorAporte = resumoSocio.totalAportado ?? (totalInvestido * (percentualInvestido / 100));
+              const saldoSocio = resumoSocio.saldo ?? 0;
+              const paybackSocio = calcularPaybackSocio(resumoSocio);
+              return `
+                <article class="investimento-mobile-card">
+                  <div class="investimento-mobile-card-header">
+                    <div>
+                      <h4 class="investimento-mobile-card-title">${nome}</h4>
+                      ${email ? `<p class="investimento-mobile-card-subtitle">${email}</p>` : ''}
+                    </div>
+                    <span class="investimento-mobile-chip">${fmtPercentual(percentualRateio)}</span>
+                  </div>
+                  <div class="investimento-mobile-metrics">
+                    <div class="investimento-mobile-metric">
+                      <span>Investido</span>
+                      <strong>${fmtPercentual(percentualInvestido)}</strong>
+                    </div>
+                    <div class="investimento-mobile-metric">
+                      <span>Aporte atual</span>
+                      <strong>${fmtBR(valorAporte)}</strong>
+                    </div>
+                    <div class="investimento-mobile-metric">
+                      <span>Saldo</span>
+                      <strong class="${getValorRateioClass(saldoSocio)}">${getSaldoSocioLabel(saldoSocio)} · ${fmtBR(Math.abs(saldoSocio))}</strong>
+                    </div>
+                  </div>
+                  ${renderPaybackSocioMobile(paybackSocio)}
+                  <p class="investimento-mobile-muted">${escapeHtml(socio.observacoes || 'Sem observações cadastradas.')}</p>
+                  ${podeEditarSocios ? `
+                    <div class="investimento-mobile-card-actions">
+                      <button type="button" onclick="visualizarExtratoSocio('${socio.id}')">Extrato</button>
+                      <button type="button" onclick="editarSocio('${socio.id}')">Editar</button>
+                      <button type="button" class="danger" onclick="excluirSocio('${socio.id}')">Excluir</button>
+                    </div>
+                  ` : `
+                    <div class="investimento-mobile-card-actions two-actions">
+                      <button type="button" onclick="visualizarExtratoSocio('${socio.id}')">Extrato</button>
+                    </div>
+                  `}
+                </article>
+              `;
+            }).join('')
+          : `
+            <div class="investimento-mobile-empty">
+              <strong>Nenhum sócio configurado</strong>
+              <span>Cadastre sócios para acompanhar participação, aporte e rateio.</span>
+            </div>
+          `;
+      }
+
+      const rateioList = document.getElementById('mobileRateioList');
+      if (rateioList) {
+        const resultados = getResultadosMensaisRateio();
+        if (!socios.length) {
+          rateioList.innerHTML = `
+            <div class="investimento-mobile-empty">
+              <strong>Rateio indisponível</strong>
+              <span>Cadastre sócios para calcular a divisão mensal do lucro ou prejuízo.</span>
+            </div>
+          `;
+        } else if (!resultados.length) {
+          rateioList.innerHTML = `
+            <div class="investimento-mobile-empty">
+              <strong>Nenhum mês encontrado</strong>
+              <span>Receitas e despesas aparecerão aqui quando forem lançadas.</span>
+            </div>
+          `;
+        } else {
+          rateioList.innerHTML = resultados.map(item => {
+            const statusLabel = item.lucroPrejuizo >= 0 ? 'Lucro' : 'Prejuízo';
+            const statusClass = getValorRateioClass(item.lucroPrejuizo);
+            return `
+              <article class="investimento-mobile-card">
+                <div class="investimento-mobile-card-header">
+                  <div>
+                    <h4 class="investimento-mobile-card-title">${formatarMesAnoRateio(item.key)}</h4>
+                    <p class="investimento-mobile-card-subtitle">${statusLabel} mensal</p>
+                  </div>
+                  <strong class="investimento-mobile-value ${statusClass}">${fmtBR(item.lucroPrejuizo)}</strong>
+                </div>
+                <div class="investimento-mobile-metrics">
+                  <div class="investimento-mobile-metric">
+                    <span>Receitas</span>
+                    <strong class="rateio-positivo">${fmtBR(item.receitas)}</strong>
+                  </div>
+                  <div class="investimento-mobile-metric">
+                    <span>Despesas</span>
+                    <strong class="rateio-negativo">${fmtBR(item.despesas)}</strong>
+                  </div>
+                </div>
+                <div class="investimento-mobile-rateio-partners">
+                  ${socios.map(socio => {
+                    const valorSocio = round2(item.lucroPrejuizo * (getSocioPercentualRateio(socio) / 100));
+                    return `
+                      <div class="investimento-mobile-rateio-row">
+                        <div>
+                          <strong>${escapeHtml(socio.nome || 'Sócio')}</strong>
+                          <span>${fmtPercentual(getSocioPercentualRateio(socio))}</span>
+                        </div>
+                        <div style="text-align:right;">
+                          <strong class="${getValorRateioClass(valorSocio)}">${fmtBR(valorSocio)}</strong>
+                          ${renderStatusRateioControl(item.key, socio.id, valorSocio)}
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    function setupInvestimentoMobileApp() {
+      document.querySelectorAll('[data-investimento-mobile-tab]').forEach(button => {
+        button.addEventListener('click', () => setInvestimentoMobileTab(button.dataset.investimentoMobileTab));
+      });
+
+      document.getElementById('btnMobileNovoInvestimento')?.addEventListener('click', () => {
+        if (!isVisualizador) abrirModal();
+      });
+
+      document.getElementById('btnMobileNovoSocio')?.addEventListener('click', () => abrirModalSocio());
+      document.getElementById('btnMobilePagamentoLucros')?.addEventListener('click', () => {
+        if (!isVisualizador) abrirModalPagamentoLucros();
+      });
+
+      document.getElementById('buscaMobile')?.addEventListener('input', event => {
+        const buscaDesktop = document.getElementById('busca');
+        if (buscaDesktop) buscaDesktop.value = event.target.value;
+        renderInvestimentos();
+      });
+    }
+
+    // Update stats
+    function updateStats() {
+      const investimentos = getInvestimentos();
+      const total = getTotalInvestidoAtual();
+      const maior = investimentos.length > 0 ? Math.max(...investimentos.map(inv => inv.valor || 0)) : 0;
+
+      document.getElementById('totalInvestido').textContent = fmtBR(total);
+      document.getElementById('totalItens').textContent = investimentos.length;
+      document.getElementById('maiorInvestimento').textContent = fmtBR(maior);
+      const payback = calcularPaybackGeral();
+      document.getElementById('recuperacaoInvestimento').textContent = fmtBR(payback.valorRecuperado);
+      document.getElementById('recuperacaoInvestimentoMeta').textContent = `${fmtPercentual(payback.percentualRecuperado)} recuperado com ${fmtBR(payback.pagamentosLucro)} em pagamentos de lucros`;
+      scheduleRenderInvestimentoMobile();
+    }
+
+    // Render table
+    function renderInvestimentos() {
+      const investimentos = getInvestimentos();
+      const busca = document.getElementById('busca').value.toLowerCase();
+
+      let filtered = investimentos;
+      if (busca) {
+        filtered = investimentos.filter(inv =>
+          inv.categoria?.toLowerCase().includes(busca) ||
+          inv.descricao?.toLowerCase().includes(busca) ||
+          inv.fornecedor?.toLowerCase().includes(busca)
+        );
+      }
+
+      const tbody = document.getElementById('tabelaInvestimentos');
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center" style="color: var(--color-text-muted); padding: 3rem;">
+              ${busca ? 'Nenhuma movimentação encontrada' : 'Nenhuma movimentação cadastrada'}
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = filtered.map(inv => `
+          <tr>
+            <td><span class="badge badge-info">${inv.categoria || '-'}</span></td>
+            <td><span class="badge badge-success">${getTipoMovimentacaoLabel(inv.tipoMovimentacao)}</span></td>
+            <td>${inv.descricao || '-'}</td>
+            <td>${fmtData(inv.data)}</td>
+            <td class="font-semibold text-primary">${fmtBR(inv.valor)}</td>
+            <td class="text-center">
+              <button onclick="visualizarRateioInvestimento('${inv.id}')" class="btn-icon btn-icon-primary" title="Ver o que cada sócio pagou">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+              ${!isVisualizador ? `
+              <button onclick="editarInvestimento('${inv.id}')" class="btn-icon btn-icon-primary" title="Editar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+              </button>
+              <button onclick="excluirInvestimento('${inv.id}')" class="btn-icon btn-icon-danger" title="Excluir">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+              ` : ''}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      updateStats();
+      renderSocios();
+      renderTabelaRateioMensal();
+      scheduleRenderInvestimentoMobile();
+    }
+
+    let editandoId = null;
+
+    function getCompetenciaAtual() {
+      return new Date().toISOString().slice(0, 7);
+    }
+
+    function toggleCamposPagamentoLucros() {
+      const tipo = normalizarTipoMovimentacao(document.getElementById('tipoMovimentacao')?.value);
+      const pagamentoLucro = isPagamentoLucro(tipo);
+      const grupo = document.getElementById('competenciaPagamentoGroup');
+      const competencia = document.getElementById('competenciaPagamento');
+      const descricao = document.getElementById('descricao');
+      const categoria = document.getElementById('categoria');
+
+      grupo?.classList.toggle('hidden', !pagamentoLucro);
+      if (competencia) {
+        competencia.required = pagamentoLucro;
+        if (pagamentoLucro && !competencia.value) competencia.value = getCompetenciaAtual();
+        if (!pagamentoLucro) competencia.value = '';
+      }
+
+      if (pagamentoLucro && categoria && !categoria.value) categoria.value = 'distribuicao_lucros';
+      if (pagamentoLucro && descricao && !descricao.value) descricao.value = `Pagamento de lucros ${competencia?.value || getCompetenciaAtual()}`;
+    }
+
+    function abrirModalPagamentoLucros() {
+      abrirModal(null, 'pagamento_lucro');
+    }
+
+    function abrirModal(investimento = null, tipoInicial = '') {
+      const modal = document.getElementById('modalInvestimento');
+      const title = document.getElementById('modalTitle');
+
+      if (investimento) {
+        title.textContent = 'Editar Movimentação';
+        editandoId = investimento.id;
+        document.getElementById('tipoMovimentacao').value = normalizarTipoMovimentacao(investimento.tipoMovimentacao);
+        document.getElementById('categoria').value = investimento.categoria || '';
+        document.getElementById('descricao').value = investimento.descricao || '';
+        document.getElementById('data').value = investimento.data || '';
+        document.getElementById('valor').value = investimento.valor || '';
+        document.getElementById('fornecedor').value = investimento.fornecedor || '';
+        document.getElementById('observacoes').value = investimento.observacoes || '';
+        document.getElementById('competenciaPagamento').value = investimento.competencia || '';
+        populateSocioMovimentacao(investimento.socioId || '');
+      } else {
+        title.textContent = tipoInicial === 'pagamento_lucro' ? 'Pagamento de Lucros' : 'Nova Movimentação';
+        editandoId = null;
+        document.getElementById('formInvestimento').reset();
+        document.getElementById('tipoMovimentacao').value = tipoInicial || 'investimento_inicial';
+        document.getElementById('data').value = new Date().toISOString().split('T')[0];
+        document.getElementById('competenciaPagamento').value = tipoInicial === 'pagamento_lucro' ? getCompetenciaAtual() : '';
+        if (tipoInicial === 'pagamento_lucro') {
+          document.getElementById('categoria').value = 'distribuicao_lucros';
+          document.getElementById('descricao').value = `Pagamento de lucros ${getCompetenciaAtual()}`;
+        }
+        populateSocioMovimentacao('');
+      }
+
+      toggleCamposPagamentoLucros();
+
+      modal.classList.add('active');
+    }
+
+    window.fecharModal = function() {
+      document.getElementById('modalInvestimento').classList.remove('active');
+      document.getElementById('formInvestimento').reset();
+      document.getElementById('competenciaPagamentoGroup')?.classList.add('hidden');
+      editandoId = null;
+    }
+
+    window.visualizarRateioInvestimento = function(id) {
+      const investimentos = getInvestimentos();
+      const investimento = investimentos.find(item => item.id === id);
+      if (!investimento) {
+        return;
+      }
+
+      preencherModalDetalhamentoInvestimento(investimento);
+      document.getElementById('modalDetalhamentoInvestimento')?.classList.add('active');
+    }
+
+    window.fecharModalDetalhamentoInvestimento = function() {
+      document.getElementById('modalDetalhamentoInvestimento')?.classList.remove('active');
+    }
+
+    document.getElementById('btnNovoSocio')?.addEventListener('click', () => abrirModalSocio());
+    document.getElementById('tipoMovimentacao')?.addEventListener('change', () => {
+      populateSocioMovimentacao(document.getElementById('socioMovimentacao')?.value || '');
+      toggleCamposPagamentoLucros();
+    });
+
+    document.getElementById('modalDetalhamentoInvestimento')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalDetalhamentoInvestimento')) {
+        fecharModalDetalhamentoInvestimento();
+      }
+    });
+
+    document.getElementById('modalExtratoSocio')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalExtratoSocio')) {
+        fecharModalExtratoSocio();
+      }
+    });
+
+    document.getElementById('modalSocio')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalSocio')) {
+        fecharModalSocio();
+      }
+    });
+
+    document.getElementById('socioPercentualInvestido')?.addEventListener('input', updateSocioPreview);
+    document.getElementById('socioPercentual')?.addEventListener('input', updateSocioPreview);
+    document.getElementById('socioUserId')?.addEventListener('change', () => {
+      preencherDadosSocioPorUsuario();
+      updateSocioPreview();
+    });
+
+    document.getElementById('formSocio')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const lavanderia = getLavanderiaAtual();
+      if (!lavanderia) {
+        alert('Selecione uma lavanderia antes de salvar o sócio.');
+        return;
+      }
+
+      if (!podeGerenciarSocios(lavanderia.id)) {
+        alert('Você não tem permissão para alterar os sócios desta lavanderia.');
+        return;
+      }
+
+      const userId = document.getElementById('socioUserId').value;
+      const usuariosElegiveis = getUsuariosElegiveisSocios(lavanderia.id);
+      const usuario = usuariosElegiveis.find(item => item.id === userId);
+
+      const nomeSocio = document.getElementById('socioNome').value.trim();
+      const emailSocio = document.getElementById('socioEmail').value.trim();
+
+      if (!nomeSocio) {
+        alert('Informe o nome do sócio.');
+        return;
+      }
+
+      if (!emailSocio || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSocio)) {
+        alert('Informe um e-mail válido para o sócio.');
+        return;
+      }
+
+      const percentualInvestido = round2(Number.parseFloat(String(document.getElementById('socioPercentualInvestido').value || '0').replace(',', '.')) || 0);
+      if (percentualInvestido <= 0 || percentualInvestido > 100) {
+        alert('Informe um % investido válido entre 0,01 e 100.');
+        return;
+      }
+
+      const percentualRateio = round2(Number.parseFloat(String(document.getElementById('socioPercentual').value || '0').replace(',', '.')) || 0);
+      if (percentualRateio <= 0 || percentualRateio > 100) {
+        alert('Informe um % de rateio válido entre 0,01 e 100.');
+        return;
+      }
+
+      const socios = getSociosLavanderiaAtual();
+      const socioDuplicado = socios.find(socio => (
+        (userId && socio.userId === userId) ||
+        String(socio.email || '').toLowerCase() === emailSocio.toLowerCase()
+      ) && socio.id !== editandoSocioId);
+      if (socioDuplicado) {
+        alert('Este usuário ou e-mail já está cadastrado como sócio desta lavanderia.');
+        return;
+      }
+
+      const totalOutrosInvestido = round2(
+        socios
+          .filter(socio => socio.id !== editandoSocioId)
+          .reduce((sum, socio) => sum + getSocioPercentualInvestido(socio), 0)
+      );
+
+      const totalOutrosRateio = round2(
+        socios
+          .filter(socio => socio.id !== editandoSocioId)
+          .reduce((sum, socio) => sum + getSocioPercentualRateio(socio), 0)
+      );
+
+      if (round2(totalOutrosInvestido + percentualInvestido) > 100) {
+        alert(`A soma do % investido excede 100%. Restam apenas ${fmtPercentual(Math.max(100 - totalOutrosInvestido, 0))} disponíveis para investimento.`);
+        return;
+      }
+
+      if (round2(totalOutrosRateio + percentualRateio) > 100) {
+        alert(`A soma do % de rateio excede 100%. Restam apenas ${fmtPercentual(Math.max(100 - totalOutrosRateio, 0))} disponíveis para rateio.`);
+        return;
+      }
+
+      const observacoes = document.getElementById('socioObservacoes').value.trim();
+      const socioAtual = socios.find(socio => socio.id === editandoSocioId);
+      const socioSalvo = {
+        id: editandoSocioId || 'soc_' + Date.now(),
+        userId: usuario?.id || '',
+        nome: usuario?.nome || nomeSocio,
+        email: usuario?.email || emailSocio,
+        percentual: percentualRateio,
+        percentualRateio,
+        percentualInvestido,
+        observacoes,
+        criadoEm: socioAtual?.criadoEm || new Date().toISOString()
+      };
+
+      const sociosAtualizados = editandoSocioId
+        ? socios.map(socio => socio.id === editandoSocioId ? socioSalvo : socio)
+        : [...socios, socioSalvo];
+
+      const result = UserSystem.atualizarLavanderia(lavanderia.id, { socios: sociosAtualizados });
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      fecharModalSocio();
+      renderSocios();
+      renderTabelaRateioMensal();
+    });
+
+    // Novo investimento
+    if (!isVisualizador) {
+      document.getElementById('btnNovoInvestimento')?.addEventListener('click', () => abrirModal());
+      document.getElementById('btnPagamentoLucros')?.addEventListener('click', abrirModalPagamentoLucros);
+    }
+
+    // Form submit
+    document.getElementById('formInvestimento').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let investimentos = getInvestimentos();
+      const valorInvestimento = parseFloat(document.getElementById('valor').value) || 0;
+      const tipoMovimentacao = normalizarTipoMovimentacao(document.getElementById('tipoMovimentacao').value);
+      const socioId = document.getElementById('socioMovimentacao')?.value || '';
+      const competencia = document.getElementById('competenciaPagamento')?.value || '';
+      if (isPagamentoLucro(tipoMovimentacao) && !/^\d{4}-(0[1-9]|1[0-2])$/.test(competencia)) {
+        alert('Informe o mês de referência do pagamento de lucros.');
+        return;
+      }
+      if (isPagamentoLucro(tipoMovimentacao) && !getSociosLavanderiaAtual().length) {
+        alert('Cadastre ao menos um sócio antes de registrar pagamento de lucros.');
+        return;
+      }
+      const rateioSnapshot = criarSnapshotRateioInvestimento(valorInvestimento, tipoMovimentacao, socioId);
+
+      const investimento = {
+        id: editandoId || 'inv_' + Date.now(),
+        tipoMovimentacao,
+        socioId,
+        categoria: document.getElementById('categoria').value,
+        descricao: document.getElementById('descricao').value,
+        data: document.getElementById('data').value,
+        valor: valorInvestimento,
+        fornecedor: document.getElementById('fornecedor').value,
+        observacoes: document.getElementById('observacoes').value,
+        competencia: isPagamentoLucro(tipoMovimentacao) ? competencia : '',
+        rateioSocios: rateioSnapshot.sociosSnapshot,
+        percentualInvestidoConfigurado: rateioSnapshot.totalPercentualInvestido,
+        percentualNaoVinculado: rateioSnapshot.percentualNaoVinculado,
+        valorNaoVinculado: rateioSnapshot.valorNaoVinculado,
+        criadoEm: editandoId ? investimentos.find(i => i.id === editandoId)?.criadoEm : new Date().toISOString()
+      };
+
+      if (editandoId) {
+        const idx = investimentos.findIndex(i => i.id === editandoId);
+        if (idx !== -1) {
+          investimentos[idx] = investimento;
+        }
+      } else {
+        investimentos.push(investimento);
+      }
+
+      saveInvestimentos(investimentos);
+      fecharModal();
+      renderInvestimentos();
+      showToast(editandoId ? 'Movimentação atualizada!' : 'Movimentação salva com sucesso!', 'success');
+    });
+
+    // Edit
+    window.editarInvestimento = function(id) {
+      if (isVisualizador) return;
+      const investimentos = getInvestimentos();
+      const investimento = investimentos.find(i => i.id === id);
+      if (investimento) {
+        abrirModal(investimento);
+      }
+    }
+
+    // Delete
+    window.excluirInvestimento = function(id) {
+      if (isVisualizador) return;
+      if (confirm('Tem certeza que deseja excluir este investimento?')) {
+        let investimentos = getInvestimentos();
+        investimentos = investimentos.filter(i => i.id !== id);
+        saveInvestimentos(investimentos);
+        renderInvestimentos();
+      }
+    }
+
+    // Search
+    document.getElementById('busca')?.addEventListener('input', renderInvestimentos);
+    document.getElementById('btnExportarSociosPdf')?.addEventListener('click', exportarRelatorioSociosPdf);
+    document.getElementById('btnExportarSociosExcel')?.addEventListener('click', () => {
+      exportarRelatorioSociosExcel().catch(err => {
+        console.warn('[Investimento] Erro ao exportar Excel:', err);
+        alert('Não foi possível exportar o relatório em Excel.');
+      });
+    });
+    setupInvestimentoMobileApp();
+
+    async function reconcileRateioFinanceiroKey(key) {
+      try {
+        const localData = await hydrateRateioFinanceiroArray(key);
+        const firebaseData = await window.FirebaseStore.getItem(key, null);
+
+        if (Array.isArray(firebaseData)) {
+          const normalizedRemote = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, firebaseData);
+          const remoteData = normalizedRemote ? normalizedRemote.items : firebaseData;
+          if (JSON.stringify(remoteData) !== JSON.stringify(localData)) {
+            persistRateioFinanceiroArray(key, remoteData);
+            renderTabelaRateioMensal();
+          }
+          if (normalizedRemote?.removed > 0) {
+            await window.FirebaseStore.setItem(key, remoteData);
+          }
+        } else if (localData.length > 0) {
+          await window.FirebaseStore.setItem(key, localData);
+        }
+
+      } catch (error) {
+        console.warn(`[Investimento] Erro ao reconciliar dados financeiros ${key}:`, error);
+      }
+    }
+
+    function subscribeRateioFinanceiroKey(key) {
+      if (rateioFinanceiroFirebaseSubscriptions.has(key)) return;
+      rateioFinanceiroFirebaseSubscriptions.add(key);
+
+      reconcileRateioFinanceiroKey(key);
+      window.FirebaseStore.subscribe(key, firebaseData => {
+        if (!Array.isArray(firebaseData)) return;
+
+        const normalizedRemote = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, firebaseData);
+        const remoteData = normalizedRemote ? normalizedRemote.items : firebaseData;
+        const localData = getCachedRateioFinanceiroArray(key);
+        if (JSON.stringify(remoteData) !== JSON.stringify(localData)) {
+          persistRateioFinanceiroArray(key, remoteData);
+          if (normalizedRemote?.removed > 0) {
+            window.FirebaseStore.setItem(key, remoteData).catch(error => {
+              console.warn(`[Investimento] Erro ao remover duplicatas financeiras ${key}:`, error);
+            });
+          }
+          renderTabelaRateioMensal();
+        }
+      });
+    }
+
+    function setupFirebaseSyncRateioFinanceiro() {
+      if (window.FirebaseStore?.getDashboardSummary) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) {
+        return;
+      }
+
+      const { receitasKey, despesasKey } = getRateioFinanceiroStorageKeys();
+      subscribeRateioFinanceiroKey(receitasKey);
+      subscribeRateioFinanceiroKey(despesasKey);
+    }
+
+    // Sincronização bidirecional com Firebase (real-time)
+    let _firebaseSyncSetup = false;
+
+    function mergeInvestimentosById(localData, remoteData) {
+      const merged = Array.isArray(localData) ? [...localData] : [];
+      const localIdSet = new Set(merged.map(item => item?.id).filter(Boolean));
+      (Array.isArray(remoteData) ? remoteData : []).forEach(item => {
+        if (!item || !item.id || localIdSet.has(item.id)) return;
+        merged.push(item);
+      });
+      return merged;
+    }
+
+    async function setupFirebaseSync() {
+      if (_firebaseSyncSetup) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) return;
+      _firebaseSyncSetup = true;
+
+      const key = getStorageKey();
+
+      try {
+        const localData = JSON.parse(localStorage.getItem(key) || '[]');
+        const firebaseData = await window.FirebaseStore.getItem(key, null);
+
+        if (Array.isArray(firebaseData)) {
+          if (JSON.stringify(firebaseData) !== JSON.stringify(localData)) {
+            localStorage.setItem(key, JSON.stringify(firebaseData));
+            renderInvestimentos();
+          }
+        } else if (Array.isArray(localData) && localData.length > 0) {
+          await window.FirebaseStore.setItem(key, localData);
+        }
+
+      } catch (err) {
+        console.warn('[Investimento] Erro ao reconciliar dados com Firebase:', err);
+      }
+
+      // Inscreve-se para mudanças no Firebase
+      const unsubscribe = window.FirebaseStore.subscribe(key, (firebaseData) => {
+        if (firebaseData === null || firebaseData === undefined) return;
+        try {
+          const localData = JSON.parse(localStorage.getItem(key) || '[]');
+          if (JSON.stringify(firebaseData) !== JSON.stringify(localData)) {
+            localStorage.setItem(key, JSON.stringify(firebaseData));
+            renderInvestimentos();
+          }
+        } catch(e) {}
+      });
+
+      window._investimentosUnsubscribe = unsubscribe;
+    }
+
+    // Configurar sincronização quando Firebase estiver pronto
+    window.addEventListener('firebase:initialized', () => {
+      setupFirebaseSync();
+      setupFirebaseSyncRateioFinanceiro();
+      setupFirebaseSyncRateioStatus();
+      hydrateRateioStatusMap();
+      hydrateRateioFinanceiro(getLavanderiaAtualId(), { force: true });
+    });
+
+    // Se Firebase já estiver inicializado
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) {
+      setupFirebaseSync();
+      setupFirebaseSyncRateioFinanceiro();
+      setupFirebaseSyncRateioStatus();
+      hydrateRateioStatusMap();
+    }
+
+    // Init
+    renderInvestimentos();
+    hydrateRateioFinanceiro(getLavanderiaAtualId(), { force: true });
+  </script>
+<script src="js/responsive-tables.js?v=20260613-rateio-labels-v1"></script>
+  <script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+</body>
+</html>

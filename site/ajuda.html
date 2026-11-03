@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuda | LAVACASH</title>
+
+  <meta name="description" content="Central de suporte do LAVACASH com passo a passo para receitas, despesas, importação, dashboard, DRE, investimentos, backup e perfis de acesso.">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260422">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+</head>
+<body data-page="ajuda">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando ajuda...</div>
+  </div>
+
+  <!-- Sidebar Toggle -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+
+    <!-- Lavanderia Selector -->
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link" data-page="receitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link" data-page="despesas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link" data-page="analise-financeira">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link" data-page="investimento-inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link" data-page="configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link active" data-page="ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Usuário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Visualizador</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Central de Suporte LAVACASH</h1>
+        <p class="page-subtitle">Guia simples para usar o sistema no computador, tablet ou celular.</p>
+      </div>
+    </header>
+
+    <section class="glass-card help-hero">
+      <div>
+        <p class="help-kicker">Ajuda para usuários leigos</p>
+        <h2>Encontre o passo a passo do que você precisa fazer.</h2>
+        <p>
+          Antes de lançar qualquer informação, confirme se a lavanderia correta está selecionada.
+          Os dados do LAVACASH ficam sincronizados na nuvem quando o Firebase está ativo.
+        </p>
+      </div>
+      <div class="help-search-box">
+        <label for="buscaAjuda">Buscar na central de suporte</label>
+        <input type="text" id="buscaAjuda" class="input-glass w-full" placeholder="Exemplo: importar vendas, DRE, despesa recorrente">
+        <p id="semResultadosAjuda" class="help-no-results hidden">Nenhum tópico encontrado. Tente buscar por uma palavra mais simples.</p>
+      </div>
+    </section>
+
+    <nav class="help-nav-grid" aria-label="Tópicos da central de suporte">
+      <a href="#primeiro-acesso" class="help-nav-card"><span>01</span><strong>Primeiro acesso</strong></a>
+      <a href="#receitas-manuais" class="help-nav-card"><span>02</span><strong>Cadastrar receitas</strong></a>
+      <a href="#importar-vendas" class="help-nav-card"><span>03</span><strong>Importar vendas</strong></a>
+      <a href="#registrar-despesas" class="help-nav-card"><span>04</span><strong>Registrar despesas</strong></a>
+      <a href="#despesas-recorrentes" class="help-nav-card"><span>05</span><strong>Despesas recorrentes</strong></a>
+      <a href="#dashboard" class="help-nav-card"><span>06</span><strong>Interpretar dashboard</strong></a>
+      <a href="#analise-dre" class="help-nav-card"><span>07</span><strong>Análise financeira e DRE</strong></a>
+      <a href="#investimentos-socios" class="help-nav-card"><span>08</span><strong>Investimentos e sócios</strong></a>
+      <a href="#backup-exportacao" class="help-nav-card"><span>09</span><strong>Backup e exportação</strong></a>
+      <a href="#perfis-acesso" class="help-nav-card"><span>10</span><strong>Perfis de acesso</strong></a>
+      <a href="#problemas-comuns" class="help-nav-card"><span>11</span><strong>Problemas comuns</strong></a>
+    </nav>
+
+    <section id="primeiro-acesso" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">01</span>
+        <div>
+          <h2>Primeiro acesso</h2>
+          <p>Use esta etapa quando for entrar no LAVACASH pela primeira vez ou em um novo aparelho.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Como entrar no sistema</h3>
+          <ol class="help-step-list">
+            <li>Acesse a página inicial do LAVACASH.</li>
+            <li>Entre com seu e-mail e senha, ou use o botão de login com Google se estiver disponível.</li>
+            <li>Confira se seu nome aparece no menu lateral ou na tela de conta do celular.</li>
+            <li>Verifique se a lavanderia selecionada é a correta.</li>
+            <li>Se você tiver acesso a mais de uma lavanderia, use o seletor para trocar.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>O que conferir antes de começar</h3>
+          <ul class="help-list">
+            <li>O nome da lavanderia no topo ou no menu lateral.</li>
+            <li>Seu perfil de acesso: visualizador, administrador ou desenvolvedor.</li>
+            <li>Se os dados carregaram corretamente no dashboard.</li>
+            <li>Se o celular ou computador está conectado à internet.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="help-note">
+        Se o celular mostrar dados antigos, feche o aplicativo/site e abra novamente. Se continuar, faça logout e entre de novo para atualizar a sessão.
+      </div>
+    </section>
+
+    <section id="receitas-manuais" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">02</span>
+        <div>
+          <h2>Como cadastrar receitas manualmente</h2>
+          <p>Use receita manual para dinheiro, PIX avulso, acerto de caixa ou venda que não veio da importação.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Passo a passo</h3>
+          <ol class="help-step-list">
+            <li>Abra o menu <strong>Receitas</strong>.</li>
+            <li>Clique em <strong>Nova Receita</strong>.</li>
+            <li>Informe a data da venda.</li>
+            <li>Preencha a descrição de forma clara, por exemplo: “Venda balcão”, “PIX manual” ou “Lavagem avulsa”.</li>
+            <li>Escolha a categoria e a forma de pagamento.</li>
+            <li>Digite o valor recebido.</li>
+            <li>Clique em <strong>Salvar</strong>.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Boas práticas</h3>
+          <ul class="help-list">
+            <li>Use a data real da venda, não a data em que está lançando.</li>
+            <li>Evite descrições genéricas como “venda” quando houver várias vendas no dia.</li>
+            <li>Antes de salvar, confira a lavanderia selecionada.</li>
+            <li>Não lance manualmente uma venda que já será importada pela maquininha.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="importar-vendas" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">03</span>
+        <div>
+          <h2>Como importar vendas da maquininha</h2>
+          <p>A importação ajuda a trazer vendas de arquivos CSV ou XLSX e evita lançar tudo manualmente.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Antes de importar</h3>
+          <ol class="help-step-list">
+            <li>Abra <strong>Configurações</strong>.</li>
+            <li>Cadastre a maquininha em <strong>Maquininhas de Pagamento</strong>.</li>
+            <li>Informe o tipo da maquininha, por exemplo Stone, Cielo, Mercado Pago ou outra.</li>
+            <li>Salve a maquininha.</li>
+            <li>Volte para <strong>Receitas</strong>.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Importando o arquivo</h3>
+          <ol class="help-step-list">
+            <li>Clique em <strong>Importar Vendas</strong>.</li>
+            <li>Escolha a maquininha correta.</li>
+            <li>Selecione o arquivo CSV ou XLSX.</li>
+            <li>Aguarde a prévia da importação.</li>
+            <li>Confira as linhas válidas, duplicadas e com erro.</li>
+            <li>Se estiver correto, clique em <strong>Processar e Importar</strong>.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>O que o sistema verifica</h3>
+          <ul class="help-list">
+            <li>Colunas comuns como data, horário, valor bruto, valor líquido, bandeira, forma de pagamento, status, MDR e NSU.</li>
+            <li>Vendas duplicadas usando data, horário, valor, bandeira, descrição e código/NSU quando existir.</li>
+            <li>Status da venda, importando apenas vendas aprovadas ou confirmadas.</li>
+            <li>Taxa MDR, criando despesa automática quando houver diferença entre valor bruto e valor líquido.</li>
+          </ul>
+        </article>
+        <article class="help-card">
+          <h3>Após importar</h3>
+          <ul class="help-list">
+            <li>Confira o resumo final: total bruto, total líquido, MDR, importadas, duplicadas e erros.</li>
+            <li>Se importou errado, use <strong>Desfazer última importação</strong>.</li>
+            <li>Se o arquivo não for reconhecido, confira se a maquininha está cadastrada corretamente.</li>
+            <li>Para Mercado Pago PIX, confirme se o arquivo exportado contém status, data e valor líquido.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="help-note">
+        Linhas canceladas, estornadas ou recusadas devem ser ignoradas. Elas não representam venda recebida.
+      </div>
+    </section>
+
+    <section id="registrar-despesas" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">04</span>
+        <div>
+          <h2>Como registrar despesas</h2>
+          <p>Registre todos os gastos para que lucro, margem, DRE e metas fiquem corretos.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Passo a passo</h3>
+          <ol class="help-step-list">
+            <li>Abra o menu <strong>Despesas</strong>.</li>
+            <li>Clique em <strong>Nova Despesa</strong>.</li>
+            <li>Informe a data em que a despesa aconteceu ou venceu.</li>
+            <li>Digite uma descrição clara, por exemplo: “Aluguel”, “Energia”, “Material de limpeza”.</li>
+            <li>Escolha a categoria.</li>
+            <li>Escolha o tipo de despesa: fixa, variável ou eventual.</li>
+            <li>Informe o valor e o status.</li>
+            <li>Clique em <strong>Salvar</strong>.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Como escolher o tipo</h3>
+          <ul class="help-list">
+            <li><strong>Fixa:</strong> gasto previsível, como aluguel, internet, sistema e contador.</li>
+            <li><strong>Variável:</strong> muda conforme o movimento, como taxa de cartão, insumos e comissões.</li>
+            <li><strong>Eventual:</strong> gasto fora da rotina, como manutenção emergencial ou compra pontual.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="despesas-recorrentes" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">05</span>
+        <div>
+          <h2>Como cadastrar despesas recorrentes</h2>
+          <p>Use despesa recorrente para gastos que se repetem todo mês.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Cadastrar recorrência</h3>
+          <ol class="help-step-list">
+            <li>Abra <strong>Despesas</strong> e clique em <strong>Nova Despesa</strong>.</li>
+            <li>Preencha descrição, categoria, tipo e valor.</li>
+            <li>Marque a opção de despesa recorrente.</li>
+            <li>Informe a data de início.</li>
+            <li>Se a despesa tiver prazo para acabar, informe a data final.</li>
+            <li>Mantenha a periodicidade mensal.</li>
+            <li>Salve a despesa.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Editar recorrência</h3>
+          <ul class="help-list">
+            <li>Use <strong>Editar apenas este mês</strong> quando a mudança vale só para uma parcela.</li>
+            <li>Use <strong>Editar toda a recorrência</strong> quando a mudança vale para os próximos meses.</li>
+            <li>O sistema evita criar a mesma despesa recorrente duas vezes no mesmo mês.</li>
+            <li>Despesas fixas previstas aparecem no dashboard e na análise financeira.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="help-note">
+        As despesas fixas recorrentes ajudam a prever os próximos 3 meses e a evitar surpresa no caixa.
+      </div>
+    </section>
+
+    <section id="dashboard" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">06</span>
+        <div>
+          <h2>Como interpretar o dashboard</h2>
+          <p>O dashboard mostra uma visão rápida da situação financeira da lavanderia.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Cards principais</h3>
+          <ul class="help-list">
+            <li><strong>Receitas do mês:</strong> total vendido no mês selecionado.</li>
+            <li><strong>Despesas do mês:</strong> total de gastos registrados no mês.</li>
+            <li><strong>Lucro do mês:</strong> receitas menos despesas.</li>
+            <li><strong>Margem de lucro:</strong> porcentagem do lucro sobre as receitas.</li>
+          </ul>
+        </article>
+        <article class="help-card">
+          <h3>Período e gráficos</h3>
+          <ol class="help-step-list">
+            <li>Escolha o ano no filtro.</li>
+            <li>Selecione o mês desejado no bloco <strong>Saldo por Mês</strong> ou <strong>Período</strong>.</li>
+            <li>Confira os gráficos de vendas por dia da semana.</li>
+            <li>Compare o mês selecionado com o mês anterior.</li>
+            <li>Se o mês atual estiver sem dados, use o último mês com dados.</li>
+          </ol>
+        </article>
+      </div>
+      <div class="help-note">
+        No celular, o dashboard é resumido para parecer um aplicativo. Os valores devem ser os mesmos do desktop quando a mesma lavanderia e o mesmo mês estão selecionados.
+      </div>
+    </section>
+
+    <section id="analise-dre" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">07</span>
+        <div>
+          <h2>Como interpretar a análise financeira e DRE</h2>
+          <p>A análise financeira mostra detalhes que ajudam a entender se a operação está saudável.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Relatório gerencial</h3>
+          <ul class="help-list">
+            <li>Mostra receitas, despesas, lucro, margem e indicadores.</li>
+            <li>Ajuda a comparar meses e identificar queda ou crescimento.</li>
+            <li>Permite exportar relatórios em PDF ou Excel, conforme a tela.</li>
+            <li>No celular, a visualização pode ser mais resumida, mas a exportação deve manter o mesmo conteúdo do desktop.</li>
+          </ul>
+        </article>
+        <article class="help-card">
+          <h3>O que é DRE</h3>
+          <p class="help-text">
+            DRE significa Demonstrativo de Resultado. É um resumo organizado que mostra como o lucro foi formado.
+          </p>
+          <ul class="help-list">
+            <li><strong>Receita bruta:</strong> total das vendas.</li>
+            <li><strong>Taxas MDR:</strong> taxas de cartão ou maquininha.</li>
+            <li><strong>Receita líquida:</strong> receita depois das taxas.</li>
+            <li><strong>Despesas:</strong> gastos fixos, variáveis e eventuais.</li>
+            <li><strong>Lucro líquido:</strong> resultado final do período.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="investimentos-socios" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">08</span>
+        <div>
+          <h2>Como cadastrar investimentos e sócios</h2>
+          <p>Use esta área para controlar aportes, retiradas, reembolsos e rateio de lucro ou prejuízo.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Cadastrar sócio</h3>
+          <ol class="help-step-list">
+            <li>Abra o menu <strong>Investimento</strong>.</li>
+            <li>Na área de sócios, clique em <strong>Novo Sócio</strong>.</li>
+            <li>Preencha nome e e-mail.</li>
+            <li>Informe o percentual investido.</li>
+            <li>Informe o percentual de rateio do lucro/prejuízo.</li>
+            <li>Salve o cadastro.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Lançar movimentações</h3>
+          <ul class="help-list">
+            <li><strong>Investimento inicial:</strong> valor colocado no começo do negócio.</li>
+            <li><strong>Aporte adicional:</strong> novo valor colocado depois do início.</li>
+            <li><strong>Retirada de lucro:</strong> valor retirado pelo sócio.</li>
+            <li><strong>Reembolso:</strong> devolução de valor pago por um sócio.</li>
+            <li><strong>Ajuste manual:</strong> correção feita quando há necessidade de acertar saldo.</li>
+          </ul>
+        </article>
+        <article class="help-card">
+          <h3>Rateio mensal</h3>
+          <ol class="help-step-list">
+            <li>Confira o lucro ou prejuízo total do mês.</li>
+            <li>Veja quanto cabe a cada sócio pelo percentual de rateio.</li>
+            <li>Marque o status como pendente, pago ou compensado.</li>
+            <li>Quando o rateio for marcado como pago, os saldos dos cards são atualizados.</li>
+            <li>Use PDF ou Excel para exportar o relatório de sócios.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Extrato individual</h3>
+          <ul class="help-list">
+            <li>Mostra tudo que o sócio aportou.</li>
+            <li>Mostra o lucro/prejuízo devido a ele.</li>
+            <li>Mostra valores já retirados.</li>
+            <li>Mostra saldo a receber ou a compensar.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="backup-exportacao" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">09</span>
+        <div>
+          <h2>Como fazer backup e exportar dados</h2>
+          <p>Backup é uma cópia de segurança. Exportação é um relatório ou arquivo gerado para conferência.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Backup do sistema</h3>
+          <ol class="help-step-list">
+            <li>Abra <strong>Configurações</strong>.</li>
+            <li>Procure a área <strong>Backup de Dados</strong>.</li>
+            <li>Clique em <strong>Exportar</strong>.</li>
+            <li>Guarde o arquivo baixado em um local seguro.</li>
+            <li>Para restaurar, clique em <strong>Importar</strong> e selecione um backup válido.</li>
+          </ol>
+        </article>
+        <article class="help-card">
+          <h3>Exportar relatórios</h3>
+          <ul class="help-list">
+            <li>Na <strong>Análise Financeira</strong>, use <strong>Exportar</strong> para relatórios financeiros.</li>
+            <li>Em <strong>Investimento</strong>, use PDF ou Excel para relatório de sócios.</li>
+            <li>Faça exportação antes de grandes alterações, como importar muitos dados ou restaurar backup.</li>
+            <li>O backup local não substitui a sincronização em nuvem, mas ajuda em conferências e segurança.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="perfis-acesso" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">10</span>
+        <div>
+          <h2>Perfis de acesso</h2>
+          <p>Cada perfil controla o que a pessoa pode ver ou alterar no LAVACASH.</p>
+        </div>
+      </div>
+      <div class="help-table-wrap">
+        <table class="help-table">
+          <thead>
+            <tr>
+              <th>Perfil</th>
+              <th>O que pode fazer</th>
+              <th>Quando usar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Visualizador</strong></td>
+              <td>Visualiza dashboards, relatórios e dados permitidos. Não deve alterar informações financeiras.</td>
+              <td>Para sócios, gestores ou pessoas que apenas acompanham os resultados.</td>
+            </tr>
+            <tr>
+              <td><strong>Administrador</strong></td>
+              <td>Cadastra receitas, despesas, importações, metas, maquininhas e configurações da lavanderia permitida.</td>
+              <td>Para quem opera o financeiro no dia a dia.</td>
+            </tr>
+            <tr>
+              <td><strong>Desenvolvedor</strong></td>
+              <td>Acessa configurações avançadas, usuários, lavanderias e recursos técnicos do sistema.</td>
+              <td>Para manutenção, suporte e administração completa do LAVACASH.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="help-note">
+        Se uma pessoa não consegue trocar de lavanderia, editar dados ou ver configurações, confira o perfil dela e as lavanderias liberadas para o e-mail.
+      </div>
+    </section>
+
+    <section id="problemas-comuns" class="glass-card help-section" data-help-section>
+      <div class="help-section-header">
+        <span class="help-pill">11</span>
+        <div>
+          <h2>Problemas comuns e soluções</h2>
+          <p>Use esta área para resolver falhas simples antes de pedir suporte técnico.</p>
+        </div>
+      </div>
+      <div class="help-problems">
+        <article class="help-problem">
+          <h3>O celular mostra uma lavanderia diferente do desktop</h3>
+          <ol class="help-step-list">
+            <li>Confira se está usando o mesmo e-mail nos dois aparelhos.</li>
+            <li>Faça logout no celular e entre novamente.</li>
+            <li>Confira se o e-mail tem acesso à lavanderia correta em <strong>Configurações</strong>.</li>
+            <li>Se o problema continuar, peça para um administrador ou desenvolvedor revisar o usuário.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>Não aparece a opção de mudar de lavanderia</h3>
+          <ol class="help-step-list">
+            <li>Confirme se seu usuário tem acesso a mais de uma lavanderia.</li>
+            <li>Atualize a página ou reabra o aplicativo no celular.</li>
+            <li>Faça logout e login novamente para carregar a sessão atualizada.</li>
+            <li>Se continuar, confira o cadastro do usuário no painel de configurações.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>Os valores do desktop e do celular estão diferentes</h3>
+          <ol class="help-step-list">
+            <li>Confirme se a mesma lavanderia está selecionada.</li>
+            <li>Confirme se o mesmo mês e ano estão selecionados.</li>
+            <li>Aguarde alguns segundos para sincronizar com a nuvem.</li>
+            <li>Feche e abra novamente o site se o celular estiver com dados antigos.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>A importação da maquininha deu erro</h3>
+          <ol class="help-step-list">
+            <li>Confira se a maquininha foi cadastrada em <strong>Configurações</strong>.</li>
+            <li>Confirme se o arquivo é CSV ou XLSX.</li>
+            <li>Veja se o arquivo tem data, valor e status da venda.</li>
+            <li>Leia a prévia: ela mostra linhas válidas, duplicadas e com erro.</li>
+            <li>Se for Mercado Pago PIX, confira se as vendas estão aprovadas ou confirmadas.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>A venda apareceu como duplicada</h3>
+          <p class="help-text">
+            Isso é uma proteção. O sistema compara dados da venda para evitar lançar a mesma venda duas vezes.
+            Confira a prévia antes de importar novamente.
+          </p>
+        </article>
+        <article class="help-problem">
+          <h3>O lucro ou a DRE não parecem corretos</h3>
+          <ol class="help-step-list">
+            <li>Confira se todas as receitas do mês foram lançadas ou importadas.</li>
+            <li>Confira se todas as despesas do mês foram registradas.</li>
+            <li>Verifique se as taxas MDR foram geradas ou lançadas.</li>
+            <li>Veja se a data das receitas e despesas está no mês correto.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>Não consigo editar, excluir ou acessar configurações</h3>
+          <ol class="help-step-list">
+            <li>Confira seu perfil de acesso.</li>
+            <li>Visualizadores não devem alterar dados.</li>
+            <li>Administradores só alteram dados das lavanderias liberadas.</li>
+            <li>Desenvolvedores têm acesso avançado para suporte e manutenção.</li>
+          </ol>
+        </article>
+        <article class="help-problem">
+          <h3>Excluí algo no desktop e ainda aparece no celular</h3>
+          <ol class="help-step-list">
+            <li>Confirme se a exclusão foi feita na lavanderia correta.</li>
+            <li>Aguarde a sincronização com o Firebase.</li>
+            <li>Reabra o site no celular.</li>
+            <li>Se ainda aparecer, faça logout e login novamente.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/sidebar-filter.js?v=20260409-3"></script>
+  <script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+
+  <script>
+    // Verificar login
+    window.UserSystem?.init();
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser || !currentUser.aprovado) {
+      window.location.href = './index.html';
+    }
+
+    // MIGRAÇÃO: Se existem dados com formato antigo, migrar
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        // Migrar receitas
+        const receitaAntiga = `receitas_${lav.id}`;
+        const receitaNova = `${lav.id}_receitas`;
+        if (localStorage.getItem(receitaAntiga) && !localStorage.getItem(receitaNova)) {
+          console.log(`[MIGRAÇÃO] ${receitaAntiga} -> ${receitaNova}`);
+          localStorage.setItem(receitaNova, localStorage.getItem(receitaAntiga));
+          localStorage.removeItem(receitaAntiga);
+        }
+
+        // Migrar despesas
+        const despesaAntiga = `despesas_${lav.id}`;
+        const despesaNova = `${lav.id}_despesas`;
+        if (localStorage.getItem(despesaAntiga) && !localStorage.getItem(despesaNova)) {
+          console.log(`[MIGRAÇÃO] ${despesaAntiga} -> ${despesaNova}`);
+          localStorage.setItem(despesaNova, localStorage.getItem(despesaAntiga));
+          localStorage.removeItem(despesaAntiga);
+        }
+      });
+    })();
+
+    // Setup user info
+    document.getElementById('userName').textContent = currentUser?.nome || 'Usuário';
+    document.getElementById('userRole').textContent = 'Proprietário';
+
+    // Aplicar permissões no sidebar depois que o usuário atual está disponível
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+    const minhasLavanderias = UserSystem.getMinhasLavanderias();
+    const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+    lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+      `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+    ).join('');
+
+    lavanderiaSelect.addEventListener('change', (e) => {
+      UserSystem.selecionarLavanderia(e.target.value);
+    });
+
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .help-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 2rem;
+      align-items: center;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-kicker {
+      color: var(--color-primary);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .help-hero h2 {
+      color: var(--color-text-primary);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-hero p,
+    .help-text {
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    .help-search-box {
+      background: var(--color-surface-active);
+      border: 1px solid var(--color-border);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+    }
+
+    .help-search-box label {
+      display: block;
+      color: var(--color-text-primary);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-no-results {
+      color: var(--color-danger, #ef4444);
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+    }
+
+    .help-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-nav-card {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      background: var(--color-surface-active);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      padding: 1rem;
+      color: var(--color-text-primary);
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .help-nav-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary);
+      box-shadow: 0 10px 28px rgba(14, 165, 233, 0.18);
+    }
+
+    .help-nav-card span,
+    .help-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 999px;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    .help-section {
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      scroll-margin-top: 1.5rem;
+    }
+
+    .help-section:target {
+      outline: 2px solid rgba(14, 165, 233, 0.45);
+      outline-offset: 4px;
+    }
+
+    .help-section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-section-header h2 {
+      color: var(--color-text-primary);
+      font-size: clamp(1.35rem, 2vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .help-section-header p {
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .help-card,
+    .help-problem {
+      background: var(--color-surface-active);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+
+    .help-card h3,
+    .help-problem h3 {
+      color: var(--color-text-primary);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 0.875rem;
+    }
+
+    .help-step-list,
+    .help-list {
+      color: var(--color-text-secondary);
+      line-height: 1.65;
+      padding-left: 1.2rem;
+    }
+
+    .help-step-list li,
+    .help-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .help-list {
+      list-style: disc;
+    }
+
+    .help-note {
+      margin-top: 1rem;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.28);
+      border-radius: 1rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      padding: 1rem;
+    }
+
+    .help-table-wrap {
+      overflow-x: auto;
+      border-radius: 1rem;
+      border: 1px solid var(--color-border);
+    }
+
+    .help-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      background: var(--color-surface-active);
+    }
+
+    .help-table th,
+    .help-table td {
+      color: var(--color-text-secondary);
+      text-align: left;
+      vertical-align: top;
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      line-height: 1.55;
+    }
+
+    .help-table th {
+      color: var(--color-text-primary);
+      font-weight: 800;
+      background: var(--color-surface-hover);
+    }
+
+    .help-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .help-problems {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hover-lift {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .help-hero {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.25rem;
+      }
+
+      .help-nav-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .help-section {
+        padding: 1.25rem;
+      }
+
+      .help-section-header {
+        gap: 0.75rem;
+      }
+
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script>
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    function normalizarTextoAjuda(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    // Search
+    document.getElementById('buscaAjuda')?.addEventListener('input', (e) => {
+      const query = normalizarTextoAjuda(e.target.value);
+      const sections = document.querySelectorAll('[data-help-section]');
+      let visibleCount = 0;
+
+      sections.forEach(section => {
+        const text = normalizarTextoAjuda(section.textContent);
+        const visible = !query || text.includes(query);
+        section.style.display = visible ? '' : 'none';
+        if (visible) visibleCount += 1;
+      });
+
+      document.getElementById('semResultadosAjuda')?.classList.toggle('hidden', visibleCount !== 0);
+    });
+
+  </script>
+</body>
+</html>

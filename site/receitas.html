@@ -1,0 +1,4434 @@
+ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receitas | LAVACASH</title>
+
+  <meta name="description" content="Gestão de receitas da lavanderia">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+
+  <script src="js/vendor-loader.js?v=20260621-performance-v2" defer></script>
+
+  <style>
+    .stone-upload-area {
+      margin-bottom: 1.5rem;
+    }
+
+    .upload-dropzone {
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .upload-dropzone:hover, .upload-dropzone.drag-over {
+      border-color: var(--color-primary);
+      background: rgba(14, 165, 233, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .upload-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .upload-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-text-primary);
+    }
+
+    .upload-subtitle {
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .upload-formats {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .format-badge {
+      padding: 0.25rem 0.75rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+    }
+
+    .file-info {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .file-info-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .file-icon {
+      font-size: 2.5rem;
+    }
+
+    .file-details {
+      flex: 1;
+    }
+
+    .file-name {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .file-size {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+
+    .preview-section {
+      margin-top: 1.5rem;
+    }
+
+    .preview-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text-primary);
+    }
+
+    .preview-table-container {
+      overflow-x: auto;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .preview-table {
+      width: 100%;
+      font-size: 0.875rem;
+    }
+
+    .preview-table th {
+      background: rgba(255,255,255,0.1);
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .preview-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--color-text-primary);
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .preview-stat {
+      color: var(--color-text-muted);
+      padding: 0.75rem;
+      border: 1px solid var(--color-glass-border);
+      border-radius: 8px;
+      background: var(--color-glass);
+    }
+
+    .preview-stat strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .import-warning-panel {
+      display: none;
+      margin: 0 0 1rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--color-text-primary);
+      font-size: 0.875rem;
+      text-align: left;
+    }
+
+    .import-warning-panel ul {
+      margin: 0.35rem 0 0 1.1rem;
+      padding: 0;
+    }
+
+    .import-row-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 5.5rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .import-row-valid { color: #047857; background: rgba(16,185,129,.16); }
+    .import-row-duplicate { color: #b45309; background: rgba(245,158,11,.18); }
+    .import-row-ignored { color: #475569; background: rgba(100,116,139,.18); }
+    .import-row-error { color: #b91c1c; background: rgba(239,68,68,.16); }
+
+    .import-history-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .import-history-item {
+      padding: 1rem;
+      border: 1px solid var(--color-glass-border);
+      border-radius: 12px;
+      background: var(--color-glass);
+    }
+
+    .import-history-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .import-history-title {
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .import-history-meta {
+      color: var(--color-text-muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .import-history-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+    }
+
+    .import-history-stat {
+      padding: 0.55rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--color-text-secondary);
+      font-size: 0.78rem;
+    }
+
+    .import-history-stat strong {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--color-text-primary);
+      font-size: 0.95rem;
+    }
+
+    .import-history-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .mapping-section {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .mapping-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .mapping-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .mapping-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--color-success);
+    }
+
+    .mapping-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .mapping-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mapping-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .input-sm {
+      padding: 0.5rem !important;
+      font-size: 0.875rem !important;
+    }
+
+    .progress-section {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-success));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+    }
+
+    .results-section {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .results-success svg {
+      color: var(--color-success);
+      margin: 0 auto 1rem;
+    }
+
+    .results-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-success);
+      margin-bottom: 1.5rem;
+    }
+
+    .results-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .result-stat {
+      background: rgba(255,255,255,0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .result-label {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+
+    .result-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--color-danger);
+    }
+
+    /* Checkboxes personalizados */
+    .checkbox-receita, #selecionarTodas {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--color-primary);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Tabela compacta */
+    .data-table th,
+    .data-table td {
+      padding: 0.5rem 0.75rem !important;
+      font-size: 0.875rem !important;
+      white-space: nowrap;
+    }
+
+    .data-table th:first-child,
+    .data-table td:first-child {
+      text-align: center;
+      padding: 0.5rem !important;
+      width: 40px;
+    }
+
+
+    .table-filter-row th {
+      background: rgba(255,255,255,0.04);
+      padding-top: 0.6rem !important;
+      padding-bottom: 0.6rem !important;
+      vertical-align: top;
+    }
+
+    .table-filter-row .input-glass,
+    .table-filter-row .input-sm,
+    .table-filter-row select {
+      width: 100%;
+      min-width: 0;
+      padding: 0.45rem 0.55rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    .table-filter-date-group {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    .table-filter-label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .table-scroll-fit {
+      overflow: auto;
+      max-height: min(58vh, calc(100vh - 300px));
+    }
+
+    .top-filters-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    @media (max-width: 1024px) {
+      .top-filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .top-filters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Colunas com largura específica */
+    .data-table th:nth-child(2),
+    .data-table td:nth-child(2) {
+      width: 100px; /* Data */
+    }
+
+    .data-table th:nth-child(3),
+    .data-table td:nth-child(3) {
+      width: 70px; /* Horário */
+      text-align: center;
+    }
+
+    .data-table th:nth-child(4),
+    .data-table td:nth-child(4) {
+      max-width: 250px; /* Descrição */
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .data-table th:nth-child(5),
+    .data-table td:nth-child(5) {
+      width: 110px; /* Forma Pagto */
+    }
+
+    .data-table th:nth-child(6),
+    .data-table td:nth-child(6) {
+      width: 110px; /* Valor Bruto */
+      text-align: right;
+    }
+
+    .data-table th:nth-child(7),
+    .data-table td:nth-child(7) {
+      width: 110px; /* Valor Líquido */
+      text-align: right;
+    }
+
+    .data-table th:nth-child(8),
+    .data-table td:nth-child(8) {
+      width: 80px; /* Ações */
+      text-align: center;
+    }
+
+    @media (max-width: 1024px) {
+      .data-table th,
+      .data-table td {
+        padding: 0.3rem 0.4rem !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mapping-grid, .results-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .import-history-head {
+        flex-direction: column;
+      }
+
+      .import-history-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body data-page="receitas">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando receitas...</div>
+  </div>
+
+  <!-- Sidebar Toggle -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+
+    <!-- Lavanderia Selector -->
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link active" data-page="receitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link" data-page="despesas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link" data-page="analise-financeira">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link" data-page="investimento-inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link" id="linkConfig" data-page="configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link" data-page="ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Usuário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Visualizador</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">💰 Receitas</h1>
+        <p class="page-subtitle">Gerencie as entradas de dinheiro</p>
+      </div>
+      <div class="quick-actions" id="actionsArea">
+        <button id="btnImportarVendas" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+          </svg>
+          Importar Vendas
+        </button>
+        <button id="btnHistoricoImportacoes" class="btn btn-ghost" title="Ver importações anteriores">
+          🧾 Histórico
+        </button>
+        <button id="btnDesfazerUltimaImportacao" class="btn btn-ghost" style="display:none;" title="Remove as receitas e taxas MDR criadas pela última importação">
+          ↩ Desfazer última importação
+        </button>
+        <button id="btnNovaReceita" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Nova Receita
+        </button>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <div class="glass-card p-4 mb-6">
+      <div class="top-filters-grid">
+        <div>
+          <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Mês</label>
+          <select id="filtroMes" class="input-glass mt-1">
+            <option value="">Todos os meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Ano</label>
+          <select id="filtroAno" class="input-glass mt-1">
+            <option value="">Todos os anos</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Forma de pagamento</label>
+          <select id="filtroPagamento" class="input-glass mt-1">
+            <option value="">Todos</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">PIX</option>
+            <option value="cartao_credito">Cartão Crédito</option>
+            <option value="cartao_debito">Cartão Débito</option>
+            <option value="boleto">Boleto</option>
+            <option value="transferencia">Transferência</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Ações</label>
+          <button type="button" class="btn btn-ghost btn-sm mt-1 w-full" onclick="limparFiltrosTabela()">Limpar filtros</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="stat-card">
+        <div class="stat-icon success">💰</div>
+        <p class="stat-label">Total do Período</p>
+        <p class="stat-value" id="totalPeriodo">R$ 0,00</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon info">📊</div>
+        <p class="stat-label">Quantidade</p>
+        <p class="stat-value" id="qtdReceitas">0</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon warning">📈</div>
+        <p class="stat-label">Média por Receita</p>
+        <p class="stat-value" id="mediaReceita">R$ 0,00</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container fade-in">
+      <div class="table-header">
+        <h3 class="table-title">Lista de Receitas</h3>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button id="btnExcluirSelecionadas" class="btn btn-danger btn-sm" style="display: none;" onclick="excluirSelecionadas()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            Excluir Selecionadas
+          </button>
+          <span class="badge badge-info" id="contadorReceitas">0 registros</span>
+        </div>
+      </div>
+      <div class="table-scroll-fit">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;">
+                <input type="checkbox" id="selecionarTodas" onchange="toggleSelecionarTodas()" style="cursor: pointer;">
+              </th>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Descrição</th>
+              <th>Forma Pagto</th>
+              <th>Valor Bruto</th>
+              <th>Valor Líquido</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaReceitas">
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <div class="empty-state-icon">💰</div>
+                  <h4 class="empty-state-title">Nenhuma receita cadastrada</h4>
+                  <p class="empty-state-text">Clique em "Nova Receita" para adicionar sua primeira entrada.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="paginacaoReceitas" style="display:none;align-items:center;justify-content:center;gap:.75rem;padding:1rem;border-top:1px solid var(--color-border);">
+        <button id="btnPaginaAnteriorReceitas" class="btn btn-ghost btn-sm" type="button" onclick="mudarPaginaReceitas(-1)">← Anterior</button>
+        <span id="paginaReceitasInfo" class="text-sm" style="color:var(--color-text-muted);"></span>
+        <button id="btnProximaPaginaReceitas" class="btn btn-ghost btn-sm" type="button" onclick="mudarPaginaReceitas(1)">Próxima →</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Nova Receita -->
+  <div id="modalReceita" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Nova Receita</h2>
+        <button class="modal-close" onclick="fecharModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formReceita">
+          <input type="hidden" id="receitaId">
+          <div class="form-group">
+            <label class="form-label">Data *</label>
+            <input type="date" id="receitaData" class="input-glass" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição *</label>
+            <input type="text" id="receitaDescricao" class="input-glass" placeholder="Ex: Venda de serviço" maxlength="200" required>
+          </div>
+          <div class="grid-2" style="gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Categoria</label>
+              <select id="receitaCategoria" class="input-glass">
+                <option value="servico">Serviço</option>
+                <option value="produto">Produto</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Forma de Pagamento</label>
+              <select id="receitaPagamento" class="input-glass">
+                <option value="dinheiro">Dinheiro</option>
+                <option value="pix">PIX</option>
+                <option value="cartao_credito">Cartão Crédito</option>
+                <option value="cartao_debito">Cartão Débito</option>
+                <option value="boleto">Boleto</option>
+                <option value="transferencia">Transferência</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor (R$) *</label>
+            <input type="number" id="receitaValor" class="input-glass" placeholder="0,00" step="0.01" min="0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea id="receitaObs" class="input-glass" rows="2" placeholder="Observações opcionais..." maxlength="500"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+        <button type="submit" form="formReceita" class="btn btn-success">Salvar Receita</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Importar Stone -->
+  <!-- Modal Selecionar Maquininha -->
+  <div id="modalSelecionarMaquininha" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title">📊 Importar Vendas</h2>
+        <button class="modal-close" onclick="fecharModalSelecionarMaquininha()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm mb-4" style="color:var(--color-text-muted);">Selecione de qual maquininha você quer importar as vendas:</p>
+        <div id="listaMaquininhasSeletor" class="space-y-3"></div>
+        <p id="semMaquininhasReceitas" class="text-sm text-center py-4" style="color:var(--color-text-muted);display:none;">
+          Nenhuma maquininha cadastrada.<br>
+          <a href="configuracoes.html#importacao" style="color:var(--color-primary);">Cadastre em Configurações → Importação</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalStone" class="modal-overlay" style="display: none;">
+    <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalImportacaoTitle">📊 Importar Vendas</h2>
+        <button class="modal-close" onclick="fecharModalStone()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Upload Area -->
+        <div id="uploadArea" class="stone-upload-area">
+          <div class="upload-dropzone" id="dropzone">
+            <div class="upload-icon">📁</div>
+            <h3 class="upload-title">Arraste um ou mais arquivos aqui</h3>
+            <p class="upload-subtitle">ou clique para selecionar (múltiplos permitidos)</p>
+            <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display: none;" multiple>
+            <div class="upload-formats">
+              <span class="format-badge">CSV</span>
+              <span class="format-badge">XLSX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Info -->
+        <div id="fileInfo" class="file-info" style="display: none;">
+          <div class="file-info-header">
+            <div class="file-icon">📄</div>
+            <div class="file-details" id="fileListInfo"></div>
+            <div id="manualImportControls" style="display:flex;align-items:center;gap:.5rem;">
+              <label style="font-size:.8rem;color:var(--color-text-muted);white-space:nowrap;">Linha cabeçalho:</label>
+              <input type="number" id="inputLinhaHeader" class="input-glass input-sm" value="1" min="1" style="width:4.5rem;" title="Número da linha que contém os cabeçalhos (1 = primeira linha)">
+            </div>
+            <button class="btn-icon btn-icon-danger" onclick="removerArquivo()" title="Remover">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Preview Table -->
+          <div id="previewSection" class="preview-section" style="display: none;">
+            <h4 class="preview-title">📋 Prévia e validação antes da importação</h4>
+            <div id="importWarnings" class="import-warning-panel"></div>
+            <div class="preview-stats" style="margin-bottom:1rem;">
+              <span class="preview-stat">Válidas: <strong id="previewValidas">0</strong></span>
+              <span class="preview-stat">Duplicadas: <strong id="previewDuplicadas">0</strong></span>
+              <span class="preview-stat">Canceladas/estornadas: <strong id="previewIgnoradas">0</strong></span>
+              <span class="preview-stat">Com erro: <strong id="previewErros">0</strong></span>
+            </div>
+            <div class="preview-table-container">
+              <table id="previewTable" class="preview-table"></table>
+            </div>
+            <div class="preview-stats">
+              <span class="preview-stat">Total de linhas: <strong id="totalRows">0</strong></span>
+              <span class="preview-stat">Colunas detectadas: <strong id="totalCols">0</strong></span>
+              <span class="preview-stat">Arquivos: <strong id="totalArquivos">0</strong></span>
+              <span class="preview-stat">Exibindo: <strong id="previewExibidas">0</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column Mapping (Auto Detection) -->
+        <div id="mappingSection" class="mapping-section" style="display: none;">
+          <div class="mapping-header">
+            <h4 class="mapping-title">🤖 Detecção Automática de Colunas</h4>
+            <span class="mapping-status" id="mappingStatus">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Sistema detectou formato automaticamente
+            </span>
+          </div>
+          <div class="mapping-grid">
+            <div class="mapping-item">
+              <span class="mapping-label">Data da Venda:</span>
+              <select id="mapDataVenda" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Valor Bruto:</span>
+              <select id="mapValorBruto" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Valor Líquido:</span>
+              <select id="mapValorLiquido" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Produto/Tipo:</span>
+              <select id="mapProduto" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Bandeira:</span>
+              <select id="mapBandeira" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Forma de Pagamento:</span>
+              <select id="mapFormaPagamento" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Status:</span>
+              <select id="mapStatus" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Horário da Venda (coluna separada):</span>
+              <select id="mapHorarioVenda" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">Valor MDR (coluna separada):</span>
+              <select id="mapDescontoMDR" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-label">NSU / Código da Venda:</span>
+              <select id="mapCodigoVenda" class="input-glass input-sm"></select>
+            </div>
+            <div class="mapping-item" style="grid-column: 1 / -1;">
+              <span class="mapping-label">Formato da Data:</span>
+              <select id="mapFormatoData" class="input-glass input-sm">
+                <option value="auto" selected>🔍 Detectar automaticamente por arquivo</option>
+                <option value="dmy">DD/MM/AAAA — Brasileiro (padrão)</option>
+                <option value="mdy">MM/DD/AAAA — Americano (Stone antigo)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progressSection" class="progress-section" style="display: none;">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="progress-text" id="progressText" role="status" aria-live="polite">Processando arquivo...</p>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsSection" class="results-section" style="display: none;">
+          <div class="results-success">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <h4 class="results-title">Importação Concluída!</h4>
+            <p id="importacaoResumo" class="text-sm mb-4" style="color:var(--color-text-muted);">Nenhuma linha processada ainda.</p>
+            <div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+              <button type="button" id="btnExportarErrosResultado" class="btn btn-ghost btn-sm" onclick="exportarErrosImportacaoAtual()" style="display:none;">⬇ Exportar inconsistências</button>
+              <button type="button" id="btnVerHistoricoResultado" class="btn btn-ghost btn-sm" onclick="abrirHistoricoImportacoes()">🧾 Ver histórico</button>
+            </div>
+            <div class="results-stats">
+              <div class="result-stat">
+                <span class="result-label">Transações Importadas:</span>
+                <span class="result-value" id="transacoesAprovadas">0</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Duplicadas Ignoradas:</span>
+                <span class="result-value" id="transacoesDuplicadas">0</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Canceladas/Estornadas:</span>
+                <span class="result-value" id="transacoesIgnoradas">0</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Linhas com Erro:</span>
+                <span class="result-value" id="transacoesErros">0</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Valor Total Bruto:</span>
+                <span class="result-value" id="valorTotalBruto">R$ 0,00</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Valor Total Líquido:</span>
+                <span class="result-value" id="valorTotalLiquido">R$ 0,00</span>
+              </div>
+              <div class="result-stat">
+                <span class="result-label">Total Descontos (MDR):</span>
+                <span class="result-value" id="totalDescontos">R$ 0,00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharModalStone()">Cancelar</button>
+        <button type="button" id="btnProcessar" class="btn btn-success" onclick="processarArquivoStone()" style="display: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+          Processar e Importar
+        </button>
+        <button type="button" id="btnConcluir" class="btn btn-primary" onclick="concluirImportacao()" style="display: none;">
+          Concluir e Fechar
+        </button>
+        <button type="button" id="btnDesfazerImportacaoResultado" class="btn btn-danger" onclick="desfazerUltimaImportacao()" style="display: none;">
+          ↩ Desfazer importação
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalHistoricoImportacoes" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width: 980px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h2 class="modal-title">🧾 Histórico de Importações</h2>
+        <button class="modal-close" onclick="fecharHistoricoImportacoes()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm mb-4" style="color:var(--color-text-muted);">Registro salvo na nuvem com auditoria de usuário, arquivos, totais e inconsistências.</p>
+        <div id="listaHistoricoImportacoes" class="import-history-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharHistoricoImportacoes()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/indexeddb-store.js"></script>
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script src="js/laundry-service.js"></script>
+  <script src="js/finance-dedupe.js?v=20260903-owner-performance-v1"></script>
+  <script src="js/despesas-utils.js?v=20260804-finance-compact-v1"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/sidebar-filter.js?v=20260409-3"></script>
+
+  <script>
+    // Utilitário de toast inline
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;border-radius:.5rem;font-size:.9rem;font-weight:500;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:opacity .4s;';
+      t.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
+    }
+
+    // Monitor Firebase initialization
+    window.addEventListener('firebase:initialized', () => { /* Firebase pronto */ });
+
+    // Init UserSystem
+    UserSystem.init();
+
+    // O sistema possui um único proprietário; basta validar a sessão aprovada.
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser || !currentUser.aprovado) {
+      window.location.href = './index.html';
+    }
+
+    // MIGRAÇÃO: Se existem dados com formato antigo, migrar
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        // Formato antigo: receitas_lav1
+        const chaveAntiga = `receitas_${lav.id}`;
+        // Formato novo: lav1_receitas
+        const chaveNova = `${lav.id}_receitas`;
+
+        const dadosAntigos = localStorage.getItem(chaveAntiga);
+        const dadosNovos = localStorage.getItem(chaveNova);
+
+        if (dadosAntigos && !dadosNovos) {
+          try {
+            localStorage.setItem(chaveNova, dadosAntigos);
+          } catch (e) {
+            console.warn('[Receitas] Não foi possível migrar receitas antigas para localStorage:', e);
+          }
+          localStorage.removeItem(chaveAntiga);
+        }
+      });
+
+      // Também migrar 'receitas' sem prefixo para a primeira lavanderia
+      const receitasSemPrefixo = localStorage.getItem('receitas');
+      if (receitasSemPrefixo && lavanderias.length > 0) {
+        const primeiraLav = lavanderias[0].id;
+        const chaveNova = `${primeiraLav}_receitas`;
+        if (!localStorage.getItem(chaveNova)) {
+          try {
+            localStorage.setItem(chaveNova, receitasSemPrefixo);
+          } catch (e) {
+            console.warn('[Receitas] Não foi possível migrar receitas sem prefixo para localStorage:', e);
+          }
+        }
+        localStorage.removeItem('receitas');
+      }
+    })();
+
+    // Setup user info
+    document.getElementById('userName').textContent = currentUser?.nome || 'Usuário';
+    document.getElementById('userRole').textContent = 'Proprietário';
+
+    const canEdit = true;
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+    const minhasLavanderias = UserSystem.getMinhasLavanderias();
+    const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+    lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+      `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+    ).join('');
+
+    lavanderiaSelect.addEventListener('change', async (e) => {
+      const previousKey = getStorageKey();
+      UserSystem.selecionarLavanderia(e.target.value);
+      if (typeof window._receitasUnsubscribe === 'function') window._receitasUnsubscribe();
+      window._receitasUnsubscribe = null;
+      _receitasFirebaseSyncSetup = false;
+      receitasPageRequestId += 1;
+      receitasServerItems = [];
+      receitasServerSummary = null;
+      receitasFullCollectionActive = false;
+      periodoReceitasInicializado = false;
+      receitasPaginaAtual = 1;
+      delete pageArrayCache[previousKey];
+      ['filtroMes', 'filtroAno', 'filtroPagamento'].forEach(id => {
+        const field = document.getElementById(id);
+        if (field) field.value = '';
+      });
+      await hydrateArrayCache(getDespesasStorageKey());
+      await setupFirebaseSync();
+      void loadLastImportBatch().then(atualizarBotaoDesfazerImportacao);
+    });
+
+    // O período mais recente com dados é selecionado assim que o cache carrega.
+    // "Limpar filtros" continua permitindo consultar todo o histórico.
+    document.getElementById('filtroMes').value = '';
+    document.getElementById('filtroAno').value = '';
+    document.getElementById('filtroPagamento').value = '';
+
+
+
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    sidebarToggle?.addEventListener('click', toggleSidebar);
+    sidebarOverlay?.addEventListener('click', toggleSidebar);
+
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    const pageArrayCache = Object.create(null);
+    const RECEITAS_POR_PAGINA = 100;
+    let receitasPaginaAtual = 1;
+    let ultimaSincronizacaoReceitasEm = 0;
+    let periodoReceitasInicializado = false;
+    let receitasServerMode = false;
+    let receitasServerItems = [];
+    let receitasServerSummary = null;
+    let receitasFullCollectionActive = false;
+    let receitasPageRequestId = 0;
+
+    function atualizarPaginacaoReceitas(totalRegistros) {
+      const container = document.getElementById('paginacaoReceitas');
+      const info = document.getElementById('paginaReceitasInfo');
+      const anterior = document.getElementById('btnPaginaAnteriorReceitas');
+      const proxima = document.getElementById('btnProximaPaginaReceitas');
+      if (!container || !info || !anterior || !proxima) return;
+      const totalPaginas = Math.max(1, Math.ceil(totalRegistros / RECEITAS_POR_PAGINA));
+      receitasPaginaAtual = Math.min(Math.max(1, receitasPaginaAtual), totalPaginas);
+      container.style.display = totalRegistros > RECEITAS_POR_PAGINA ? 'flex' : 'none';
+      info.textContent = `Página ${receitasPaginaAtual} de ${totalPaginas}`;
+      anterior.disabled = receitasPaginaAtual <= 1;
+      proxima.disabled = receitasPaginaAtual >= totalPaginas;
+    }
+
+    async function mudarPaginaReceitas(direcao) {
+      receitasPaginaAtual += Number(direcao || 0);
+      if (receitasServerMode) await loadReceitasPageFromServer();
+      else renderReceitas();
+      document.querySelector('.table-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function preencherFiltroAnos() {
+      const select = document.getElementById('filtroAno');
+      if (!select) return;
+      const valorAtual = select.value;
+      const anos = new Set();
+      if (receitasServerMode && Array.isArray(receitasServerSummary?.years)) {
+        receitasServerSummary.years.forEach(year => anos.add(String(year)));
+      } else {
+        try { getReceitas().forEach(x => { const y = x?.data?.slice?.(0,4); if(y) anos.add(y); }); } catch(e) {}
+      }
+      if (anos.size === 0) anos.add(String(new Date().getFullYear()));
+      const anosOrdenados = [...anos].sort();
+      select.innerHTML = '<option value="">Todos os anos</option>';
+      anosOrdenados.forEach(a => {
+        const o = document.createElement('option');
+        o.value = a; o.textContent = a;
+        if (a === valorAtual) o.selected = true;
+        select.appendChild(o);
+      });
+    }
+
+    function isQuotaExceededError(err) {
+      const msg = String(err?.message || err || '').toLowerCase();
+      return err?.name === 'QuotaExceededError' || msg.includes('exceeded the quota') || msg.includes('quota');
+    }
+
+    function readArrayFromLocalStorage(key) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        console.warn(`[Storage] Erro ao ler ${key} do localStorage:`, err);
+        return [];
+      }
+    }
+
+    function getCachedArray(key) {
+      if (Array.isArray(pageArrayCache[key])) {
+        return pageArrayCache[key];
+      }
+      const data = readArrayFromLocalStorage(key);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      pageArrayCache[key] = normalized ? normalized.items : data;
+      return pageArrayCache[key];
+    }
+
+    function getFinanceMergeTimestamp(item) {
+      const candidates = [
+        item?.atualizadoEm,
+        item?.updatedAt,
+        item?.criadoEm,
+        item?.createdAt,
+        item?.data
+      ];
+      for (const candidate of candidates) {
+        const timestamp = Date.parse(candidate || '');
+        if (Number.isFinite(timestamp)) return timestamp;
+      }
+      return 0;
+    }
+
+    function mergeFinanceArraysForKey(key, localData, remoteData) {
+      const kind = window.LavaCashFinanceDedupe?.inferKindFromKey?.(key) || 'mov';
+      const getIdentity = window.LavaCashFinanceDedupe?.getFinanceItemIdentity;
+      const mergedByIdentity = new Map();
+      const order = [];
+
+      const addItems = (items, preferOnTie) => {
+        (Array.isArray(items) ? items : []).forEach((item, index) => {
+          if (!item || typeof item !== 'object') return;
+          const identity = getIdentity?.(item, kind)
+            || (item.id ? `${kind}:id:${item.id}` : `${kind}:fallback:${index}:${JSON.stringify(item)}`);
+          if (!mergedByIdentity.has(identity)) {
+            mergedByIdentity.set(identity, item);
+            order.push(identity);
+            return;
+          }
+
+          const current = mergedByIdentity.get(identity);
+          const currentTimestamp = getFinanceMergeTimestamp(current);
+          const nextTimestamp = getFinanceMergeTimestamp(item);
+          if (nextTimestamp > currentTimestamp || (preferOnTie && nextTimestamp === currentTimestamp)) {
+            mergedByIdentity.set(identity, item);
+          }
+        });
+      };
+
+      addItems(remoteData, false);
+      addItems(localData, true);
+      const merged = order.map(identity => mergedByIdentity.get(identity)).filter(Boolean);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, merged);
+      return normalized ? normalized.items : merged;
+    }
+
+    async function hydrateArrayCache(key) {
+      const localData = readArrayFromLocalStorage(key);
+      let indexedData = null;
+      if (window.IndexedDBStore && window.IndexedDBStore.getItem) {
+        try {
+          indexedData = await window.IndexedDBStore.getItem(key, null);
+        } catch (err) {
+          console.warn(`[Storage] Erro ao hidratar ${key} do IndexedDB:`, err);
+        }
+      }
+      const data = Array.isArray(indexedData)
+        ? mergeFinanceArraysForKey(key, localData, indexedData)
+        : localData;
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      pageArrayCache[key] = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      return pageArrayCache[key];
+    }
+
+    async function persistArrayCache(key, data) {
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      const safeData = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      pageArrayCache[key] = safeData;
+      let indexedPersisted = false;
+
+      if (window.IndexedDBStore && window.IndexedDBStore.setItem) {
+        try {
+          await window.IndexedDBStore.setItem(key, safeData);
+          indexedPersisted = true;
+        } catch (err) {
+          console.warn(`[Storage] Erro ao salvar ${key} no IndexedDB:`, err);
+        }
+      }
+
+      if (indexedPersisted && window.LavaCashFinanceDedupe?.shouldKeepLocalStorageCopy?.(key) === false) {
+        try { localStorage.removeItem(key); } catch (err) {}
+        return true;
+      }
+
+      try {
+        localStorage.setItem(key, JSON.stringify(safeData));
+      } catch (err) {
+        if (isQuotaExceededError(err)) {
+          console.warn(`[Storage] localStorage cheio para ${key}; mantendo dados no IndexedDB/Firebase.`);
+          return true;
+        }
+        throw err;
+      }
+
+      return true;
+    }
+
+    function getDespesasStorageKey() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      const lavId = selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+      return `${lavId}_despesas`;
+    }
+
+    // Storage key based on selected laundry - SEMPRE pega a lavanderia atual
+    function getStorageKey() {
+      // Pega a lavanderia ATUAL do select ou do UserSystem
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      const lavId = selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+      const key = `${lavId}_receitas`;
+      return key;
+    }
+
+    // No uso normal mantém somente a página visível em memória. A coleção
+    // completa é carregada temporariamente apenas durante importação/desfazer.
+    function getReceitas() {
+      if (receitasServerMode && !receitasFullCollectionActive) return receitasServerItems;
+      return getCachedArray(getStorageKey());
+    }
+
+    async function loadReceitasPageFromServer(options = {}) {
+      if (!window.FirebaseStore?.getFinancePage) return false;
+      const requestId = ++receitasPageRequestId;
+      const tbody = document.getElementById('tabelaReceitas');
+      if (tbody) {
+        tbody.setAttribute('aria-busy', 'true');
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding:2rem;color:var(--color-text-muted);">Carregando vendas...</td></tr>';
+      }
+      try {
+        const month = document.getElementById('filtroMes')?.value || '';
+        const year = document.getElementById('filtroAno')?.value || '';
+        const payment = document.getElementById('filtroPagamento')?.value || '';
+        const result = await window.FirebaseStore.getFinancePage(getStorageKey(), {
+          page: receitasPaginaAtual,
+          pageSize: RECEITAS_POR_PAGINA,
+          month: month && year ? Number(month) : null,
+          year: year ? Number(year) : null,
+          payment: payment || null
+        });
+        if (requestId !== receitasPageRequestId) return true;
+        if (Number(result?.page || 1) > Number(result?.totalPages || 1)) {
+          receitasPaginaAtual = Number(result.totalPages || 1);
+          return loadReceitasPageFromServer(options);
+        }
+        receitasServerMode = true;
+        receitasServerItems = Array.isArray(result?.items) ? result.items : [];
+        receitasServerSummary = result?.summary || { totalCount: 0, totalValue: 0, averageValue: 0, years: [] };
+        receitasPaginaAtual = Number(result?.page || 1);
+        ultimaSincronizacaoReceitasEm = Date.now();
+        preencherFiltroAnos();
+
+        if (!periodoReceitasInicializado && !month && !year && receitasServerSummary.latestDate) {
+          const latestDate = String(receitasServerSummary.latestDate);
+          document.getElementById('filtroMes').value = latestDate.slice(5, 7);
+          document.getElementById('filtroAno').value = latestDate.slice(0, 4);
+          periodoReceitasInicializado = true;
+          receitasPaginaAtual = 1;
+          return loadReceitasPageFromServer(options);
+        }
+        periodoReceitasInicializado = true;
+        renderReceitas();
+        return true;
+      } catch (error) {
+        console.warn('[Receitas] Paginação no Supabase indisponível:', error);
+        if (options.throwOnError) throw error;
+        showToast('Não foi possível atualizar as vendas. Verifique sua conexão.', 'error');
+        return false;
+      } finally {
+        if (requestId === receitasPageRequestId) tbody?.removeAttribute('aria-busy');
+      }
+    }
+
+    // Save receitas (cache local + Supabase)
+    async function saveReceitas(receitas, options = {}) {
+      const key = getStorageKey();
+      if (!window.FirebaseStore?.isAuthenticated?.()) throw new Error('Entre novamente para confirmar a gravação no Supabase.');
+      const values = receitas;
+      const remoteOptions = { ...options };
+      delete remoteOptions.appendItems;
+      _importSaving = true;
+      try {
+        const confirmed = options.appendItems?.length
+          ? await window.FirebaseStore.upsertItems(key, options.appendItems)
+          : await window.FirebaseStore.setItem(key, values, remoteOptions);
+        if (!confirmed) throw new Error('Gravação pendente no Supabase. Confira a conexão antes de tentar novamente.');
+        await persistArrayCache(key, values);
+        ultimaSincronizacaoReceitasEm = Date.now();
+        return true;
+      } finally {
+        _importSaving = false;
+      }
+    }
+
+    // Format currency
+    function fmtBR(n) {
+      return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Format date
+    function fmtData(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    // Categorias labels
+    const CATEGORIAS = {
+      servico: 'Serviço',
+      produto: 'Produto',
+      outro: 'Outro'
+    };
+
+    const PAGAMENTOS = {
+      dinheiro: 'Dinheiro',
+      pix: 'PIX',
+      cartao_credito: 'Cartão Crédito',
+      cartao_debito: 'Cartão Débito',
+      boleto: 'Boleto',
+      transferencia: 'Transferência'
+    };
+
+    // Render table
+    function renderReceitas() {
+      preencherFiltroAnos();
+      const tbody = document.getElementById('tabelaReceitas');
+      let mes = document.getElementById('filtroMes').value;
+      let ano = document.getElementById('filtroAno').value;
+      const pagamentoFiltro = document.getElementById('filtroPagamento')?.value || '';
+
+      let receitas = getReceitas();
+      if (!receitasServerMode && !periodoReceitasInicializado && receitas.length > 0) {
+        const dataMaisRecente = receitas.reduce((latest, item) => {
+          const data = /^\d{4}-\d{2}-\d{2}/.test(String(item?.data || '')) ? String(item.data).slice(0, 10) : '';
+          return data > latest ? data : latest;
+        }, '');
+        if (dataMaisRecente) {
+          document.getElementById('filtroMes').value = dataMaisRecente.slice(5, 7);
+          document.getElementById('filtroAno').value = dataMaisRecente.slice(0, 4);
+          mes = document.getElementById('filtroMes').value;
+          ano = document.getElementById('filtroAno').value;
+        }
+        periodoReceitasInicializado = true;
+      }
+
+      // Filter by month/year
+      if (!receitasServerMode && mes) {
+        receitas = receitas.filter(r => {
+          const d = new Date(r.data + 'T00:00:00');
+          return String(d.getMonth() + 1).padStart(2, '0') === mes;
+        });
+      }
+      if (!receitasServerMode && ano) {
+        receitas = receitas.filter(r => String(new Date(r.data + 'T00:00:00').getFullYear()) === ano);
+      }
+
+
+      if (!receitasServerMode && pagamentoFiltro) {
+        receitas = receitas.filter(r => String(r.pagamento || '') === pagamentoFiltro);
+      }
+
+      // Sort by date desc
+      if (!receitasServerMode) receitas.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+      // Update stats
+      const total = receitasServerMode
+        ? Number(receitasServerSummary?.totalValue || 0)
+        : receitas.reduce((sum, r) => sum + Number(r.valor || 0), 0);
+      const qtd = receitasServerMode
+        ? Number(receitasServerSummary?.totalCount || 0)
+        : receitas.length;
+      const media = receitasServerMode
+        ? Number(receitasServerSummary?.averageValue || 0)
+        : (qtd > 0 ? total / qtd : 0);
+      atualizarPaginacaoReceitas(qtd);
+      const inicioPagina = (receitasPaginaAtual - 1) * RECEITAS_POR_PAGINA;
+      const receitasVisiveis = receitasServerMode
+        ? receitas
+        : receitas.slice(inicioPagina, inicioPagina + RECEITAS_POR_PAGINA);
+
+      document.getElementById('totalPeriodo').textContent = fmtBR(total);
+      document.getElementById('qtdReceitas').textContent = qtd;
+      document.getElementById('mediaReceita').textContent = fmtBR(media);
+      const fimPagina = Math.min(qtd, inicioPagina + receitasVisiveis.length);
+      document.getElementById('contadorReceitas').textContent = qtd > RECEITAS_POR_PAGINA
+        ? `${inicioPagina + 1}-${fimPagina} de ${qtd}`
+        : `${qtd} registro${qtd !== 1 ? 's' : ''}`;
+
+      if (qtd === 0 || receitasVisiveis.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8">
+              <div class="empty-state">
+                <div class="empty-state-icon">💰</div>
+                <h4 class="empty-state-title">Nenhuma receita encontrada</h4>
+                <p class="empty-state-text">Não há receitas para o período selecionado.</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = receitasVisiveis.map(r => `
+        <tr>
+          <td><input type="checkbox" class="checkbox-receita" data-id="${r.id}" onchange="atualizarBotaoExcluir()" style="cursor: pointer;"></td>
+          <td>${fmtData(r.data)}</td>
+          <td style="color: var(--color-text-muted); font-size: 0.875rem;">${r.horarioVenda || '-'}</td>
+          <td>${r.descricao || '-'}</td>
+          <td>${PAGAMENTOS[r.pagamento] || r.pagamento}</td>
+          <td style="color: var(--color-success); font-weight: 600;">${fmtBR(r.valor)}</td>
+          <td style="color: ${r.valorLiquido ? 'var(--color-info)' : 'var(--color-text-muted)'}; font-weight: 600;">${fmtBR(r.valorLiquido || r.valor)}</td>
+          <td>
+            ${canEdit ? `
+              <button class="btn btn-ghost btn-sm" onclick="editarReceita('${r.id}')" title="Editar receita" aria-label="Editar receita de ${fmtData(r.data)}">✏️</button>
+              <button class="btn btn-ghost btn-sm" onclick="excluirReceita('${r.id}')" title="Excluir receita" aria-label="Excluir receita de ${fmtData(r.data)}">🗑️</button>
+            ` : '-'}
+          </td>
+        </tr>
+      `).join('');
+
+      // Reset checkbox "Selecionar Todas"
+      const selecionarTodas = document.getElementById('selecionarTodas');
+      if (selecionarTodas) selecionarTodas.checked = false;
+      atualizarBotaoExcluir();
+    }
+
+    async function limparFiltrosTabela() {
+      periodoReceitasInicializado = true;
+      receitasPaginaAtual = 1;
+      ['filtroMes', 'filtroAno', 'filtroPagamento'].forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) campo.value = '';
+      });
+      renderReceitas();
+    }
+
+    // Modal
+    const modal = document.getElementById('modalReceita');
+    let editandoId = null;
+
+    function abrirModal(receita = null) {
+      editandoId = receita?.id || null;
+      document.getElementById('modalTitle').textContent = receita ? 'Editar Receita' : 'Nova Receita';
+
+      document.getElementById('receitaId').value = receita?.id || '';
+      document.getElementById('receitaData').value = receita?.data || new Date().toISOString().split('T')[0];
+      document.getElementById('receitaDescricao').value = receita?.descricao || '';
+      document.getElementById('receitaCategoria').value = receita?.categoria || 'servico';
+      document.getElementById('receitaPagamento').value = receita?.pagamento || 'dinheiro';
+      document.getElementById('receitaValor').value = receita?.valor || '';
+      document.getElementById('receitaObs').value = receita?.obs || '';
+
+      modal.classList.add('active');
+    }
+
+    function fecharModal() {
+      modal.classList.remove('active');
+      document.getElementById('formReceita').reset();
+      editandoId = null;
+    }
+
+    document.getElementById('btnNovaReceita')?.addEventListener('click', () => abrirModal());
+
+    // ========== IMPORTAÇÃO STONE ==========
+
+    // Funções auxiliares para despesas
+    function getDespesas() {
+      return getCachedArray(getDespesasStorageKey());
+    }
+
+    async function saveDespesas(despesas, options = {}) {
+      const key = getDespesasStorageKey();
+      if (!window.FirebaseStore?.isAuthenticated?.()) throw new Error('Entre novamente para confirmar a gravação no Supabase.');
+      const values = (window.despesasUtils?.compactarMdrMensalParaPersistencia?.(despesas) || despesas);
+      const remoteOptions = { ...options };
+      delete remoteOptions.appendItems;
+      _importSaving = true;
+      try {
+        const confirmed = options.appendItems?.length
+          ? await window.FirebaseStore.upsertItems(key, options.appendItems)
+          : await window.FirebaseStore.setItem(key, values, remoteOptions);
+        if (!confirmed) throw new Error('Gravação pendente no Supabase. Confira a conexão antes de tentar novamente.');
+        await persistArrayCache(key, values);
+        ultimaSincronizacaoReceitasEm = Date.now();
+        return true;
+      } finally {
+        _importSaving = false;
+      }
+    }
+
+    function hasFirebaseAuthenticatedSession() {
+      try {
+        if (!window.FirebaseStore) return false;
+        if (typeof window.FirebaseStore.isAuthenticated === 'function') {
+          return window.FirebaseStore.isAuthenticated();
+        }
+        const auth = typeof window.FirebaseStore.getAuth === 'function'
+          ? window.FirebaseStore.getAuth()
+          : null;
+        return Boolean(auth?.currentUser);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    async function hydrateImportCollectionsFromFirebase() {
+      const receiptsKey = getStorageKey();
+      const expensesKey = getDespesasStorageKey();
+      receitasFullCollectionActive = true;
+      await Promise.all([hydrateArrayCache(receiptsKey), hydrateArrayCache(expensesKey)]);
+
+      const localOnly = reason => ({ remoteVerified: false, reason });
+      if (!window.FirebaseStore || typeof window.FirebaseStore.isAvailable !== 'function') {
+        return localOnly('firebase-unavailable');
+      }
+      if (!hasFirebaseAuthenticatedSession()) {
+        return localOnly('auth-missing');
+      }
+
+      try {
+        if (!await window.FirebaseStore.isAvailable()) return localOnly('firebase-unavailable');
+        const serverReader = typeof window.FirebaseStore.getItemFromRestServer === 'function'
+          ? window.FirebaseStore.getItemFromRestServer.bind(window.FirebaseStore)
+          : typeof window.FirebaseStore.getItemFromServer === 'function'
+            ? window.FirebaseStore.getItemFromServer.bind(window.FirebaseStore)
+            : window.FirebaseStore.getItem.bind(window.FirebaseStore);
+        const receitasRecentes = !receitasServerMode && Date.now() - ultimaSincronizacaoReceitasEm < 120000;
+        const [remoteReceipts, remoteExpenses] = await Promise.all([
+          receitasRecentes ? Promise.resolve(getCachedArray(receiptsKey)) : serverReader(receiptsKey, null),
+          serverReader(expensesKey, null)
+        ]);
+        if (Array.isArray(remoteReceipts)) {
+          const normalizedReceipts = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(receiptsKey, remoteReceipts);
+          const cleanRemoteReceipts = normalizedReceipts ? normalizedReceipts.items : remoteReceipts;
+          const reconciled = window.FirebaseStore.reconcileFinanceSnapshot(receiptsKey, getCachedArray(receiptsKey), cleanRemoteReceipts);
+          await persistArrayCache(receiptsKey, reconciled);
+          ultimaSincronizacaoReceitasEm = Date.now();
+        }
+        if (Array.isArray(remoteExpenses)) {
+          const normalizedExpenses = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(expensesKey, remoteExpenses);
+          const cleanRemoteExpenses = normalizedExpenses ? normalizedExpenses.items : remoteExpenses;
+          const reconciled = window.FirebaseStore.reconcileFinanceSnapshot(expensesKey, getCachedArray(expensesKey), cleanRemoteExpenses);
+          await persistArrayCache(expensesKey, reconciled);
+        }
+        return { remoteVerified: true, reason: null };
+      } catch (error) {
+        console.warn('[Importação] Não foi possível atualizar os dados da nuvem antes da operação:', error);
+        return localOnly('server-read-failed');
+      }
+    }
+
+    // ========== MAQUININHAS (helper) ==========
+    function getImportMaquininhasLavanderiaId() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      return selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+    }
+
+    function getImportMaquininhasStorageKey() {
+      return `${getImportMaquininhasLavanderiaId()}_maquininhas_cadastradas`;
+    }
+
+    const importMaquininhasCache = new Map();
+
+    function safeParseMachineList(raw) {
+      if (Array.isArray(raw)) {
+        return raw;
+      }
+      try {
+        const parsed = JSON.parse(raw || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function getDefaultImportMachineConfig(tipo) {
+      if (tipo === 'rede') {
+        return {
+          linhaHeader: 2,
+          mapeamento: {
+            dataVenda: 'DATA DA VENDA',
+            valorBruto: 'VALOR DA VENDA ATUALIZADO',
+            valorLiquido: 'VALOR LÍQUIDO',
+            produto: 'TIPO',
+            bandeira: 'MODALIDADE',
+            formaPagamento: 'MODALIDADE',
+            status: 'STATUS DA VENDA',
+            horarioVenda: 'HORA DA VENDA',
+            descontoMDR: 'VALOR MDR',
+            codigoVenda: 'NSU'
+          }
+        };
+      }
+      if (tipo === 'mercadopago') {
+        return {
+          linhaHeader: 1,
+          mapeamento: {
+            dataVenda: 'date_created',
+            valorBruto: 'transaction_amount',
+            valorLiquido: 'net_received_amount',
+            produto: 'reason',
+            bandeira: 'reason',
+            formaPagamento: 'payment_type',
+            status: 'status',
+            descontoMDR: 'mercadopago_fee',
+            codigoVenda: 'operation_id'
+          }
+        };
+      }
+      return { linhaHeader: 1, mapeamento: {} };
+    }
+
+    function normalizeMachineImportConfig(machine = {}) {
+      const defaults = getDefaultImportMachineConfig(machine.tipo);
+      const existingMapping = machine.mapeamento || {};
+      const normalizedMapping = {};
+
+      Object.keys(defaults.mapeamento).concat(['dataVenda', 'valorBruto', 'valorLiquido', 'produto', 'bandeira', 'formaPagamento', 'status', 'horarioVenda', 'descontoMDR', 'codigoVenda']).forEach(key => {
+        const rawValue = String(existingMapping[key] || '').trim();
+        if (rawValue) {
+          normalizedMapping[key] = rawValue.toUpperCase();
+        } else if (machine.tipo === 'rede' && defaults.mapeamento[key]) {
+          normalizedMapping[key] = defaults.mapeamento[key];
+        }
+      });
+
+      return {
+        ...machine,
+        formatoData: machine.formatoData || 'auto',
+        linhaHeader: machine.linhaHeader || defaults.linhaHeader || 1,
+        mapeamento: normalizedMapping,
+        ativa: machine.ativa !== false
+      };
+    }
+
+    function readLocalImportMachineList(scopedKey = getImportMaquininhasStorageKey()) {
+      const scopedList = safeParseMachineList(localStorage.getItem(scopedKey)).map(normalizeMachineImportConfig);
+      if (scopedList.length > 0) return scopedList;
+
+      const legacyList = safeParseMachineList(localStorage.getItem('maquininhas_cadastradas')).map(normalizeMachineImportConfig);
+      if (legacyList.length > 0) {
+        try {
+          localStorage.setItem(scopedKey, JSON.stringify(legacyList));
+        } catch (e) {}
+        return legacyList;
+      }
+
+      return [];
+    }
+
+    async function hydrateMaquininhasImportFromFirebase(force = false) {
+      const scopedKey = getImportMaquininhasStorageKey();
+      if (!force && importMaquininhasCache.has(scopedKey)) {
+        return importMaquininhasCache.get(scopedKey);
+      }
+
+      let resolved = readLocalImportMachineList(scopedKey);
+
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          const available = await window.FirebaseStore.isAvailable();
+          if (available) {
+            const remoteList = safeParseMachineList(await window.FirebaseStore.getItem(scopedKey, [])).map(normalizeMachineImportConfig);
+            if (remoteList.length > 0) {
+              resolved = remoteList;
+            } else if (resolved.length > 0) {
+              await window.FirebaseStore.setItem(scopedKey, resolved);
+            }
+          }
+        } catch (error) {
+          console.warn('[Receitas] Erro ao carregar maquininhas do Firebase:', error);
+        }
+      }
+
+      importMaquininhasCache.set(scopedKey, resolved);
+      try {
+        localStorage.setItem(scopedKey, JSON.stringify(resolved));
+      } catch (e) {}
+
+      return resolved;
+    }
+
+    function getMaquininhasImport() {
+      const scopedKey = getImportMaquininhasStorageKey();
+      const cached = importMaquininhasCache.get(scopedKey);
+      if (Array.isArray(cached) && cached.length > 0) {
+        return cached.map(normalizeMachineImportConfig);
+      }
+
+      return readLocalImportMachineList(scopedKey);
+    }
+
+    // Fallback legado se nenhuma maquininha cadastrada
+    function getCategoriaMdrImportacao(maqConfig) {
+      if (maqConfig) {
+        if (maqConfig.autoMDR === false) return null;
+        return maqConfig.categoriaMDR || 'mdr';
+      }
+      let config = {};
+      try { config = JSON.parse(localStorage.getItem('config_importacao_vendas') || '{}'); } catch (e) {}
+      if (config.autoMDR === false) return null;
+      const categoria = String(config.categoriaMDR || 'mdr').trim();
+      const categoriaNormalizada = window.despesasUtils?.normalizarCategoriaDespesaId?.(categoria) || (categoria === 'taxas' ? 'mdr' : categoria);
+      return categoriaNormalizada || 'mdr';
+    }
+
+    let stoneFileData = null;
+    let stoneAllFilesData = []; // todos os arquivos carregados
+    let stoneFileSources = [];
+    let importPreviewAnalysis = null;
+    let currentMaquinaConfig = null; // maquininha selecionada para importação atual
+    let stoneMapping = {
+      dataVenda: null,
+      valorBruto: null,
+      valorLiquido: null,
+      produto: null,
+      bandeira: null,
+      formaPagamento: null,
+      status: null,
+      horarioVenda: null,
+      descontoMDR: null,
+      codigoVenda: null
+    };
+    const MACHINE_MAPPING_KEYS = ['dataVenda', 'valorBruto', 'valorLiquido', 'produto', 'bandeira', 'formaPagamento', 'status', 'horarioVenda', 'descontoMDR', 'codigoVenda'];
+    const MACHINE_MAPPING_SELECTS = {
+      dataVenda: 'mapDataVenda',
+      valorBruto: 'mapValorBruto',
+      valorLiquido: 'mapValorLiquido',
+      produto: 'mapProduto',
+      bandeira: 'mapBandeira',
+      formaPagamento: 'mapFormaPagamento',
+      status: 'mapStatus',
+      horarioVenda: 'mapHorarioVenda',
+      descontoMDR: 'mapDescontoMDR',
+      codigoVenda: 'mapCodigoVenda'
+    };
+    const DEFAULT_MAPPING_STATUS_HTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      Sistema detectou formato automaticamente
+    `;
+    const SAVED_MAPPING_STATUS_HTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
+      Configuração da maquininha aplicada automaticamente
+    `;
+    const PARTIAL_MAPPING_STATUS_HTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86l-7.4 12.82A2 2 0 004.6 20h14.8a2 2 0 001.71-3.32l-7.4-12.82a2 2 0 00-3.42 0z"/>
+      </svg>
+      Configuração parcial da maquininha aplicada. Revise as colunas abaixo.
+    `;
+
+    function normalizeImportHeaderValue(value) {
+      return String(value || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toUpperCase().trim();
+    }
+
+    function setImportManualControlsVisibility(show) {
+      const controls = document.getElementById('manualImportControls');
+      if (controls) controls.style.display = show ? 'flex' : 'none';
+    }
+
+    function setMappingStatusHtml(html) {
+      const el = document.getElementById('mappingStatus');
+      if (el) el.innerHTML = html;
+    }
+
+    function hasSavedRequiredMachineMapping(maqConfig) {
+      const mapping = maqConfig?.mapeamento || {};
+      return ['dataVenda', 'valorBruto'].every(key => String(mapping[key] || '').trim() !== '');
+    }
+
+    function resolveConfiguredColumn(headers, configuredValue) {
+      const raw = String(configuredValue || '').trim();
+      if (!raw) return null;
+
+      const normalizedTarget = normalizeImportHeaderValue(raw);
+      for (let i = 0; i < headers.length; i++) {
+        const normalizedHeader = normalizeImportHeaderValue(headers[i]);
+        if (normalizedHeader && normalizedHeader === normalizedTarget) {
+          return i;
+        }
+      }
+
+      if (/^\d+$/.test(raw)) {
+        const numberIndex = parseInt(raw, 10) - 1;
+        return numberIndex >= 0 && numberIndex < headers.length ? numberIndex : null;
+      }
+
+      if (/^[A-Za-z]+$/.test(raw)) {
+        let letterIndex = 0;
+        const letters = raw.toUpperCase();
+        for (let i = 0; i < letters.length; i++) {
+          letterIndex = (letterIndex * 26) + (letters.charCodeAt(i) - 64);
+        }
+        letterIndex -= 1;
+        if (letterIndex >= 0 && letterIndex < headers.length) {
+          return letterIndex;
+        }
+      }
+
+      if (normalizedTarget.length < 3) {
+        return null;
+      }
+
+      for (let i = 0; i < headers.length; i++) {
+        const normalizedHeader = normalizeImportHeaderValue(headers[i]);
+        if (!normalizedHeader) continue;
+        if (normalizedHeader.includes(normalizedTarget) || normalizedTarget.includes(normalizedHeader)) {
+          return i;
+        }
+      }
+
+      return null;
+    }
+
+    function getConfiguredMachineMapping(headers, maqConfig) {
+      const mappingConfig = maqConfig?.mapeamento || {};
+      const resolved = {};
+      MACHINE_MAPPING_KEYS.forEach(key => {
+        resolved[key] = resolveConfiguredColumn(headers, mappingConfig[key]);
+      });
+      return resolved;
+    }
+
+    // ========== MODAL SELETOR DE MAQUININHA ==========
+    async function abrirSeletorMaquininha() {
+      const maquininhas = await hydrateMaquininhasImportFromFirebase();
+      if (maquininhas.length === 1) {
+        abrirModalImportacao(maquininhas[0]);
+        return;
+      }
+      const container = document.getElementById('listaMaquininhasSeletor');
+      const empty = document.getElementById('semMaquininhasReceitas');
+      if (maquininhas.length === 0) {
+        container.innerHTML = '';
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        const tipoLabel = { stone: 'Stone', cielo: 'Cielo', pagseguro: 'PagSeguro', getnet: 'Getnet', rede: 'Rede', mercadopago: 'Mercado Pago', outro: 'Outro' };
+        container.innerHTML = maquininhas.map(m => `
+          <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;padding:.875rem 1rem;border:1px solid var(--color-glass-border);border-radius:.5rem;"
+            onclick="selecionarMaquininhaImportacao('${m.id}')">
+            <span style="font-size:1.25rem;">💳</span>
+            <div style="text-align:left;margin-left:.75rem;">
+              <p class="font-medium" style="color:var(--color-text-primary);">${m.nome}</p>
+              <p class="text-xs" style="color:var(--color-text-muted);">${tipoLabel[m.tipo] || m.tipo} &bull; ${m.formatoData === 'mdy' ? 'MM/DD/AAAA' : m.formatoData === 'auto' ? '🔍 Auto' : 'DD/MM/AAAA'}</p>
+            </div>
+          </button>
+        `).join('');
+      }
+      const modal = document.getElementById('modalSelecionarMaquininha');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    async function selecionarMaquininhaImportacao(id) {
+      const maquininhas = getMaquininhasImport().length > 0
+        ? getMaquininhasImport()
+        : await hydrateMaquininhasImportFromFirebase(true);
+      const maq = maquininhas.find(item => item.id === id) || null;
+      fecharModalSelecionarMaquininha();
+      abrirModalImportacao(maq);
+    }
+
+    function fecharModalSelecionarMaquininha() {
+      const modal = document.getElementById('modalSelecionarMaquininha');
+      modal.classList.remove('active');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    document.getElementById('modalSelecionarMaquininha')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalSelecionarMaquininha') fecharModalSelecionarMaquininha();
+    });
+
+    // ========== MODAL IMPORTAÇÃO ==========
+    function abrirModalImportacao(maqConfig) {
+      currentMaquinaConfig = maqConfig || null;
+      const modal = document.getElementById('modalStone');
+      // Set title
+      const title = document.getElementById('modalImportacaoTitle');
+      if (title) {
+        title.textContent = maqConfig
+          ? `📊 Importar Vendas — ${maqConfig.nome}`
+          : '📊 Importar Vendas';
+      }
+      // Pre-fill date format from machine config
+      if (maqConfig && document.getElementById('mapFormatoData')) {
+        // Sempre 'auto' na UI: o processamento agora sempre detecta por arquivo
+      document.getElementById('mapFormatoData').value = 'auto';
+      }
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+      resetarModalStone();
+      // Aplica linha do cabeçalho configurada para esta maquininha
+      const lhInput = document.getElementById('inputLinhaHeader');
+      if (lhInput && maqConfig) {
+        lhInput.value = String(maqConfig.linhaHeader || (maqConfig.tipo === 'rede' ? 2 : 1));
+      }
+      setImportManualControlsVisibility(!hasSavedRequiredMachineMapping(maqConfig));
+      setMappingStatusHtml(DEFAULT_MAPPING_STATUS_HTML);
+    }
+
+    // Keep old name as alias for any remaining references
+    function abrirModalStone() {
+      const maquininhas = getMaquininhasImport();
+      if (maquininhas.length === 0) {
+        void hydrateMaquininhasImportFromFirebase(true).then(lista => {
+          if (lista.length === 0) {
+            abrirModalImportacao(null);
+            return;
+          }
+
+          if (lista.length === 1) {
+            abrirModalImportacao(lista[0]);
+            return;
+          }
+
+          void abrirSeletorMaquininha();
+        });
+      } else {
+        void abrirSeletorMaquininha();
+      }
+    }
+
+    function fecharModalStone() {
+      const modal = document.getElementById('modalStone');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        resetarModalStone();
+      }, 300); // Aguarda animação
+    }
+
+    function resetarModalStone() {
+      stoneFileData = null;
+      stoneAllFilesData = [];
+      stoneFileSources = [];
+      importPreviewAnalysis = null;
+      document.getElementById('fileInput').value = '';
+      const lh = document.getElementById('inputLinhaHeader');
+      if (lh) lh.value = '1';
+      setImportManualControlsVisibility(true);
+      setMappingStatusHtml(DEFAULT_MAPPING_STATUS_HTML);
+      document.getElementById('uploadArea').style.display = 'block';
+      document.getElementById('fileInfo').style.display = 'none';
+      document.getElementById('previewSection').style.display = 'none';
+      renderImportWarnings([]);
+      document.getElementById('mappingSection').style.display = 'none';
+      document.getElementById('progressSection').style.display = 'none';
+      document.getElementById('resultsSection').style.display = 'none';
+      const resumoImportacao = document.getElementById('importacaoResumo');
+      if (resumoImportacao) resumoImportacao.textContent = 'Nenhuma linha processada ainda.';
+      const totalDuplicadas = document.getElementById('transacoesDuplicadas');
+      if (totalDuplicadas) totalDuplicadas.textContent = '0';
+      ['previewValidas', 'previewDuplicadas', 'previewIgnoradas', 'previewErros', 'previewExibidas',
+        'transacoesIgnoradas', 'transacoesErros'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = '0';
+      });
+      document.getElementById('btnProcessar').style.display = 'none';
+      document.getElementById('btnConcluir').style.display = 'none';
+      document.getElementById('btnDesfazerImportacaoResultado').style.display = 'none';
+      const btnExportarErros = document.getElementById('btnExportarErrosResultado');
+      if (btnExportarErros) btnExportarErros.style.display = 'none';
+    }
+
+    function removerArquivo() {
+      resetarModalStone();
+    }
+
+    // Drag & Drop
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+
+    dropzone?.addEventListener('click', () => fileInput.click());
+
+    dropzone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('drag-over');
+    });
+
+    dropzone?.addEventListener('dragleave', () => {
+      dropzone.classList.remove('drag-over');
+    });
+
+    dropzone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        processarArquivos(files);
+      }
+    });
+
+    fileInput?.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        processarArquivos(e.target.files);
+      }
+    });
+
+    // Atualiza preview e mapeamento ao mudar linha do cabeçalho
+    document.getElementById('inputLinhaHeader')?.addEventListener('change', () => {
+      if (stoneFileData) {
+        gerarPreview(stoneFileData);
+        if (stoneAllFilesData.length > 1) {
+          const hi = getHeaderRowIndex();
+          document.getElementById('totalRows').textContent =
+            stoneAllFilesData.reduce((s, fd) => s + Math.max(0, fd.length - hi - 1), 0);
+        }
+        detectarMapeamento(stoneFileData);
+      }
+    });
+
+    async function lerArquivoXLSX(file) {
+      if (!window.XLSX) {
+        await window.LavaCashVendorLoader?.loadXLSX?.();
+      }
+      if (!window.XLSX) throw new Error('Biblioteca XLSX não disponível.');
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array', cellDates: false });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false, defval: '' });
+            resolve(jsonData);
+          } catch (err) { reject(err); }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function processarArquivos(files) {
+      if (!files || files.length === 0) return;
+      const filesArr = Array.from(files);
+      const totalSize = filesArr.reduce((s, f) => s + f.size, 0);
+
+      document.getElementById('uploadArea').style.display = 'none';
+      document.getElementById('fileInfo').style.display = 'block';
+
+      const fileListInfo = document.getElementById('fileListInfo');
+      if (fileListInfo) {
+        if (filesArr.length === 1) {
+          fileListInfo.innerHTML = `<p class="file-name">${filesArr[0].name}</p><p class="file-size">${(filesArr[0].size/1024).toFixed(2)} KB</p>`;
+        } else {
+          fileListInfo.innerHTML =
+            `<p class="file-name">${filesArr.length} arquivos selecionados</p>` +
+            `<p class="file-size">${(totalSize/1024).toFixed(2)} KB total</p>` +
+            `<div style="font-size:.75rem;color:var(--color-text-muted);margin-top:.25rem;line-height:1.6;">` +
+            filesArr.map(f => `📄 ${f.name}`).join('<br>') + `</div>`;
+        }
+      }
+
+      Promise.all(filesArr.map(lerArquivoXLSX))
+        .then(allData => {
+          stoneAllFilesData = allData;
+          stoneFileSources = allData.map((data, index) => ({
+            name: filesArr[index]?.name || `Arquivo ${index + 1}`,
+            data
+          }));
+          stoneFileData = allData[0];
+
+          gerarPreview(stoneFileData);
+
+          // Atualiza total de linhas somando todos os arquivos
+          if (allData.length > 1) {
+            const hi = getHeaderRowIndex();
+            const total = allData.reduce((s, fd) => s + Math.max(0, fd.length - hi - 1), 0);
+            document.getElementById('totalRows').textContent = total;
+          }
+
+          detectarMapeamento(stoneFileData);
+        })
+        .catch(err => {
+          console.error('❌ [IMPORT] Erro ao ler arquivo(s):', err);
+          alert('Erro ao ler arquivo(s). Verifique se são arquivos CSV ou XLSX válidos.');
+        });
+    }
+
+    function getHeaderRowIndex() {
+      const v = parseInt(document.getElementById('inputLinhaHeader')?.value || '1', 10);
+      return isNaN(v) || v < 1 ? 0 : v - 1;
+    }
+
+    function gerarPreview(data) {
+      const headerIdx = getHeaderRowIndex();
+      const headers = data[headerIdx] || data[0];
+      const totalRows = (stoneAllFilesData.length > 0 ? stoneAllFilesData : [data])
+        .reduce((sum, fileData) => sum + Math.max(0, fileData.length - headerIdx - 1), 0);
+
+      document.getElementById('totalRows').textContent = totalRows;
+      document.getElementById('totalCols').textContent = headers.length;
+      document.getElementById('totalArquivos').textContent = Math.max(1, stoneAllFilesData.length);
+      document.getElementById('previewTable').innerHTML =
+        '<tbody><tr><td style="padding:1rem;">Configure ou confirme as colunas para gerar a prévia validada.</td></tr></tbody>';
+      document.getElementById('previewSection').style.display = 'block';
+    }
+
+    function detectarMapeamento(data) {
+      const headerIdx = getHeaderRowIndex();
+      const headers = data[headerIdx] || data[0];
+
+      // Mapeamento automático baseado em nomes comuns
+      const mapeamentoAutomatico = {
+        dataVenda: encontrarColuna(headers, ['DATA DA VENDA', 'DATA VENDA', 'DATA DA TRANSACAO', 'DATA/HORA', 'DATA', 'DATE', 'DATE_CREATED', 'DATA DA COMPRA']),
+        valorBruto: encontrarColuna(headers, ['VALOR BRUTO', 'VALOR_BRUTO', 'GROSS_VALUE', 'BRUTO',
+          'VALOR DA VENDA', 'VALOR_VENDA', 'VENDA ATUALIZADO', 'TOTAL VENDA', 'TOTAL_VENDA',
+          'TRANSACTION_AMOUNT', 'GROSS AMOUNT', 'VALOR TOTAL', 'VALOR DO PRODUTO']),
+        valorLiquido: encontrarColuna(headers, ['VALOR LIQUIDO', 'VALOR_LIQUIDO', 'NET_VALUE', 'LIQUIDO', 'VALOR LIQUID',
+          'NET_RECEIVED_AMOUNT', 'NET AMOUNT', 'VALOR RECEBIDO', 'VALOR TOTAL RECEBIDO']),
+        produto: encontrarColuna(headers, ['PRODUTO', 'TIPO', 'TYPE', 'PRODUCT', 'REASON', 'DESCRICAO DA OPERACAO', 'DESCRI']),
+        bandeira: encontrarColuna(headers, ['BANDEIRA', 'BRAND', 'FLAG', 'MODALIDADE', 'MODALITY', 'MODALIDADE DE PAGAMENTO',
+          'PAYMENT_METHOD_ID', 'PAYMENT_TYPE', 'CARD BRAND']),
+        formaPagamento: encontrarColuna(headers, ['FORMA DE PAGAMENTO', 'MEIO DE PAGAMENTO', 'TIPO DE PAGAMENTO',
+          'PAYMENT METHOD', 'PAYMENT_METHOD', 'PAYMENT_TYPE_ID', 'PAYMENT TYPE', 'MODALIDADE']),
+        status: encontrarColuna(headers, ['ULTIMO STATUS', 'STATUS', 'SITUACAO', 'LAST_STATUS', 'STATUS DA OPERACAO', 'TRANSACTION STATE']),
+        horarioVenda: encontrarColuna(headers, ['HORA DA VENDA', 'HORARIO VENDA', 'HORARIO DA TRANSACAO', 'HORARIO', 'HORA', 'TIME', 'HORA_VENDA']),
+        descontoMDR: encontrarColuna(headers, ['DESCONTO DE MDR', 'DESCONTO MDR', 'DESCONTO_MDR', 'MDR', 'TAXA MDR', 'TAXA', 'DISCOUNT', 'VALOR MDR',
+          'FEE_AMOUNT', 'FEE', 'TAXA ADMINISTRATIVA', 'TAXA_MP', 'MARKETPLACE_FEE']),
+        codigoVenda: encontrarColuna(headers, ['NSU', 'CODIGO DA VENDA', 'CODIGO VENDA', 'CODIGO DA TRANSACAO',
+          'CODIGO AUTORIZACAO', 'NUMERO DA TRANSACAO DO MERCADO PAGO', 'OPERATION_ID',
+          'STONE ID', 'STONEID', 'ID DA STONE', 'ID STONE',
+          'ID DA TRANSACAO', 'ID TRANSACAO', 'NUMERO DA VENDA', 'TRANSACTION ID',
+          'TRANSACTION_ID', 'SALE ID', 'SALE_ID', 'TID', 'AUTHORIZATION CODE', 'AUTHORIZATION_CODE'])
+      };
+
+      const mapeamentoConfigurado = getConfiguredMachineMapping(headers, currentMaquinaConfig);
+      const mapeamentoFinal = { ...mapeamentoAutomatico };
+      let configuracaoAplicada = false;
+      MACHINE_MAPPING_KEYS.forEach(key => {
+        if (mapeamentoConfigurado[key] !== null && mapeamentoConfigurado[key] !== undefined) {
+          mapeamentoFinal[key] = mapeamentoConfigurado[key];
+          configuracaoAplicada = true;
+        }
+      });
+
+      stoneMapping = mapeamentoFinal;
+
+      // Preenche selects
+      preencherSelects(headers, mapeamentoFinal);
+      atualizarPreviaImportacao();
+
+      const configuracaoCompleta = configuracaoAplicada && mapeamentoFinal.dataVenda !== null && mapeamentoFinal.valorBruto !== null;
+      if (configuracaoCompleta) {
+        setImportManualControlsVisibility(false);
+        setMappingStatusHtml(SAVED_MAPPING_STATUS_HTML);
+        document.getElementById('mappingSection').style.display = 'block';
+        return;
+      }
+
+      setImportManualControlsVisibility(true);
+      setMappingStatusHtml(configuracaoAplicada ? PARTIAL_MAPPING_STATUS_HTML : DEFAULT_MAPPING_STATUS_HTML);
+
+      document.getElementById('mappingSection').style.display = 'block';
+    }
+
+    function encontrarColuna(headers, possiveisNomes) {
+      for (let i = 0; i < headers.length; i++) {
+        // Normaliza: remove acentos e converte para maiúsculas para comparação robusta
+        const headerUpper = (headers[i] || '').toString()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .toUpperCase().trim();
+        for (const nome of possiveisNomes) {
+          if (headerUpper.includes(nome.toUpperCase())) {
+            return i;
+          }
+        }
+      }
+      return null;
+    }
+
+    function preencherSelects(headers, mapeamento) {
+      Object.entries(MACHINE_MAPPING_SELECTS).forEach(([campo, selectId]) => {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        const optionalFields = ['valorLiquido', 'produto', 'bandeira', 'formaPagamento', 'status', 'horarioVenda', 'descontoMDR', 'codigoVenda'];
+        const naoUsarLabel = optionalFields.includes(campo) ? '-- Não usar --' : '-- Selecione --';
+        select.innerHTML = `<option value="">${naoUsarLabel}</option>`;
+        headers.forEach((header, i) => {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = header || `Coluna ${i + 1}`;
+          select.appendChild(option);
+        });
+
+        // Define valor detectado
+        if (mapeamento[campo] !== null && mapeamento[campo] !== undefined) {
+          select.value = mapeamento[campo];
+        }
+
+        select.onchange = () => {
+          atualizarStoneMappingDosSelects();
+          atualizarPreviaImportacao();
+        };
+      });
+    }
+
+    function atualizarStoneMappingDosSelects() {
+      Object.entries(MACHINE_MAPPING_SELECTS).forEach(([key, selectId]) => {
+        const rawValue = document.getElementById(selectId)?.value;
+        stoneMapping[key] = rawValue === '' || rawValue === undefined ? null : parseInt(rawValue, 10);
+      });
+      return stoneMapping;
+    }
+
+    async function persistirMapeamentoMaquininha(headers) {
+      if (!currentMaquinaConfig?.id || !Array.isArray(headers)) return;
+      const scopedKey = getImportMaquininhasStorageKey();
+      const list = getMaquininhasImport();
+      const index = list.findIndex(item => item.id === currentMaquinaConfig.id);
+      if (index < 0) return;
+
+      const savedMapping = {};
+      MACHINE_MAPPING_KEYS.forEach(key => {
+        const columnIndex = stoneMapping[key];
+        if (columnIndex !== null && !isNaN(columnIndex) && headers[columnIndex] !== undefined) {
+          savedMapping[key] = String(headers[columnIndex] || '').trim().toUpperCase();
+        }
+      });
+
+      const updatedMachine = normalizeMachineImportConfig({
+        ...list[index],
+        linhaHeader: getHeaderRowIndex() + 1,
+        formatoData: document.getElementById('mapFormatoData')?.value || 'auto',
+        mapeamento: savedMapping
+      });
+      list[index] = updatedMachine;
+      currentMaquinaConfig = updatedMachine;
+      importMaquininhasCache.set(scopedKey, list);
+      localStorage.setItem(scopedKey, JSON.stringify(list));
+
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            await window.FirebaseStore.setItem(scopedKey, list);
+          }
+        } catch (error) {
+          console.warn('[Receitas] Não foi possível salvar o mapeamento da maquininha:', error);
+        }
+      }
+    }
+
+    // Detecta automaticamente se as datas de uma coluna estão em formato BR (DMY) ou EUA (MDY).
+    // Varre TODAS as linhas e usa análise de intervalo como fallback (ex: janeiro com dias 1-12).
+    function autoDetectDateFormat(rows, headerIdx, colIdx) {
+      if (colIdx === null || colIdx === undefined || isNaN(colIdx)) return 'dmy';
+      let dmyEvidence = 0, mdyEvidence = 0;
+      let maxA = 0, maxB = 0;
+      const start = headerIdx + 1;
+      for (let i = start; i < rows.length; i++) {
+        const raw = String(rows[i]?.[colIdx] || '').trim();
+        if (/^\d{4}[\s\/\-\.]/.test(raw)) continue; // ISO: parseDateStoneStr cuida
+        const m = raw.match(/^(\d{1,2})[\/\-\.](\d{1,2})/);
+        if (!m) continue;
+        const a = parseInt(m[1], 10);
+        const b = parseInt(m[2], 10);
+        if (a > maxA) maxA = a;
+        if (b > maxB) maxB = b;
+        if (a > 12) dmyEvidence++;       // primeiro segmento > 12 → só pode ser dia → DMY
+        else if (b > 12) mdyEvidence++;  // segundo segmento > 12 → só pode ser dia → MDY
+      }
+      if (dmyEvidence > 0 && mdyEvidence === 0) return 'dmy';
+      if (mdyEvidence > 0 && dmyEvidence === 0) return 'mdy';
+      // Fallback por intervalo: o segmento com max maior é o dia (dias vão até 31, meses até 12)
+      if (maxA > 12) return 'dmy';
+      if (maxB > 12) return 'mdy';
+      if (maxA > maxB) return 'dmy';
+      if (maxB > maxA) return 'mdy';
+      return 'dmy';
+    }
+
+    // Converte string de data para YYYY-MM-DD respeitando o formato selecionado.
+    // Usa regex para extrair a data diretamente, ignorando hora, vírgulas, timezone e ruídos.
+    // Suporta: ISO (YYYY-MM-DD), BR DD/MM/YYYY, EUA MM/DD/YYYY, com ou sem hora/timezone.
+    // Exemplos OK: "15/01/2025, 14:30:00", "2025-01-15T14:30-03:00", "2025.01.15", "01/15/25"
+    function parseDateStoneStr(partesData, formato) {
+      const raw = String(partesData == null ? '' : partesData).trim();
+      if (!raw) return '';
+
+      // ISO: YYYY-MM-DD (ano com 4 dígitos primeiro) — formato unívoco
+      const isoMatch = raw.match(/(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})/);
+      if (isoMatch) {
+        return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+      }
+
+      // Local: DD/MM/YYYY ou MM/DD/YYYY (ano por último)
+      const localMatch = raw.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+      if (!localMatch) return '';
+      let seg1 = parseInt(localMatch[1], 10);
+      let seg2 = parseInt(localMatch[2], 10);
+      const ano = localMatch[3].length === 2 ? '20' + localMatch[3] : localMatch[3];
+
+      // Aplica o formato: DMY → dia=seg1,mes=seg2 | MDY → mes=seg1,dia=seg2
+      let dia = formato === 'mdy' ? seg2 : seg1;
+      let mes = formato === 'mdy' ? seg1 : seg2;
+
+      // Auto-correção: se o mês resultante > 12, o formato estava errado → inverte
+      if (mes > 12 && dia <= 12) { const t = mes; mes = dia; dia = t; }
+
+      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    }
+
+    // Converte valor numérico de qualquer formato (BR: 1.234,56 / US: 1,234.56 / simples: 1234.56)
+    // No padrão Stone/BR, vírgula é SEMPRE separador decimal (ex: 15,000000 = R$ 15,00)
+    function parseValorImport(str) {
+      if (typeof str === 'number' && Number.isFinite(str)) {
+        return str;
+      }
+
+      let s = String(str || '0').trim().replace(/[^0-9.,\-]/g, '');
+      if (!s || s === '-') return 0;
+      const temVirgulaEPonto = s.includes(',') && s.includes('.');
+      if (temVirgulaEPonto) {
+        // Determina qual é o separador decimal pelo que vem por último
+        if (s.lastIndexOf(',') > s.lastIndexOf('.')) {
+          // BR: 1.234,56 → remove pontos de milhar, troca vírgula por ponto
+          s = s.replace(/\./g, '').replace(',', '.');
+        } else {
+          // US: 1,234.56 → remove vírgulas de milhar
+          s = s.replace(/,/g, '');
+        }
+      } else if (s.includes(',')) {
+        // Só vírgula (sem ponto): no padrão BR/Stone a vírgula é SEMPRE decimal
+        // Ex: 15,000000 → 15.000000 (= R$ 15,00)
+        //     15,50     → 15.50     (= R$ 15,50)
+        //     1500,00   → 1500.00   (= R$ 1500,00)
+        const partes = s.split(',');
+        s = partes[0] + '.' + (partes[1] || '0');
+      }
+      // Ponto: pode ser decimal (1234.56) ou milhar BR (1.234)
+      // Se chegou aqui com ponto, mantém como está (já é decimal)
+      const parsed = parseFloat(s) || 0;
+      return parsed;
+    }
+
+    function escapeImportHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function isValidImportDate(dateString) {
+      const match = String(dateString || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return false;
+      const year = Number(match[1]);
+      const month = Number(match[2]);
+      const day = Number(match[3]);
+      const date = new Date(year, month - 1, day);
+      return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+    }
+
+    function normalizeImportTime(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      const match = raw.match(/(\d{1,2})[:h](\d{2})(?::(\d{2}))?/i);
+      if (!match) return '';
+      const hours = Number(match[1]);
+      const minutes = Number(match[2]);
+      const seconds = match[3] !== undefined ? Number(match[3]) : null;
+      if (hours > 23 || minutes > 59 || (seconds !== null && seconds > 59)) return '';
+      const hourText = String(hours).padStart(2, '0');
+      const minuteText = String(minutes).padStart(2, '0');
+      const secondText = seconds !== null ? `:${String(seconds).padStart(2, '0')}` : '';
+      return `${hourText}:${minuteText}${secondText}`;
+    }
+
+    function classifyImportStatus(status, hasStatusColumn) {
+      if (!hasStatusColumn) return { type: 'approved', reason: 'Arquivo sem coluna de status' };
+      const normalized = normalizeImportSignatureChunk(status);
+      if (!normalized) return { type: 'error', reason: 'Status vazio' };
+
+      const ignoredTokens = ['cancel', 'estorn', 'desfeit', 'refund', 'revert', 'rejeit', 'recus', 'negad', 'void', 'chargeback'];
+      if (ignoredTokens.some(token => normalized.includes(token))) {
+        return { type: 'ignored', reason: `Status ignorado: ${status}` };
+      }
+
+      const approvedTokens = ['aprov', 'approv', 'approved', 'confirm', 'conclu', 'complete', 'paid', 'pago', 'success', 'captur', 'settled', 'accredit', 'accredited', 'autoriz', 'finaliz'];
+      if (approvedTokens.some(token => normalized.includes(token))) {
+        return { type: 'approved', reason: '' };
+      }
+
+      return { type: 'error', reason: `Status não aprovado: ${status}` };
+    }
+
+    function inferImportPaymentMethod(paymentValue, productValue, brandValue) {
+      const text = normalizeImportSignatureChunk(`${paymentValue || ''} ${productValue || ''} ${brandValue || ''}`);
+      if (text.includes('pix') || text.includes('account_money') || (currentMaquinaConfig?.tipo === 'mercadopago' && text.includes('bank_transfer'))) return 'pix';
+      if (text.includes('dinheiro') || text.includes('cash')) return 'dinheiro';
+      if (text.includes('boleto')) return 'boleto';
+      if (text.includes('transfer')) return 'transferencia';
+      if (text.includes('credit') || text.includes('credito') || text.includes('crédito')) return 'cartao_credito';
+      if (text.includes('debit') || text.includes('debito') || text.includes('débito')) return 'cartao_debito';
+      return currentMaquinaConfig?.tipo === 'mercadopago' ? 'pix' : 'cartao_debito';
+    }
+
+    function getImportRowsWithMetadata() {
+      const headerIdx = getHeaderRowIndex();
+      const sources = stoneFileSources.length > 0
+        ? stoneFileSources
+        : (stoneAllFilesData.length > 0 ? stoneAllFilesData.map((data, index) => ({ name: `Arquivo ${index + 1}`, data })) : [{ name: 'Arquivo', data: stoneFileData }]);
+      const result = [];
+
+      sources.forEach((source, fileIndex) => {
+        const data = source.data || [];
+        const detectedFormat = autoDetectDateFormat(data, headerIdx, stoneMapping.dataVenda);
+        data.slice(headerIdx + 1).forEach((row, rowIndex) => {
+          result.push({
+            row,
+            fileIndex,
+            fileName: source.name,
+            sourceRowNumber: headerIdx + rowIndex + 2,
+            format: detectedFormat
+          });
+        });
+      });
+
+      return result;
+    }
+
+    function parseImportDateTime(rawDate, rawSeparateTime, format) {
+      if (rawDate instanceof Date && !isNaN(rawDate.getTime())) {
+        return {
+          date: rawDate.toISOString().split('T')[0],
+          time: normalizeImportTime(rawSeparateTime) || normalizeImportTime(rawDate.toTimeString())
+        };
+      }
+
+      const dateText = String(rawDate || '').trim();
+      const inlineTimeMatch = dateText.match(/(?:\s|T)(\d{1,2}:\d{2}(?::\d{2})?)/);
+      return {
+        date: parseDateStoneStr(dateText, format),
+        time: normalizeImportTime(rawSeparateTime) || normalizeImportTime(inlineTimeMatch?.[1] || '')
+      };
+    }
+
+    function buildImportDescription(product, brand, time) {
+      const machineName = currentMaquinaConfig?.nome || 'Maquininha';
+      const details = [product || 'Venda', brand].filter(Boolean).join(' ');
+      return `${machineName} - ${details}${time ? ` às ${time}` : ''}`;
+    }
+
+    function analyzeImportRow(meta, existingSignatures, previewSignatures) {
+      const row = meta.row || [];
+      const hasContent = row.some(cell => String(cell || '').trim() !== '');
+      if (!hasContent) return null;
+
+      const hasStatusColumn = stoneMapping.status !== null && !isNaN(stoneMapping.status);
+      const status = hasStatusColumn ? String(row[stoneMapping.status] || '').trim() : '';
+      const statusResult = classifyImportStatus(status, hasStatusColumn);
+      const base = {
+        ...meta,
+        status,
+        category: statusResult.type,
+        reason: statusResult.reason
+      };
+      if (statusResult.type !== 'approved') return base;
+
+      const valorBruto = parseValorImport(row[stoneMapping.valorBruto]);
+      const hasNetColumn = stoneMapping.valorLiquido !== null && !isNaN(stoneMapping.valorLiquido);
+      const mappedMdr = stoneMapping.descontoMDR !== null && !isNaN(stoneMapping.descontoMDR)
+        ? Math.abs(parseValorImport(row[stoneMapping.descontoMDR]))
+        : 0;
+      const valorLiquido = hasNetColumn
+        ? parseValorImport(row[stoneMapping.valorLiquido])
+        : Math.max(0, valorBruto - mappedMdr);
+      if (!Number.isFinite(valorBruto) || valorBruto <= 0) {
+        return { ...base, category: 'error', reason: 'Valor bruto inválido' };
+      }
+      if (!Number.isFinite(valorLiquido) || valorLiquido < 0) {
+        return { ...base, category: 'error', reason: 'Valor líquido inválido' };
+      }
+      if (valorLiquido > valorBruto) {
+        return { ...base, category: 'error', reason: 'Valor líquido maior que o valor bruto' };
+      }
+
+      const rawSeparateTime = stoneMapping.horarioVenda !== null && !isNaN(stoneMapping.horarioVenda)
+        ? row[stoneMapping.horarioVenda]
+        : '';
+      const dateTime = parseImportDateTime(row[stoneMapping.dataVenda], rawSeparateTime, meta.format);
+      if (!isValidImportDate(dateTime.date)) {
+        return { ...base, category: 'error', reason: 'Data inválida ou não reconhecida' };
+      }
+
+      const product = stoneMapping.produto !== null && !isNaN(stoneMapping.produto) ? String(row[stoneMapping.produto] || '').trim() : 'Venda';
+      const brand = stoneMapping.bandeira !== null && !isNaN(stoneMapping.bandeira) ? String(row[stoneMapping.bandeira] || '').trim() : '';
+      const paymentRaw = stoneMapping.formaPagamento !== null && !isNaN(stoneMapping.formaPagamento)
+        ? String(row[stoneMapping.formaPagamento] || '').trim()
+        : '';
+      const saleCode = stoneMapping.codigoVenda !== null && !isNaN(stoneMapping.codigoVenda)
+        ? String(row[stoneMapping.codigoVenda] || '').trim()
+        : '';
+      const payment = inferImportPaymentMethod(paymentRaw, product, brand);
+      const description = buildImportDescription(product, brand, dateTime.time);
+      const grossNetDifference = Math.max(0, valorBruto - valorLiquido);
+      const mdr = grossNetDifference > 0 ? grossNetDifference : mappedMdr;
+      const importSignature = buildImportRowSignature(row, currentMaquinaConfig);
+      const businessSignature = buildReceitaBusinessSignature({
+        maqConfig: currentMaquinaConfig,
+        data: dateTime.date,
+        horario: dateTime.time,
+        descricao: description,
+        valorBruto,
+        valorLiquido,
+        pagamento: payment,
+        bandeira: brand,
+        codigoVenda: saleCode
+      });
+      const fallbackSignature = saleCode ? buildReceitaBusinessSignature({
+        maqConfig: currentMaquinaConfig,
+        data: dateTime.date,
+        horario: dateTime.time,
+        descricao: description,
+        valorBruto,
+        valorLiquido,
+        pagamento: payment,
+        bandeira: brand,
+        codigoVenda: ''
+      }) : '';
+      const codeSignature = buildVendaCodeSignature(currentMaquinaConfig, saleCode);
+      const existingCheckSignatures = [importSignature, businessSignature, codeSignature].filter(Boolean);
+      const previewCheckSignatures = [importSignature, businessSignature, codeSignature].filter(Boolean);
+      const duplicate = existingCheckSignatures.some(signature => existingSignatures.has(signature))
+        || previewCheckSignatures.some(signature => previewSignatures.has(signature));
+      const signatures = previewCheckSignatures;
+
+      if (duplicate) {
+        return {
+          ...base,
+          category: 'duplicate',
+          reason: saleCode ? `Venda já importada (código ${saleCode})` : 'Venda já importada',
+          date: dateTime.date,
+          time: dateTime.time,
+          description,
+          valorBruto,
+          valorLiquido,
+          mdr,
+          brand,
+          payment,
+          paymentRaw,
+          saleCode,
+          signatures
+        };
+      }
+
+      signatures.forEach(signature => previewSignatures.add(signature));
+      return {
+        ...base,
+        category: 'valid',
+        reason: 'Pronta para importar',
+        date: dateTime.date,
+        time: dateTime.time,
+        description,
+        valorBruto,
+        valorLiquido,
+        mdr,
+        product,
+        brand,
+        payment,
+        paymentRaw,
+        saleCode,
+        importSignature,
+        businessSignature,
+        fallbackSignature,
+        codeSignature,
+        signatures
+      };
+    }
+
+    function atualizarPreviaImportacao() {
+      if (!stoneFileData) return;
+      atualizarStoneMappingDosSelects();
+      const requiredMapped = stoneMapping.dataVenda !== null && !isNaN(stoneMapping.dataVenda)
+        && stoneMapping.valorBruto !== null && !isNaN(stoneMapping.valorBruto);
+      if (!requiredMapped) {
+        importPreviewAnalysis = null;
+        document.getElementById('btnProcessar').style.display = 'none';
+        return;
+      }
+
+      const existingSignatures = new Set();
+      getReceitas().forEach(receita => {
+        getReceitaImportSignatures(receita).forEach(signature => existingSignatures.add(signature));
+      });
+      const previewSignatures = new Set();
+      const items = getImportRowsWithMetadata()
+        .map(meta => analyzeImportRow(meta, existingSignatures, previewSignatures))
+        .filter(Boolean);
+      const valid = items.filter(item => item.category === 'valid');
+      const duplicate = items.filter(item => item.category === 'duplicate');
+      const ignored = items.filter(item => item.category === 'ignored');
+      const error = items.filter(item => item.category === 'error');
+      importPreviewAnalysis = {
+        items,
+        valid,
+        duplicate,
+        ignored,
+        error,
+        totalGross: valid.reduce((sum, item) => sum + item.valorBruto, 0),
+        totalNet: valid.reduce((sum, item) => sum + item.valorLiquido, 0),
+        totalMdr: valid.reduce((sum, item) => sum + item.mdr, 0)
+      };
+      importPreviewAnalysis.periods = getImportPeriods(valid);
+      importPreviewAnalysis.warnings = buildImportWarnings(importPreviewAnalysis);
+      renderImportPreview(importPreviewAnalysis);
+      document.getElementById('btnProcessar').style.display = valid.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    function renderImportPreview(analysis) {
+      const labels = {
+        valid: ['Válida', 'import-row-valid'],
+        duplicate: ['Duplicada', 'import-row-duplicate'],
+        ignored: ['Ignorada', 'import-row-ignored'],
+        error: ['Erro', 'import-row-error']
+      };
+      const previewItems = analysis.items.slice(0, 60);
+      const rowsHtml = previewItems.map(item => {
+        const [label, className] = labels[item.category] || labels.error;
+        return `<tr>
+          <td><span class="import-row-badge ${className}">${label}</span></td>
+          <td>${escapeImportHtml(item.fileName)} · linha ${item.sourceRowNumber}</td>
+          <td>${escapeImportHtml(item.date || '-')} ${escapeImportHtml(item.time || '')}</td>
+          <td>${escapeImportHtml(item.description || '-')}</td>
+          <td>${item.valorBruto !== undefined ? fmtBR(item.valorBruto) : '-'}</td>
+          <td>${item.valorLiquido !== undefined ? fmtBR(item.valorLiquido) : '-'}</td>
+          <td>${item.mdr !== undefined ? fmtBR(item.mdr) : '-'}</td>
+          <td>${escapeImportHtml(item.reason || '')}</td>
+        </tr>`;
+      }).join('');
+
+      document.getElementById('previewTable').innerHTML = `
+        <thead><tr>
+          <th>Classificação</th><th>Origem</th><th>Data/Hora</th><th>Descrição</th>
+          <th>Bruto</th><th>Líquido</th><th>MDR</th><th>Motivo</th>
+        </tr></thead>
+        <tbody>${rowsHtml || '<tr><td colspan="8">Nenhuma linha de dados encontrada.</td></tr>'}</tbody>`;
+      document.getElementById('previewValidas').textContent = analysis.valid.length;
+      document.getElementById('previewDuplicadas').textContent = analysis.duplicate.length;
+      document.getElementById('previewIgnoradas').textContent = analysis.ignored.length;
+      document.getElementById('previewErros').textContent = analysis.error.length;
+      document.getElementById('previewExibidas').textContent = previewItems.length;
+      renderImportWarnings(analysis.warnings || []);
+      document.getElementById('previewSection').style.display = 'block';
+    }
+
+    function normalizeImportSignatureChunk(value) {
+      return String(value == null ? '' : value)
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .replace(/\s+/g, ' ')
+        .toLowerCase();
+    }
+
+    function formatImportNumberKey(value) {
+      return Number(value || 0).toFixed(2);
+    }
+
+    function getMaquininhaImportKey(maqConfig) {
+      return normalizeImportSignatureChunk(maqConfig?.id || maqConfig?.nome || 'sem-maquininha');
+    }
+
+    function buildImportRowSignature(row, maqConfig) {
+      const normalizedRow = (Array.isArray(row) ? row : [])
+        .map(cell => normalizeImportSignatureChunk(cell))
+        .join('|');
+      return `stone-row::${getMaquininhaImportKey(maqConfig)}::${normalizedRow}`;
+    }
+
+    function buildReceitaBusinessSignature({ maqConfig, data, horario, descricao, valorBruto, valorLiquido, pagamento, bandeira, codigoVenda }) {
+      return [
+        'stone-business',
+        getMaquininhaImportKey(maqConfig),
+        normalizeImportSignatureChunk(data),
+        normalizeImportSignatureChunk(horario),
+        formatImportNumberKey(valorBruto),
+        normalizeImportSignatureChunk(bandeira),
+        normalizeImportSignatureChunk(descricao),
+        normalizeImportSignatureChunk(codigoVenda),
+        formatImportNumberKey(valorLiquido),
+        normalizeImportSignatureChunk(pagamento)
+      ].join('::');
+    }
+
+    function buildVendaCodeSignature(maqConfig, codigoVenda) {
+      const normalizedCode = normalizeImportSignatureChunk(codigoVenda);
+      if (!normalizedCode) return '';
+      return `stone-code::${getMaquininhaImportKey(maqConfig)}::${normalizedCode}`;
+    }
+
+    function buildMdrImportSignature(row, maqConfig) {
+      return `stone-mdr-row::${getMaquininhaImportKey(maqConfig)}::${buildImportRowSignature(row, maqConfig)}`;
+    }
+
+    function buildMdrBusinessSignature({ maqConfig, data, horario, descricao, valor, categoria, pagamento }) {
+      return [
+        'stone-mdr-business',
+        getMaquininhaImportKey(maqConfig),
+        normalizeImportSignatureChunk(data),
+        normalizeImportSignatureChunk(horario),
+        normalizeImportSignatureChunk(descricao),
+        formatImportNumberKey(valor),
+        normalizeImportSignatureChunk(categoria),
+        normalizeImportSignatureChunk(pagamento)
+      ].join('::');
+    }
+
+    function getReceitaImportSignatures(receita) {
+      if (!receita?.importadoStone) return [];
+
+      const signatures = [];
+      if (receita.importSignature) {
+        signatures.push(String(receita.importSignature));
+      }
+
+      const descricao = receita.descricao || '';
+      const horario = receita.horarioVenda || '';
+      const valorBruto = receita.valor || 0;
+      const valorLiquido = receita.valorLiquido || receita.valor || 0;
+      const pagamento = receita.pagamento || '';
+      const maqConfig = {
+        id: receita.maquininhaId || '',
+        nome: receita.maquinhaNome || ''
+      };
+
+      signatures.push(buildReceitaBusinessSignature({
+        maqConfig,
+        data: receita.data || '',
+        horario,
+        descricao,
+        valorBruto,
+        valorLiquido,
+        pagamento,
+        bandeira: receita.bandeira || '',
+        codigoVenda: receita.codigoVenda || receita.nsu || ''
+      }));
+      if (receita.codigoVenda || receita.nsu) {
+        signatures.push(buildReceitaBusinessSignature({
+          maqConfig,
+          data: receita.data || '',
+          horario,
+          descricao,
+          valorBruto,
+          valorLiquido,
+          pagamento,
+          bandeira: receita.bandeira || '',
+          codigoVenda: ''
+        }));
+      }
+      signatures.push(buildVendaCodeSignature(maqConfig, receita.codigoVenda || receita.nsu || ''));
+
+      return signatures.filter(Boolean);
+    }
+
+    function getDespesaMdrImportSignatures(despesa) {
+      if (!despesa?.importadoStone) return [];
+      if (String(despesa.categoria || '') !== 'mdr') return [];
+
+      const signatures = [];
+      if (despesa.importSignature) {
+        signatures.push(String(despesa.importSignature));
+      }
+
+      const maqConfig = {
+        id: despesa.maquininhaId || '',
+        nome: despesa.maquinhaNome || ''
+      };
+
+      signatures.push(buildMdrBusinessSignature({
+        maqConfig,
+        data: despesa.data || '',
+        horario: despesa.horarioVenda || '',
+        descricao: despesa.descricao || '',
+        valor: despesa.valor || 0,
+        categoria: despesa.categoria || '',
+        pagamento: despesa.pagamento || ''
+      }));
+
+      return signatures.filter(Boolean);
+    }
+
+    async function processarArquivoStone() {
+      if (!stoneFileData) {
+        alert('Nenhum arquivo carregado!');
+        return;
+      }
+      try {
+        await _processarArquivoStoneImpl();
+      } catch(err) {
+        console.error('[IMPORT] Erro inesperado:', err);
+        const pending = readPendingImport();
+        if (pending) savePendingImport({ ...pending, stage: 'failed', error: String(err?.message || err).slice(0, 300) });
+        // Volta para tela de mapeamento em caso de erro
+        document.getElementById('progressSection').style.display = 'none';
+        document.getElementById('mappingSection').style.display = 'block';
+        document.getElementById('btnProcessar').style.display = 'inline-flex';
+        alert('Erro ao processar: ' + (err.message || err));
+      }
+    }
+
+    async function _processarArquivoStoneLegacyImpl() {
+
+      // Atualiza mapeamento dos selects
+      stoneMapping.dataVenda = parseInt(document.getElementById('mapDataVenda').value);
+      stoneMapping.valorBruto = parseInt(document.getElementById('mapValorBruto').value);
+      stoneMapping.valorLiquido = parseInt(document.getElementById('mapValorLiquido').value);
+      stoneMapping.produto = parseInt(document.getElementById('mapProduto').value);
+      stoneMapping.bandeira = parseInt(document.getElementById('mapBandeira').value);
+      stoneMapping.status = parseInt(document.getElementById('mapStatus').value);
+      const horarioVendaVal = document.getElementById('mapHorarioVenda')?.value;
+      stoneMapping.horarioVenda = horarioVendaVal !== '' && horarioVendaVal !== undefined ? parseInt(horarioVendaVal) : null;
+      const descontoMDRVal = document.getElementById('mapDescontoMDR')?.value;
+      stoneMapping.descontoMDR = descontoMDRVal !== '' && descontoMDRVal !== undefined ? parseInt(descontoMDRVal) : null;
+      const formatoDataSelecionado = document.getElementById('mapFormatoData')?.value || 'auto';
+      const headerIdx = getHeaderRowIndex();
+
+      // Valida mapeamento obrigatório
+      if (isNaN(stoneMapping.dataVenda) || isNaN(stoneMapping.valorBruto)) {
+        alert('Por favor, mapeie pelo menos as colunas de Data e Valor Bruto!');
+        return;
+      }
+
+      // Mostra progresso
+      document.getElementById('mappingSection').style.display = 'none';
+      document.getElementById('btnProcessar').style.display = 'none';
+      document.getElementById('progressSection').style.display = 'block';
+
+      const headers = stoneFileData[headerIdx] || stoneFileData[0];
+      // Constrói linhas e formato detectado por arquivo (suporte a formatos mistos)
+      const fileSources = stoneAllFilesData.length > 0 ? stoneAllFilesData : [stoneFileData];
+      const perRowFormat = [];
+      const rows = [];
+      for (const fd of fileSources) {
+        const fileRows = fd.slice(headerIdx + 1);
+        // Sempre detecta automaticamente por arquivo. O select só prevalece se o usuário
+        // escolheu explicitamente 'dmy' ou 'mdy' E a detecção não teve evidência direta.
+        const detected = autoDetectDateFormat(fd, headerIdx, stoneMapping.dataVenda);
+        const fmt = detected;
+        for (const r of fileRows) { rows.push(r); perRowFormat.push(fmt); }
+      }
+
+      let transacoesAprovadas = 0;
+      let transacoesDuplicadas = 0;
+      let valorTotalBruto = 0;
+      let valorTotalLiquido = 0;
+      let totalDescontos = 0;
+
+      const receitas = getReceitas();
+      const receitasImportadasSignatures = new Set();
+      receitas.forEach(receita => {
+        getReceitaImportSignatures(receita).forEach(signature => receitasImportadasSignatures.add(signature));
+      });
+      let novasReceitas = 0;
+      const rowToReceitaId = new Map(); // mapeia índice da linha → id da receita criada
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+
+        // Atualiza barra de progresso
+        const progresso = ((i + 1) / rows.length) * 100;
+        document.getElementById('progressFill').style.width = progresso + '%';
+        document.getElementById('progressText').textContent = `Processando ${i + 1} de ${rows.length}...`;
+
+        await new Promise(resolve => setTimeout(resolve, 1)); // Mini delay para UI
+
+        // Extrai valores
+        const statusRaw = !isNaN(stoneMapping.status) ? String(row[stoneMapping.status] || '').trim() : '';
+        const valorBruto = parseValorImport(row[stoneMapping.valorBruto]);
+        const valorLiquido = !isNaN(stoneMapping.valorLiquido) ?
+          parseValorImport(row[stoneMapping.valorLiquido]) : valorBruto;
+
+        // Pula linhas completamente vazias
+        if (!statusRaw && valorBruto === 0) continue;
+
+        // Filtra status indesejados (cancelado, estornado, rejeitado)
+        // Blocklist: só pula se explicitamente cancelado/estornado
+        if (statusRaw) {
+          const sl = statusRaw.toLowerCase();
+          const bloqueado = sl.includes('cancel') || sl.includes('estorn') ||
+            sl.includes('revert') || sl.includes('rejeit') || sl.includes('recus') ||
+            sl.includes('negad') || sl.includes('void') || sl.includes('refund');
+          if (bloqueado) continue;
+        }
+
+        // Cria receita
+        const dataVenda = row[stoneMapping.dataVenda];
+        const produto = !isNaN(stoneMapping.produto) ? row[stoneMapping.produto] : 'Venda';
+        const bandeira = !isNaN(stoneMapping.bandeira) ? String(row[stoneMapping.bandeira] || '').trim() : '';
+        const saleCode = stoneMapping.codigoVenda !== null && !isNaN(stoneMapping.codigoVenda)
+          ? String(row[stoneMapping.codigoVenda] || '').trim()
+          : '';
+
+        // Converte data e horário
+        let dataFormatada = '';
+        let horario = '';
+
+        try {
+          if (dataVenda) {
+            if (dataVenda instanceof Date) {
+              dataFormatada = dataVenda.toISOString().split('T')[0];
+              horario = normalizeImportTime(dataVenda.toTimeString());
+            } else {
+              const dataVendaStr = String(dataVenda).trim();
+              if (dataVendaStr.includes(' ') && stoneMapping.horarioVenda === null) {
+                // Data e hora na mesma célula
+                const partes = dataVendaStr.split(/\s+/);
+                dataFormatada = parseDateStoneStr(partes[0], perRowFormat[i]);
+                if (partes[1]) horario = normalizeImportTime(partes[1]);
+              } else {
+                dataFormatada = parseDateStoneStr(dataVendaStr, perRowFormat[i]);
+              }
+            }
+          }
+          // Horário em coluna separada sobrescreve qualquer horário extraído da data
+          if (stoneMapping.horarioVenda !== null && !isNaN(stoneMapping.horarioVenda)) {
+            horario = normalizeImportTime(row[stoneMapping.horarioVenda]);
+          }
+        } catch (e) {
+          console.error('[STONE] Erro ao converter data:', dataVenda, e);
+          dataFormatada = new Date().toISOString().split('T')[0];
+        }
+
+        if (!dataFormatada) {
+          dataFormatada = new Date().toISOString().split('T')[0];
+        }
+
+        const maqNome = currentMaquinaConfig ? currentMaquinaConfig.nome : 'Venda';
+        const descricao = `${maqNome} - ${produto}${bandeira ? ' ' + bandeira : ''}${horario ? ' às ' + horario : ''}`;
+
+        // Determina forma de pagamento: verifica produto E bandeira/modalidade para capturar Rede (crédito/débito na coluna MODALIDADE)
+        const _pagTxt = (String(produto || '') + ' ' + String(bandeira || '')).toLowerCase();
+        const _isMercadoPago = currentMaquinaConfig?.tipo === 'mercadopago';
+        const pagamento = (_pagTxt.includes('pix') || _pagTxt.includes('account_money')) ? 'pix'
+          : _pagTxt.includes('cr') ? 'cartao_credito'   // crédito / credit / credito
+          : _pagTxt.includes('deb') ? 'cartao_debito'
+          : _isMercadoPago ? 'pix'  // Mercado Pago: padrão é PIX quando não identificado
+          : 'cartao_debito'; // fallback genérico
+
+        const importSignature = buildImportRowSignature(row, currentMaquinaConfig);
+        const businessSignature = buildReceitaBusinessSignature({
+          maqConfig: currentMaquinaConfig,
+          data: dataFormatada,
+          horario,
+          descricao,
+          valorBruto,
+          valorLiquido,
+          pagamento,
+          bandeira,
+          codigoVenda: saleCode
+        });
+        const fallbackSignature = saleCode ? buildReceitaBusinessSignature({
+          maqConfig: currentMaquinaConfig,
+          data: dataFormatada,
+          horario,
+          descricao,
+          valorBruto,
+          valorLiquido,
+          pagamento,
+          bandeira,
+          codigoVenda: ''
+        }) : '';
+        const codeSignature = buildVendaCodeSignature(currentMaquinaConfig, saleCode);
+        const currentRowSignatures = [importSignature, businessSignature, codeSignature].filter(Boolean);
+        const existingCheckSignatures = [importSignature, businessSignature, codeSignature].filter(Boolean);
+
+        if (existingCheckSignatures.some(signature => receitasImportadasSignatures.has(signature))) {
+          transacoesDuplicadas++;
+          continue;
+        }
+
+        currentRowSignatures.forEach(signature => receitasImportadasSignatures.add(signature));
+        transacoesAprovadas++;
+        valorTotalBruto += valorBruto;
+        valorTotalLiquido += valorLiquido;
+        totalDescontos += (valorBruto - valorLiquido);
+
+        const receita = {
+          id: `stone_${Date.now()}_${i}`,
+          data: dataFormatada,
+          descricao: descricao,
+          categoria: 'servico',
+          pagamento: pagamento,
+          valor: valorBruto, // Usa valor BRUTO agora
+          valorLiquido: valorLiquido, // Salva o líquido separadamente
+          obs: `Importado de ${currentMaquinaConfig ? currentMaquinaConfig.nome : 'maquininha'}${saleCode ? ' - NSU/Código: ' + saleCode : ''}${horario ? ' - Horário: ' + horario : ''} - Bruto: R$ ${valorBruto.toFixed(2)} | Líquido: R$ ${valorLiquido.toFixed(2)}`,
+          criadoEm: new Date().toISOString(),
+          atualizadoEm: new Date().toISOString(),
+          importadoStone: true,
+          importSignature,
+          importBusinessSignature: businessSignature,
+          maquininhaId: currentMaquinaConfig ? currentMaquinaConfig.id : null,
+          maquinhaNome: currentMaquinaConfig ? currentMaquinaConfig.nome : null,
+          horarioVenda: horario || null,
+          bandeira: bandeira || null,
+          codigoVenda: saleCode || null,
+          nsu: saleCode || null
+        };
+
+        receitas.push(receita);
+        rowToReceitaId.set(i, receita.id);
+        novasReceitas++;
+      }
+
+      // Salva todas as receitas (await para garantir Firebase salvo antes de navegar)
+      await saveReceitas(receitas);
+
+      // Cria despesas automáticas do MDR
+      await criarDespesasMDRLegacy(stoneFileData, stoneMapping, perRowFormat, rowToReceitaId, currentMaquinaConfig);
+
+      // Mostra resultados
+      document.getElementById('progressSection').style.display = 'none';
+      document.getElementById('transacoesAprovadas').textContent = transacoesAprovadas;
+      document.getElementById('transacoesDuplicadas').textContent = transacoesDuplicadas;
+      document.getElementById('valorTotalBruto').textContent = 'R$ ' + valorTotalBruto.toFixed(2);
+      document.getElementById('valorTotalLiquido').textContent = 'R$ ' + valorTotalLiquido.toFixed(2);
+      document.getElementById('totalDescontos').textContent = 'R$ ' + totalDescontos.toFixed(2);
+      const resumoImportacao = document.getElementById('importacaoResumo');
+      if (resumoImportacao) {
+        resumoImportacao.textContent = transacoesDuplicadas > 0
+          ? `${transacoesAprovadas} nova(s) transação(ões) importada(s) e ${transacoesDuplicadas} duplicada(s) ignorada(s).`
+          : `${transacoesAprovadas} nova(s) transação(ões) importada(s).`;
+      }
+      document.getElementById('resultsSection').style.display = 'block';
+      document.getElementById('btnConcluir').style.display = 'inline-flex';
+
+      // Atualiza a tabela
+      renderReceitas();
+    }
+
+    async function criarDespesasMDRLegacy(fileData, mapping, formatoDataOrFormats = 'dmy', rowToReceitaId = new Map(), maqConfig = null) {
+      const categoriaMDR = getCategoriaMdrImportacao(maqConfig);
+      if (!categoriaMDR) {
+        return;
+      }
+
+      // Precisa de pelo menos valorBruto mapeado
+      if (isNaN(mapping.valorBruto)) {
+        return;
+      }
+
+      const headerRowIdx = getHeaderRowIndex();
+      const headers = stoneFileData[headerRowIdx] || stoneFileData[0];
+      // Combina linhas de todos os arquivos
+      const rows = stoneAllFilesData.length > 0
+        ? stoneAllFilesData.flatMap(fd => fd.slice(headerRowIdx + 1))
+        : fileData.slice(headerRowIdx + 1);
+
+      // Coluna MDR: usa a selecionada manualmente, ou auto-detecta no cabeçalho
+      const colunaUserMDR = (mapping.descontoMDR !== null && !isNaN(mapping.descontoMDR)) ? mapping.descontoMDR : null;
+      const colunaAutoMDR = colunaUserMDR !== null ? null : encontrarColuna(headers, ['DESCONTO DE MDR', 'MDR', 'DESCONTO_MDR', 'TAXA MDR']);
+      const colunaMDR = colunaUserMDR ?? colunaAutoMDR;
+
+      // Carrega despesas existentes
+      const despesas = getDespesas();
+      const despesasMdrSignatures = new Set();
+      despesas.forEach(despesa => {
+        getDespesaMdrImportSignatures(despesa).forEach(signature => despesasMdrSignatures.add(signature));
+      });
+      let despesasCriadas = 0;
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const stoneReceitaId = rowToReceitaId.get(i) || null;
+        if (!stoneReceitaId) continue;
+        const fmt = Array.isArray(formatoDataOrFormats) ? (formatoDataOrFormats[i] || 'dmy') : (formatoDataOrFormats || 'dmy');
+
+        // Filtra status indesejados — mesma lógica blocklist
+        const statusRawMDR = !isNaN(mapping.status) ? String(row[mapping.status] || '').trim() : '';
+        if (statusRawMDR) {
+          const sl = statusRawMDR.toLowerCase();
+          if (sl.includes('cancel') || sl.includes('estorn') || sl.includes('revert') ||
+              sl.includes('rejeit') || sl.includes('recus') || sl.includes('negad') ||
+              sl.includes('void') || sl.includes('refund')) continue;
+        }
+
+        // MDR: usa coluna mapeada se existir, senão calcula como bruto - líquido
+        let valorMDR;
+        if (colunaMDR !== null) {
+          valorMDR = Math.abs(parseValorImport(row[colunaMDR]));
+        } else if (!isNaN(mapping.valorLiquido)) {
+          const vBruto = parseValorImport(row[mapping.valorBruto]);
+          const vLiquido = parseValorImport(row[mapping.valorLiquido]);
+          valorMDR = Math.max(0, vBruto - vLiquido);
+        } else {
+          continue; // Sem como calcular MDR
+        }
+
+        if (valorMDR <= 0) continue;
+
+        // Extrai data e horário
+        const dataVenda = row[mapping.dataVenda];
+        let dataFormatada = new Date().toISOString().split('T')[0];
+        let horarioVenda = '';
+
+        try {
+          if (dataVenda) {
+            if (dataVenda instanceof Date) {
+              dataFormatada = dataVenda.toISOString().split('T')[0];
+              horarioVenda = normalizeImportTime(dataVenda.toTimeString());
+            } else {
+              const dataVendaStr = String(dataVenda).trim();
+              if (dataVendaStr.includes(' ') && mapping.horarioVenda === null) {
+                const partes = dataVendaStr.split(/\s+/);
+                dataFormatada = parseDateStoneStr(partes[0], fmt);
+                if (partes[1]) horarioVenda = normalizeImportTime(partes[1]);
+              } else {
+                dataFormatada = parseDateStoneStr(dataVendaStr, fmt);
+              }
+            }
+          }
+          if (mapping.horarioVenda !== null && !isNaN(mapping.horarioVenda)) {
+            horarioVenda = normalizeImportTime(row[mapping.horarioVenda]);
+          }
+        } catch (e) {
+          console.error('[MDR] Erro ao converter data:', dataVenda, e);
+        }
+
+        const produto = !isNaN(mapping.produto) ? row[mapping.produto] : 'Transação';
+        const bandeira = !isNaN(mapping.bandeira) ? row[mapping.bandeira] : '';
+        const formaPagamentoRaw = mapping.formaPagamento !== null
+          && mapping.formaPagamento !== undefined
+          && !isNaN(mapping.formaPagamento)
+          ? String(row[mapping.formaPagamento] || '').trim()
+          : '';
+        const pagamentoMDR = inferImportPaymentMethod(formaPagamentoRaw, produto, bandeira);
+        const descricao = `Taxa MDR - ${produto}${bandeira ? ' ' + bandeira : ''}${horarioVenda ? ' às ' + horarioVenda : ''}`;
+        const importSignature = buildMdrImportSignature(row, maqConfig);
+        const businessSignature = buildMdrBusinessSignature({
+          maqConfig,
+          data: dataFormatada,
+          horario: horarioVenda,
+          descricao,
+          valor: valorMDR,
+          categoria: categoriaMDR,
+          pagamento: pagamentoMDR
+        });
+
+        if (despesasMdrSignatures.has(importSignature) || despesasMdrSignatures.has(businessSignature)) {
+          continue;
+        }
+
+        despesasMdrSignatures.add(importSignature);
+        despesasMdrSignatures.add(businessSignature);
+
+        const despesa = {
+          id: `mdr_${Date.now()}_${i}`,
+          data: dataFormatada,
+          descricao,
+          categoria: categoriaMDR,
+          pagamento: pagamentoMDR,
+          valor: valorMDR,
+          obs: `Taxa MDR da transação ${maqConfig ? maqConfig.nome : 'importação'} - R$ ${valorMDR.toFixed(2)}`,
+          criadoEm: new Date().toISOString(),
+          atualizadoEm: new Date().toISOString(),
+          importadoStone: true,
+          importSignature,
+          maquininhaId: maqConfig ? maqConfig.id : null,
+          maquinhaNome: maqConfig ? maqConfig.nome : null,
+          horarioVenda: horarioVenda || null,
+          stoneReceitaId
+        };
+
+        despesas.push(despesa);
+        despesasCriadas++;
+      }
+
+      // Salva despesas
+      await saveDespesas(despesas);
+    }
+
+    function getLastImportBatchKey() {
+      return `${getImportMaquininhasLavanderiaId()}_ultima_importacao_vendas`;
+    }
+
+    function getPendingImportKey() {
+      return `${getImportMaquininhasLavanderiaId()}_importacao_vendas_pendente`;
+    }
+
+    function readPendingImport() {
+      try {
+        const value = JSON.parse(localStorage.getItem(getPendingImportKey()) || 'null');
+        return value && typeof value === 'object' ? value : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function savePendingImport(value) {
+      localStorage.setItem(getPendingImportKey(), JSON.stringify({
+        ...value,
+        laundryId: getImportMaquininhasLavanderiaId(),
+        updatedAt: new Date().toISOString()
+      }));
+    }
+
+    function clearPendingImport() {
+      localStorage.removeItem(getPendingImportKey());
+    }
+
+    async function restorePendingImportIfNeeded() {
+      const pending = readPendingImport();
+      if (!pending || pending.stage === 'done') return;
+      const age = Date.now() - Date.parse(pending.updatedAt || pending.startedAt || 0);
+      if (!Number.isFinite(age) || age > 7 * 24 * 60 * 60 * 1000) {
+        clearPendingImport();
+        return;
+      }
+      showToast(`Retomando sincronização da importação de ${pending.count || 0} venda(s)...`, 'info');
+      try {
+        await window.FirebaseStore?.flushPendingWrites?.();
+        const stillPending = (window.FirebaseStore?.getPendingWrites?.() || [])
+          .some(item => [getStorageKey(), getDespesasStorageKey()].includes(item?.key));
+        if (!stillPending) {
+          clearPendingImport();
+          if (receitasServerMode) await loadReceitasPageFromServer();
+          showToast('Sincronização da importação recuperada com sucesso.', 'success');
+        } else {
+          showToast('A importação continua segura neste dispositivo e será sincronizada quando a conexão voltar.', 'info');
+        }
+      } catch (error) {
+        console.warn('[Importação] Recuperação automática pendente:', error);
+      }
+    }
+
+    function getImportHistoryKey() {
+      return `${getImportMaquininhasLavanderiaId()}_historico_importacao_vendas`;
+    }
+
+    function safeParseImportHistory(raw) {
+      if (Array.isArray(raw)) return raw;
+      try {
+        const parsed = JSON.parse(raw || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    async function loadImportHistory() {
+      const key = getImportHistoryKey();
+      let history = safeParseImportHistory(localStorage.getItem(key));
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            const remote = safeParseImportHistory(await window.FirebaseStore.getItem(key, []));
+            if (remote.length > 0 || history.length === 0) {
+              history = remote;
+              localStorage.setItem(key, JSON.stringify(history));
+            }
+          }
+        } catch (error) {
+          console.warn('[Importação] Erro ao carregar histórico completo:', error);
+        }
+      }
+      return history.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+    }
+
+    async function saveImportHistory(history) {
+      const key = getImportHistoryKey();
+      const normalized = (Array.isArray(history) ? history : []).slice(0, 20);
+      localStorage.setItem(key, JSON.stringify(normalized));
+      if (window.IndexedDBStore?.setItem) {
+        try { await window.IndexedDBStore.setItem(key, normalized); } catch (error) {}
+      }
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            await window.FirebaseStore.setItem(key, normalized);
+          }
+        } catch (error) {
+          console.warn('[Importação] Erro ao salvar histórico completo:', error);
+        }
+      }
+      return normalized;
+    }
+
+    async function appendImportHistory(batch) {
+      const history = await loadImportHistory();
+      const withoutDuplicate = history.filter(item => item.id !== batch.id);
+      await saveImportHistory([batch, ...withoutDuplicate]);
+    }
+
+    function getImportAuditContext() {
+      return {
+        userId: currentUser?.id || currentUser?.uid || null,
+        userName: currentUser?.nome || currentUser?.name || 'Usuário',
+        userEmail: currentUser?.email || null,
+        userRole: currentUser?.tipoAcesso || null,
+        device: {
+          userAgent: navigator.userAgent,
+          platform: navigator.platform || '',
+          language: navigator.language || ''
+        }
+      };
+    }
+
+    function formatImportDateTime(value) {
+      if (!value) return '-';
+      try {
+        return new Date(value).toLocaleString('pt-BR');
+      } catch (error) {
+        return String(value);
+      }
+    }
+
+    function getImportPeriods(items) {
+      const periods = new Set();
+      (items || []).forEach(item => {
+        if (item?.date && /^\d{4}-\d{2}/.test(item.date)) {
+          periods.add(item.date.slice(0, 7));
+        }
+      });
+      return [...periods].sort();
+    }
+
+    function buildImportWarnings(analysis) {
+      const warnings = [];
+      const lavId = getImportMaquininhasLavanderiaId();
+      if (currentMaquinaConfig?.lavanderiaId && currentMaquinaConfig.lavanderiaId !== lavId) {
+        warnings.push('A maquininha selecionada está vinculada a outra lavanderia. Revise antes de importar.');
+      }
+
+      const periods = getImportPeriods(analysis.valid);
+      const selectedMonth = document.getElementById('filtroMes')?.value || '';
+      const selectedYear = document.getElementById('filtroAno')?.value || '';
+      if (selectedYear && selectedMonth) {
+        const expected = `${selectedYear}-${selectedMonth}`;
+        const outside = periods.filter(period => period !== expected);
+        if (outside.length > 0) {
+          warnings.push(`O arquivo contém venda(s) fora do período filtrado (${expected}): ${outside.join(', ')}.`);
+        }
+      } else if (periods.length > 1) {
+        warnings.push(`O arquivo contém vendas de mais de um período: ${periods.join(', ')}.`);
+      }
+
+      const fileNames = [...new Set((stoneFileSources || []).map(item => item.name).filter(Boolean))];
+      if (fileNames.length > 1) {
+        warnings.push(`Importação com múltiplos arquivos: ${fileNames.length} arquivos serão processados juntos.`);
+      }
+      return warnings;
+    }
+
+    function renderImportWarnings(warnings) {
+      const panel = document.getElementById('importWarnings');
+      if (!panel) return;
+      if (!warnings || warnings.length === 0) {
+        panel.style.display = 'none';
+        panel.innerHTML = '';
+        return;
+      }
+      panel.innerHTML = `<strong>⚠️ Atenção antes de importar</strong><ul>${warnings.map(w => `<li>${escapeImportHtml(w)}</li>`).join('')}</ul>`;
+      panel.style.display = 'block';
+    }
+
+    function escapeCsvValue(value) {
+      const text = String(value == null ? '' : value);
+      return /[",\n\r;]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    }
+
+    function downloadCsvFile(filename, rows) {
+      const csv = rows.map(row => row.map(escapeCsvValue).join(';')).join('\r\n');
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 500);
+    }
+
+    function buildImportIssueCsvRows(items) {
+      const header = ['classificacao', 'arquivo', 'linha', 'data', 'horario', 'descricao', 'valor_bruto', 'valor_liquido', 'mdr', 'status', 'codigo_nsu', 'motivo'];
+      const rows = (items || []).map(item => [
+        item.category || '',
+        item.fileName || '',
+        item.sourceRowNumber || '',
+        item.date || '',
+        item.time || '',
+        item.description || '',
+        item.valorBruto ?? '',
+        item.valorLiquido ?? '',
+        item.mdr ?? '',
+        item.status || '',
+        item.saleCode || '',
+        item.reason || ''
+      ]);
+      return [header, ...rows];
+    }
+
+    function getCurrentImportIssues() {
+      if (!importPreviewAnalysis) return [];
+      return [
+        ...(importPreviewAnalysis.error || []),
+        ...(importPreviewAnalysis.ignored || []),
+        ...(importPreviewAnalysis.duplicate || [])
+      ];
+    }
+
+    function exportarErrosImportacaoAtual() {
+      const issues = getCurrentImportIssues();
+      if (!issues.length) {
+        showToast('Não há inconsistências para exportar.', 'info');
+        return;
+      }
+      downloadCsvFile(`lavacash-inconsistencias-importacao-${new Date().toISOString().slice(0,10)}.csv`, buildImportIssueCsvRows(issues));
+    }
+
+    async function exportarErrosImportacaoHistorico(batchId) {
+      const history = await loadImportHistory();
+      const batch = history.find(item => item.id === batchId);
+      const issues = batch?.reviewRows || [];
+      if (!issues.length) {
+        showToast('Essa importação não possui inconsistências salvas.', 'info');
+        return;
+      }
+      downloadCsvFile(`lavacash-inconsistencias-${batchId}.csv`, buildImportIssueCsvRows(issues));
+    }
+
+    function renderImportHistory(history) {
+      const container = document.getElementById('listaHistoricoImportacoes');
+      if (!container) return;
+      if (!history.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🧾</div>
+            <h4 class="empty-state-title">Nenhuma importação registrada</h4>
+            <p class="empty-state-text">As próximas importações aparecerão aqui com auditoria e resumo.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = history.map(batch => {
+        const summary = batch.summary || {};
+        const hasIssues = Boolean((batch.reviewRows || []).length);
+        const hasErrors = Boolean((batch.reviewRows || []).some(row => row.category === 'error'));
+        return `
+          <div class="import-history-item">
+            <div class="import-history-head">
+              <div>
+                <div class="import-history-title">${escapeImportHtml(batch.maquininhaNome || 'Importação')}</div>
+                <div class="import-history-meta">
+                  ${formatImportDateTime(batch.createdAt)} · ${escapeImportHtml(batch.audit?.userName || 'Usuário')} ${batch.audit?.userEmail ? `(${escapeImportHtml(batch.audit.userEmail)})` : ''}<br>
+                  Arquivos: ${escapeImportHtml((batch.sourceFiles || []).join(', ') || '-')} · Períodos: ${escapeImportHtml((batch.periods || []).join(', ') || '-')}
+                </div>
+              </div>
+              <span class="badge badge-info">${escapeImportHtml(batch.id)}</span>
+            </div>
+            <div class="import-history-stats">
+              <div class="import-history-stat">Importadas<strong>${summary.imported || 0}</strong></div>
+              <div class="import-history-stat">Duplicadas<strong>${summary.duplicates || 0}</strong></div>
+              <div class="import-history-stat">Erros/Ignoradas<strong>${(summary.errors || 0) + (summary.ignored || 0)}</strong></div>
+              <div class="import-history-stat">Total bruto<strong>${fmtBR(summary.gross || 0)}</strong></div>
+            </div>
+            <div class="import-history-actions">
+              <button class="btn btn-ghost btn-sm" onclick="exportarErrosImportacaoHistorico('${escapeImportHtml(batch.id)}')" ${hasIssues ? '' : 'disabled'}>⬇ Exportar inconsistências</button>
+              <button class="btn btn-ghost btn-sm" onclick="reprocessarImportacaoHistorico('${escapeImportHtml(batch.id)}')" ${hasErrors ? '' : 'disabled'}>🔁 Reprocessar erros</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function abrirHistoricoImportacoes() {
+      const modal = document.getElementById('modalHistoricoImportacoes');
+      const history = await loadImportHistory();
+      renderImportHistory(history);
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    function fecharHistoricoImportacoes() {
+      const modal = document.getElementById('modalHistoricoImportacoes');
+      modal.classList.remove('active');
+      setTimeout(() => { modal.style.display = 'none'; }, 250);
+    }
+
+    async function reprocessarImportacaoHistorico(batchId) {
+      const history = await loadImportHistory();
+      const batch = history.find(item => item.id === batchId);
+      const errorRows = (batch?.reviewRows || []).filter(row => row.category === 'error' && Array.isArray(row.rawRow));
+      if (!batch || !errorRows.length || !Array.isArray(batch.headers)) {
+        showToast('Não há linhas com erro disponíveis para reprocessar.', 'error');
+        return;
+      }
+
+      const machines = await hydrateMaquininhasImportFromFirebase(true);
+      currentMaquinaConfig = machines.find(item => item.id === batch.maquininhaId) || batch.machineSnapshot || null;
+      const syntheticRows = [batch.headers, ...errorRows.map(item => item.rawRow)];
+      fecharHistoricoImportacoes();
+      abrirModalImportacao(currentMaquinaConfig);
+      stoneFileData = syntheticRows;
+      stoneAllFilesData = [syntheticRows];
+      stoneFileSources = [{ name: `Reprocessamento ${batch.id}`, data: syntheticRows }];
+      const lh = document.getElementById('inputLinhaHeader');
+      if (lh) lh.value = '1';
+      document.getElementById('uploadArea').style.display = 'none';
+      document.getElementById('fileInfo').style.display = 'block';
+      document.getElementById('fileListInfo').innerHTML = `<p class="file-name">Reprocessamento de erros</p><p class="file-size">${errorRows.length} linha(s) recuperada(s)</p>`;
+      gerarPreview(stoneFileData);
+      detectarMapeamento(stoneFileData);
+      showToast('Linhas com erro carregadas para reprocessamento. Revise o mapeamento.', 'info');
+    }
+
+    function readLastImportBatchLocal() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(getLastImportBatchKey()) || 'null');
+        return parsed && typeof parsed === 'object' ? parsed : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    async function loadLastImportBatch() {
+      const key = getLastImportBatchKey();
+      let batch = readLastImportBatchLocal();
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            const remote = await window.FirebaseStore.getItem(key, null);
+            if (remote && typeof remote === 'object') {
+              batch = remote;
+              localStorage.setItem(key, JSON.stringify(remote));
+            }
+          }
+        } catch (error) {
+          console.warn('[Importação] Erro ao carregar histórico:', error);
+        }
+      }
+      return batch;
+    }
+
+    async function saveLastImportBatch(batch) {
+      const key = getLastImportBatchKey();
+      localStorage.setItem(key, JSON.stringify(batch));
+      if (window.IndexedDBStore?.setItem) {
+        try { await window.IndexedDBStore.setItem(key, batch); } catch (error) {}
+      }
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            await window.FirebaseStore.setItem(key, batch);
+          }
+        } catch (error) {
+          console.warn('[Importação] Erro ao salvar histórico:', error);
+        }
+      }
+      await appendImportHistory(batch);
+      atualizarBotaoDesfazerImportacao(batch);
+    }
+
+    async function removeLastImportBatch() {
+      const key = getLastImportBatchKey();
+      localStorage.removeItem(key);
+      if (window.IndexedDBStore?.removeItem) {
+        try { await window.IndexedDBStore.removeItem(key); } catch (error) {}
+      }
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          if (await window.FirebaseStore.isAvailable()) {
+            await window.FirebaseStore.removeItem(key);
+          }
+        } catch (error) {
+          console.warn('[Importação] Erro ao remover histórico:', error);
+        }
+      }
+      atualizarBotaoDesfazerImportacao(null);
+    }
+
+    function atualizarBotaoDesfazerImportacao(batch) {
+      const hasBatch = Boolean(batch?.id && (batch.receitaIds?.length || batch.despesaIds?.length));
+      const mainButton = document.getElementById('btnDesfazerUltimaImportacao');
+      if (mainButton) mainButton.style.display = hasBatch && canEdit ? 'inline-flex' : 'none';
+      const resultButton = document.getElementById('btnDesfazerImportacaoResultado');
+      if (resultButton) resultButton.style.display = hasBatch ? 'inline-flex' : 'none';
+    }
+
+    async function desfazerUltimaImportacao() {
+      const batch = await loadLastImportBatch();
+      if (!batch?.id) {
+        atualizarBotaoDesfazerImportacao(null);
+        showToast('Não há uma importação recente para desfazer.', 'error');
+        return;
+      }
+      if (!confirm(`Desfazer a importação de ${batch.summary?.imported || batch.receitaIds?.length || 0} venda(s)?`)) return;
+
+      const syncState = await hydrateImportCollectionsFromFirebase();
+      if (!syncState.remoteVerified) {
+        showToast('Entre novamente no sistema para conferir a nuvem antes de desfazer a importação.', 'error');
+        return;
+      }
+      const receiptIds = new Set(batch.receitaIds || []);
+      const expenseIds = new Set(batch.despesaIds || []);
+      const receitas = getReceitas().filter(item => item.importBatchId !== batch.id && !receiptIds.has(item.id));
+      const despesas = getDespesas().filter(item => item.importBatchId !== batch.id && !expenseIds.has(item.id));
+      await Promise.all([
+        saveReceitas(receitas, { allowDecrease: true, deletedIds: getReceitas().filter(item => item.importBatchId === batch.id || receiptIds.has(item.id)).map(item => item.id) }),
+        saveDespesas(despesas, { allowDecrease: true, deletedIds: getDespesas().filter(item => item.importBatchId === batch.id || expenseIds.has(item.id)).map(item => item.id) })
+      ]);
+      await removeLastImportBatch();
+      clearPendingImport();
+      receitasFullCollectionActive = false;
+      if (receitasServerMode) await loadReceitasPageFromServer();
+      else renderReceitas();
+      document.getElementById('resultsSection').style.display = 'none';
+      showToast('Última importação desfeita com sucesso.', 'success');
+    }
+
+    async function _processarArquivoStoneImpl() {
+      atualizarStoneMappingDosSelects();
+      if (stoneMapping.dataVenda === null || isNaN(stoneMapping.dataVenda)
+          || stoneMapping.valorBruto === null || isNaN(stoneMapping.valorBruto)) {
+        alert('Mapeie pelo menos as colunas Data da Venda e Valor Bruto.');
+        return;
+      }
+
+      const syncState = await hydrateImportCollectionsFromFirebase();
+      atualizarPreviaImportacao();
+      const analysis = importPreviewAnalysis;
+      if (!analysis?.valid?.length) {
+        alert('Nenhuma venda válida foi encontrada para importar.');
+        return;
+      }
+
+      const headerIdx = getHeaderRowIndex();
+      const headers = stoneFileData[headerIdx] || stoneFileData[0] || [];
+      await persistirMapeamentoMaquininha(headers);
+
+      document.getElementById('mappingSection').style.display = 'none';
+      document.getElementById('btnProcessar').style.display = 'none';
+      document.getElementById('progressSection').style.display = 'block';
+      document.getElementById('progressFill').style.width = '10%';
+      document.getElementById('progressText').textContent = 'Validando e preparando vendas...';
+
+      const batchId = `import_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const nowIso = new Date().toISOString();
+      savePendingImport({
+        id: batchId,
+        stage: 'preparing',
+        startedAt: nowIso,
+        count: analysis.valid.length,
+        files: stoneFileSources.map(item => item.name).filter(Boolean).slice(0, 10)
+      });
+      const receitas = getReceitas();
+      const despesas = getDespesas();
+      const receitaIds = [];
+      const despesaIds = [];
+      const novasReceitas = [];
+      const novasDespesas = [];
+      const categoriaMDR = getCategoriaMdrImportacao(currentMaquinaConfig);
+
+      analysis.valid.forEach((item, index) => {
+        const receitaId = `${batchId}_receita_${index}`;
+        const receipt = {
+          id: receitaId,
+          data: item.date,
+          descricao: item.description,
+          categoria: 'servico',
+          pagamento: item.payment,
+          valor: item.valorBruto,
+          valorLiquido: item.valorLiquido,
+          criadoEm: nowIso,
+          atualizadoEm: nowIso,
+          importadoStone: true,
+          importBatchId: batchId,
+          maquininhaId: currentMaquinaConfig?.id || null,
+          maquinhaNome: currentMaquinaConfig?.nome || null,
+          horarioVenda: item.time || null,
+          bandeira: item.brand || null,
+          codigoVenda: item.saleCode || null
+        };
+        receitas.push(receipt);
+        novasReceitas.push(receipt);
+        receitaIds.push(receitaId);
+
+        if (categoriaMDR && item.mdr > 0) {
+          const despesaId = `${batchId}_mdr_${index}`;
+          const despesaMdr = {
+            id: despesaId,
+            data: item.date,
+            descricao: `Taxa MDR - ${item.description}`,
+            categoria: categoriaMDR,
+            pagamento: item.payment,
+            valor: item.mdr,
+            obs: `Taxa MDR automática da venda ${item.saleCode || receitaId}: ${fmtBR(item.valorBruto)} bruto - ${fmtBR(item.valorLiquido)} líquido.`,
+            criadoEm: nowIso,
+            atualizadoEm: nowIso,
+            importadoStone: true,
+            importBatchId: batchId,
+            importSignature: buildMdrImportSignature(item.row, currentMaquinaConfig),
+            maquininhaId: currentMaquinaConfig?.id || null,
+            maquinhaNome: currentMaquinaConfig?.nome || null,
+            horarioVenda: item.time || null,
+            bandeira: item.brand || null,
+            codigoVenda: item.saleCode || null,
+            stoneReceitaId: receitaId,
+            arquivoOrigem: item.fileName,
+            linhaOrigem: item.sourceRowNumber
+          };
+          despesas.push(despesaMdr);
+          novasDespesas.push(despesaMdr);
+          despesaIds.push(despesaId);
+        }
+      });
+
+      document.getElementById('progressFill').style.width = '65%';
+      document.getElementById('progressText').textContent = syncState.remoteVerified
+        ? 'Salvando receitas e taxas MDR na nuvem...'
+        : 'Salvando neste dispositivo; sincronização com a nuvem ficará pendente...';
+      savePendingImport({
+        id: batchId,
+        stage: 'saving',
+        startedAt: nowIso,
+        count: receitaIds.length,
+        expenseCount: despesaIds.length,
+        files: stoneFileSources.map(item => item.name).filter(Boolean).slice(0, 10)
+      });
+      const importSaves = [saveReceitas(receitas, { appendItems: novasReceitas })];
+      if (novasDespesas.length > 0) {
+        importSaves.push(saveDespesas(despesas, { appendItems: novasDespesas }));
+      }
+      await Promise.all(importSaves);
+
+      const cloudWritePending = (window.FirebaseStore?.getPendingWrites?.() || [])
+        .some(item => [getStorageKey(), getDespesasStorageKey()].includes(item?.key));
+
+      const summary = {
+        imported: receitaIds.length,
+        duplicates: analysis.duplicate.length,
+        ignored: analysis.ignored.length,
+        errors: analysis.error.length,
+        gross: analysis.totalGross,
+        net: analysis.totalNet,
+        mdr: analysis.totalMdr,
+        remoteVerified: syncState.remoteVerified && !cloudWritePending
+      };
+      const compactReviewRow = (item, keepRawRow = false) => ({
+        category: item.category,
+        fileName: item.fileName,
+        sourceRowNumber: item.sourceRowNumber,
+        date: item.date || '',
+        time: item.time || '',
+        description: item.description || '',
+        valorBruto: item.valorBruto ?? '',
+        valorLiquido: item.valorLiquido ?? '',
+        mdr: item.mdr ?? '',
+        status: item.status || '',
+        saleCode: item.saleCode || '',
+        reason: item.reason || '',
+        ...(keepRawRow && Array.isArray(item.row) ? { rawRow: item.row } : {})
+      });
+      const reviewRows = [
+        ...(analysis.error || []).slice(0, 100).map(item => compactReviewRow(item, true)),
+        ...(analysis.ignored || []).slice(0, 50).map(item => compactReviewRow(item)),
+        ...(analysis.duplicate || []).slice(0, 50).map(item => compactReviewRow(item))
+      ];
+      await saveLastImportBatch({
+        id: batchId,
+        createdAt: nowIso,
+        lavanderiaId: getImportMaquininhasLavanderiaId(),
+        maquininhaId: currentMaquinaConfig?.id || null,
+        maquininhaNome: currentMaquinaConfig?.nome || null,
+        machineSnapshot: currentMaquinaConfig ? JSON.parse(JSON.stringify(currentMaquinaConfig)) : null,
+        sourceFiles: stoneFileSources.map(item => item.name).filter(Boolean),
+        periods: analysis.periods || getImportPeriods(analysis.valid),
+        warnings: analysis.warnings || [],
+        headers,
+        mapping: { ...stoneMapping },
+        headerRow: getHeaderRowIndex() + 1,
+        audit: getImportAuditContext(),
+        reviewRows,
+        receitaIds,
+        despesaIds,
+        summary
+      });
+      if (summary.remoteVerified) clearPendingImport();
+      else savePendingImport({
+        id: batchId,
+        stage: 'waiting-for-cloud',
+        startedAt: nowIso,
+        count: receitaIds.length,
+        expenseCount: despesaIds.length
+      });
+
+      // Libera imediatamente as planilhas e as linhas válidas já persistidas.
+      // Mantemos em memória somente o resumo compacto usado pelo botão de
+      // exportar inconsistências.
+      stoneFileData = null;
+      stoneAllFilesData = [];
+      stoneFileSources = [];
+      importPreviewAnalysis = {
+        error: reviewRows.filter(item => item.category === 'error'),
+        ignored: reviewRows.filter(item => item.category === 'ignored'),
+        duplicate: reviewRows.filter(item => item.category === 'duplicate')
+      };
+
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressText').textContent = 'Importação concluída.';
+      document.getElementById('progressSection').style.display = 'none';
+      document.getElementById('transacoesAprovadas').textContent = summary.imported;
+      document.getElementById('transacoesDuplicadas').textContent = summary.duplicates;
+      document.getElementById('transacoesIgnoradas').textContent = summary.ignored;
+      document.getElementById('transacoesErros').textContent = summary.errors;
+      document.getElementById('valorTotalBruto').textContent = fmtBR(summary.gross);
+      document.getElementById('valorTotalLiquido').textContent = fmtBR(summary.net);
+      document.getElementById('totalDescontos').textContent = fmtBR(summary.mdr);
+      document.getElementById('importacaoResumo').textContent =
+        `${summary.imported} venda(s) importada(s), ${summary.duplicates} duplicada(s), ${summary.ignored} cancelada(s)/estornada(s) e ${summary.errors} linha(s) com erro.`
+        + (summary.remoteVerified
+          ? ''
+          : ' Os dados foram salvos neste dispositivo e serão sincronizados quando você entrar novamente.');
+      document.getElementById('resultsSection').style.display = 'block';
+      document.getElementById('btnConcluir').style.display = 'inline-flex';
+      document.getElementById('btnDesfazerImportacaoResultado').style.display = 'inline-flex';
+      const btnExportarErros = document.getElementById('btnExportarErrosResultado');
+      if (btnExportarErros) btnExportarErros.style.display = getCurrentImportIssues().length ? 'inline-flex' : 'none';
+      receitasFullCollectionActive = false;
+      if (summary.remoteVerified) {
+        pageArrayCache[getStorageKey()] = [];
+        try { localStorage.removeItem(getStorageKey()); } catch (error) {}
+        if (window.IndexedDBStore?.removeItem) {
+          try { await window.IndexedDBStore.removeItem(getStorageKey()); } catch (error) {}
+        }
+      }
+      if (receitasServerMode) await loadReceitasPageFromServer();
+      else renderReceitas();
+      if (!summary.remoteVerified) {
+        showToast('Importação salva. Entre novamente para sincronizar com a nuvem.', 'info');
+      }
+    }
+
+    function concluirImportacao() {
+      fecharModalStone();
+      showToast('Importação concluída com sucesso.', 'success');
+    }
+
+    // Fecha modal Stone ao clicar fora
+    document.getElementById('modalStone')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalStone') {
+        fecharModalStone();
+      }
+    });
+
+    document.getElementById('modalHistoricoImportacoes')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalHistoricoImportacoes') {
+        fecharHistoricoImportacoes();
+      }
+    });
+
+    // ========== FIM IMPORTAÇÃO STONE ==========
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) fecharModal();
+    });
+
+    // Sanitize text input (strip HTML/script tags)
+    function sanitizeInput(str) {
+      if (typeof str !== 'string') return '';
+      return str.replace(/<[^>]*>/g, '').replace(/javascript:/gi, '').replace(/on\w+=/gi, '').trim();
+    }
+
+    // Form submit
+    document.getElementById('formReceita')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dataVal = document.getElementById('receitaData').value;
+      if (!dataVal) { showToast('Informe a data da receita.', 'error'); return; }
+      const dataObj = new Date(dataVal + 'T00:00:00');
+      const hoje = new Date(); hoje.setHours(0,0,0,0);
+      const maxFuture = new Date(hoje); maxFuture.setFullYear(maxFuture.getFullYear() + 1);
+      if (dataObj > maxFuture) { showToast('Data não pode ser mais de 1 ano no futuro.', 'error'); return; }
+
+      const descricaoRaw = sanitizeInput(document.getElementById('receitaDescricao').value);
+      if (!descricaoRaw) { showToast('Informe uma descrição para a receita.', 'error'); return; }
+
+      const valorRaw = parseFloat(document.getElementById('receitaValor').value);
+      if (!valorRaw || valorRaw <= 0) {
+        showToast('Informe um valor maior que zero.', 'error');
+        return;
+      }
+      if (valorRaw > 9999999.99) { showToast('Valor informado excede o limite permitido.', 'error'); return; }
+
+      const receitas = getReceitas();
+      const receita = {
+        id: editandoId || Date.now().toString(),
+        data: dataVal,
+        descricao: descricaoRaw,
+        categoria: sanitizeInput(document.getElementById('receitaCategoria').value),
+        pagamento: sanitizeInput(document.getElementById('receitaPagamento').value),
+        valor: valorRaw,
+        obs: sanitizeInput(document.getElementById('receitaObs').value).slice(0, 500),
+        criadoEm: editandoId ? undefined : new Date().toISOString(),
+        atualizadoEm: new Date().toISOString()
+      };
+
+      if (editandoId) {
+        const idx = receitas.findIndex(r => r.id === editandoId);
+        if (idx !== -1) {
+          receita.criadoEm = receitas[idx].criadoEm;
+          receitas[idx] = receita;
+        }
+      } else {
+        receitas.push(receita);
+      }
+
+      try {
+        await saveReceitas(receitas, receitasServerMode ? { appendItems: [receita] } : {});
+      } catch(e) {
+        alert('Erro ao salvar: armazenamento cheio. Exporte um backup e libere espaço.');
+        return;
+      }
+      fecharModal();
+      if (receitasServerMode) await loadReceitasPageFromServer();
+      else renderReceitas();
+      showToast(editandoId ? 'Receita atualizada!' : 'Receita salva com sucesso!', 'success');
+    });
+
+    // Edit
+    function editarReceita(id) {
+      const receitas = getReceitas();
+      const receita = receitas.find(r => r.id === id);
+      if (receita) {
+        abrirModal(receita);
+      }
+    }
+
+    // Delete
+    // Remove despesas MDR vinculadas a um conjunto de receitas Stone
+    // Usa stoneReceitaId (link direto, importações novas) ou fallback data+horarioVenda
+    async function excluirMdrVinculadas(receitasParaExcluir) {
+      const stonesToExcluir = receitasParaExcluir.filter(r => r.importadoStone);
+      if (!stonesToExcluir.length) return;
+
+      if (receitasServerMode && window.FirebaseStore?.getItemFromServer) {
+        try {
+          const remoteExpenses = await window.FirebaseStore.getItemFromServer(getDespesasStorageKey(), []);
+          if (Array.isArray(remoteExpenses)) await persistArrayCache(getDespesasStorageKey(), remoteExpenses);
+        } catch (error) {
+          console.warn('[Receitas] Não foi possível atualizar as taxas MDR antes da exclusão:', error);
+        }
+      }
+
+      const receitaIds = new Set(stonesToExcluir.map(r => r.id));
+      // Fallback: chave data|horario para registros sem stoneReceitaId
+      const chavesDataHora = new Set(
+        stonesToExcluir.filter(r => r.horarioVenda).map(r => `${r.data}|${r.horarioVenda}`)
+      );
+
+      let despesas = getDespesas();
+      const antes = despesas.length;
+      despesas = despesas.filter(d => {
+        if (d.resumoMdrPersistido) return true;
+        if (!d.importadoStone) return true;
+        // Link direto
+        if (d.stoneReceitaId && receitaIds.has(d.stoneReceitaId)) return false;
+        // Fallback para importações antigas (sem stoneReceitaId)
+        if (!d.stoneReceitaId && d.horarioVenda && chavesDataHora.has(`${d.data}|${d.horarioVenda}`)) return false;
+        return true;
+      });
+
+      const ajustesPorResumo = new Map();
+      stonesToExcluir.forEach(receita => {
+        const valorBruto = Number(receita.valor || 0);
+        const valorLiquidoInformado = Number(receita.valorLiquido);
+        const valorLiquido = Number.isFinite(valorLiquidoInformado) ? valorLiquidoInformado : valorBruto;
+        const valorMdr = Math.max(0, valorBruto - valorLiquido);
+        if (valorMdr <= 0) return;
+
+        const competencia = window.despesasUtils?.getCompetenciaDespesa?.(receita);
+        const formaPagamento = window.despesasUtils?.inferirFormaPagamentoMdr?.(receita);
+        if (!competencia || !formaPagamento) return;
+
+        const resumoId = `mdr-resumo-${competencia}-${formaPagamento}`;
+        const ajuste = ajustesPorResumo.get(resumoId) || { valor: 0, quantidade: 0 };
+        ajuste.valor += valorMdr;
+        ajuste.quantidade += 1;
+        ajustesPorResumo.set(resumoId, ajuste);
+      });
+
+      let alterouResumo = false;
+      despesas = despesas.flatMap(despesa => {
+        const ajuste = ajustesPorResumo.get(despesa.id);
+        if (!despesa.resumoMdrPersistido || !ajuste) return [despesa];
+
+        alterouResumo = true;
+        const novoValor = Math.max(0, Number(despesa.valor || 0) - ajuste.valor);
+        const novaQuantidade = Math.max(0, Number(despesa.quantidadeLancamentos || 0) - ajuste.quantidade);
+        if (novoValor < 0.000001 || novaQuantidade === 0) return [];
+
+        return [{
+          ...despesa,
+          valor: novoValor,
+          quantidadeLancamentos: novaQuantidade,
+          obs: `${novaQuantidade} taxas MDR agrupadas em ${despesa.competencia}.`,
+          atualizadoEm: new Date().toISOString()
+        }];
+      });
+
+      if (despesas.length < antes || alterouResumo) {
+        await saveDespesas(despesas, { allowDecrease: true, deletedIds: getDespesas().filter(item => !despesas.some(next => next.id === item.id)).map(item => item.id) });
+      }
+    }
+
+    async function excluirReceita(id) {
+      if (confirm('Tem certeza que deseja excluir esta receita?')) {
+        let receitas = getReceitas();
+        const paraExcluir = receitas.filter(r => r.id === id);
+        await excluirMdrVinculadas(paraExcluir);
+        if (receitasServerMode && window.FirebaseStore?.deleteFinanceItems) {
+          await window.FirebaseStore.deleteFinanceItems(getStorageKey(), [id]);
+          await loadReceitasPageFromServer();
+        } else {
+          receitas = receitas.filter(r => r.id !== id);
+          await saveReceitas(receitas, { allowDecrease: true, deletedIds: [id] });
+          renderReceitas();
+        }
+      }
+    }
+
+    // Selecionar/Desselecionar todas
+    function toggleSelecionarTodas() {
+      const checkboxTodas = document.getElementById('selecionarTodas');
+      const checkboxes = document.querySelectorAll('.checkbox-receita');
+      checkboxes.forEach(cb => cb.checked = checkboxTodas.checked);
+      atualizarBotaoExcluir();
+    }
+
+    // Atualiza visibilidade do botão de excluir
+    function atualizarBotaoExcluir() {
+      const checkboxes = document.querySelectorAll('.checkbox-receita:checked');
+      const btnExcluir = document.getElementById('btnExcluirSelecionadas');
+      if (btnExcluir) {
+        btnExcluir.style.display = checkboxes.length > 0 ? 'inline-flex' : 'none';
+        if (checkboxes.length > 0) {
+          btnExcluir.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            Excluir ${checkboxes.length} selecionada${checkboxes.length > 1 ? 's' : ''}
+          `;
+        }
+      }
+    }
+
+    // Excluir múltiplas receitas
+    async function excluirSelecionadas() {
+      const checkboxes = document.querySelectorAll('.checkbox-receita:checked');
+      const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+
+      if (ids.length === 0) {
+        alert('Nenhuma receita selecionada!');
+        return;
+      }
+
+      const confirmacao = confirm(`Tem certeza que deseja excluir ${ids.length} receita${ids.length > 1 ? 's' : ''}?`);
+
+      if (confirmacao) {
+        let receitas = getReceitas();
+        const paraExcluir = receitas.filter(r => ids.includes(r.id));
+        await excluirMdrVinculadas(paraExcluir);
+        if (receitasServerMode && window.FirebaseStore?.deleteFinanceItems) {
+          await window.FirebaseStore.deleteFinanceItems(getStorageKey(), ids);
+          await loadReceitasPageFromServer();
+        } else {
+          receitas = receitas.filter(r => !ids.includes(r.id));
+          await saveReceitas(receitas, { allowDecrease: true, deletedIds: ids });
+          renderReceitas();
+        }
+      }
+    }
+
+    // Filter changes
+    async function aplicarFiltroReceitas() {
+      periodoReceitasInicializado = true;
+      receitasPaginaAtual = 1;
+      if (receitasServerMode) await loadReceitasPageFromServer();
+      else renderReceitas();
+    }
+    document.getElementById('filtroMes')?.addEventListener('change', aplicarFiltroReceitas);
+    document.getElementById('filtroAno')?.addEventListener('change', aplicarFiltroReceitas);
+    document.getElementById('filtroPagamento')?.addEventListener('change', aplicarFiltroReceitas);
+
+    // Paginação no Supabase. O bloco de reconciliação abaixo é mantido apenas
+    // como compatibilidade para uma instalação ainda sem a migration nova.
+    let _importSaving = false;
+    let _receitasFirebaseSyncSetup = false;
+
+    function mergeByIdList(localData, remoteData) {
+      const merged = Array.isArray(localData) ? [...localData] : [];
+      const localIdSet = new Set(merged.map(item => item?.id).filter(Boolean));
+      (Array.isArray(remoteData) ? remoteData : []).forEach(item => {
+        if (!item || !item.id || localIdSet.has(item.id)) return;
+        merged.push(item);
+      });
+      return merged;
+    }
+
+    async function setupFirebaseSync() {
+      if (_receitasFirebaseSyncSetup) {
+        return;
+      }
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) {
+        return;
+      }
+
+      if (typeof window.FirebaseStore.getFinancePage === 'function') {
+        _receitasFirebaseSyncSetup = true;
+        receitasServerMode = true;
+        try {
+          await loadReceitasPageFromServer({ throwOnError: true });
+          return;
+        } catch (error) {
+          receitasServerMode = false;
+          _receitasFirebaseSyncSetup = false;
+          console.warn('[Receitas] Usando compatibilidade local porque a paginação não respondeu.', error);
+        }
+      }
+
+      _receitasFirebaseSyncSetup = true;
+      const key = getStorageKey();
+
+      try {
+        const localData = await hydrateArrayCache(key);
+        const serverReader = typeof window.FirebaseStore.getItemFromRestServer === 'function'
+          ? window.FirebaseStore.getItemFromRestServer.bind(window.FirebaseStore)
+          : typeof window.FirebaseStore.getItemFromServer === 'function'
+            ? window.FirebaseStore.getItemFromServer.bind(window.FirebaseStore)
+            : window.FirebaseStore.getItem.bind(window.FirebaseStore);
+        const firebaseData = await serverReader(key, null);
+
+        if (Array.isArray(firebaseData)) {
+          const remote = window.FirebaseStore.reconcileFinanceSnapshot(key, localData, firebaseData);
+          await persistArrayCache(key, remote);
+          ultimaSincronizacaoReceitasEm = Date.now();
+          renderReceitas();
+        }
+
+      } catch (err) {
+        console.warn('[Receitas] Erro ao reconciliar dados com a nuvem:', err);
+      } finally {
+        setTimeout(() => {
+          _importSaving = false;
+        }, 750);
+      }
+
+      // Inscreve-se para mudanças na camada legada.
+      const unsubscribe = window.FirebaseStore.subscribe(key, async firebaseData => {
+        if (_importSaving || !Array.isArray(firebaseData)) return;
+        const remote = window.FirebaseStore.reconcileFinanceSnapshot(key, getCachedArray(key), firebaseData);
+        await persistArrayCache(key, remote);
+        ultimaSincronizacaoReceitasEm = Date.now();
+        renderReceitas();
+      }, { initial: false });
+
+      window._receitasUnsubscribe = unsubscribe;
+    }
+
+    // Configurar sincronização quando a autenticação e o Supabase estiverem prontos.
+    window.addEventListener('firebase:initialized', async () => {
+      await setupFirebaseSync();
+      await restorePendingImportIfNeeded();
+    });
+
+    // Se a camada de dados já estiver inicializada.
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) {
+      void setupFirebaseSync().then(restorePendingImportIfNeeded);
+    }
+
+    // Conecta botão de importação após DOM carregar
+    setTimeout(() => {
+      const btnImportar = document.getElementById('btnImportarVendas');
+      if (btnImportar) {
+        btnImportar.addEventListener('click', abrirSeletorMaquininha);
+      }
+      document.getElementById('btnHistoricoImportacoes')?.addEventListener('click', abrirHistoricoImportacoes);
+      document.getElementById('btnDesfazerUltimaImportacao')?.addEventListener('click', desfazerUltimaImportacao);
+      void loadLastImportBatch().then(atualizarBotaoDesfazerImportacao);
+    }, 500);
+
+    // Init — render imediatamente do localStorage (síncrono, instantâneo)
+    // e atualiza em background após IndexedDB responder
+    renderReceitas();
+    document.getElementById('loadingOverlay')?.classList.add('hidden');
+
+    // Despesas são poucas e necessárias para vincular MDR. As milhares de
+    // receitas não são mais copiadas do IndexedDB no carregamento normal.
+    hydrateArrayCache(getDespesasStorageKey()).then(() => {
+      if (!receitasServerMode) renderReceitas();
+    });
+  </script>
+<script src="js/responsive-tables.js?v=20260613-rateio-labels-v1"></script>
+  <script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+</body>
+</html>

@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Despesas | LAVACASH</title>
+
+  <meta name="description" content="Gestão de despesas da lavanderia">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+  <style>
+    .checkbox-despesa, #selecionarTodasDespesas {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--color-primary);
+    }
+
+    .table-scroll-fit {
+      overflow: auto;
+      max-height: min(58vh, calc(100vh - 300px));
+    }
+
+    .meta-progress-card,
+    .forecast-card {
+      border: 1px solid var(--color-border);
+      border-radius: 0.875rem;
+      padding: 0.875rem;
+      background: rgba(255,255,255,0.55);
+    }
+
+    .meta-alert {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .meta-alert.ok { color: var(--color-success); background: rgba(16,185,129,0.12); }
+    .meta-alert.atencao { color: var(--color-warning); background: rgba(245,158,11,0.14); }
+    .meta-alert.limite,
+    .meta-alert.excedida { color: var(--color-danger); background: rgba(239,68,68,0.12); }
+
+    .mdr-summary-note {
+      margin-top: 0.2rem;
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+    }
+
+    .mdr-summary-row {
+      background: rgba(14, 165, 233, 0.05);
+    }
+  </style>
+</head>
+<body data-page="despesas">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando despesas...</div>
+  </div>
+
+  <!-- Sidebar Toggle -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+
+    <!-- Lavanderia Selector -->
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link" data-page="receitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link active" data-page="despesas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link" data-page="analise-financeira">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link" data-page="investimento-inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link" id="linkConfig" data-page="configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link" data-page="ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Usuário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Visualizador</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">📉 Despesas</h1>
+        <p class="page-subtitle">Controle seus gastos</p>
+      </div>
+      <div class="quick-actions" id="actionsArea">
+        <button id="btnNovaDespesa" class="btn btn-danger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Nova Despesa
+        </button>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <div class="glass-card p-4 mb-6">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex items-center gap-2">
+          <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Período:</label>
+          <select id="filtroMes" class="input-glass">
+            <option value="">Todos os meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+          <select id="filtroAno" class="input-glass">
+            <option value="">Todos os anos</option>
+          </select>
+          <button type="button" id="btnAtualizarDespesasFirebase" class="btn btn-ghost btn-sm">↻ Atualizar da nuvem</button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="gerarRecorrenciasConfirmadas()">Gerar recorrências do mês</button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="exportarRecuperacaoLocal()">Baixar cópia local</button>
+          <span id="statusDespesasFirebase" class="text-xs" style="color:var(--color-text-muted);font-weight:700;padding:.35rem .55rem;border-radius:.4rem;background:var(--color-surface-active);"></span>
+        </div>
+        <div class="flex-1 min-w-[200px]">
+          <input type="text" id="busca" class="input-glass w-full" placeholder="🔍 Buscar despesa...">
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="stat-card">
+        <div class="stat-icon danger">💸</div>
+        <p class="stat-label">Total do Período</p>
+        <p class="stat-value" id="totalPeriodo">R$ 0,00</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon info">📊</div>
+        <p class="stat-label">Lançamentos</p>
+        <p class="stat-value" id="qtdDespesas">0</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon warning">📈</div>
+        <p class="stat-label">Média por Lançamento</p>
+        <p class="stat-value" id="mediaDespesa">R$ 0,00</p>
+      </div>
+    </div>
+
+    <!-- Metas Mensais por Categoria -->
+    <div id="metasContainer" class="glass-card p-4 mb-4 hidden">
+      <div class="flex items-center gap-2 mb-3">
+        <span>🎯</span>
+        <h4 class="text-sm font-semibold" style="color:var(--color-text-primary);">Progresso de Metas — Mês Selecionado</h4>
+      </div>
+      <div id="metasProgressoLista" class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));"></div>
+    </div>
+
+    <!-- Previsão de Despesas Fixas -->
+    <div id="previsaoFixasContainer" class="glass-card p-4 mb-4 hidden">
+      <div class="flex items-center justify-between gap-2 mb-3" style="flex-wrap:wrap;">
+        <div class="flex items-center gap-2">
+          <span>📅</span>
+          <h4 class="text-sm font-semibold" style="color:var(--color-text-primary);">Previsão de Despesas Fixas</h4>
+        </div>
+        <span class="text-xs" style="color:var(--color-text-muted);">Próximos 3 meses</span>
+      </div>
+      <div id="previsaoFixasLista" class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container fade-in">
+      <div class="table-header">
+        <div>
+          <h3 class="table-title">Lista de Despesas</h3>
+          <p class="mdr-summary-note">Taxas MDR são acumuladas por mês e separadas entre PIX, crédito e débito.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="badge badge-info" id="contadorDespesas">0 registros</span>
+          <button id="btnExcluirSelecionadas" onclick="excluirSelecionadasDespesas()"
+            style="display: none; align-items: center; gap: 0.5rem; padding: 0.4rem 0.9rem; background: #ef4444; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+            🗑️ Excluir selecionadas (<span id="countSelecionadas">0</span>)
+          </button>
+        </div>
+      </div>
+      <div class="table-scroll-fit">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selecionarTodasDespesas" onchange="toggleSelecionarTodasDespesas()" style="cursor: pointer;">
+              </th>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Tipo</th>
+              <th>Forma Pagto</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaDespesas">
+            <tr>
+              <td colspan="9">
+                <div class="empty-state">
+                  <div class="empty-state-icon">💸</div>
+                  <h4 class="empty-state-title">Nenhuma despesa cadastrada</h4>
+                  <p class="empty-state-text">Clique em "Nova Despesa" para registrar um gasto.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="paginacaoDespesas" class="flex items-center justify-between gap-3 p-4" style="display:none; flex-wrap:wrap; border-top:1px solid var(--color-glass-border);">
+        <span id="resumoPaginacaoDespesas" class="text-sm" style="color:var(--color-text-muted);"></span>
+        <div class="flex items-center gap-2" style="flex-wrap:wrap;">
+          <select id="despesasPorPagina" class="input-glass" onchange="alterarDespesasPorPagina()" style="min-width:130px;">
+            <option value="50" selected>50 por página</option>
+            <option value="100">100 por página</option>
+            <option value="200">200 por página</option>
+          </select>
+          <button id="paginaAnteriorDespesas" class="btn btn-ghost btn-sm" type="button" onclick="mudarPaginaDespesas(-1)">Anterior</button>
+          <span id="paginaAtualDespesas" class="text-sm" style="min-width:90px; text-align:center; color:var(--color-text-secondary);"></span>
+          <button id="proximaPaginaDespesas" class="btn btn-ghost btn-sm" type="button" onclick="mudarPaginaDespesas(1)">Próxima</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Nova Despesa -->
+  <div id="modalDespesa" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Nova Despesa</h2>
+        <button class="modal-close" onclick="fecharModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formDespesa">
+          <input type="hidden" id="despesaId">
+          <div class="form-group">
+            <label class="form-label">Data *</label>
+            <input type="date" id="despesaData" class="input-glass" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <input type="text" id="despesaDescricao" class="input-glass" placeholder="Ex: Conta de luz" maxlength="200">
+          </div>
+          <div class="grid-2" style="gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Categoria *</label>
+              <select id="despesaCategoria" class="input-glass" required>
+                <option value="">Selecione uma categoria</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Forma de Pagamento</label>
+              <select id="despesaPagamento" class="input-glass">
+                <option value="dinheiro">Dinheiro</option>
+                <option value="pix">PIX</option>
+                <option value="cartao_credito">Cartão Crédito</option>
+                <option value="cartao_debito">Cartão Débito</option>
+                <option value="boleto">Boleto</option>
+                <option value="transferencia">Transferência</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-2" style="gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Tipo de despesa *</label>
+              <select id="despesaTipo" class="input-glass" required>
+                <option value="fixa">Fixa</option>
+                <option value="variavel">Variável</option>
+                <option value="eventual" selected>Eventual</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Valor (R$) *</label>
+              <input type="number" id="despesaValor" class="input-glass" placeholder="0,00" step="0.01" min="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea id="despesaObs" class="input-glass" rows="2" placeholder="Observações opcionais..." maxlength="500"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="flex items-center gap-2 cursor-pointer" style="font-size:0.875rem;color:var(--color-text-primary);">
+              <input type="checkbox" id="despesaRecorrente" style="width:16px;height:16px;accent-color:var(--color-danger);">
+              Despesa recorrente mensal
+            </label>
+            <div id="recorrenteOpcoes" class="hidden mt-3" style="flex-wrap:wrap;">
+              <div class="grid-2" style="gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label">Data de início</label>
+                  <input type="date" id="recorrenciaInicio" class="input-glass">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Data final (opcional)</label>
+                  <input type="date" id="recorrenciaFim" class="input-glass">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Periodicidade</label>
+                <select id="recorrenciaPeriodicidade" class="input-glass" disabled>
+                  <option value="mensal" selected>Mensal</option>
+                </select>
+                <p class="text-xs mt-2" style="color:var(--color-text-muted);">Use “Gerar recorrências do mês” para confirmar os lançamentos mensais sem duplicar os já existentes.</p>
+              </div>
+              <div id="recorrenciaEscopoContainer" class="hidden" style="padding:0.75rem;border-radius:0.75rem;background:var(--color-surface-active);">
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-primary);">Como deseja aplicar esta edição?</p>
+                <label class="flex items-center gap-2 text-sm mb-2" style="color:var(--color-text-secondary);">
+                  <input type="radio" name="recorrenciaEscopo" value="mes" checked>
+                  Apenas este mês
+                </label>
+                <label class="flex items-center gap-2 text-sm" style="color:var(--color-text-secondary);">
+                  <input type="radio" name="recorrenciaEscopo" value="toda">
+                  Toda a recorrência
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+        <button type="submit" form="formDespesa" class="btn btn-danger">Salvar Despesa</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/indexeddb-store.js"></script>
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script src="js/despesas-utils.js?v=20260804-finance-compact-v1"></script>
+  <script src="js/recurring-expenses.js?v=20260605-recorrencias-metas"></script>
+  <script src="js/laundry-service.js"></script>
+  <script src="js/finance-dedupe.js?v=20260903-owner-performance-v1"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/sidebar-filter.js?v=20260409-3"></script>
+
+  <script>
+    // Utilitário de toast inline
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;border-radius:.5rem;font-size:.9rem;font-weight:500;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:opacity .4s;';
+      t.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
+    }
+    // Init UserSystem
+    UserSystem.init();
+
+    const pageArrayCache = Object.create(null);
+    const pageArrayHydrationPromises = new Map();
+    let despesasFirebaseWriteChain = Promise.resolve(true);
+    let despesasCacheRevision = 0;
+
+    function isQuotaExceededError(err) {
+      const msg = String(err?.message || err || '').toLowerCase();
+      return err?.name === 'QuotaExceededError' || msg.includes('exceeded the quota') || msg.includes('quota');
+    }
+
+    function readArrayFromLocalStorage(key) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        console.warn(`[Storage] Erro ao ler ${key} do localStorage:`, err);
+        return [];
+      }
+    }
+
+    function getCachedArray(key) {
+      if (Array.isArray(pageArrayCache[key])) {
+        return pageArrayCache[key];
+      }
+      const data = readArrayFromLocalStorage(key);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      pageArrayCache[key] = normalized ? normalized.items : data;
+      despesasCacheRevision += 1;
+      return pageArrayCache[key];
+    }
+
+    async function hydrateArrayCache(key) {
+      let data = null;
+      if (window.IndexedDBStore && window.IndexedDBStore.getItem) {
+        try {
+          data = await window.IndexedDBStore.getItem(key, null);
+        } catch (err) {
+          console.warn(`[Storage] Erro ao hidratar ${key} do IndexedDB:`, err);
+        }
+      }
+      if (!Array.isArray(data)) {
+        data = readArrayFromLocalStorage(key);
+      }
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      pageArrayCache[key] = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      despesasCacheRevision += 1;
+      return pageArrayCache[key];
+    }
+
+    function ensureArrayCacheHydrated(key) {
+      if (!pageArrayHydrationPromises.has(key)) {
+        pageArrayHydrationPromises.set(key, hydrateArrayCache(key));
+      }
+      return pageArrayHydrationPromises.get(key);
+    }
+
+    async function persistArrayCache(key, data) {
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      const safeData = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      pageArrayCache[key] = safeData;
+      despesasCacheRevision += 1;
+
+      try {
+        localStorage.setItem(key, JSON.stringify(safeData));
+      } catch (err) {
+        if (isQuotaExceededError(err)) {
+          console.warn(`[Storage] localStorage cheio para ${key}; mantendo dados no IndexedDB/Supabase.`);
+        } else {
+          throw err;
+        }
+      }
+
+      if (window.IndexedDBStore && window.IndexedDBStore.setItem) {
+        try {
+          await window.IndexedDBStore.setItem(key, safeData);
+        } catch (err) {
+          console.warn(`[Storage] Erro ao salvar ${key} no IndexedDB:`, err);
+        }
+      }
+
+      return true;
+    }
+
+    // O sistema possui um único proprietário; basta validar a sessão aprovada.
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser || !currentUser.aprovado) {
+      window.location.href = './index.html';
+    }
+
+    // MIGRAÇÃO: Se existem dados com formato antigo, migrar
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        // Formato antigo: despesas_lav1
+        const chaveAntiga = `despesas_${lav.id}`;
+        // Formato novo: lav1_despesas
+        const chaveNova = `${lav.id}_despesas`;
+
+        const dadosAntigos = localStorage.getItem(chaveAntiga);
+        const dadosNovos = localStorage.getItem(chaveNova);
+
+        if (dadosAntigos && !dadosNovos) {
+          try {
+            localStorage.setItem(chaveNova, dadosAntigos);
+          } catch (e) {
+            console.warn('[Despesas] Não foi possível migrar despesas antigas para localStorage:', e);
+          }
+          // Preserve legacy data until the owner reviews recovery copies.
+        }
+      });
+
+      // Também migrar 'despesas' sem prefixo para a primeira lavanderia
+      const despesasSemPrefixo = localStorage.getItem('despesas');
+      if (despesasSemPrefixo && lavanderias.length > 0) {
+        const primeiraLav = lavanderias[0].id;
+        const chaveNova = `${primeiraLav}_despesas`;
+        if (!localStorage.getItem(chaveNova)) {
+          try {
+            localStorage.setItem(chaveNova, despesasSemPrefixo);
+          } catch (e) {
+            console.warn('[Despesas] Não foi possível migrar despesas sem prefixo para localStorage:', e);
+          }
+        }
+        // Preserve the unscoped legacy copy for review.
+      }
+    })();
+
+    // Setup user info
+    document.getElementById('userName').textContent = currentUser?.nome || 'Usuário';
+    document.getElementById('userRole').textContent = 'Proprietário';
+
+    const canEdit = true;
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+    const minhasLavanderias = UserSystem.getMinhasLavanderias();
+    const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+    lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+      `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+    ).join('');
+
+    lavanderiaSelect.addEventListener('change', async (e) => {
+      UserSystem.selecionarLavanderia(e.target.value);
+      if (typeof window._despesasUnsubscribe === 'function') window._despesasUnsubscribe();
+      if (typeof window._metasDespesasUnsubscribe === 'function') window._metasDespesasUnsubscribe();
+      window._despesasUnsubscribe = null;
+      window._metasDespesasUnsubscribe = null;
+      _despesasFirebaseSyncSetup = false;
+      _metasFirebaseSyncSetup = false;
+      ['filtroMes', 'filtroAno', 'busca'].forEach(id => {
+        const field = document.getElementById(id);
+        if (field) field.value = '';
+      });
+      setStatusDespesasFirebase('Carregando lavanderia...');
+      await ensureArrayCacheHydrated(getStorageKey());
+      await setupFirebaseSync();
+      atualizarOpcoesAno();
+      renderDespesasDaPrimeiraPagina();
+    });
+
+    // REMOVIDO: Não definir mês/ano automaticamente - mostrar TODAS as despesas por padrão
+    // const now = new Date();
+    // document.getElementById('filtroMes').value = String(now.getMonth() + 1).padStart(2, '0');
+    // document.getElementById('filtroAno').value = String(now.getFullYear());
+
+    // Deixar filtros vazios para mostrar todas as despesas
+    document.getElementById('filtroMes').value = '';
+    document.getElementById('filtroAno').value = '';
+
+    function getDataDespesa(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return null;
+      const d = new Date(`${dateStr}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function atualizarOpcoesAno() {
+      const select = document.getElementById('filtroAno');
+      if (!select) return;
+
+      const anoSelecionado = select.value;
+      const despesas = getDespesas();
+      const anos = new Set();
+
+      despesas.forEach(despesa => {
+        const data = getDataDespesa(despesa?.data);
+        if (!data) return;
+        anos.add(String(data.getFullYear()));
+      });
+
+      if (anos.size === 0) {
+        anos.add(String(new Date().getFullYear()));
+      }
+
+      const anosOrdenados = [...anos].sort((a, b) => Number(b) - Number(a));
+      select.innerHTML = '<option value="">Todos os anos</option>';
+      anosOrdenados.forEach(ano => {
+        const option = document.createElement('option');
+        option.value = ano;
+        option.textContent = ano;
+        select.appendChild(option);
+      });
+
+      if (anoSelecionado && anos.has(anoSelecionado)) {
+        select.value = anoSelecionado;
+      }
+    }
+
+    // Preencher anos disponíveis dinamicamente
+    atualizarOpcoesAno();
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    sidebarToggle?.addEventListener('click', toggleSidebar);
+    sidebarOverlay?.addEventListener('click', toggleSidebar);
+
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    // Storage key based on selected laundry - SEMPRE pega a lavanderia atual
+    function getStorageKey() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      const lavId = selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+      return `${lavId}_despesas`;
+    }
+
+    function setStatusDespesasFirebase(message, type = 'info') {
+      const status = document.getElementById('statusDespesasFirebase');
+      if (!status) return;
+      status.textContent = message;
+      status.title = message;
+      status.style.color = type === 'error'
+        ? 'var(--color-danger)'
+        : type === 'success'
+          ? 'var(--color-success)'
+          : 'var(--color-text-muted)';
+    }
+
+    async function atualizarDespesasDoFirebase() {
+      const button = document.getElementById('btnAtualizarDespesasFirebase');
+      const originalText = button?.textContent;
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Atualizando...';
+      }
+      setStatusDespesasFirebase('Buscando dados...');
+
+      try {
+        if (!window.FirebaseStore || typeof window.FirebaseStore.getItem !== 'function') {
+          throw new Error('A conexão com o Supabase ainda não foi inicializada.');
+        }
+
+        const key = getStorageKey();
+        await despesasFirebaseWriteChain.catch(() => {});
+        const serverReader = typeof window.FirebaseStore.getItemFromRestServer === 'function'
+          ? window.FirebaseStore.getItemFromRestServer.bind(window.FirebaseStore)
+          : typeof window.FirebaseStore.getItemFromServer === 'function'
+            ? window.FirebaseStore.getItemFromServer.bind(window.FirebaseStore)
+            : window.FirebaseStore.getItem.bind(window.FirebaseStore);
+        const remote = await serverReader(key, null);
+        if (!Array.isArray(remote)) {
+          throw new Error('Não foi possível carregar as despesas da nuvem.');
+        }
+
+        const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, remote);
+        const remoteData = normalized ? normalized.items : remote;
+        await aplicarDespesasRemotas(key, remoteData);
+        if (key !== getStorageKey()) return remoteData;
+        const mergedData = remoteData;
+        atualizarOpcoesAno();
+        renderDespesasDaPrimeiraPagina();
+        const laundryName = document.getElementById('lavanderiaSelect')?.selectedOptions?.[0]?.textContent?.trim() || 'Unidade atual';
+        setStatusDespesasFirebase(`${remote.length} lançamentos no servidor · ${mergedData.length} no dispositivo · ${laundryName}`, 'success');
+        return mergedData;
+      } catch (error) {
+        console.warn('[Despesas] Falha ao atualizar da nuvem:', error);
+        setStatusDespesasFirebase(error.message || 'Falha ao atualizar.', 'error');
+        return null;
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = originalText || '↻ Atualizar da nuvem';
+        }
+      }
+    }
+
+    document.getElementById('btnAtualizarDespesasFirebase')?.addEventListener('click', atualizarDespesasDoFirebase);
+
+    // Metas mensais (multi-tenant)
+    const METAS_KEY_BASE = 'irancash_metas_mensais';
+
+    function getLavanderiaAtualId() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      return selectValue || UserSystem.getLavanderiaSelecionada()?.id || localStorage.getItem('lavanderiaSelecionada') || 'default';
+    }
+
+    function getMetasStorageKey() {
+      try {
+        if (window.LaundryService && typeof window.LaundryService.getLaundryKey === 'function') {
+          const scoped = window.LaundryService.getLaundryKey(METAS_KEY_BASE);
+          if (scoped) return scoped;
+        }
+      } catch (e) {}
+
+      const lavId = getLavanderiaAtualId();
+      return lavId ? `${lavId}_${METAS_KEY_BASE}` : METAS_KEY_BASE;
+    }
+
+    function migrateLegacyMetasKeyOnce() {
+      if (window._irancashMetasTenantMigrated) return;
+      window._irancashMetasTenantMigrated = true;
+
+      try {
+        const legacy = localStorage.getItem(METAS_KEY_BASE);
+        if (!legacy) return;
+
+        const lavs = (window.UserSystem && typeof window.UserSystem.getLavanderias === 'function')
+          ? window.UserSystem.getLavanderias()
+          : [];
+        const lavIds = Array.isArray(lavs)
+          ? lavs.map(l => l && l.id).filter(Boolean).map(String)
+          : [];
+        const fallback = getLavanderiaAtualId();
+        const ids = lavIds.length ? lavIds : (fallback ? [String(fallback)] : []);
+        if (!ids.length) return;
+
+        ids.forEach(lavId => {
+          const scopedKey = `${lavId}_${METAS_KEY_BASE}`;
+          if (!localStorage.getItem(scopedKey)) {
+            localStorage.setItem(scopedKey, legacy);
+          }
+        });
+
+        localStorage.removeItem(METAS_KEY_BASE);
+      } catch (e) {}
+    }
+
+    // Get despesas (sync - sempre do localStorage primeiro)
+    function normalizarCategoriaDespesaValor(categoriaId) {
+      return window.despesasUtils?.normalizarCategoriaDespesaId?.(categoriaId) || categoriaId || 'outros';
+    }
+
+    function inferirTipoDespesaInicial(categoriaId, despesa) {
+      if (despesa?.recorrente || despesa?.recorrenteGerada) return 'fixa';
+      const token = String(categoriaId || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+      const fixas = ['aluguel', 'agua', 'energia', 'luz', 'internet', 'folha', 'salario', 'pro_labore', 'contador', 'manutencao_preventiva'];
+      return fixas.some(item => token.includes(item)) ? 'fixa' : 'eventual';
+    }
+
+    function normalizarListaDespesas(despesas) {
+      const normalizadas = (Array.isArray(despesas) ? despesas : []).map(despesa => {
+        const categoriaNormalizada = normalizarCategoriaDespesaValor(despesa?.categoria);
+        const categoriaMudou = categoriaNormalizada !== despesa?.categoria;
+        const tipoNormalizado = normalizarTipoDespesa(despesa?.tipoDespesa || despesa?.tipo || inferirTipoDespesaInicial(categoriaNormalizada, despesa));
+        const tipoMudou = tipoNormalizado !== despesa?.tipoDespesa;
+
+        if (!categoriaMudou && !tipoMudou) {
+          return despesa;
+        }
+
+        return {
+          ...despesa,
+          categoria: categoriaNormalizada,
+          tipoDespesa: tipoNormalizado
+        };
+      });
+      return window.despesasUtils?.compactarMdrMensalParaPersistencia?.(normalizadas) || normalizadas;
+    }
+
+    function getDespesas() {
+      return JSON.parse(JSON.stringify(getCachedArray(getStorageKey())));
+    }
+
+    function preservarCopiaLocal(key, dados) {
+      if (!Array.isArray(dados) || !dados.length) return;
+      const backupKey = 'lavacash_recovery_' + key;
+      const saved = JSON.parse(localStorage.getItem(backupKey) || 'null');
+      const snapshots = Array.isArray(saved?.snapshots) ? saved.snapshots : (saved?.dados ? [{ savedAt: saved.savedAt, dados: saved.dados }] : []);
+      const encoded = JSON.stringify(dados);
+      if (snapshots.some(snapshot => JSON.stringify(snapshot.dados) === encoded)) return;
+      snapshots.push({ savedAt: new Date().toISOString(), dados });
+      localStorage.setItem(backupKey, JSON.stringify({ snapshots }));
+    }
+
+    function exportarRecuperacaoLocal() {
+      const key = getStorageKey();
+      const payload = { lavanderia: key, exportadoEm: new Date().toISOString(),
+        copiaAnterior: JSON.parse(localStorage.getItem('lavacash_recovery_' + key) || 'null'),
+        dadosVisiveis: getDespesas(), pendencias: window.FirebaseStore?.getPendingWrites?.().filter(item => item.key === key) || [] };
+      const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+      const link = document.createElement('a'); link.href = url; link.download = 'lavacash-recuperacao-' + key + '.json';
+      link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function saveDespesas(despesas, options = {}) {
+      const key = options.key || getStorageKey();
+      const before = getCachedArray(key);
+      const beforeById = new Map(before.map(item => [String(item.id), item]));
+      const changes = despesas.filter(item => JSON.stringify(beforeById.get(String(item.id))) !== JSON.stringify(item))
+        .map(item => ({ before: options.beforeOverrides?.[String(item.id)] || beforeById.get(String(item.id)) || null, after: item }));
+      if (!changes.length) return true;
+      const operation = despesasFirebaseWriteChain.catch(() => {}).then(async () => {
+        if (!window.FirebaseStore?.saveExpenseChanges) throw new Error('Conexão ainda indisponível. Aguarde e tente novamente.');
+        if (getStorageKey() === key) setStatusDespesasFirebase('Salvando no Supabase...');
+        await window.FirebaseStore.saveExpenseChanges(key, changes);
+        // Confirmation comes from the completed remote operations, not the cache.
+        const current = new Map(getCachedArray(key).map(item => [String(item.id), item]));
+        changes.forEach(change => current.set(String(change.after.id), change.after));
+        await persistArrayCache(key, [...current.values()]);
+        if (getStorageKey() === key) setStatusDespesasFirebase('Alterações confirmadas no Supabase.', 'success');
+        return true;
+      });
+      despesasFirebaseWriteChain = operation;
+      return operation;
+    }
+
+    async function removerDespesasSelecionadas(ids) {
+      const key = getStorageKey();
+      const selected = new Set(ids.map(String));
+      const operation = despesasFirebaseWriteChain.catch(() => {}).then(async () => {
+        if (!window.FirebaseStore?.deleteFinanceItems) throw new Error('Conexão ainda indisponível.');
+        if (window.FirebaseStore.getPendingWrites().some(item => item.key === key)) {
+          throw new Error('Há alterações locais pendentes. Baixe a cópia local e revise-as antes de excluir.');
+        }
+        await window.FirebaseStore.deleteFinanceItems(key, [...selected]);
+        await persistArrayCache(key, getCachedArray(key).filter(item => !selected.has(String(item.id))));
+        if (getStorageKey() === key) {
+          atualizarOpcoesAno(); renderDespesas();
+          setStatusDespesasFirebase('Exclusão confirmada no Supabase.', 'success');
+        }
+      });
+      despesasFirebaseWriteChain = operation;
+      try { await operation; }
+      catch (error) {
+        if (getStorageKey() === key) setStatusDespesasFirebase(error.message, 'error');
+        showToast(error.message || 'Exclusão não confirmada.', 'error');
+      }
+    }
+
+    // Format currency
+    function fmtBR(n) {
+      return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    // Format date
+    function fmtData(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    function getCategoriasDespesa() {
+      return window.despesasUtils?.getCategoriasDespesa() || [];
+    }
+
+    function preencherCategoriasDespesaSelect(selectedValue = '') {
+      const select = document.getElementById('despesaCategoria');
+      if (!select) return;
+
+      const categorias = getCategoriasDespesa();
+      const selectedNormalizado = normalizarCategoriaDespesaValor(selectedValue);
+      const selectedExiste = categorias.some(categoria => categoria.id === selectedNormalizado);
+
+      select.innerHTML = `
+        <option value="">Selecione uma categoria</option>
+        ${categorias.map(categoria => `<option value="${categoria.id}">${categoria.nome}</option>`).join('')}
+      `;
+
+      select.value = selectedExiste ? selectedNormalizado : '';
+    }
+
+    function getCategoriaDespesaLabel(categoriaId) {
+      return window.despesasUtils?.getCategoriaDespesaLabel(categoriaId) || categoriaId || 'Sem categoria';
+    }
+
+    function atualizarPagamentoCategoriaMdr() {
+      const categoria = normalizarCategoriaDespesaValor(document.getElementById('despesaCategoria')?.value);
+      const pagamentoEl = document.getElementById('despesaPagamento');
+      if (!pagamentoEl) return;
+
+      if (categoria === 'mdr') {
+        const formasMdr = ['pix', 'cartao_credito', 'cartao_debito'];
+        if (!formasMdr.includes(pagamentoEl.value)) pagamentoEl.value = 'cartao_debito';
+      }
+      pagamentoEl.disabled = false;
+      Array.from(pagamentoEl.options).forEach(option => {
+        option.disabled = categoria === 'mdr'
+          && !['pix', 'cartao_credito', 'cartao_debito'].includes(option.value);
+      });
+    }
+
+    function getCompetenciaFromDate(dateStr) {
+      return window.LavaCashRecurring?.getCompetenciaFromDate(dateStr)
+        || (dateStr && typeof dateStr === 'string' ? dateStr.slice(0, 7) : '');
+    }
+
+    async function gerarRecorrenciasConfirmadas() {
+      if (!confirm('Gerar as recorrências ausentes deste mês? Isso também pode recriar uma ocorrência recorrente excluída manualmente.')) return;
+      const key = getStorageKey();
+      try {
+        const remote = await window.FirebaseStore.getItemFromServer(key, null);
+        if (key !== getStorageKey()) return;
+        await aplicarDespesasRemotas(key, remote);
+        await sincronizarRecorrenciasNoMesAtual();
+        atualizarOpcoesAno(); renderDespesas();
+        showToast('Recorrências conferidas e confirmadas no Supabase.', 'success');
+      } catch (error) { showToast(error.message || 'Não foi possível gerar recorrências.', 'error'); }
+    }
+
+    async function sincronizarRecorrenciasNoMesAtual() {
+      if (!window.LavaCashRecurring) return false;
+      const result = await window.LavaCashRecurring.syncCurrentMonth({
+        despesas: getDespesas(),
+        persist: saveDespesas
+      });
+      return result.generated.length > 0;
+    }
+
+    function normalizarTipoDespesa(tipo) {
+      return window.LavaCashRecurring?.normalizarTipoDespesa(tipo) || 'eventual';
+    }
+
+    function getTipoDespesaLabel(tipo) {
+      return window.LavaCashRecurring?.getTipoDespesaLabel(tipo) || 'Eventual';
+    }
+
+    const PAGAMENTOS = {
+      dinheiro: 'Dinheiro',
+      pix: 'PIX',
+      cartao_credito: 'Cartão Crédito',
+      cartao_debito: 'Cartão Débito',
+      boleto: 'Boleto',
+      transferencia: 'Transferência'
+    };
+
+    let despesasPaginaAtual = 1;
+    let despesasQuantidadePorPagina = 50;
+
+    function atualizarPaginacaoDespesas(totalRegistros, inicio, fim, totalPaginas) {
+      const container = document.getElementById('paginacaoDespesas');
+      if (!container) return;
+      container.style.display = totalRegistros > 0 ? 'flex' : 'none';
+      document.getElementById('resumoPaginacaoDespesas').textContent = totalRegistros > 0
+        ? `Mostrando ${inicio + 1}–${fim} de ${totalRegistros}`
+        : '';
+      document.getElementById('paginaAtualDespesas').textContent = `Página ${despesasPaginaAtual} de ${totalPaginas}`;
+      document.getElementById('paginaAnteriorDespesas').disabled = despesasPaginaAtual <= 1;
+      document.getElementById('proximaPaginaDespesas').disabled = despesasPaginaAtual >= totalPaginas;
+    }
+
+    function mudarPaginaDespesas(direcao) {
+      despesasPaginaAtual = Math.max(1, despesasPaginaAtual + Number(direcao || 0));
+      renderDespesas();
+      document.querySelector('.table-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function alterarDespesasPorPagina() {
+      const valor = Number(document.getElementById('despesasPorPagina')?.value || 50);
+      despesasQuantidadePorPagina = [50, 100, 200].includes(valor) ? valor : 50;
+      despesasPaginaAtual = 1;
+      renderDespesas();
+    }
+
+    function renderDespesasDaPrimeiraPagina() {
+      despesasPaginaAtual = 1;
+      renderDespesas();
+    }
+
+    // Render table
+    function renderDespesas() {
+      const tbody = document.getElementById('tabelaDespesas');
+      const mes = document.getElementById('filtroMes').value;
+      const ano = document.getElementById('filtroAno').value;
+      const busca = document.getElementById('busca').value.toLowerCase();
+
+      let despesas = getDespesas();
+
+      // Filter by month/year
+      if (mes) {
+        despesas = despesas.filter(d => {
+          const dt = getDataDespesa(d?.data);
+          if (!dt) return false;
+          return String(dt.getMonth() + 1).padStart(2, '0') === mes;
+        });
+      }
+      if (ano) {
+        despesas = despesas.filter(d => {
+          const dt = getDataDespesa(d?.data);
+          if (!dt) return false;
+          return String(dt.getFullYear()) === ano;
+        });
+      }
+
+      // Filter by search
+      if (busca) {
+        despesas = despesas.filter(d =>
+          d.descricao?.toLowerCase().includes(busca) ||
+          d.categoria?.toLowerCase().includes(busca)
+        );
+      }
+
+      const total = despesas.reduce((sum, d) => sum + Number(d.valor || 0), 0);
+      const qtdLancamentos = despesas.length;
+      const media = qtdLancamentos > 0 ? total / qtdLancamentos : 0;
+      const despesasParaExibicao = window.despesasUtils?.agruparMdrPorMesParaExibicao?.(despesas) || despesas.slice();
+
+      // Sort by date desc after monthly MDR aggregation
+      despesasParaExibicao.sort((a, b) => {
+        const dataB = getDataDespesa(b?.data);
+        const dataA = getDataDespesa(a?.data);
+        const diferencaData = (dataB?.getTime() || 0) - (dataA?.getTime() || 0);
+        if (diferencaData !== 0 || !a.resumoMdr || !b.resumoMdr) return diferencaData;
+        const ordemMdr = { pix: 0, cartao_credito: 1, cartao_debito: 2 };
+        return (ordemMdr[a.formaPagamentoMdr] ?? 3) - (ordemMdr[b.formaPagamentoMdr] ?? 3);
+      });
+
+      // Update stats
+      const qtdLinhas = despesasParaExibicao.length;
+      const totalPaginas = Math.max(1, Math.ceil(qtdLinhas / despesasQuantidadePorPagina));
+      despesasPaginaAtual = Math.min(Math.max(1, despesasPaginaAtual), totalPaginas);
+      const inicioPagina = (despesasPaginaAtual - 1) * despesasQuantidadePorPagina;
+      const fimPagina = Math.min(inicioPagina + despesasQuantidadePorPagina, qtdLinhas);
+      const despesasDaPagina = despesasParaExibicao.slice(inicioPagina, fimPagina);
+      const categoriasPorId = new Map(getCategoriasDespesa().map(categoria => [categoria.id, categoria.nome]));
+
+      document.getElementById('totalPeriodo').textContent = fmtBR(total);
+      document.getElementById('qtdDespesas').textContent = qtdLancamentos;
+      document.getElementById('mediaDespesa').textContent = fmtBR(media);
+      document.getElementById('contadorDespesas').textContent = qtdLinhas !== qtdLancamentos
+        ? `${qtdLinhas} linhas · ${qtdLancamentos} lançamentos`
+        : `${qtdLancamentos} registro${qtdLancamentos !== 1 ? 's' : ''}`;
+      atualizarPaginacaoDespesas(qtdLinhas, inicioPagina, fimPagina, totalPaginas);
+
+      // Metas mensais: só exibe quando há filtro de mês selecionado
+      renderMetasProgresso(despesas, mes);
+      renderPrevisaoFixas();
+
+      if (despesasParaExibicao.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9">
+              <div class="empty-state">
+                <div class="empty-state-icon">💸</div>
+                <h4 class="empty-state-title">Nenhuma despesa encontrada</h4>
+                <p class="empty-state-text">Não há despesas para o período selecionado.</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = despesasDaPagina.map(d => `
+        <tr class="${d.resumoMdr ? 'mdr-summary-row' : ''}">
+          <td>${d.resumoMdr ? '—' : `<input type="checkbox" class="checkbox-despesa" data-id="${d.id}" onchange="atualizarBotaoExcluirDespesas()" style="cursor: pointer;">`}</td>
+          <td>${d.resumoMdr ? window.despesasUtils.formatarCompetenciaCurta(d.competencia) : fmtData(d.data)}</td>
+          <td style="color: var(--color-text-muted); font-size: 0.875rem;">${d.resumoMdr ? 'Mês' : (d.horarioVenda || '-')}</td>
+          <td>
+            <div>${d.descricao || '-'}</div>
+            ${d.resumoMdr ? `<div class="text-xs mt-1" style="color:var(--color-text-muted);">${d.quantidadeLancamentos} taxas ${window.despesasUtils.formatarFormaPagamentoMdr(d.formaPagamentoMdr).toLowerCase()} agrupadas</div>` : ''}
+            ${d.recorrente || d.recorrenteGerada ? `<div class="text-xs mt-1" style="color:var(--color-text-muted);">${d.recorrenteGerada ? 'Gerada por recorrência' : 'Recorrência mensal'}</div>` : ''}
+          </td>
+          <td><span class="badge badge-danger">${categoriasPorId.get(normalizarCategoriaDespesaValor(d.categoria)) || getCategoriaDespesaLabel(d.categoria)}</span></td>
+          <td><span class="badge badge-info">${getTipoDespesaLabel(d.tipoDespesa)}</span></td>
+          <td>${PAGAMENTOS[d.pagamento] || d.pagamento}</td>
+          <td style="color: var(--color-danger); font-weight: 600;">${fmtBR(d.valor)}</td>
+          <td>
+            ${d.resumoMdr ? '<span class="text-xs" style="color:var(--color-text-muted);">Resumo mensal</span>' : canEdit ? `
+              <button class="btn btn-ghost btn-sm" onclick="editarDespesa('${d.id}')" title="Editar despesa" aria-label="Editar despesa de ${fmtData(d.data)}">✏️</button>
+              <button class="btn btn-ghost btn-sm" onclick="excluirDespesa('${d.id}')" title="Excluir despesa" aria-label="Excluir despesa de ${fmtData(d.data)}">🗑️</button>
+            ` : '-'}
+          </td>
+        </tr>
+      `).join('');
+
+      // Reset checkbox "Selecionar Todas"
+      const selecionarTodas = document.getElementById('selecionarTodasDespesas');
+      if (selecionarTodas) selecionarTodas.checked = false;
+      atualizarBotaoExcluirDespesas();
+    }
+
+    // Modal
+    const modal = document.getElementById('modalDespesa');
+    let editandoId = null;
+    let despesaEditSnapshot = null;
+    let despesaDraftId = null;
+    let despesaDraftCreatedAt = null;
+    let despesaFormStorageKey = null;
+
+    function abrirModal(despesa = null) {
+      despesaFormStorageKey = getStorageKey();
+      editandoId = despesa?.id || null;
+      despesaEditSnapshot = despesa ? JSON.parse(JSON.stringify(despesa)) : null;
+      despesaDraftId = despesa?.id || crypto.randomUUID();
+      despesaDraftCreatedAt = despesa?.criadoEm || new Date().toISOString();
+      document.getElementById('modalTitle').textContent = despesa ? 'Editar Despesa' : 'Nova Despesa';
+
+      document.getElementById('despesaId').value = despesa?.id || '';
+      document.getElementById('despesaData').value = despesa?.data || new Date().toISOString().split('T')[0];
+      document.getElementById('despesaDescricao').value = despesa?.descricao || '';
+      preencherCategoriasDespesaSelect(despesa?.categoria || '');
+      document.getElementById('despesaPagamento').value = despesa?.pagamento || 'dinheiro';
+      atualizarPagamentoCategoriaMdr();
+      document.getElementById('despesaTipo').value = normalizarTipoDespesa(despesa?.tipoDespesa || (despesa?.recorrente ? 'fixa' : 'eventual'));
+      document.getElementById('despesaValor').value = despesa?.valor || '';
+      document.getElementById('despesaObs').value = despesa?.obs || '';
+
+      const chkRecorrente = document.getElementById('despesaRecorrente');
+      const temRecorrencia = !!(despesa?.recorrente || despesa?.recorrenteGerada || despesa?.grupoRecorrenteId || despesa?.recorrenciaOrigemId);
+      chkRecorrente.checked = temRecorrencia;
+      chkRecorrente.disabled = false;
+      document.getElementById('recorrenteOpcoes').classList.toggle('hidden', !temRecorrencia);
+      document.getElementById('recorrenciaInicio').value = despesa?.recorrenciaInicio || despesa?.data || new Date().toISOString().split('T')[0];
+      document.getElementById('recorrenciaFim').value = despesa?.recorrenciaFim || '';
+      document.getElementById('recorrenciaPeriodicidade').value = 'mensal';
+      document.getElementById('recorrenciaEscopoContainer')?.classList.toggle('hidden', !(editandoId && temRecorrencia));
+      document.querySelector('input[name="recorrenciaEscopo"][value="mes"]')?.click();
+
+      modal.classList.add('active');
+    }
+
+    // Toggle opções recorrente
+    document.getElementById('despesaRecorrente')?.addEventListener('change', (e) => {
+      document.getElementById('recorrenteOpcoes').classList.toggle('hidden', !e.target.checked);
+      if (e.target.checked) {
+        const dataDespesa = document.getElementById('despesaData')?.value;
+        const inicio = document.getElementById('recorrenciaInicio');
+        if (inicio && !inicio.value) inicio.value = dataDespesa || new Date().toISOString().split('T')[0];
+        document.getElementById('despesaTipo').value = 'fixa';
+      } else {
+        document.getElementById('recorrenciaEscopoContainer')?.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('despesaData')?.addEventListener('change', (e) => {
+      const recorrente = document.getElementById('despesaRecorrente')?.checked;
+      const inicio = document.getElementById('recorrenciaInicio');
+      if (recorrente && inicio && !inicio.value) inicio.value = e.target.value;
+    });
+
+    function fecharModal() {
+      modal.classList.remove('active');
+      document.getElementById('formDespesa').reset();
+      preencherCategoriasDespesaSelect();
+      document.getElementById('despesaPagamento').disabled = false;
+      document.getElementById('despesaTipo').value = 'eventual';
+      document.getElementById('recorrenteOpcoes')?.classList.add('hidden');
+      document.getElementById('recorrenciaEscopoContainer')?.classList.add('hidden');
+      editandoId = null;
+    }
+
+    document.getElementById('despesaCategoria')?.addEventListener('change', atualizarPagamentoCategoriaMdr);
+
+    document.getElementById('btnNovaDespesa')?.addEventListener('click', () => abrirModal());
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) fecharModal();
+    });
+
+    // Form submit
+    document.getElementById('formDespesa')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Sanitize helper
+      const sanitize = str => typeof str === 'string'
+        ? str.replace(/<[^>]*>/g, '').replace(/javascript:/gi, '').replace(/on\w+=/gi, '').trim()
+        : '';
+
+      const dataVal = document.getElementById('despesaData').value;
+      if (!dataVal) { showToast('Informe a data da despesa.', 'error'); return; }
+      const dataObj = new Date(dataVal + 'T00:00:00');
+      const maxFuture = new Date(); maxFuture.setHours(0,0,0,0); maxFuture.setFullYear(maxFuture.getFullYear() + 1);
+      if (dataObj > maxFuture) { showToast('Data não pode ser mais de 1 ano no futuro.', 'error'); return; }
+
+      const categoria = sanitize(document.getElementById('despesaCategoria').value);
+      if (!categoria) {
+        showToast('Selecione uma categoria para a despesa.', 'error');
+        return;
+      }
+
+      const valorRaw = parseFloat(document.getElementById('despesaValor').value);
+      if (!valorRaw || valorRaw <= 0) {
+        showToast('Informe um valor maior que zero.', 'error');
+        return;
+      }
+      if (valorRaw > 9999999.99) { showToast('Valor informado excede o limite permitido.', 'error'); return; }
+
+      const formStorageKey = despesaFormStorageKey || getStorageKey();
+      if (formStorageKey !== getStorageKey()) { showToast("A lavanderia mudou. Feche e reabra o formulário na unidade correta.", "error"); return; }
+      let despesas = getDespesas();
+      const existente = editandoId ? despesas.find(despesa => despesa.id === editandoId) : null;
+      const estavaEditando = !!editandoId;
+      const recorrente = !!document.getElementById('despesaRecorrente')?.checked;
+      const tipoDespesa = normalizarTipoDespesa(document.getElementById('despesaTipo')?.value);
+      const idDespesa = editandoId || despesaDraftId || (despesaDraftId = crypto.randomUUID());
+      const grupoRecorrenteId = recorrente
+        ? (existente?.grupoRecorrenteId || existente?.recorrenciaOrigemId || idDespesa)
+        : undefined;
+      const dataInicio = recorrente ? (document.getElementById('recorrenciaInicio')?.value || dataVal) : '';
+      const dataFim = recorrente ? (document.getElementById('recorrenciaFim')?.value || '') : '';
+      const diaRecorrencia = dataInicio ? new Date(`${dataInicio}T00:00:00`).getDate() : 1;
+      const competenciaInformada = getCompetenciaFromDate(dataVal);
+      const editandoRecorrencia = !!(existente?.recorrente || existente?.recorrenteGerada || existente?.grupoRecorrenteId || existente?.recorrenciaOrigemId);
+      const escopoRecorrencia = document.querySelector('input[name="recorrenciaEscopo"]:checked')?.value || 'mes';
+
+      if (recorrente) {
+        if (!dataInicio) {
+          showToast('Informe a data de início da recorrência.', 'error');
+          return;
+        }
+        if (dataFim && dataFim < dataInicio) {
+          showToast('A data final da recorrência não pode ser anterior à data de início.', 'error');
+          return;
+        }
+      }
+
+      const despesa = {
+        id: idDespesa,
+        data: dataVal,
+        descricao: sanitize(document.getElementById('despesaDescricao').value).slice(0, 200),
+        categoria,
+        pagamento: sanitize(document.getElementById('despesaPagamento').value),
+        valor: valorRaw,
+        tipoDespesa,
+        obs: sanitize(document.getElementById('despesaObs').value).slice(0, 500),
+        criadoEm: editandoId ? existente?.criadoEm : despesaDraftCreatedAt,
+        atualizadoEm: new Date().toISOString(),
+        competencia: competenciaInformada,
+        ...(recorrente ? {
+          recorrente: true,
+          recorrenciaAtiva: true,
+          grupoRecorrenteId,
+          recorrenciaOrigemId: existente?.recorrenciaOrigemId || idDespesa,
+          recorrenciaDia: diaRecorrencia,
+          recorrenciaInicio: dataInicio,
+          recorrenciaFim: dataFim,
+          recorrenciaPeriodicidade: 'mensal'
+        } : {})
+      };
+
+      if (!editandoId && recorrente) {
+        despesa.recorrenciaOrigemId = despesa.id;
+      }
+
+      if (editandoId && editandoRecorrencia && escopoRecorrencia === 'toda' && grupoRecorrenteId) {
+        const origemId = existente?.recorrenciaOrigemId || grupoRecorrenteId;
+        despesas = despesas.map(item => {
+          const itemGroupId = window.LavaCashRecurring?.getRecorrenciaGroupId(item)
+            || String(item?.grupoRecorrenteId || item?.recorrenciaOrigemId || item?.id || '');
+          if (itemGroupId !== grupoRecorrenteId) return item;
+
+          const competenciaItem = item.competencia || getCompetenciaFromDate(item.data);
+          const dataItem = window.LavaCashRecurring?.buildDateForMonth(diaRecorrencia, competenciaItem) || item.data;
+          return {
+            ...item,
+            data: dataItem,
+            descricao: despesa.descricao,
+            categoria: despesa.categoria,
+            pagamento: despesa.pagamento,
+            valor: despesa.valor,
+            tipoDespesa: despesa.tipoDespesa,
+            obs: despesa.obs,
+            recorrenciaAtiva: recorrente,
+            grupoRecorrenteId,
+            recorrenciaOrigemId: origemId,
+            recorrenciaDia: diaRecorrencia,
+            recorrenciaInicio: dataInicio,
+            recorrenciaFim: dataFim,
+            recorrenciaPeriodicidade: 'mensal',
+            atualizadoEm: despesa.atualizadoEm
+          };
+        });
+      } else if (editandoId) {
+        const idx = despesas.findIndex(d => d.id === editandoId);
+        if (idx !== -1) {
+          despesas[idx] = {
+            ...despesas[idx],
+            ...despesa,
+            recorrente: recorrente && despesas[idx].recorrente === true,
+            recorrenteGerada: despesas[idx].recorrenteGerada || false,
+            recorrenciaExcecao: editandoRecorrencia && escopoRecorrencia === 'mes',
+            criadoEm: despesas[idx].criadoEm
+          };
+        }
+      } else {
+        despesas.push(despesa);
+      }
+
+      const submitButton = e.submitter;
+      const submitButtonText = submitButton?.textContent;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Salvando...';
+      }
+
+      try {
+        await saveDespesas(despesas, { key: formStorageKey, beforeOverrides: editandoId ? { [editandoId]: despesaEditSnapshot } : {} });
+      } catch(e) {
+        setStatusDespesasFirebase(e.message || 'Gravação não confirmada.', 'error');
+        showToast(e.message || 'Gravação não confirmada. O formulário foi preservado.', 'error');
+        return;
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = submitButtonText || 'Salvar Despesa';
+        }
+      }
+      atualizarOpcoesAno();
+      fecharModal();
+      renderDespesas();
+      showToast(estavaEditando ? 'Despesa atualizada no Supabase!' : 'Despesa confirmada no Supabase!', 'success');
+    });
+
+    // Edit
+    function editarDespesa(id) {
+      const despesas = getDespesas();
+      const despesa = despesas.find(d => d.id === id);
+      if (despesa) {
+        abrirModal(despesa);
+      }
+    }
+
+    // Delete
+    async function excluirDespesa(id) {
+      if (confirm('Tem certeza que deseja excluir esta despesa?')) await removerDespesasSelecionadas([id]);
+    }
+
+    // Filter changes
+    document.getElementById('filtroMes')?.addEventListener('change', () => {
+      renderDespesasDaPrimeiraPagina();
+      setupFirebaseSyncMetasIfNeeded();
+    });
+    document.getElementById('filtroAno')?.addEventListener('change', renderDespesasDaPrimeiraPagina);
+    let buscaDespesasTimer = null;
+    document.getElementById('busca')?.addEventListener('input', () => {
+      clearTimeout(buscaDespesasTimer);
+      buscaDespesasTimer = setTimeout(renderDespesasDaPrimeiraPagina, 180);
+    });
+
+    preencherCategoriasDespesaSelect();
+
+    // Sincronização bidirecional com Firebase (real-time)
+    let _despesasFirebaseSyncSetup = false;
+
+    let despesasSyncGeneration = 0;
+
+    async function aplicarDespesasRemotas(key, remote) {
+      if (!Array.isArray(remote)) throw new Error('Resposta inválida do Supabase.');
+      await ensureArrayCacheHydrated(key);
+      const local = getCachedArray(key);
+      const remoteById = new Map(remote.map(item => [String(item.id), item]));
+      const recovery = local.filter(item => {
+        const other = remoteById.get(String(item.id));
+        return !other || JSON.stringify(item) !== JSON.stringify(other);
+      });
+      preservarCopiaLocal(key, recovery);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, remote);
+      await persistArrayCache(key, normalized ? normalized.items : remote);
+      if (getStorageKey() === key) { atualizarOpcoesAno(); renderDespesasDaPrimeiraPagina(); }
+    }
+
+    async function setupFirebaseSync() {
+      if (_despesasFirebaseSyncSetup || !window.FirebaseStore?.subscribe) return;
+      _despesasFirebaseSyncSetup = true;
+      const generation = ++despesasSyncGeneration;
+      const key = getStorageKey();
+      try {
+        await despesasFirebaseWriteChain.catch(() => {});
+        setStatusDespesasFirebase('Sincronizando com o Supabase...');
+        const remote = await window.FirebaseStore.getItemFromServer(key, null);
+        if (generation !== despesasSyncGeneration || key !== getStorageKey()) return;
+        await aplicarDespesasRemotas(key, remote);
+        setStatusDespesasFirebase(`${remote.length} lançamentos recebidos do Supabase.`, 'success');
+      } catch (error) {
+        if (key === getStorageKey()) setStatusDespesasFirebase(error.message || 'Falha ao sincronizar.', 'error');
+        _despesasFirebaseSyncSetup = false;
+        return;
+      }
+      if (generation !== despesasSyncGeneration || key !== getStorageKey()) return;
+      window._despesasUnsubscribe = window.FirebaseStore.subscribe(key, async remote => {
+        if (generation !== despesasSyncGeneration || key !== getStorageKey()) return;
+        // Do not apply a polling snapshot captured before an outstanding write.
+        const pendingAtRead = despesasFirebaseWriteChain;
+        await pendingAtRead.catch(() => {});
+        try {
+          const fresh = await window.FirebaseStore.getItemFromServer(key, null);
+          if (generation !== despesasSyncGeneration || key !== getStorageKey() || pendingAtRead !== despesasFirebaseWriteChain) return;
+          await aplicarDespesasRemotas(key, fresh);
+          setStatusDespesasFirebase(`${fresh.length} lançamentos recebidos do Supabase.`, 'success');
+        } catch (error) {
+          if (key === getStorageKey()) setStatusDespesasFirebase(error.message, 'error');
+        }
+      }, { initial: false });
+    }
+
+    // Configurar sincronização quando Firebase estiver pronto
+    window.addEventListener('firebase:initialized', () => {
+      setupFirebaseSync();
+    });
+
+    // Se Firebase já estiver inicializado
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) {
+      setupFirebaseSync();
+    }
+
+    let _metasFirebaseSyncSetup = false;
+
+    function setupFirebaseSyncMetasIfNeeded() {
+      if (!document.getElementById('filtroMes')?.value) return;
+      setupFirebaseSyncMetas();
+    }
+
+    async function setupFirebaseSyncMetas() {
+      if (_metasFirebaseSyncSetup) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) return;
+      _metasFirebaseSyncSetup = true;
+
+      const key = getMetasStorageKey();
+      try {
+        const remote = await window.FirebaseStore.getItem(key, null);
+        if (remote && typeof remote === 'object' && !Array.isArray(remote)) {
+          localStorage.setItem(key, JSON.stringify(remote));
+          renderDespesas();
+        } else {
+          const local = JSON.parse(localStorage.getItem(key) || '{}');
+          if (Object.keys(local).length) await window.FirebaseStore.setItem(key, local);
+        }
+      } catch (err) {
+        console.warn('[Despesas] Erro ao sincronizar metas com a nuvem:', err);
+      }
+
+      window._metasDespesasUnsubscribe = window.FirebaseStore.subscribe(key, (remote) => {
+        if (!remote || typeof remote !== 'object' || Array.isArray(remote)) return;
+        localStorage.setItem(key, JSON.stringify(remote));
+        renderDespesas();
+      });
+    }
+
+    window.addEventListener('firebase:initialized', setupFirebaseSyncMetasIfNeeded);
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) {
+      setupFirebaseSyncMetasIfNeeded();
+    }
+
+    // Funções de Seleção Múltipla
+    function toggleSelecionarTodasDespesas() {
+      const checkboxTodas = document.getElementById('selecionarTodasDespesas');
+      const checkboxes = document.querySelectorAll('.checkbox-despesa');
+      checkboxes.forEach(cb => cb.checked = checkboxTodas.checked);
+      atualizarBotaoExcluirDespesas();
+    }
+
+    function atualizarBotaoExcluirDespesas() {
+      const checkboxes = document.querySelectorAll('.checkbox-despesa:checked');
+      const btn = document.getElementById('btnExcluirSelecionadas');
+      const count = document.getElementById('countSelecionadas');
+
+      if (checkboxes.length > 0) {
+        btn.style.display = 'flex';
+        count.textContent = checkboxes.length;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    async function excluirSelecionadasDespesas() {
+      const ids = Array.from(document.querySelectorAll('.checkbox-despesa:checked')).map(cb => cb.dataset.id);
+      if (!ids.length) return;
+      if (confirm(`Tem certeza que deseja excluir ${ids.length} despesa(s)?`)) await removerDespesasSelecionadas(ids);
+    }
+
+    // Metas Mensais - progresso por categoria
+    function renderMetasProgresso(despesasFiltradas, mesFiltro) {
+      const container = document.getElementById('metasContainer');
+      const lista = document.getElementById('metasProgressoLista');
+      if (!container || !lista) return;
+      if (!mesFiltro) { container.classList.add('hidden'); return; }
+
+      let metas = {};
+      migrateLegacyMetasKeyOnce();
+      try { metas = JSON.parse(localStorage.getItem(getMetasStorageKey()) || '{}'); } catch(e) {}
+      if (!Object.keys(metas).length) { container.classList.add('hidden'); return; }
+
+      const categorias = window.despesasUtils?.getCategoriasDespesa?.() || [];
+      const progresso = window.LavaCashRecurring?.calcularProgressoMetas({
+        metas,
+        despesas: despesasFiltradas,
+        categorias
+      }) || [];
+      if (!progresso.length) { container.classList.add('hidden'); return; }
+
+       container.classList.remove('hidden');
+       lista.innerHTML = progresso.map(item => {
+         const cor = item.status === 'excedida' || item.status === 'limite'
+          ? 'var(--color-danger)'
+          : item.status === 'atencao'
+            ? 'var(--color-warning)'
+            : 'var(--color-success)';
+         const alertas = {
+          ok: 'Dentro da meta',
+          atencao: 'Atingiu 80%',
+          limite: 'Atingiu 100%',
+          excedida: `Excedeu ${fmtBR(item.excedente)}`
+         };
+         return `
+           <div class="meta-progress-card">
+             <div class="flex justify-between text-xs mb-2" style="gap:0.5rem;">
+              <span style="color:var(--color-text-primary);font-weight:700;">${item.nome}</span>
+              <span class="meta-alert ${item.status}">${alertas[item.status]}</span>
+             </div>
+             <div class="flex justify-between text-xs mb-2" style="color:var(--color-text-muted);">
+              <span>Usado: <strong style="color:var(--color-text-primary);">${fmtBR(item.usado)}</strong></span>
+              <span>Disponível: <strong style="color:${item.disponivel > 0 ? 'var(--color-success)' : 'var(--color-danger)'};">${fmtBR(item.disponivel)}</strong></span>
+             </div>
+             <div style="height:8px;border-radius:999px;background:var(--color-surface-active);overflow:hidden;">
+               <div style="height:100%;border-radius:999px;background:${cor};width:${item.percentualBarra.toFixed(1)}%;transition:width 0.4s;"></div>
+             </div>
+             <div class="text-xs mt-2" style="color:${cor};font-weight:700;">${item.percentualReal.toFixed(1)}% de ${fmtBR(item.meta)}</div>
+           </div>`;
+       }).join('');
+     }
+
+    let previsaoFixasRenderRevision = -1;
+
+    function renderPrevisaoFixas() {
+      const container = document.getElementById('previsaoFixasContainer');
+      const lista = document.getElementById('previsaoFixasLista');
+      if (!container || !lista || !window.LavaCashRecurring) return;
+      if (previsaoFixasRenderRevision === despesasCacheRevision) return;
+      previsaoFixasRenderRevision = despesasCacheRevision;
+
+      const forecast = window.LavaCashRecurring.getFixedExpenseForecast(getDespesas(), new Date(), 3);
+      if (!forecast.some(item => item.total > 0)) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      lista.innerHTML = forecast.map(item => `
+        <div class="forecast-card">
+          <div class="text-xs font-semibold mb-1" style="color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.04em;">${item.label}</div>
+          <div class="text-lg font-bold" style="color:var(--color-danger);">${fmtBR(item.total)}</div>
+          <div class="text-xs mt-1" style="color:var(--color-text-muted);">Despesas fixas recorrentes previstas</div>
+        </div>
+      `).join('');
+    }
+
+    // Init — render imediatamente do localStorage (síncrono, instantâneo)
+    // e atualiza em background após IndexedDB responder
+    renderDespesas();
+    document.getElementById('loadingOverlay')?.classList.add('hidden');
+
+    // Hidrata IndexedDB em background; re-renderiza só se os dados mudaram
+    ensureArrayCacheHydrated(getStorageKey()).then(() => {
+      atualizarOpcoesAno();
+      renderDespesas();
+      if (window.FirebaseStore && window.FirebaseStore.getItem) {
+        setupFirebaseSync();
+      }
+    });
+  </script>
+<script src="js/responsive-tables.js?v=20260613-rateio-labels-v1"></script>
+  <script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+</body>
+</html>

@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | LAVACASH</title>
+
+  <meta name="description" content="Dashboard de gestão financeira para lavanderias">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/vendor-loader.js?v=20260621-performance-v2" defer></script>
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+</head>
+<body data-page="dashboard">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando dashboard...</div>
+  </div>
+
+  <!-- Sidebar Toggle (Mobile) -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <!-- Sidebar Overlay -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link" data-page="receitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link" data-page="despesas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link" data-page="analise-financeira">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link" data-page="investimento-inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link" id="linkConfig" data-page="configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link" data-page="ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Usuário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Visualizador</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Visão geral do seu negócio</p>
+      </div>
+      <div class="quick-actions">
+        <a href="receitas.html" class="btn btn-success" id="btnNovaReceita">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Nova Receita
+        </a>
+        <a href="despesas.html" class="btn btn-danger" id="btnNovaDespesa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/>
+          </svg>
+          Nova Despesa
+        </a>
+      </div>
+    </header>
+
+    <!-- Year Selector -->
+    <div class="glass-card p-4 mb-6 flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-4">
+        <label class="text-sm font-medium" style="color: var(--color-text-secondary);">Ano:</label>
+        <select id="anoSelect" class="input-glass" style="width: auto; padding: 0.5rem 2.5rem 0.5rem 1rem;">
+          <option value="2026" selected>2026</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="badge badge-info">
+          <span id="dataAtualizacao">Atualizado agora</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+        <div class="stat-icon success">💰</div>
+        <p class="stat-label">Receitas do Mês</p>
+        <p class="stat-value" id="totalReceitas">R$ 0,00</p>
+        <span class="stat-change positive" id="variacaoReceitas">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+          </svg>
+          0%
+        </span>
+      </div>
+
+      <div class="stat-card fade-in" style="animation-delay: 0.2s;">
+        <div class="stat-icon danger">📉</div>
+        <p class="stat-label">Despesas do Mês</p>
+        <p class="stat-value" id="totalDespesas">R$ 0,00</p>
+        <span class="stat-change negative" id="variacaoDespesas">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+          </svg>
+          0%
+        </span>
+      </div>
+
+      <div class="stat-card fade-in" style="animation-delay: 0.3s;">
+        <div class="stat-icon info">💵</div>
+        <p class="stat-label">Lucro do Mês</p>
+        <p class="stat-value" id="lucroMes">R$ 0,00</p>
+        <span class="stat-change positive" id="variacaoLucro">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+          </svg>
+          0%
+        </span>
+      </div>
+
+      <div class="stat-card fade-in" style="animation-delay: 0.4s;">
+        <div class="stat-icon warning">📊</div>
+        <p class="stat-label">Margem de Lucro</p>
+        <p class="stat-value" id="margemLucro">0%</p>
+        <span class="badge badge-warning">Sem dados</span>
+      </div>
+    </div>
+
+    <!-- Month Cards -->
+    <div class="glass-card p-4 mb-6">
+      <div class="flex items-center justify-between flex-wrap gap-2 mb-4">
+        <h3 class="text-sm font-medium" style="color: var(--color-text-secondary);">Saldo por Mês</h3>
+        <p id="selectedMonthLabel" class="text-sm" style="color: var(--color-text-muted);"></p>
+      </div>
+      <div class="months-grid" id="monthsGrid">
+        <!-- Gerado via JS -->
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="grid-2 mb-6">
+      <div class="chart-card fade-in">
+        <h3 class="chart-title" id="chartReceitasDespesasTitle">📈 Vendas por Dia da Semana</h3>
+        <div class="chart-container">
+          <canvas id="chartReceitasDespesas"></canvas>
+          <div id="chartReceitasDespesasFallback" class="chart-fallback"></div>
+        </div>
+      </div>
+
+      <div class="chart-card fade-in">
+        <h3 class="chart-title" id="chartComposicaoTitle">📊 Comparação com o Mês Anterior</h3>
+        <div class="chart-container">
+          <canvas id="chartComposicao"></canvas>
+          <div id="chartComposicaoFallback" class="chart-fallback"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container fade-in mb-6">
+      <div class="table-header">
+        <h3 class="table-title">🗓️ Resumo do Mês por Dia da Semana</h3>
+        <span class="badge badge-info">Baseado no mês selecionado</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Dia</th>
+            <th>Vendas</th>
+            <th>Despesas</th>
+            <th>Saldo</th>
+            <th>Qtd. Vendas</th>
+            <th>Ticket Médio</th>
+          </tr>
+        </thead>
+        <tbody id="weekdaySummaryBody">
+          <tr>
+            <td colspan="6" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+              Carregando resumo...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-container fade-in mb-6">
+      <div class="table-header">
+        <h3 class="table-title" id="dayPeriodTitle">🌗 Vendas por Período do Dia</h3>
+        <span class="badge badge-info" id="dayPeriodCoverage">Carregando...</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th>Faixa</th>
+            <th>Vendas</th>
+            <th>Qtd. Vendas</th>
+            <th>Ticket Médio</th>
+            <th>Participação</th>
+          </tr>
+        </thead>
+        <tbody id="dayPeriodSummaryBody">
+          <tr>
+            <td colspan="6" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+              Carregando períodos...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Monthly Insights -->
+    <section class="glass-card fade-in dashboard-insights-card">
+      <div class="table-header dashboard-insights-header">
+        <div>
+          <h3 class="table-title" id="monthlyInsightsTitle">🧭 Diagnóstico do Mês</h3>
+          <p class="dashboard-insights-subtitle">Resumo prático para tomada de decisão.</p>
+        </div>
+        <span class="badge badge-info" id="monthlyInsightsBadge">Mês selecionado</span>
+      </div>
+      <div class="dashboard-insights-grid" id="monthlyInsightsGrid">
+        <div class="empty-state" style="padding: 2rem;">
+          <div class="text-4xl mb-2">⏳</div>
+          <p>Carregando diagnóstico...</p>
+        </div>
+      </div>
+      <div class="dashboard-insights-actions">
+        <a href="analise-financeira.html" class="btn btn-secondary">Ver análise completa</a>
+        <a href="receitas.html?acao=importar-vendas" class="btn btn-primary" id="monthlyInsightsImportAction">Importar vendas</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/indexeddb-store.js"></script>
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/laundry-service.js"></script>
+  <script src="js/finance-dedupe.js?v=20260903-owner-performance-v1"></script>
+  <script src="js/sidebar-filter.js?v=20260409-3"></script>
+  <script src="js/recurring-expenses.js?v=20260605-recorrencias-metas"></script>
+<script src="js/responsive-tables.js?v=20260613-rateio-labels-v1"></script>
+<script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+<script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+
+  <style>
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.75rem;
+    }
+    .month-card {
+      background: var(--color-surface-active);
+      border-radius: 0.75rem;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      font: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .month-card:hover {
+      background: var(--color-surface-hover);
+      transform: translateY(-2px);
+    }
+    .month-card.active {
+      border-color: var(--color-accent);
+      background: rgba(14, 165, 233, 0.1);
+    }
+    .month-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    .month-value {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .month-value.positive { color: var(--color-success); }
+    .month-value.negative { color: var(--color-danger); }
+    .month-value.zero { color: var(--color-text-muted); }
+
+    .dashboard-insights-card {
+      margin-top: 1.5rem;
+      padding-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .dashboard-insights-header {
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .dashboard-insights-subtitle {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .dashboard-insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1rem;
+      padding: 1rem 1.5rem 0;
+    }
+
+    .dashboard-insight-card {
+      background: var(--color-surface-active);
+      border: 1px solid var(--color-glass-border);
+      border-radius: 1rem;
+      min-width: 0;
+      padding: 1rem;
+    }
+
+    .dashboard-insight-card.success { border-color: rgba(16, 185, 129, 0.35); }
+    .dashboard-insight-card.danger { border-color: rgba(239, 68, 68, 0.35); }
+    .dashboard-insight-card.warning { border-color: rgba(245, 158, 11, 0.35); }
+    .dashboard-insight-card.info { border-color: rgba(14, 165, 233, 0.35); }
+
+    .dashboard-insight-card span {
+      color: var(--color-text-muted);
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .dashboard-insight-card strong {
+      color: var(--color-text-primary);
+      display: block;
+      font-size: 1.2rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .dashboard-insight-card p {
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+    }
+
+    .dashboard-insights-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      padding: 1rem 1.5rem 0;
+    }
+
+    .chart-fallback {
+      display: none;
+      height: 100%;
+      width: 100%;
+    }
+
+    .chart-fallback.active {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      justify-content: center;
+    }
+
+    .chart-fallback-row {
+      align-items: center;
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: minmax(62px, 92px) 1fr minmax(92px, auto);
+    }
+
+    .chart-fallback-label {
+      color: var(--color-text-secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chart-fallback-track {
+      background: color-mix(in srgb, var(--color-surface-active) 70%, transparent);
+      border-radius: 999px;
+      height: 0.7rem;
+      overflow: hidden;
+    }
+
+    .chart-fallback-bar {
+      border-radius: inherit;
+      display: block;
+      height: 100%;
+      min-width: 0.35rem;
+    }
+
+    .chart-fallback-value {
+      color: var(--color-text-primary);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .chart-fallback-empty {
+      align-items: center;
+      color: var(--color-text-secondary);
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    @media (max-width: 767px) {
+      .dashboard-insights-grid {
+        grid-template-columns: 1fr;
+        padding: 0.9rem;
+      }
+
+      .dashboard-insights-actions {
+        flex-direction: column;
+        padding: 0.9rem;
+      }
+    }
+  </style>
+
+  <script>
+    // Init UserSystem first
+    UserSystem.init();
+
+    // Check auth
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser || !currentUser.aprovado) {
+      window.location.href = './index.html';
+    }
+
+    // MIGRAÇÃO: Se existem dados com formato antigo, migrar
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        // Migrar receitas
+        const receitaAntiga = `receitas_${lav.id}`;
+        const receitaNova = `${lav.id}_receitas`;
+        if (localStorage.getItem(receitaAntiga) && !localStorage.getItem(receitaNova)) {
+          try {
+            localStorage.setItem(receitaNova, localStorage.getItem(receitaAntiga));
+          } catch (e) {
+            console.warn('[Dashboard] Não foi possível migrar receitas antigas para localStorage:', e);
+          }
+          localStorage.removeItem(receitaAntiga);
+        }
+
+        // Migrar despesas
+        const despesaAntiga = `despesas_${lav.id}`;
+        const despesaNova = `${lav.id}_despesas`;
+        if (localStorage.getItem(despesaAntiga) && !localStorage.getItem(despesaNova)) {
+          try {
+            localStorage.setItem(despesaNova, localStorage.getItem(despesaAntiga));
+          } catch (e) {
+            console.warn('[Dashboard] Não foi possível migrar despesas antigas para localStorage:', e);
+          }
+          localStorage.removeItem(despesaAntiga);
+        }
+      });
+    })();
+
+    // Setup user info
+    document.getElementById('userName').textContent = currentUser?.nome || 'Usuário';
+    document.getElementById('userRole').textContent = 'Proprietário';
+
+    // Todas as ações pertencem ao único proprietário autenticado.
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+    const minhasLavanderias = UserSystem.getMinhasLavanderias();
+    const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+    lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+      `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+    ).join('');
+
+    lavanderiaSelect.addEventListener('change', async (e) => {
+      UserSystem.selecionarLavanderia(e.target.value);
+      await reloadDashboardForLaundry(e.target.value);
+    });
+
+
+
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    // Chart.js Defaults
+    if (typeof Chart !== 'undefined') {
+      Chart.defaults.color = '#94a3b8';
+      Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
+    }
+
+    const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const DIAS_SEMANA = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'];
+    const PERIODOS_DIA = [
+      { label: 'Madrugada', faixa: '0h às 4h59' },
+      { label: 'Manhã', faixa: '5h às 11h59' },
+      { label: 'Tarde', faixa: '12h às 17h59' },
+      { label: 'Noite', faixa: '18h às 23h59' }
+    ];
+    let selectedMonth = new Date().getMonth();
+    let chartReceitasDespesasInstance = null;
+    let chartComposicaoInstance = null;
+    let dashboardChartLoadPromise = null;
+    let dashboardChartLoadScheduled = false;
+    let dashboardRefreshTimer = null;
+    let dashboardInitialized = false;
+    let dashboardUsingSummary = false;
+    const dashboardSummaryByYear = new Map();
+
+    function waitForDashboardStore(timeoutMs = 5000) {
+      if (window.FirebaseStore?.getDashboardSummary) return Promise.resolve(true);
+      return new Promise(resolve => {
+        let finished = false;
+        const done = () => {
+          if (finished) return;
+          finished = true;
+          window.removeEventListener('firebase:initialized', onReady);
+          resolve(Boolean(window.FirebaseStore?.getDashboardSummary));
+        };
+        const onReady = () => done();
+        window.addEventListener('firebase:initialized', onReady, { once: true });
+        setTimeout(done, timeoutMs);
+      });
+    }
+
+    async function loadDashboardSummaryYear(lavId, year) {
+      const numericYear = Number(year);
+      if (dashboardSummaryByYear.has(numericYear)) return dashboardSummaryByYear.get(numericYear);
+      const summary = await window.FirebaseStore.getDashboardSummary(lavId, numericYear);
+      dashboardSummaryByYear.set(numericYear, summary || { year: numericYear, months: [] });
+      return dashboardSummaryByYear.get(numericYear);
+    }
+
+    function fillDashboardYears(years, selectedYear) {
+      const select = document.getElementById('anoSelect');
+      if (!select) return;
+      const normalized = [...new Set((Array.isArray(years) ? years : [])
+        .map(Number)
+        .filter(Number.isInteger))].sort((a, b) => a - b);
+      if (!normalized.length) normalized.push(new Date().getFullYear());
+      const target = normalized.includes(Number(selectedYear))
+        ? Number(selectedYear)
+        : normalized[normalized.length - 1];
+      select.innerHTML = normalized.map(year =>
+        `<option value="${year}" ${year === target ? 'selected' : ''}>${year}</option>`
+      ).join('');
+    }
+
+    function selectLastMonthWithData(year) {
+      let target = new Date().getFullYear() === Number(year) ? new Date().getMonth() : 11;
+      if (getDadosMes(target, year).receitas === 0 && getDadosMes(target, year).despesas === 0) {
+        for (let month = 11; month >= 0; month -= 1) {
+          const data = getDadosMes(month, year);
+          if (data.receitas > 0 || data.despesas > 0) {
+            target = month;
+            break;
+          }
+        }
+      }
+      selectedMonth = target;
+    }
+
+    async function loadDashboardSummaries(lavId, requestedYear = new Date().getFullYear()) {
+      if (!await waitForDashboardStore()) return false;
+      const first = await loadDashboardSummaryYear(lavId, requestedYear);
+      const availableYears = (first?.years || []).map(Number).filter(Number.isInteger);
+      const currentYear = new Date().getFullYear();
+      const selectedYear = availableYears.includes(Number(requestedYear))
+        ? Number(requestedYear)
+        : availableYears.includes(currentYear)
+          ? currentYear
+          : (availableYears.at(-1) || Number(requestedYear));
+      if (selectedYear !== Number(requestedYear)) await loadDashboardSummaryYear(lavId, selectedYear);
+      await loadDashboardSummaryYear(lavId, selectedYear - 1).catch(() => null);
+      fillDashboardYears(availableYears, selectedYear);
+      dashboardUsingSummary = true;
+      return true;
+    }
+
+    function isMobileDashboardViewport() {
+      return window.innerWidth <= 767;
+    }
+
+    function fmtBR(n) {
+      return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function fmtData(dateStr) {
+      if (!dateStr) return '-';
+      const data = new Date(dateStr + 'T00:00:00');
+      return data.toLocaleDateString('pt-BR');
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char]));
+    }
+
+    function getAnoSelecionado() {
+      return parseInt(document.getElementById('anoSelect').value, 10);
+    }
+
+    function getLavanderiaAtualId() {
+      return document.getElementById('lavanderiaSelect')?.value || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+    }
+
+    const dashboardArrayCache = Object.create(null);
+
+    function isQuotaExceededError(err) {
+      const msg = String(err?.message || err || '').toLowerCase();
+      return err?.name === 'QuotaExceededError' || msg.includes('exceeded the quota') || msg.includes('quota');
+    }
+
+    function readArrayFromLocalStorage(key) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function getDashboardArray(key) {
+      if (Array.isArray(dashboardArrayCache[key])) {
+        return dashboardArrayCache[key];
+      }
+      const data = readArrayFromLocalStorage(key);
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      dashboardArrayCache[key] = normalized ? normalized.items : data;
+      return dashboardArrayCache[key];
+    }
+
+    async function hydrateDashboardArray(key) {
+      let data = null;
+      if (window.IndexedDBStore && window.IndexedDBStore.getItem) {
+        try {
+          data = await window.IndexedDBStore.getItem(key, null);
+        } catch (err) {}
+      }
+      if (!Array.isArray(data)) {
+        data = readArrayFromLocalStorage(key);
+      }
+
+      // Merge com localStorage para garantir que itens salvos localmente mas
+      // ainda não gravados no IndexedDB (ex: navegação rápida) não sejam perdidos
+      const localData = readArrayFromLocalStorage(key);
+      if (Array.isArray(data) && localData.length > data.length) {
+        const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, [...data, ...localData]);
+        data = normalized ? normalized.items : data;
+      }
+
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      dashboardArrayCache[key] = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      return dashboardArrayCache[key];
+    }
+
+    function persistDashboardArray(key, data) {
+      const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, data);
+      const safeData = normalized ? normalized.items : (Array.isArray(data) ? data : []);
+      dashboardArrayCache[key] = safeData;
+      const keepLocalCopy = window.LavaCashFinanceDedupe?.shouldKeepLocalStorageCopy?.(key) !== false;
+
+      if (window.IndexedDBStore && window.IndexedDBStore.setItem) {
+        window.IndexedDBStore.setItem(key, safeData)
+          .then(() => {
+            if (!keepLocalCopy) {
+              try { localStorage.removeItem(key); } catch (err) {}
+            }
+          })
+          .catch(() => {
+            if (!keepLocalCopy) {
+              try { localStorage.setItem(key, JSON.stringify(safeData)); } catch (err) {}
+            }
+          });
+      }
+
+      if (keepLocalCopy || !window.IndexedDBStore?.setItem) {
+        try {
+          localStorage.setItem(key, JSON.stringify(safeData));
+        } catch (err) {
+          if (!isQuotaExceededError(err)) {
+            console.warn(`[Dashboard] Erro ao salvar ${key} no localStorage:`, err);
+          }
+        }
+      }
+    }
+
+    async function sincronizarRecorrenciasDashboard() {
+      // A geração é explícita na tela Despesas; leituras não recriam ocorrências excluídas.
+      return 0;
+    }
+
+    function getMovimentacoesLavanderia() {
+      const lavId = getLavanderiaAtualId();
+      const receitasKey = `${lavId}_receitas`;
+      const despesasKey = `${lavId}_despesas`;
+      const receitas = getDashboardArray(receitasKey);
+      const despesas = getDashboardArray(despesasKey);
+      return { receitas, despesas };
+    }
+
+    function filtrarRegistrosMesAno(registros, mes, ano) {
+      return registros.filter(registro => {
+        if (!registro?.data) return false;
+        const data = new Date(registro.data + 'T00:00:00');
+        return data.getMonth() === mes && data.getFullYear() === ano;
+      });
+    }
+
+    function getDadosMes(mes, ano) {
+      const summary = dashboardSummaryByYear.get(Number(ano));
+      if (dashboardUsingSummary && summary) {
+        const item = (summary.months || []).find(entry => Number(entry.month) === Number(mes) + 1) || {};
+        const receitasTotal = Number(item.revenue || 0);
+        const despesasTotal = Number(item.expense || 0);
+        return {
+          receitas: receitasTotal,
+          despesas: despesasTotal,
+          saldo: Number(item.balance ?? (receitasTotal - despesasTotal)),
+          quantidadeReceitas: Number(item.revenueCount || 0),
+          quantidadeDespesas: Number(item.expenseCount || 0),
+          receitasRegistros: [],
+          despesasRegistros: []
+        };
+      }
+      const { receitas, despesas } = getMovimentacoesLavanderia();
+      const receitasRegistros = filtrarRegistrosMesAno(receitas, mes, ano);
+      const despesasRegistros = filtrarRegistrosMesAno(despesas, mes, ano);
+
+      const receitasTotal = receitasRegistros.reduce((sum, registro) => sum + Number(registro.valor || 0), 0);
+      const despesasTotal = despesasRegistros.reduce((sum, registro) => sum + Number(registro.valor || 0), 0);
+
+      return {
+        receitas: receitasTotal,
+        despesas: despesasTotal,
+        saldo: receitasTotal - despesasTotal,
+        quantidadeReceitas: receitasRegistros.length,
+        quantidadeDespesas: despesasRegistros.length,
+        receitasRegistros,
+        despesasRegistros
+      };
+    }
+
+    function getDiaSemanaIndex(data) {
+      const dia = data.getDay();
+      return dia === 0 ? 6 : dia - 1;
+    }
+
+    function getMesAnterior(mes, ano) {
+      const referencia = new Date(ano, mes, 1);
+      referencia.setMonth(referencia.getMonth() - 1);
+
+      return {
+        mes: referencia.getMonth(),
+        ano: referencia.getFullYear()
+      };
+    }
+
+    function getTotaisDiaSemana(mes, ano) {
+      const resumo = getResumoDiaSemana(mes, ano);
+      return {
+        resumo,
+        receitasPorDia: resumo.map(item => item.receitas),
+        despesasPorDia: resumo.map(item => item.despesas),
+        saldoPorDia: resumo.map(item => item.saldo),
+        quantidadeReceitasPorDia: resumo.map(item => item.quantidadeReceitas),
+        ticketMedioPorDia: resumo.map(item => item.ticketMedio)
+      };
+    }
+
+    function getResumoDiaSemana(mes, ano) {
+      const dados = getDadosMes(mes, ano);
+      const resumo = DIAS_SEMANA.map((dia) => ({
+        dia,
+        receitas: 0,
+        despesas: 0,
+        saldo: 0,
+        quantidadeReceitas: 0,
+        ticketMedio: 0
+      }));
+
+      const summary = dashboardSummaryByYear.get(Number(ano));
+      if (dashboardUsingSummary && summary) {
+        (summary.weekdays || [])
+          .filter(item => Number(item.month) === Number(mes) + 1)
+          .forEach(item => {
+            const index = Number(item.weekday) - 1;
+            if (!resumo[index]) return;
+            resumo[index].receitas = Number(item.revenue || 0);
+            resumo[index].despesas = Number(item.expense || 0);
+            resumo[index].quantidadeReceitas = Number(item.revenueCount || 0);
+          });
+        resumo.forEach(item => {
+          item.saldo = item.receitas - item.despesas;
+          item.ticketMedio = item.quantidadeReceitas > 0 ? item.receitas / item.quantidadeReceitas : 0;
+        });
+        return resumo;
+      }
+
+      dados.receitasRegistros.forEach(registro => {
+        const indice = getDiaSemanaIndex(new Date(registro.data + 'T00:00:00'));
+        resumo[indice].receitas += Number(registro.valor || 0);
+        resumo[indice].quantidadeReceitas += 1;
+      });
+
+      dados.despesasRegistros.forEach(registro => {
+        const indice = getDiaSemanaIndex(new Date(registro.data + 'T00:00:00'));
+        resumo[indice].despesas += Number(registro.valor || 0);
+      });
+
+      resumo.forEach(item => {
+        item.saldo = item.receitas - item.despesas;
+        item.ticketMedio = item.quantidadeReceitas > 0 ? item.receitas / item.quantidadeReceitas : 0;
+      });
+
+      return resumo;
+    }
+
+    function normalizarHorario(valor) {
+      if (valor === null || valor === undefined) return null;
+
+      const texto = String(valor).trim().replace(/(\d{1,2})h(\d{2})/i, '$1:$2');
+      if (!texto) return null;
+
+      const match = texto.match(/(\d{1,2}):(\d{2})(?::\d{2})?/);
+      if (!match) return null;
+
+      const horas = Number(match[1]);
+      const minutos = Number(match[2]);
+
+      if (horas < 0 || horas > 23 || minutos < 0 || minutos > 59) {
+        return null;
+      }
+
+      return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+    }
+
+    function formatarHorarioDate(data) {
+      if (!(data instanceof Date) || Number.isNaN(data.getTime())) return null;
+
+      const horas = data.getHours();
+      const minutos = data.getMinutes();
+      const segundos = data.getSeconds();
+      if (horas === 0 && minutos === 0 && segundos === 0) return null;
+
+      return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+    }
+
+    function getHorarioRegistroVenda(registro) {
+      if (!registro || typeof registro !== 'object') return null;
+
+      const candidatosDiretos = [
+        registro.horarioVenda,
+        registro.horario,
+        registro.time,
+        registro.hora,
+        registro.dataHora,
+        registro.data_hora
+      ];
+
+      for (const candidato of candidatosDiretos) {
+        const horario = normalizarHorario(candidato);
+        if (horario) return horario;
+      }
+
+      const candidatosTexto = [registro.obs, registro.descricao];
+      for (const candidato of candidatosTexto) {
+        const horario = normalizarHorario(candidato);
+        if (horario) return horario;
+      }
+
+      if (typeof registro.data === 'string' && /\d{1,2}:\d{2}/.test(registro.data)) {
+        const horarioData = normalizarHorario(registro.data);
+        if (horarioData) return horarioData;
+      }
+
+      const timestamp = Number(registro.timestamp || registro.dateMs || 0);
+      if (timestamp > 0) {
+        const horarioTimestamp = formatarHorarioDate(new Date(timestamp));
+        if (horarioTimestamp) return horarioTimestamp;
+      }
+
+      return null;
+    }
+
+    function getPeriodoDoDia(horario) {
+      const horarioNormalizado = normalizarHorario(horario);
+      if (!horarioNormalizado) return null;
+
+      const [hora] = horarioNormalizado.split(':').map(Number);
+
+      if (hora <= 4) return 'Madrugada';
+      if (hora <= 11) return 'Manhã';
+      if (hora <= 17) return 'Tarde';
+      return 'Noite';
+    }
+
+    function getResumoPeriodoDia(mes, ano) {
+      const dados = getDadosMes(mes, ano);
+      const resumo = PERIODOS_DIA.map((periodo) => ({
+        periodo: periodo.label,
+        faixa: periodo.faixa,
+        vendas: 0,
+        quantidade: 0,
+        ticketMedio: 0,
+        participacao: 0
+      }));
+
+      let vendasSemHorario = 0;
+      let quantidadeSemHorario = 0;
+
+      const summary = dashboardSummaryByYear.get(Number(ano));
+      if (dashboardUsingSummary && summary) {
+        const labels = { madrugada: 'Madrugada', manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
+        (summary.dayPeriods || [])
+          .filter(item => Number(item.month) === Number(mes) + 1)
+          .forEach(item => {
+            const target = resumo.find(entry => entry.periodo === labels[item.period]);
+            if (!target) return;
+            target.vendas = Number(item.total || 0);
+            target.quantidade = Number(item.count || 0);
+          });
+        const totalConsiderado = resumo.reduce((sum, item) => sum + item.vendas, 0);
+        const quantidadeConsiderada = resumo.reduce((sum, item) => sum + item.quantidade, 0);
+        resumo.forEach(item => {
+          item.ticketMedio = item.quantidade > 0 ? item.vendas / item.quantidade : 0;
+          item.participacao = totalConsiderado > 0 ? (item.vendas / totalConsiderado) * 100 : 0;
+        });
+        return {
+          resumo,
+          totalConsiderado,
+          vendasSemHorario: Math.max(0, dados.receitas - totalConsiderado),
+          quantidadeSemHorario: Math.max(0, dados.quantidadeReceitas - quantidadeConsiderada),
+          totalReceitasMes: dados.receitas,
+          totalQuantidadeMes: dados.quantidadeReceitas
+        };
+      }
+
+      dados.receitasRegistros.forEach(registro => {
+        const valor = Number(registro.valor || 0);
+        const horario = getHorarioRegistroVenda(registro);
+        const periodo = getPeriodoDoDia(horario);
+
+        if (!periodo) {
+          vendasSemHorario += valor;
+          quantidadeSemHorario += 1;
+          return;
+        }
+
+        const item = resumo.find(entry => entry.periodo === periodo);
+        if (!item) return;
+
+        item.vendas += valor;
+        item.quantidade += 1;
+      });
+
+      const totalConsiderado = resumo.reduce((sum, item) => sum + item.vendas, 0);
+      resumo.forEach(item => {
+        item.ticketMedio = item.quantidade > 0 ? item.vendas / item.quantidade : 0;
+        item.participacao = totalConsiderado > 0 ? (item.vendas / totalConsiderado) * 100 : 0;
+      });
+
+      return {
+        resumo,
+        totalConsiderado,
+        vendasSemHorario,
+        quantidadeSemHorario,
+        totalReceitasMes: dados.receitas,
+        totalQuantidadeMes: dados.quantidadeReceitas
+      };
+    }
+
+    function getComparacaoMensal(mes, ano) {
+      const periodoAnterior = getMesAnterior(mes, ano);
+      return {
+        atual: getDadosMes(mes, ano),
+        anterior: getDadosMes(periodoAnterior.mes, periodoAnterior.ano),
+        atualLabel: `${MESES[mes]}/${ano}`,
+        anteriorLabel: `${MESES[periodoAnterior.mes]}/${periodoAnterior.ano}`
+      };
+    }
+
+    function atualizarTitulosMesSelecionado() {
+      const ano = getAnoSelecionado();
+      const nomeMes = `${MESES[selectedMonth]}/${ano}`;
+      const { anteriorLabel } = getComparacaoMensal(selectedMonth, ano);
+
+      document.getElementById('selectedMonthLabel').textContent = `Selecionado: ${nomeMes}`;
+      document.getElementById('chartReceitasDespesasTitle').textContent = `📈 Vendas por Dia da Semana · ${nomeMes}`;
+      document.getElementById('chartComposicaoTitle').textContent = `📊 ${nomeMes} x ${anteriorLabel}`;
+      document.getElementById('dayPeriodTitle').textContent = `🌗 Vendas por Período do Dia · ${nomeMes}`;
+    }
+
+    function renderMonthCards() {
+      const grid = document.getElementById('monthsGrid');
+      if (!grid) return;
+
+      const ano = getAnoSelecionado();
+
+      grid.innerHTML = MESES.map((mes, idx) => {
+        const dados = getDadosMes(idx, ano);
+        const value = dados.saldo;
+        const isActive = idx === selectedMonth;
+
+        let valueClass = 'zero';
+        if (value > 0) valueClass = 'positive';
+        if (value < 0) valueClass = 'negative';
+
+        return `
+          <button type="button" class="month-card ${isActive ? 'active' : ''}" data-month="${idx}">
+            <p class="month-name">${mes}</p>
+            <p class="month-value ${valueClass}">${fmtBR(value)}</p>
+          </button>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.month-card').forEach(card => {
+        card.addEventListener('click', () => {
+          selectedMonth = parseInt(card.dataset.month, 10);
+          atualizarDashboard();
+        });
+      });
+    }
+
+    function updateStats() {
+      const dados = getDadosMes(selectedMonth, getAnoSelecionado());
+
+      document.getElementById('totalReceitas').textContent = fmtBR(dados.receitas);
+      document.getElementById('totalDespesas').textContent = fmtBR(dados.despesas);
+      document.getElementById('lucroMes').textContent = fmtBR(dados.saldo);
+
+      if (dados.receitas > 0) {
+        const margem = ((dados.saldo / dados.receitas) * 100).toFixed(1);
+        document.getElementById('margemLucro').textContent = `${margem}%`;
+      } else {
+        document.getElementById('margemLucro').textContent = '0%';
+      }
+    }
+
+    function calcularVariacaoPercentual(atual, anterior) {
+      const valorAtual = Number(atual || 0);
+      const valorAnterior = Number(anterior || 0);
+      if (valorAnterior === 0) return null;
+      return ((valorAtual - valorAnterior) / Math.abs(valorAnterior)) * 100;
+    }
+
+    function formatarVariacaoPercentual(valor) {
+      if (valor === null || !Number.isFinite(valor)) return 'Sem base anterior';
+      return `${valor >= 0 ? '+' : ''}${valor.toFixed(1)}%`;
+    }
+
+    function getMaiorCategoriaDespesa(despesas, mes = selectedMonth, ano = getAnoSelecionado()) {
+      const summary = dashboardSummaryByYear.get(Number(ano));
+      if (dashboardUsingSummary && summary) {
+        const totals = new Map();
+        (summary.expenseCategories || [])
+          .filter(entry => Number(entry.month) === Number(mes) + 1)
+          .forEach(entry => {
+            const category = entry.category || 'Sem categoria';
+            totals.set(category, (totals.get(category) || 0) + Number(entry.total || 0));
+          });
+        return [...totals.entries()].sort((a, b) => b[1] - a[1])[0] || null;
+      }
+      const totais = new Map();
+      despesas.forEach(registro => {
+        const categoria = registro.categoria || registro.descricao || 'Sem categoria';
+        totais.set(categoria, (totais.get(categoria) || 0) + Number(registro.valor || 0));
+      });
+
+      return [...totais.entries()].sort((a, b) => b[1] - a[1])[0] || null;
+    }
+
+    function getMelhorPeriodoVenda(mes, ano) {
+      return getResumoPeriodoDia(mes, ano).resumo
+        .filter(item => item.quantidade > 0)
+        .sort((a, b) => b.vendas - a.vendas)[0] || null;
+    }
+
+    function getMelhorDiaVenda(mes, ano) {
+      return getResumoDiaSemana(mes, ano)
+        .filter(item => item.quantidadeReceitas > 0)
+        .sort((a, b) => b.receitas - a.receitas)[0] || null;
+    }
+
+    function renderInsightCard({ tone = 'info', title, value, meta }) {
+      return `
+        <article class="dashboard-insight-card ${tone}">
+          <span>${escapeHTML(title)}</span>
+          <strong>${escapeHTML(value)}</strong>
+          <p>${escapeHTML(meta)}</p>
+        </article>
+      `;
+    }
+
+    function renderMonthlyInsights() {
+      const grid = document.getElementById('monthlyInsightsGrid');
+      if (!grid) return;
+
+      const ano = getAnoSelecionado();
+      const comparacao = getComparacaoMensal(selectedMonth, ano);
+      const { atual, anterior, anteriorLabel } = comparacao;
+      const margem = atual.receitas > 0 ? (atual.saldo / atual.receitas) * 100 : 0;
+      const variacaoReceita = calcularVariacaoPercentual(atual.receitas, anterior.receitas);
+      const variacaoDespesa = calcularVariacaoPercentual(atual.despesas, anterior.despesas);
+      const maiorDespesa = getMaiorCategoriaDespesa(atual.despesasRegistros);
+      const melhorPeriodo = getMelhorPeriodoVenda(selectedMonth, ano);
+      const melhorDia = getMelhorDiaVenda(selectedMonth, ano);
+      const periodoDia = getResumoPeriodoDia(selectedMonth, ano);
+      const titulo = document.getElementById('monthlyInsightsTitle');
+      const badge = document.getElementById('monthlyInsightsBadge');
+
+      if (titulo) titulo.textContent = `🧭 Diagnóstico do Mês · ${MESES[selectedMonth]}/${ano}`;
+      if (badge) {
+        badge.textContent = atual.saldo >= 0 ? 'Lucro no mês' : 'Prejuízo no mês';
+        badge.className = `badge ${atual.saldo >= 0 ? 'badge-success' : 'badge-danger'}`;
+      }
+
+      grid.innerHTML = [
+        renderInsightCard({
+          tone: variacaoReceita === null || variacaoReceita >= 0 ? 'success' : 'warning',
+          title: 'Receita vs mês anterior',
+          value: fmtBR(atual.receitas),
+          meta: `${formatarVariacaoPercentual(variacaoReceita)} em relação a ${anteriorLabel}`
+        }),
+        renderInsightCard({
+          tone: variacaoDespesa !== null && variacaoDespesa > 0 ? 'warning' : 'success',
+          title: 'Despesas vs mês anterior',
+          value: fmtBR(atual.despesas),
+          meta: `${formatarVariacaoPercentual(variacaoDespesa)} em relação a ${anteriorLabel}`
+        }),
+        renderInsightCard({
+          tone: atual.saldo >= 0 ? 'success' : 'danger',
+          title: 'Resultado do mês',
+          value: fmtBR(atual.saldo),
+          meta: `Margem atual de ${margem.toFixed(1)}%`
+        }),
+        renderInsightCard({
+          tone: maiorDespesa ? 'warning' : 'info',
+          title: 'Maior despesa',
+          value: maiorDespesa ? fmtBR(maiorDespesa[1]) : 'R$ 0,00',
+          meta: maiorDespesa ? maiorDespesa[0] : 'Sem despesas no mês selecionado'
+        }),
+        renderInsightCard({
+          tone: melhorPeriodo ? 'info' : 'warning',
+          title: 'Melhor período de venda',
+          value: melhorPeriodo ? melhorPeriodo.periodo : 'Sem dados',
+          meta: melhorPeriodo ? `${fmtBR(melhorPeriodo.vendas)} em ${melhorPeriodo.quantidade} venda(s)` : 'Importe vendas com horário para acompanhar'
+        }),
+        renderInsightCard({
+          tone: periodoDia.quantidadeSemHorario > 0 ? 'warning' : 'success',
+          title: 'Qualidade dos dados',
+          value: periodoDia.quantidadeSemHorario > 0 ? `${periodoDia.quantidadeSemHorario} sem horário` : 'Dados completos',
+          meta: melhorDia ? `Melhor dia: ${melhorDia.dia} com ${fmtBR(melhorDia.receitas)}` : 'Ainda não há vendas no mês'
+        })
+      ].join('');
+    }
+
+    function renderWeekdaySummary() {
+      const tbody = document.getElementById('weekdaySummaryBody');
+      if (!tbody) return;
+
+      const resumo = getResumoDiaSemana(selectedMonth, getAnoSelecionado());
+      const totalReceitas = resumo.reduce((sum, item) => sum + item.receitas, 0);
+      const totalDespesas = resumo.reduce((sum, item) => sum + item.despesas, 0);
+      const totalSaldo = totalReceitas - totalDespesas;
+      const totalQuantidade = resumo.reduce((sum, item) => sum + item.quantidadeReceitas, 0);
+      const ticketMedioTotal = totalQuantidade > 0 ? totalReceitas / totalQuantidade : 0;
+
+      tbody.innerHTML = `
+        ${resumo.map(item => `
+          <tr>
+            <td>${item.dia}</td>
+            <td style="color: var(--color-success); font-weight: 600;">${fmtBR(item.receitas)}</td>
+            <td style="color: var(--color-danger); font-weight: 600;">${fmtBR(item.despesas)}</td>
+            <td style="color: ${item.saldo >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}; font-weight: 700;">${fmtBR(item.saldo)}</td>
+            <td>${item.quantidadeReceitas}</td>
+            <td>${fmtBR(item.ticketMedio)}</td>
+          </tr>
+        `).join('')}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td style="color: var(--color-success); font-weight: 700;">${fmtBR(totalReceitas)}</td>
+          <td style="color: var(--color-danger); font-weight: 700;">${fmtBR(totalDespesas)}</td>
+          <td style="color: ${totalSaldo >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}; font-weight: 700;">${fmtBR(totalSaldo)}</td>
+          <td><strong>${totalQuantidade}</strong></td>
+          <td><strong>${fmtBR(ticketMedioTotal)}</strong></td>
+        </tr>
+      `;
+    }
+
+    function renderDayPeriodSummary() {
+      const tbody = document.getElementById('dayPeriodSummaryBody');
+      const coverage = document.getElementById('dayPeriodCoverage');
+      if (!tbody) return;
+
+      const {
+        resumo,
+        totalConsiderado,
+        vendasSemHorario,
+        quantidadeSemHorario,
+        totalReceitasMes,
+        totalQuantidadeMes
+      } = getResumoPeriodoDia(selectedMonth, getAnoSelecionado());
+      const percentualCobertura = totalReceitasMes > 0 ? (totalConsiderado / totalReceitasMes) * 100 : 0;
+
+      if (coverage) {
+        if (!totalQuantidadeMes) {
+          coverage.textContent = 'Sem vendas no mês';
+        } else if (quantidadeSemHorario > 0) {
+          coverage.textContent = `${totalQuantidadeMes - quantidadeSemHorario}/${totalQuantidadeMes} vendas com horário`;
+        } else {
+          coverage.textContent = '100% das vendas com horário';
+        }
+      }
+
+      if (!totalQuantidadeMes) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center" style="color: var(--color-text-muted); padding: 2rem;">
+              Nenhuma venda encontrada para ${MESES[selectedMonth]}.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = `
+        ${resumo.map(item => `
+          <tr>
+            <td>${item.periodo}</td>
+            <td>${item.faixa}</td>
+            <td style="color: var(--color-success); font-weight: 600;">${fmtBR(item.vendas)}</td>
+            <td>${item.quantidade}</td>
+            <td>${fmtBR(item.ticketMedio)}</td>
+            <td>${item.participacao.toFixed(1)}%</td>
+          </tr>
+        `).join('')}
+        ${quantidadeSemHorario > 0 ? `
+          <tr>
+            <td>Sem horário</td>
+            <td>Não identificado</td>
+            <td style="color: var(--color-warning); font-weight: 600;">${fmtBR(vendasSemHorario)}</td>
+            <td>${quantidadeSemHorario}</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+        ` : ''}
+        <tr>
+          <td><strong>Total do mês</strong></td>
+          <td><strong>Todas as vendas</strong></td>
+          <td style="color: var(--color-success); font-weight: 700;">${fmtBR(totalReceitasMes)}</td>
+          <td><strong>${totalQuantidadeMes}</strong></td>
+          <td><strong>${fmtBR(totalQuantidadeMes > 0 ? totalReceitasMes / totalQuantidadeMes : 0)}</strong></td>
+          <td><strong>${percentualCobertura.toFixed(1)}% com faixa</strong></td>
+        </tr>
+      `;
+    }
+
+    function setChartFallback(canvas, fallbackEl, html) {
+      if (canvas) canvas.style.display = 'none';
+      if (!fallbackEl) return;
+      fallbackEl.innerHTML = html;
+      fallbackEl.classList.add('active');
+    }
+
+    function clearChartFallback(canvas, fallbackEl) {
+      if (canvas) canvas.style.display = '';
+      if (!fallbackEl) return;
+      fallbackEl.innerHTML = '';
+      fallbackEl.classList.remove('active');
+    }
+
+    function buildStaticBars(labels, values, options = {}) {
+      const items = labels.map((label, index) => ({
+        label,
+        value: Number(values[index] || 0)
+      }));
+      const maxValue = Math.max(...items.map(item => Math.abs(item.value)), 0);
+      if (maxValue <= 0) {
+        return `<div class="chart-fallback-empty">${options.emptyText || 'Sem dados para o mês selecionado.'}</div>`;
+      }
+      return items.map(item => {
+        const width = Math.max(4, (Math.abs(item.value) / maxValue) * 100);
+        const color = item.value < 0 ? 'var(--color-danger)' : (options.color || 'var(--color-success)');
+        return `
+          <div class="chart-fallback-row">
+            <span class="chart-fallback-label">${item.label}</span>
+            <span class="chart-fallback-track">
+              <span class="chart-fallback-bar" style="width:${width.toFixed(1)}%; background:${color};"></span>
+            </span>
+            <span class="chart-fallback-value">${fmtBR(item.value)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCharts() {
+      const ano = getAnoSelecionado();
+      const { receitasPorDia } = getTotaisDiaSemana(selectedMonth, ano);
+      const comparacao = getComparacaoMensal(selectedMonth, ano);
+      const ctxBar = document.getElementById('chartReceitasDespesas');
+      const ctxComparacao = document.getElementById('chartComposicao');
+      const fallbackBar = document.getElementById('chartReceitasDespesasFallback');
+      const fallbackComparacao = document.getElementById('chartComposicaoFallback');
+
+      if (typeof Chart === 'undefined') {
+        setChartFallback(
+          ctxBar,
+          fallbackBar,
+          buildStaticBars(DIAS_SEMANA, receitasPorDia, {
+            emptyText: 'Sem vendas no mês selecionado.'
+          })
+        );
+        setChartFallback(
+          ctxComparacao,
+          fallbackComparacao,
+          buildStaticBars(
+            ['Receitas', 'Despesas', 'Saldo'],
+            [comparacao.atual.receitas, comparacao.atual.despesas * -1, comparacao.atual.saldo],
+            { color: 'var(--color-accent)', emptyText: 'Sem dados para comparar neste mês.' }
+          )
+        );
+        return;
+      }
+
+      clearChartFallback(ctxBar, fallbackBar);
+      clearChartFallback(ctxComparacao, fallbackComparacao);
+
+      if (chartReceitasDespesasInstance) {
+        chartReceitasDespesasInstance.destroy();
+      }
+
+      if (chartComposicaoInstance) {
+        chartComposicaoInstance.destroy();
+      }
+
+      if (ctxBar) {
+        chartReceitasDespesasInstance = new Chart(ctxBar, {
+          type: 'bar',
+          data: {
+            labels: DIAS_SEMANA,
+            datasets: [{
+              label: 'Vendas',
+              data: receitasPorDia,
+              backgroundColor: 'rgba(16, 185, 129, 0.75)',
+              borderColor: '#10b981',
+              borderWidth: 1,
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: {
+                  callback: (value) => fmtBR(value)
+                }
+              },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      if (ctxComparacao) {
+        const valoresAnteriores = [
+          comparacao.anterior.receitas,
+          comparacao.anterior.despesas * -1,
+          comparacao.anterior.saldo
+        ];
+        const valoresAtuais = [
+          comparacao.atual.receitas,
+          comparacao.atual.despesas * -1,
+          comparacao.atual.saldo
+        ];
+
+        chartComposicaoInstance = new Chart(ctxComparacao, {
+          type: 'bar',
+          data: {
+            labels: ['Receitas', 'Despesas', 'Saldo'],
+            datasets: [
+              {
+                label: comparacao.anteriorLabel,
+                data: valoresAnteriores,
+                backgroundColor: [
+                  'rgba(148, 163, 184, 0.55)',
+                  'rgba(239, 68, 68, 0.55)',
+                  comparacao.anterior.saldo >= 0 ? 'rgba(14, 165, 233, 0.45)' : 'rgba(239, 68, 68, 0.45)'
+                ],
+                borderColor: [
+                  '#94a3b8',
+                  '#ef4444',
+                  comparacao.anterior.saldo >= 0 ? '#0ea5e9' : '#ef4444'
+                ],
+                borderWidth: 1,
+                borderRadius: 8
+              },
+              {
+                label: comparacao.atualLabel,
+                data: valoresAtuais,
+                backgroundColor: [
+                  'rgba(16, 185, 129, 0.75)',
+                  'rgba(239, 68, 68, 0.8)',
+                  comparacao.atual.saldo >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(239, 68, 68, 0.7)'
+                ],
+                borderColor: [
+                  '#10b981',
+                  '#ef4444',
+                  comparacao.atual.saldo >= 0 ? '#0ea5e9' : '#ef4444'
+                ],
+                borderWidth: 1,
+                borderRadius: 8
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(255,255,255,0.08)' },
+                ticks: {
+                  callback: (value) => fmtBR(value)
+                }
+              },
+              x: {
+                grid: { display: false }
+              }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom'
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    return `${context.dataset.label}: ${fmtBR(context.parsed.y)}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function scheduleDashboardChartUpgrade() {
+      if (typeof Chart !== 'undefined' || dashboardChartLoadPromise || dashboardChartLoadScheduled) return;
+      if (!window.LavaCashVendorLoader?.loadChart) return;
+
+      dashboardChartLoadScheduled = true;
+      const loadCharts = () => {
+        dashboardChartLoadScheduled = false;
+        if (typeof Chart !== 'undefined' || dashboardChartLoadPromise) return;
+        dashboardChartLoadPromise = window.LavaCashVendorLoader.loadChart()
+          .then(() => {
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
+            renderCharts();
+          })
+          .catch(() => null)
+          .finally(() => { dashboardChartLoadPromise = null; });
+      };
+
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(loadCharts, { timeout: 1200 });
+      } else {
+        window.setTimeout(loadCharts, 120);
+      }
+    }
+
+    function atualizarDashboard() {
+      atualizarTitulosMesSelecionado();
+      renderMonthCards();
+      updateStats();
+      renderWeekdaySummary();
+      renderDayPeriodSummary();
+      renderMonthlyInsights();
+      renderCharts();
+      scheduleDashboardChartUpgrade();
+      document.getElementById('dataAtualizacao').textContent = `Atualizado ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+
+    function agendarAtualizacaoDashboard() {
+      clearTimeout(dashboardRefreshTimer);
+      dashboardRefreshTimer = setTimeout(atualizarDashboard, 80);
+    }
+
+    async function initDashboard() {
+      if (isMobileDashboardViewport() || dashboardInitialized) return;
+      dashboardInitialized = true;
+      const lavId = getLavanderiaAtualId();
+      let loadedSummary = false;
+      try {
+        loadedSummary = await loadDashboardSummaries(lavId, new Date().getFullYear());
+      } catch (error) {
+        console.warn('[Dashboard] Consulta resumida indisponível; usando cache local.', error);
+      }
+      if (!loadedSummary) {
+        await Promise.all([
+          hydrateDashboardArray(`${lavId}_receitas`),
+          hydrateDashboardArray(`${lavId}_despesas`)
+        ]);
+        await sincronizarRecorrenciasDashboard(lavId);
+        const years = new Set();
+        const { receitas, despesas } = getMovimentacoesLavanderia();
+        [...receitas, ...despesas].forEach(item => {
+          const year = Number(item?.data?.slice?.(0, 4));
+          if (Number.isInteger(year)) years.add(year);
+        });
+        fillDashboardYears([...years], new Date().getFullYear());
+      }
+      selectLastMonthWithData(getAnoSelecionado());
+      atualizarDashboard();
+      window.FirebaseStore?.runDailyIntegrityCheck?.(lavId).catch(() => {});
+    }
+
+    async function reloadDashboardForLaundry(lavId) {
+      const status = document.getElementById('dataAtualizacao');
+      if (status) status.textContent = 'Carregando lavanderia...';
+      dashboardSummaryByYear.clear();
+      dashboardUsingSummary = false;
+      try {
+        const loadedSummary = await loadDashboardSummaries(lavId, new Date().getFullYear());
+        if (!loadedSummary) {
+          await Promise.all([
+            hydrateDashboardArray(`${lavId}_receitas`),
+            hydrateDashboardArray(`${lavId}_despesas`)
+          ]);
+        }
+        selectLastMonthWithData(getAnoSelecionado());
+        atualizarDashboard();
+        window.FirebaseStore?.runDailyIntegrityCheck?.(lavId).catch(() => {});
+      } catch (error) {
+        console.error('[Dashboard] Não foi possível trocar a lavanderia:', error);
+        if (status) status.textContent = 'Não foi possível carregar. Tente novamente.';
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDashboard);
+    } else {
+      initDashboard();
+    }
+
+    // Compatibilidade para instalações antigas sem as consultas resumidas.
+    let _dashboardSyncSetup = false;
+    function setupFirebaseSyncDashboard() {
+      if (isMobileDashboardViewport() || _dashboardSyncSetup) return;
+      if (window.FirebaseStore?.getDashboardSummary) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) return;
+      _dashboardSyncSetup = true;
+      const lavId = getLavanderiaAtualId();
+
+      const mergeDashboardById = (key, localData, remoteData) => {
+        const normalized = window.LavaCashFinanceDedupe?.normalizeFinanceArrayForKey?.(key, [
+          ...(Array.isArray(remoteData) ? remoteData : []),
+          ...(Array.isArray(localData) ? localData : [])
+        ]);
+        if (normalized) return normalized;
+        return {
+          items: Array.isArray(remoteData) ? remoteData : [],
+          removed: 0
+        };
+      };
+
+      const syncKey = (key) => window.FirebaseStore.subscribe(key, (data) => {
+        if (!Array.isArray(data)) return;
+        const remote = window.FirebaseStore.reconcileFinanceSnapshot(key, getDashboardArray(key), data);
+        persistDashboardArray(key, remote);
+        agendarAtualizacaoDashboard();
+      });
+      syncKey(`${lavId}_receitas`);
+      syncKey(`${lavId}_despesas`);
+    }
+    window.addEventListener('firebase:initialized', setupFirebaseSyncDashboard);
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) setupFirebaseSyncDashboard();
+
+    window.addEventListener('resize', () => {
+      if (!isMobileDashboardViewport()) {
+        initDashboard();
+        setupFirebaseSyncDashboard();
+      }
+    });
+
+    document.getElementById('anoSelect')?.addEventListener('change', async () => {
+      const ano = getAnoSelecionado();
+      if (dashboardUsingSummary && !dashboardSummaryByYear.has(ano)) {
+        const status = document.getElementById('dataAtualizacao');
+        if (status) status.textContent = 'Carregando ano...';
+        try {
+          await Promise.all([
+            loadDashboardSummaryYear(getLavanderiaAtualId(), ano),
+            loadDashboardSummaryYear(getLavanderiaAtualId(), ano - 1).catch(() => null)
+          ]);
+        } catch (error) {
+          console.error('[Dashboard] Não foi possível carregar o ano:', error);
+        }
+      }
+      // Ao trocar o ano, redefine para o último mês com dados naquele ano
+      selectLastMonthWithData(ano);
+      atualizarDashboard();
+    });
+  </script>
+</body>
+</html>
