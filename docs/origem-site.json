@@ -1,0 +1,169 @@
+{
+  "origin": "https://lavacash-financeiro.web.app/",
+  "files": {
+    "despesas.html": {
+      "bytes": 75769,
+      "sha256": "39c141b19a879b97b850c3ba85bebc695de91086a670242bb872b55d1a8d46a4"
+    },
+    "index.html": {
+      "bytes": 11137,
+      "sha256": "ca54830e7e693e71b9705adcb8d33f11a6e5619cfe06d59d151f2c5f7d675ef2"
+    },
+    "sw.js": {
+      "bytes": 5527,
+      "sha256": "b68817fd987e1b10014bed9982283ffc0416e77e3db69579148897d2c597b36a"
+    },
+    "ajuda.html": {
+      "bytes": 42275,
+      "sha256": "b054cf925656612545fbb7ea519a897647565ad1646bdef511ae3df271e92b7b"
+    },
+    "analise-financeira.html": {
+      "bytes": 148021,
+      "sha256": "2a64cbcbef7ba2b11fb179ea670cc6a82010b21f71912ab78158eb950ede516d"
+    },
+    "assets/favicon.svg": {
+      "bytes": 516,
+      "sha256": "1d1f120e26d3a3192fc05659864d9b8322fccab5c8f376bf431b91d9846076c5"
+    },
+    "configuracoes.html": {
+      "bytes": 110528,
+      "sha256": "d3235f0d1bb2f88a8a45888722ec5813688fcc663c40980d62f4186db361d323"
+    },
+    "css/mobile.css": {
+      "bytes": 31280,
+      "sha256": "64c9e354b7a3da2bdcf4fd84a599b937d72f6a2e99db012610144b3d7a9d4e73"
+    },
+    "css/styles.css": {
+      "bytes": 28524,
+      "sha256": "dd537cd7e3d145597a9a5ee5a834e8fdbb7f048ea5deb5f6f3ecc0e3493f87c8"
+    },
+    "css/ui-enhancements.css": {
+      "bytes": 14790,
+      "sha256": "549a45b26dfad8f863141b8b6792f63b4eef5a2d2af85c84c70738a62e6165be"
+    },
+    "css/utilities.css": {
+      "bytes": 5884,
+      "sha256": "55abf3edd584b628b78cc9acdca9db5864c16b8d8fc45a7f2fdf6dbb87b5b2f2"
+    },
+    "dashboard.html": {
+      "bytes": 68818,
+      "sha256": "49b435497266ede3103cc4e0a74690e089447e3ec70521f3709ae113cfeab162"
+    },
+    "investimento-inicial.html": {
+      "bytes": 171284,
+      "sha256": "c2f73f1012f86d91deb4ce090da14e1a841ee50dfdd85e6375fe596e901ac92a"
+    },
+    "js/auth-service.js": {
+      "bytes": 64575,
+      "sha256": "7648a0f2bb88e5d36e927498a211db2a3ae7d1c449656db96cd2a655ebb7e96c"
+    },
+    "js/despesas-utils.js": {
+      "bytes": 19861,
+      "sha256": "c3f2f7edf4084b27ed6ba17d6412b9ab3cf91105313d5ef56a023070558b5447"
+    },
+    "js/finance-dedupe.js": {
+      "bytes": 5524,
+      "sha256": "f2744e92c726fac5a1ee247d7092b822e4b4b3207a41925db9fa031dc033c1f2"
+    },
+    "js/firebase-init.js": {
+      "bytes": 3594,
+      "sha256": "73c60274cee47bb07ef7cc2b7e03f24302838a996f7654ed4446f95fdd53c8cd"
+    },
+    "js/indexeddb-store.js": {
+      "bytes": 11711,
+      "sha256": "c3a7fb261b1d11ed8dcaa465b5d74f5a6a6de02bced0fe40f4167f4e70b0dc20"
+    },
+    "js/laundry-service.js": {
+      "bytes": 3383,
+      "sha256": "70200e136cb57623821b5e5d62224ee19f880248c83195d5619d41bc41333306"
+    },
+    "js/mobile-loader.js": {
+      "bytes": 1496,
+      "sha256": "04e8102db5c60af5f612489c2b6271b0580940b856b70ee103b42730a6039fc6"
+    },
+    "js/owner-mode.js": {
+      "bytes": 7652,
+      "sha256": "743ab674d95696a3b3987950fdd50a767ce00717eb4813edc859537d667f20dd"
+    },
+    "js/pwa-init.js": {
+      "bytes": 1117,
+      "sha256": "eb43c7b60c387a201b34f7689404dc4437b1f7a2bfc8767529003314f4be87c4"
+    },
+    "js/recurring-expenses.js": {
+      "bytes": 9196,
+      "sha256": "7e96e3590f5df24a79b6e47afce08d63b08d36b6937ffc5404e41954d4d6de22"
+    },
+    "js/responsive-tables.js": {
+      "bytes": 3502,
+      "sha256": "627a1eb60b286531a10e8b3b015c036f0f3b21dc7297b104054c6b778a16c3fd"
+    },
+    "js/sidebar-filter.js": {
+      "bytes": 593,
+      "sha256": "aba01b1c84f611676a4c18f023eeec7b12c6742a76be027520bce194db62def9"
+    },
+    "js/sidebar.js": {
+      "bytes": 1242,
+      "sha256": "793205dbb39fd3bea24e65cf1328299ce23394365a47652274ff52062036343c"
+    },
+    "js/theme-init.js": {
+      "bytes": 469,
+      "sha256": "f8e39ad8c411cd42b1f921181afd24d681801d1b09ad13b68236cece38017730"
+    },
+    "js/ui-enhancements.js": {
+      "bytes": 24505,
+      "sha256": "b0ae4c507638cb783f7ab5f19aa953dc041fea0e625553bea6ed246cf34b9347"
+    },
+    "js/user-system.js": {
+      "bytes": 68394,
+      "sha256": "51eec7ecabaf5feb47653c6b829d0f4d78e8d2ae3ba893c8344e614d1b399f48"
+    },
+    "js/vendor-loader.js": {
+      "bytes": 1664,
+      "sha256": "ba3c41c1b917c02c138175642b1e1848781434679e59fb871e9ab7bf407c792d"
+    },
+    "js/vendor/chart.umd.min.js": {
+      "bytes": 206944,
+      "sha256": "bce154080959c574be0bb6b1a924ff32f08ebc6ff460c159171f51c53802c844"
+    },
+    "js/vendor/xlsx.full.min.js": {
+      "bytes": 944491,
+      "sha256": "36a42f409fe9b8b8e4d112f0edc826883e40ed88eae071987a427a0389b06c03"
+    },
+    "manifest.json": {
+      "bytes": 1498,
+      "sha256": "51c33c8367e4fe8f24972ff4923db7f7899115b08619a3218b7237b9e8913a34"
+    },
+    "receitas.html": {
+      "bytes": 192294,
+      "sha256": "ac73a117079d746c88a383faab71373524ebb26031a593ec469474b2ba1a59e0"
+    },
+    "reset.html": {
+      "bytes": 6634,
+      "sha256": "a068837db741a9bd4fca49b8f78fa49b091ce11c1cfa3d2cc7cacf6a168d0f55"
+    },
+    "js/firebase-config.js": {
+      "bytes": 688,
+      "sha256": "be34d1c858d11386733eb6f3479dbe928744a2fa7c7a72b999b8a122bdb17d3b"
+    },
+    "js/mobile-app.js": {
+      "bytes": 50203,
+      "sha256": "c48c24c41a3f7d6e8e7951391fa1a250ff038e5e7a505ea0fbe2727481bd2f7b"
+    },
+    "js/socios-investimentos.js": {
+      "bytes": 9094,
+      "sha256": "4ebbc90953a5e267340ee3751ddbb4b63621b57c81e9bbbf5cf77192411c4a1b"
+    },
+    "js/supabase-store.js": {
+      "bytes": 53299,
+      "sha256": "f40e06334f700d86a448a9710a11e7475d0abd37a4f8599e3d9a7e978cfdcd87"
+    },
+    "js/supabase-config.js": {
+      "bytes": 277,
+      "sha256": "a30f369ae5bd13c5d8a0c1de2682905113d8ddb1444057bcfd65c3cb82b2e1d8"
+    }
+  },
+  "failures": {
+    "assets/irancash-logo.png": "HTML fallback instead of asset"
+  },
+  "note": "Hashes dos arquivos públicos antes das correções. Nenhum dado de sessão ou de banco foi capturado."
+}

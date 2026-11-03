@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página não encontrada | LAVACASH</title>
+</head>
+<body>
+  <h1>Página não encontrada</h1>
+  <p><a href="/Lava-cash/index.html">Voltar ao LAVACASH</a></p>
+  <script>
+    // Compatibilidade com os antigos links sem extensão do Firebase Hosting.
+    const base = '/Lava-cash/';
+    const routes = new Set(['index', 'dashboard', 'receitas', 'despesas',
+      'analise-financeira', 'investimento-inicial', 'configuracoes', 'ajuda', 'reset']);
+    const route = location.pathname.startsWith(base)
+      ? location.pathname.slice(base.length).replace(/\/$/, '') : '';
+    if (routes.has(route)) {
+      location.replace(base + route + '.html' + location.search + location.hash);
+    }
+  </script>
+</body>
+</html>

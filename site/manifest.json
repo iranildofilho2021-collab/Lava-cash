@@ -1,0 +1,66 @@
+{
+  "name": "LAVACASH - Gestão Financeira",
+  "short_name": "LAVACASH",
+  "description": "Sistema completo de gestão financeira para lavanderias. Controle receitas, despesas e analise o desempenho do seu negócio.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Ir para o painel principal",
+      "url": "dashboard.html",
+      "icons": [
+        {
+          "src": "assets/favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Receitas",
+      "short_name": "Receitas",
+      "description": "Gerenciar receitas",
+      "url": "receitas.html",
+      "icons": [
+        {
+          "src": "assets/favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Despesas",
+      "short_name": "Despesas",
+      "description": "Gerenciar despesas",
+      "url": "despesas.html",
+      "icons": [
+        {
+          "src": "assets/favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "categories": [
+    "finance",
+    "business",
+    "productivity"
+  ],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "id": "./"
+}

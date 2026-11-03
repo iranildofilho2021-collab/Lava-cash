@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações | LAVACASH</title>
+
+  <meta name="description" content="Painel de administração do sistema LAVACASH">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/mobile.css?v=20260621-mobile-performance-v1">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+</head>
+<body data-page="configuracoes">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Loading -->
+
+  <script>setTimeout(function(){var e=document.getElementById('loadingOverlay');if(e)e.classList.add('hidden');},600);</script>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando configurações...</div>
+  </div>
+
+  <!-- Sidebar Toggle -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+        </svg>
+      </div>
+      <span class="sidebar-brand">LAVACASH</span>
+    </div>
+
+    <!-- Lavanderia Selector -->
+    <div class="px-4 py-2 mb-2">
+      <select id="lavanderiaSelect" class="input-glass w-full text-sm" style="padding: 0.5rem;">
+        <!-- Populated via JS -->
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="receitas.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Receitas</span>
+      </a>
+      <a href="despesas.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Despesas</span>
+      </a>
+      <a href="analise-financeira.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>Análise</span>
+      </a>
+      <a href="investimento-inicial.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <span>Investimento</span>
+      </a>
+      <a href="configuracoes.html" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Configurações</span>
+      </a>
+      <a href="ajuda.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ajuda</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="px-4 py-2 mb-2 text-center">
+        <p class="text-sm font-medium" id="userName" style="color: var(--color-text-primary);">Proprietário</p>
+        <p class="text-xs" id="userRole" style="color: var(--color-text-muted);">Proprietário</p>
+      </div>
+      <button id="btnLogout" class="btn btn-ghost w-full justify-start">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sair</span>
+      </button>
+      <p class="text-xs text-center mt-4" style="color: var(--color-text-muted);">© 2026 LAVACASH</p>
+    </div>
+  </aside>
+
+  <!-- Main Content (exibido depois de confirmar a sessão do proprietário) -->
+  <main class="main-content" id="mainContent" style="display:none;">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">⚙️ Configurações</h1>
+        <p class="page-subtitle">Gerencie suas lavanderias e preferências do sistema</p>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="glass-card p-1 mb-6 flex flex-wrap gap-1" id="configTabs">
+      <button class="tab-btn active" data-tab="lavanderias">🏪 Lavanderias</button>
+      <button class="tab-btn" data-tab="importacao">📥 Importação</button>
+      <button class="tab-btn" data-tab="metas">🎯 Metas Mensais</button>
+      <button class="tab-btn" data-tab="sistema">🔧 Sistema</button>
+    </div>
+
+    <!-- Tab Content: Lavanderias -->
+    <div id="tabLavanderias" class="tab-content active">
+      <div class="glass-card p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Lavanderias</h3>
+          <button class="btn btn-primary" id="btnNovaLavanderia">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+            </svg>
+            Nova Lavanderia
+          </button>
+        </div>
+        <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));" id="gridLavanderias">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Importação -->
+    <div id="tabImportacao" class="tab-content hidden">
+      <!-- Maquininhas Cadastradas -->
+      <div class="glass-card p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">💳 Maquininhas de Pagamento</h3>
+            <p class="text-sm mt-1" style="color: var(--color-text-muted);">Cadastre todas as maquininhas usadas na loja. Cada uma pode ter formato de importação diferente.</p>
+          </div>
+          <button class="btn btn-primary" onclick="abrirModalMaquininha()">+ Nova Maquininha</button>
+        </div>
+        <div id="listaMaquininhas" class="space-y-3 mt-2"></div>
+        <p id="semMaquininhas" class="text-sm text-center py-6" style="color: var(--color-text-muted); display: none;">Nenhuma maquininha cadastrada. Clique em "Nova Maquininha" para começar.</p>
+      </div>
+
+      <div class="glass-card p-6 mt-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="stat-icon warning">🏷️</div>
+          <div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Categorias de Despesas</h3>
+            <p class="text-sm" style="color: var(--color-text-muted);">Adicione novas categorias e ajuste a descricao exibida no formulario de despesas.</p>
+          </div>
+        </div>
+
+        <input type="hidden" id="categoriaDespesaEditId">
+        <div class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Categoria *</label>
+            <input type="text" id="categoriaDespesaNome" class="input-glass" placeholder="Ex: Limpeza">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Descrição</label>
+            <input type="text" id="categoriaDespesaDescricao" class="input-glass" placeholder="Opcional">
+          </div>
+          <div class="flex gap-2" style="flex-wrap: wrap;">
+            <button type="button" id="btnSalvarCategoriaDespesa" class="btn btn-primary" onclick="salvarCategoriaDespesaConfig()">Adicionar</button>
+            <button type="button" id="btnCancelarCategoriaDespesa" class="btn btn-ghost hidden" onclick="cancelarEdicaoCategoriaDespesa()">Cancelar</button>
+          </div>
+        </div>
+
+        <div id="listaCategoriasDespesa" class="space-y-3 mt-6"></div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Metas Mensais -->
+    <div id="tabMetas" class="tab-content hidden">
+      <div class="glass-card p-6 mb-6">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="stat-icon success">🎯</div>
+          <div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Metas Mensais por Categoria</h3>
+            <p class="text-sm" style="color: var(--color-text-muted);">Defina um teto de gastos para cada categoria. A página de Despesas mostrará o progresso em relação à meta.</p>
+          </div>
+        </div>
+        <div id="listaMetasCategorias" class="space-y-3 mt-6">
+          <!-- Populated via JS -->
+        </div>
+        <button class="btn btn-primary mt-4" onclick="salvarMetas()">💾 Salvar Metas</button>
+      </div>
+    </div>
+
+    <!-- Tab Content: Sistema -->
+    <div id="tabSistema" class="tab-content hidden">
+      <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+
+        <!-- Tema -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="stat-icon info">🎨</div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Aparência</h3>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tema do Site</label>
+            <select id="configTema" class="input-glass">
+              <option value="auto">⚡ Automático (Sistema)</option>
+              <option value="light">☀️ Claro</option>
+              <option value="dark">🌙 Escuro</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary w-full mt-3" onclick="aplicarTema()">Aplicar Tema</button>
+        </div>
+
+        <!-- Banco de dados -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="stat-icon warning">🗄️</div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Supabase</h3>
+          </div>
+          <p class="text-sm mb-3" style="color: var(--color-text-secondary);">
+            Status: <span id="firebaseStatus" class="font-medium" style="color: var(--color-success);">✓ Conectado</span>
+          </p>
+          <div class="flex gap-2">
+            <button id="btnTestarSupabase" class="btn btn-secondary flex-1" onclick="testarFirebase()">🔍 Testar Supabase</button>
+            <button class="btn btn-secondary flex-1" onclick="limparCacheFirebase()">🗑️ Limpar cache local</button>
+          </div>
+        </div>
+
+        <!-- Backup -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="stat-icon info">💾</div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Backup de Dados</h3>
+          </div>
+          <p class="mb-4" style="color: var(--color-text-secondary);">Baixe uma cópia completa dos dados do Supabase e das configurações locais.</p>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary flex-1" id="btnExportar">📤 Exportar</button>
+            <button class="btn btn-secondary flex-1" id="btnImportar">📥 Importar</button>
+          </div>
+          <input type="file" id="fileImportar" accept=".json" style="display: none;">
+        </div>
+
+        <!-- Integridade -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="stat-icon success">🛡️</div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Integridade dos Dados</h3>
+          </div>
+          <p id="integrityStatus" class="mb-4" role="status" aria-live="polite" style="color: var(--color-text-secondary);">Verifique contagens, totais, datas ausentes, vendas duplicadas e registros antigos preservados.</p>
+          <button id="btnVerificarIntegridade" class="btn btn-secondary w-full" onclick="verificarIntegridade()">✓ Verificar agora</button>
+        </div>
+
+        <!-- Notificações -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="stat-icon success">🔔</div>
+            <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">Notificações</h3>
+          </div>
+          <div class="space-y-2">
+            <label class="checkbox-item">
+              <input type="checkbox" id="configNotifImportacao" checked>
+              <span>Importação concluída</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="configNotifErros">
+              <span>Erros e alertas</span>
+            </label>
+          </div>
+          <button class="btn btn-secondary w-full mt-3" onclick="salvarConfigNotificacoes()">💾 Salvar</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Maquininha -->
+  <div id="modalMaquininha" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width: 780px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalMaquininhaTitle">Nova Maquininha</h2>
+        <button class="modal-close" onclick="fecharModalMaquininha()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="maqEditId">
+        <div class="form-group">
+          <label class="form-label">Nome / Apelido *</label>
+          <input type="text" id="maqNome" class="input-glass" placeholder="Ex: Stone Débito/Crédito, Cielo PIX...">
+          <p class="text-xs mt-1" style="color:var(--color-text-muted);">Nome que aparecerá ao importar vendas</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏢 Marca / Tipo</label>
+          <select id="maqTipo" class="input-glass">
+            <option value="stone">Stone</option>
+            <option value="cielo">Cielo</option>
+            <option value="pagseguro">PagSeguro</option>
+            <option value="getnet">Getnet</option>
+            <option value="rede">Rede</option>
+            <option value="mercadopago">Mercado Pago</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">⚙️ Preset de Importação</label>
+          <select id="maqPreset" class="input-glass">
+            <option value="auto">Automático pelo tipo da maquininha</option>
+            <option value="mercadopago_pix">Mercado Pago PIX / Bank Transfer</option>
+            <option value="mercadopago_geral">Mercado Pago Geral</option>
+            <option value="rede_padrao">Rede Padrão</option>
+            <option value="stone_padrao">Stone Padrão</option>
+          </select>
+          <p class="text-xs mt-1" style="color:var(--color-text-muted);">O preset preenche cabeçalho e colunas padrão sem impedir ajustes manuais.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📅 Formato da Data no Arquivo</label>
+          <select id="maqFormatoData" class="input-glass">
+            <option value="auto">🔍 Detectar automaticamente (recomendado)</option>
+            <option value="dmy">DD/MM/AAAA — Brasileiro (padrão)</option>
+            <option value="mdy">MM/DD/AAAA — Americano</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📋 Linha do Cabeçalho no Arquivo</label>
+          <input type="number" id="maqLinhaHeader" class="input-glass" value="1" min="1" max="10" style="width:6rem;">
+          <p class="text-xs mt-1" style="color:var(--color-text-muted);">Número da linha que contém os títulos das colunas (Rede: padrão 2)</p>
+        </div>
+        <!-- Detecção automática por arquivo exemplo -->
+        <div class="form-group" style="padding:1rem;border:1px dashed var(--color-glass-border);border-radius:.75rem;background:var(--color-glass);">
+          <label class="form-label">📂 Carregar Arquivo Exemplo para Detectar Colunas</label>
+          <p class="text-xs mt-1" style="color:var(--color-text-muted);">Carregue um arquivo CSV ou XLSX desta maquininha e o sistema preencherá automaticamente o mapeamento e o formato de data.</p>
+          <label style="display:inline-flex;align-items:center;gap:.5rem;margin-top:.75rem;padding:.5rem 1rem;border:1px solid var(--color-glass-border);border-radius:.5rem;background:var(--color-surface-active);cursor:pointer;">
+            <input type="file" id="maqExemploFile" accept=".xlsx,.xls,.csv" style="display:none;" onchange="carregarArquivoExemplo(this.files[0])">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Selecionar arquivo...
+          </label>
+          <p id="maqExemploStatus" class="text-xs mt-2" style="color:var(--color-text-muted);">Nenhum arquivo carregado.</p>
+        </div>
+        <div class="form-group" style="padding:1rem;border:1px solid var(--color-glass-border);border-radius:.75rem;background:var(--color-glass);">
+          <label class="form-label">🧩 Mapeamento Padrão da Planilha</label>
+          <p class="text-xs mt-1" style="color:var(--color-text-muted);">Informe o nome do cabeçalho, a letra ou o número da coluna. Ex.: <strong>DATA DA VENDA</strong>, <strong>B</strong> ou <strong>2</strong>.</p>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Data da Venda *</label>
+              <input type="text" id="maqColDataVenda" class="input-glass" placeholder="Ex: DATA DA VENDA, A ou 1">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Valor Bruto *</label>
+              <input type="text" id="maqColValorBruto" class="input-glass" placeholder="Ex: VALOR BRUTO, B ou 2">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Valor Líquido</label>
+              <input type="text" id="maqColValorLiquido" class="input-glass" placeholder="Ex: VALOR LÍQUIDO, C ou 3">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Produto / Tipo</label>
+              <input type="text" id="maqColProduto" class="input-glass" placeholder="Ex: TIPO, D ou 4">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Bandeira / Modalidade</label>
+              <input type="text" id="maqColBandeira" class="input-glass" placeholder="Ex: MODALIDADE, E ou 5">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Forma de Pagamento</label>
+              <input type="text" id="maqColFormaPagamento" class="input-glass" placeholder="Ex: FORMA DE PAGAMENTO, F ou 6">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Status</label>
+              <input type="text" id="maqColStatus" class="input-glass" placeholder="Ex: STATUS DA VENDA, G ou 7">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Horário da Venda</label>
+              <input type="text" id="maqColHorarioVenda" class="input-glass" placeholder="Ex: HORA DA VENDA, H ou 8">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Valor MDR</label>
+              <input type="text" id="maqColValorMDR" class="input-glass" placeholder="Ex: VALOR MDR, I ou 9">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">NSU / Código da Venda</label>
+              <input type="text" id="maqColCodigoVenda" class="input-glass" placeholder="Ex: NSU, TID, CÓDIGO DA VENDA ou J">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-item" style="padding:.75rem 1rem;border:1px solid var(--color-glass-border);border-radius:.5rem;">
+            <input type="checkbox" id="maqAutoMDR" checked>
+            <div>
+              <span class="font-medium" style="color:var(--color-text-primary);">💳 Criar Despesas MDR Automaticamente</span>
+              <p class="text-xs" style="color:var(--color-text-muted);">Gerar taxa MDR ao importar</p>
+            </div>
+          </label>
+        </div>
+        <div class="form-group" id="maqCategoriaMDRGroup">
+          <label class="form-label">📊 Categoria para Despesas MDR</label>
+          <select id="maqCategoriaMDR" class="input-glass">
+            <option value="mdr">Taxas MDR</option>
+            <option value="servicos">Serviços</option>
+            <option value="outros">Outros</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharModalMaquininha()">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="salvarMaquininha()">💾 Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nova Lavanderia -->
+  <div id="modalLavanderia" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalLavanderiaTitle">Nova Lavanderia</h2>
+        <button class="modal-close" onclick="fecharModalLavanderia()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="lavId">
+        <div class="form-group">
+          <label class="form-label">Nome da Lavanderia *</label>
+          <input type="text" id="lavNome" class="input-glass" placeholder="Ex: LAVACASH Centro" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Endereço</label>
+          <input type="text" id="lavEndereco" class="input-glass" placeholder="Rua, número, bairro">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input type="tel" id="lavTelefone" class="input-glass" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="fecharModalLavanderia()">Cancelar</button>
+        <button type="button" class="btn btn-success" id="btnSalvarLavanderia">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .tab-btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-lg);
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      display: flex;
+      align-items: center;
+    }
+    .tab-btn:hover {
+      background: var(--color-glass);
+      color: var(--color-text-primary);
+    }
+    .tab-btn.active {
+      background: var(--gradient-primary);
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .pending-card {
+      background: var(--color-surface-active);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      border: 1px solid var(--color-glass-border);
+    }
+    .laundry-card {
+      background: var(--color-surface-active);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid var(--color-glass-border);
+      transition: all var(--transition-normal);
+    }
+    .laundry-card:hover {
+      border-color: var(--color-accent);
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      background: var(--color-surface-active);
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: var(--color-accent);
+    }
+  </style>
+
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/user-system.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+  <script src="js/despesas-utils.js?v=20260804-finance-compact-v1"></script>
+  <script src="js/laundry-service.js"></script>
+  <script src="js/sidebar.js"></script>
+
+  <script>
+    // Garantir inicialização
+    UserSystem.init();
+
+    // MIGRAÇÃO: Se existem dados com formato antigo, migrar
+    (function migrarDadosAntigos() {
+      const lavanderias = UserSystem.getLavanderias();
+
+      lavanderias.forEach(lav => {
+        // Migrar receitas
+        const receitaAntiga = `receitas_${lav.id}`;
+        const receitaNova = `${lav.id}_receitas`;
+        if (localStorage.getItem(receitaAntiga) && !localStorage.getItem(receitaNova)) {
+          console.log(`[MIGRAÇÃO] ${receitaAntiga} -> ${receitaNova}`);
+          localStorage.setItem(receitaNova, localStorage.getItem(receitaAntiga));
+          localStorage.removeItem(receitaAntiga);
+        }
+
+        // Migrar despesas
+        const despesaAntiga = `despesas_${lav.id}`;
+        const despesaNova = `${lav.id}_despesas`;
+        if (localStorage.getItem(despesaAntiga) && !localStorage.getItem(despesaNova)) {
+          console.log(`[MIGRAÇÃO] ${despesaAntiga} -> ${despesaNova}`);
+          localStorage.setItem(despesaNova, localStorage.getItem(despesaAntiga));
+          localStorage.removeItem(despesaAntiga);
+        }
+      });
+    })();
+
+    // Navegacao entre as configuracoes do proprietario.
+    function ativarAbaConfig(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => {
+        c.classList.remove('active');
+        c.classList.add('hidden');
+      });
+      const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+      const content = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+      if (btn) btn.classList.add('active');
+      if (content) {
+        content.classList.remove('hidden');
+        content.classList.add('active');
+      }
+    }
+
+    // Existe apenas um tipo de acesso. Sem a sessao do proprietario, volta ao
+    // login; nao ha mais tela nem verificacao de cargos nesta pagina.
+    const currentUser = UserSystem.getCurrentUser();
+    if (!currentUser) {
+      window.location.replace('./index.html');
+    } else {
+      const mainContent = document.getElementById('mainContent');
+      if (mainContent) mainContent.style.display = '';
+      ativarAbaConfig('lavanderias');
+      document.getElementById('userName').textContent = currentUser.nome || 'Proprietário';
+      document.getElementById('userRole').textContent = 'Proprietário';
+      UserSystem.sincronizarComFirestore?.();
+    }
+
+    function isUsuarioAtualDesenvolvedor() { return Boolean(UserSystem.getCurrentUser()); }
+
+    // Populate laundry selector
+    const lavanderiaSelect = document.getElementById('lavanderiaSelect');
+
+    function atualizarLavanderiaSelect() {
+      const minhasLavanderias = UserSystem.getMinhasLavanderias();
+      const lavSelecionada = UserSystem.getLavanderiaSelecionada();
+
+      lavanderiaSelect.innerHTML = minhasLavanderias.map(l =>
+        `<option value="${l.id}" ${l.id === lavSelecionada?.id ? 'selected' : ''}>${l.nome}</option>`
+      ).join('');
+      lavanderiaSelect.disabled = minhasLavanderias.length <= 1;
+    }
+
+    atualizarLavanderiaSelect();
+
+    lavanderiaSelect.addEventListener('change', async (e) => {
+      UserSystem.selecionarLavanderia(e.target.value);
+      renderLavanderias();
+      carregarConfigImportacao();
+      renderCategoriasDespesaConfig();
+      preencherSelectCategoriaMDR();
+      renderMetasMensais();
+      if (typeof _metasConfigUnsubscribe === 'function') _metasConfigUnsubscribe();
+      _metasConfigUnsubscribe = null;
+      _metasConfigFirebaseSyncSetup = false;
+      await hydrateMaquininhasFromFirebase(true);
+      renderMaquininhas();
+      setupMetasConfigFirebaseSync();
+    });
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    sidebarToggle?.addEventListener('click', toggleSidebar);
+    sidebarOverlay?.addEventListener('click', toggleSidebar);
+
+    // Hide loading
+    window.addEventListener('load', () => {
+      document.getElementById('loadingOverlay')?.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      UserSystem.logout();
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('hidden')) return;
+        ativarAbaConfig(btn.dataset.tab);
+        if (btn.dataset.tab === 'metas') {
+          renderMetasMensais();
+        }
+      });
+    });
+
+    // Render pending requests
+    function renderPendentes() {
+      const lista = document.getElementById('listaPendentes');
+      const semPendentes = document.getElementById('semPendentes');
+      if (!lista || !semPendentes) return;
+      const pendentes = UserSystem.getCadastrosPendentes();
+
+      const badge = document.getElementById('badgePendentes');
+      if (badge) badge.textContent = pendentes.length;
+
+      if (pendentes.length === 0) {
+        lista.innerHTML = '';
+        semPendentes.classList.remove('hidden');
+        return;
+      }
+
+      semPendentes.classList.add('hidden');
+      lista.innerHTML = pendentes.map(p => `
+        <div class="pending-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-semibold text-lg" style="color: var(--color-text-primary);">${p.nome}</p>
+              <p class="text-sm" style="color: var(--color-text-muted);">${p.email}</p>
+              <p class="text-sm" style="color: var(--color-text-muted);">${p.telefone || 'Sem telefone'}</p>
+              <p class="text-sm mt-2" style="color: var(--color-text-secondary);">
+                Lavanderia solicitada: <span class="font-medium">${p.lavanderiaSolicitada || 'Não informada'}</span>
+              </p>
+              <p class="text-xs mt-1" style="color: var(--color-text-muted);">
+                Solicitado em: ${new Date(p.dataRegistro).toLocaleString('pt-BR')}
+              </p>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-success btn-sm" onclick="abrirModalAprovar('${p.id}')">
+                ✓ Aprovar
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="rejeitarCadastro('${p.id}')">
+                ✗ Rejeitar
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render users
+    function renderUsuarios() {
+      const tbody = document.getElementById('tabelaUsuarios');
+      if (!tbody) return;
+      const usuarios = UserSystem.getUsuarios()
+        .slice()
+        .sort((a, b) => String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR'));
+      const lavanderias = UserSystem.getLavanderias();
+
+      if (usuarios.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-6" style="color: var(--color-text-muted);">Nenhum usuário cadastrado.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = usuarios.map(u => {
+        const tipoAcesso = UserSystem.normalizarTipoAcesso(u.tipoAcesso);
+        const lavNames = (u.lavanderias || []).includes('all')
+          ? 'Todas'
+          : (u.lavanderias || []).map(lId => {
+            const lav = lavanderias.find(l => l.id === lId);
+            return lav ? lav.nome : lId;
+          }).join(', ') || 'Nenhuma';
+
+        return `
+          <tr>
+            <td>${u.nome}</td>
+            <td>${u.email}</td>
+            <td><span class="badge ${tipoAcesso === 'desenvolvedor' ? 'badge-info' : 'badge-secondary'}">${UserSystem.ROLE_LABELS[tipoAcesso] || tipoAcesso}</span></td>
+            <td>${lavNames}</td>
+            <td><span class="badge ${u.aprovado ? 'badge-success' : 'badge-warning'}">${u.aprovado ? 'Ativo' : 'Pendente'}</span></td>
+            <td>
+              ${u.email !== 'iranildofilho2021@gmail.com' ? `
+                <button class="btn btn-ghost btn-sm" onclick="editarUsuario('${u.id}')">✏️</button>
+                <button class="btn btn-ghost btn-sm text-red-500" onclick="excluirUsuario('${u.id}')">🗑️</button>
+              ` : '<span class="text-xs" style="color: var(--color-text-muted);">Protegido</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Render laundries
+    function renderLavanderias() {
+      const grid = document.getElementById('gridLavanderias');
+      const lavanderias = UserSystem.getLavanderias();
+
+      grid.innerHTML = lavanderias.map(l => `
+        <div class="laundry-card">
+          <h4 class="font-semibold text-lg mb-2" style="color: var(--color-text-primary);">🏪 ${l.nome}</h4>
+          <p class="text-sm" style="color: var(--color-text-muted);">${l.endereco || 'Endereço não informado'}</p>
+          <p class="text-sm" style="color: var(--color-text-muted);">${l.telefone || 'Telefone não informado'}</p>
+          <div class="flex gap-2 mt-4">
+            <button class="btn btn-ghost btn-sm" onclick="editarLavanderia('${l.id}')">✏️ Editar</button>
+            <button class="btn btn-ghost btn-sm text-red-500" onclick="excluirLavanderia('${l.id}')">Excluir</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modal Aprovar
+    const modalAprovar = document.getElementById('modalAprovar');
+
+    function abrirModalAprovar(id) {
+      const pendentes = UserSystem.getCadastrosPendentes();
+      const p = pendentes.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById('aprovarId').value = id;
+      document.getElementById('aprovarNome').textContent = p.nome;
+      document.getElementById('aprovarEmail').textContent = p.email;
+      document.getElementById('aprovarTelefone').textContent = p.telefone || 'Sem telefone';
+      document.getElementById('aprovarLavSolicitada').textContent = p.lavanderiaSolicitada || 'Não informada';
+
+      const lavanderias = UserSystem.getLavanderias();
+      document.getElementById('aprovarLavanderias').innerHTML = lavanderias.map(l => `
+        <label class="checkbox-item">
+          <input type="checkbox" name="lavanderia" value="${l.id}">
+          <span>${l.nome}</span>
+        </label>
+      `).join('');
+
+      modalAprovar.classList.add('active');
+    }
+
+    function fecharModalAprovar() {
+      modalAprovar.classList.remove('active');
+    }
+
+    modalAprovar?.addEventListener('click', (e) => {
+      if (e.target === modalAprovar) fecharModalAprovar();
+    });
+
+    document.getElementById('btnConfirmarAprovacao')?.addEventListener('click', async () => {
+      const id = document.getElementById('aprovarId').value;
+      const tipoAcesso = UserSystem.normalizarTipoAcesso(document.getElementById('aprovarTipoAcesso').value);
+      const lavCheckboxes = document.querySelectorAll('#aprovarLavanderias input:checked');
+      const lavanderias = Array.from(lavCheckboxes).map(cb => cb.value);
+
+      if (lavanderias.length === 0) {
+        alert('Selecione pelo menos uma lavanderia!');
+        return;
+      }
+
+      const btnAprovar = document.getElementById('btnConfirmarAprovacao');
+      const textoOriginal = btnAprovar?.textContent || 'Aprovar';
+      const solicitacao = UserSystem.getCadastrosPendentes().find(item => String(item.id) === String(id));
+      const senhaSolicitada = typeof solicitacao?.senha === 'string' ? solicitacao.senha : '';
+      if (btnAprovar) {
+        btnAprovar.disabled = true;
+        btnAprovar.textContent = 'Aprovando...';
+      }
+
+      const result = UserSystem.aprovarCadastro(id, tipoAcesso, lavanderias);
+      if (result.success) {
+        const provisionResult = await provisionarLoginUsuarioNaNuvem(result.user, senhaSolicitada, {
+          allowTemporaryPassword: true,
+          sendResetAfterCreate: true
+        });
+        alert(provisionResult.success
+          ? (provisionResult.requiresPasswordReset || provisionResult.alreadyExists
+              ? 'Cadastro aprovado. O login na nuvem foi preparado; se a senha não entrar no celular, use "Esqueci minha senha".'
+              : 'Cadastro aprovado e login liberado na nuvem!')
+          : `Cadastro aprovado, mas o login na nuvem não foi criado: ${provisionResult.message}`);
+        fecharModalAprovar();
+        renderPendentes();
+        renderUsuarios();
+        renderAcessoLavanderias(); // Atualizar lista de acesso
+      } else {
+        alert(result.message);
+      }
+      if (btnAprovar) {
+        btnAprovar.disabled = false;
+        btnAprovar.textContent = textoOriginal;
+      }
+    });
+
+    function rejeitarCadastro(id) {
+      if (confirm('Tem certeza que deseja rejeitar este cadastro?')) {
+        const result = UserSystem.rejeitarCadastro(id);
+        if (result.success) {
+          renderPendentes();
+        }
+      }
+    }
+
+    // Modal Lavanderia
+    const modalLavanderia = document.getElementById('modalLavanderia');
+
+    document.getElementById('btnNovaLavanderia')?.addEventListener('click', () => {
+      document.getElementById('modalLavanderiaTitle').textContent = 'Nova Lavanderia';
+      document.getElementById('lavId').value = '';
+      document.getElementById('lavNome').value = '';
+      document.getElementById('lavEndereco').value = '';
+      document.getElementById('lavTelefone').value = '';
+      modalLavanderia.classList.add('active');
+    });
+
+    function fecharModalLavanderia() {
+      modalLavanderia.classList.remove('active');
+    }
+
+    modalLavanderia?.addEventListener('click', (e) => {
+      if (e.target === modalLavanderia) fecharModalLavanderia();
+    });
+
+    document.getElementById('btnSalvarLavanderia')?.addEventListener('click', () => {
+      const id = document.getElementById('lavId').value;
+      const nome = document.getElementById('lavNome').value.trim();
+
+      if (!nome) {
+        alert('Informe o nome da lavanderia!');
+        return;
+      }
+
+      const endereco = document.getElementById('lavEndereco').value.trim();
+      const telefone = document.getElementById('lavTelefone').value.trim();
+
+      if (id) {
+        const result = UserSystem.atualizarLavanderia(id, { nome, endereco, telefone });
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+        alert('Lavanderia atualizada!');
+      } else {
+        // Nova
+        const result = UserSystem.adicionarLavanderia({ nome, endereco, telefone });
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+        alert('Lavanderia adicionada!');
+      }
+
+      fecharModalLavanderia();
+      renderLavanderias();
+      renderUsuarios();
+      renderAcessoLavanderias();
+      atualizarLavanderiaSelect();
+    });
+
+    // Editar Lavanderia
+    function editarLavanderia(id) {
+      const lavanderias = UserSystem.getLavanderias();
+      const lav = lavanderias.find(l => l.id === id);
+      if (!lav) return;
+
+      document.getElementById('modalLavanderiaTitle').textContent = 'Editar Lavanderia';
+      document.getElementById('lavId').value = lav.id;
+      document.getElementById('lavNome').value = lav.nome;
+      document.getElementById('lavEndereco').value = lav.endereco || '';
+      document.getElementById('lavTelefone').value = lav.telefone || '';
+
+      document.getElementById('modalLavanderia').classList.add('active');
+    }
+
+    window.excluirLavanderia = async function(id) {
+      const lavanderias = UserSystem.getLavanderias();
+      const lav = lavanderias.find(l => String(l.id) === String(id));
+      if (!lav) return;
+
+      const mensagem = `Excluir a lavanderia "${lav.nome}"?\n\nA lavanderia será removida da lista e dos acessos dos usuários. Os lançamentos financeiros já salvos não serão apagados automaticamente.`;
+      if (!confirm(mensagem)) return;
+
+      const result = UserSystem.removerLavanderia(id);
+      if (!result.success) {
+        alert(result.message || 'Não foi possível excluir a lavanderia.');
+        return;
+      }
+
+      renderLavanderias();
+      renderUsuarios();
+      renderAcessoLavanderias();
+      atualizarLavanderiaSelect();
+
+      const syncResult = await UserSystem.forceSync?.();
+      if (syncResult && !syncResult.success) {
+        alert('Lavanderia excluída localmente. A sincronização com a nuvem será tentada novamente quando o Firebase estiver disponível.');
+        return;
+      }
+
+      alert('Lavanderia excluída!');
+    }
+
+    // Modal Usuário
+    const modalUsuario = document.getElementById('modalUsuario');
+
+    document.getElementById('btnNovoUsuario')?.addEventListener('click', () => {
+      document.getElementById('modalUsuarioTitle').textContent = 'Novo Usuário';
+      document.getElementById('userId').value = '';
+      document.getElementById('userNome').value = '';
+      document.getElementById('userEmail').value = '';
+      document.getElementById('userSenha').value = '';
+      document.getElementById('userTelefone').value = '';
+      document.getElementById('userTipoAcesso').value = 'visualizador';
+      document.getElementById('userAprovado').checked = true;
+
+      populateUserLavanderias([]);
+      modalUsuario.classList.add('active');
+    });
+
+    window.fecharModalUsuario = function() {
+      modalUsuario.classList.remove('active');
+    }
+
+    modalUsuario?.addEventListener('click', (e) => {
+      if (e.target === modalUsuario) fecharModalUsuario();
+    });
+
+    function populateUserLavanderias(selectedIds = []) {
+      const lavanderias = UserSystem.getLavanderias();
+      document.getElementById('userLavanderias').innerHTML = lavanderias.map(l => `
+        <label class="checkbox-item">
+          <input type="checkbox" name="userLavanderia" value="${l.id}" ${selectedIds.includes(l.id) ? 'checked' : ''}>
+          <span>${l.nome}</span>
+        </label>
+      `).join('');
+    }
+
+    window.editarUsuario = function(id) {
+      const usuarios = UserSystem.getUsuarios();
+      const user = usuarios.find(u => u.id === id);
+      if (!user) return;
+
+      document.getElementById('modalUsuarioTitle').textContent = 'Editar Usuário';
+      document.getElementById('userId').value = user.id;
+      document.getElementById('userNome').value = user.nome;
+      document.getElementById('userEmail').value = user.email;
+      document.getElementById('userSenha').value = ''; // Não mostrar senha
+      document.getElementById('userTelefone').value = user.telefone || '';
+      document.getElementById('userTipoAcesso').value = UserSystem.normalizarTipoAcesso(user.tipoAcesso);
+      document.getElementById('userAprovado').checked = user.aprovado;
+
+      populateUserLavanderias(user.lavanderias || []);
+      modalUsuario.classList.add('active');
+    }
+
+    async function provisionarLoginUsuarioNaNuvem(user, senha, options = {}) {
+      if (!senha && !options.allowTemporaryPassword) return { success: true, skipped: true };
+      if (!window.AuthService || typeof window.AuthService.provisionLegacyUserForCloud !== 'function') {
+        return { success: false, message: 'AuthService nao carregado. O usuario foi salvo, mas o login na nuvem nao foi criado.' };
+      }
+
+      return window.AuthService.provisionLegacyUserForCloud(user, senha, { sendResetIfExists: true, ...options });
+    }
+
+    document.getElementById('btnSalvarUsuario')?.addEventListener('click', async () => {
+      const id = document.getElementById('userId').value;
+      const nome = document.getElementById('userNome').value.trim();
+      const email = document.getElementById('userEmail').value.trim();
+      const senha = document.getElementById('userSenha').value;
+      const telefone = document.getElementById('userTelefone').value.trim();
+      const tipoAcesso = UserSystem.normalizarTipoAcesso(document.getElementById('userTipoAcesso').value);
+      const aprovado = document.getElementById('userAprovado').checked;
+
+      const lavCheckboxes = document.querySelectorAll('#userLavanderias input:checked');
+      const lavanderias = Array.from(lavCheckboxes).map(cb => cb.value);
+
+      if (!nome || !email) {
+        alert('Preencha nome e email!');
+        return;
+      }
+
+      if (!id && !senha) {
+        alert('Informe uma senha para o novo usuário!');
+        return;
+      }
+
+      if (senha && senha.length < 6) {
+        alert('A senha precisa ter no mínimo 6 caracteres para funcionar em qualquer computador ou celular.');
+        return;
+      }
+
+      if (lavanderias.length === 0) {
+        alert('Selecione pelo menos uma lavanderia!');
+        return;
+      }
+
+      const btnSalvar = document.getElementById('btnSalvarUsuario');
+      const textoOriginal = btnSalvar?.textContent || 'Salvar';
+      if (btnSalvar) {
+        btnSalvar.disabled = true;
+        btnSalvar.textContent = 'Salvando...';
+      }
+
+      if (id) {
+        const result = UserSystem.atualizarUsuario(id, {
+          nome,
+          email,
+          ...(senha ? { senha } : {}),
+          telefone,
+          tipoAcesso,
+          aprovado,
+          lavanderias
+        });
+
+        if (!result.success) {
+          if (btnSalvar) {
+            btnSalvar.disabled = false;
+            btnSalvar.textContent = textoOriginal;
+          }
+          alert(result.message);
+          return;
+        }
+
+        const provisionResult = senha
+          ? await provisionarLoginUsuarioNaNuvem(result.user, senha)
+          : { success: true, skipped: true };
+
+        alert(provisionResult.success
+          ? (provisionResult.alreadyExists
+              ? 'Usuário atualizado! A conta já existia no Firebase; se a senha não funcionar em outro aparelho, use redefinição de senha.'
+              : 'Usuário atualizado!')
+          : `Usuário atualizado, mas o login na nuvem não foi criado: ${provisionResult.message}`);
+      } else {
+        const result = UserSystem.criarUsuario({
+          nome,
+          email,
+          senha,
+          telefone,
+          tipoAcesso,
+          aprovado,
+          lavanderias
+        });
+
+        if (!result.success) {
+          if (btnSalvar) {
+            btnSalvar.disabled = false;
+            btnSalvar.textContent = textoOriginal;
+          }
+          alert(result.message);
+          return;
+        }
+
+        const provisionResult = await provisionarLoginUsuarioNaNuvem(result.user, senha);
+        alert(provisionResult.success
+          ? (provisionResult.alreadyExists
+              ? 'Usuário criado! A conta já existia no Firebase; se a senha não funcionar em outro aparelho, use redefinição de senha.'
+              : 'Usuário criado e login liberado na nuvem!')
+          : `Usuário criado, mas o login na nuvem não foi criado: ${provisionResult.message}`);
+      }
+
+      if (btnSalvar) {
+        btnSalvar.disabled = false;
+        btnSalvar.textContent = textoOriginal;
+      }
+      fecharModalUsuario();
+      renderUsuarios();
+      renderAcessoLavanderias(); // Atualizar lista de acesso
+    });
+
+    window.excluirUsuario = function(id) {
+      if (confirm('Tem certeza que deseja excluir este usuário?')) {
+        const result = UserSystem.removerUsuario(id);
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        renderUsuarios();
+        renderAcessoLavanderias(); // Atualizar lista de acesso
+      }
+    }
+
+    // Botão de reset forçado
+    document.getElementById('btnForceReset')?.addEventListener('click', async () => {
+      if (!confirm('Isso vai zerar todas as lavanderias para você cadastrar novamente. Continuar?')) {
+        return;
+      }
+
+      const result = UserSystem.zerarLavanderias();
+      if (!result.success) {
+        alert(result.message || 'Não foi possível zerar as lavanderias.');
+        return;
+      }
+
+      localStorage.setItem('cadastros_pendentes', JSON.stringify([]));
+
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          const available = await window.FirebaseStore.isAvailable();
+          if (available) {
+            await window.FirebaseStore.setItem('cadastros_pendentes', []);
+          }
+        } catch (error) {
+          console.warn('[Configurações] Não foi possível limpar cadastros pendentes no Firebase:', error);
+        }
+      }
+
+      alert('Lavanderias zeradas com sucesso. Recarregando...');
+      location.reload();
+    });
+
+    // ========== CONFIGURAÇÕES DE IMPORTAÇÃO ==========
+
+    function preencherSelectCategoriaMDR(valorSelecionado = 'mdr') {
+      const select = document.getElementById('configCategoriaMDR');
+      if (!select) return;
+
+      const categorias = window.despesasUtils?.getCategoriasDespesa() || [];
+      const valorNormalizado = window.despesasUtils?.normalizarCategoriaDespesaId?.(valorSelecionado) || valorSelecionado || 'mdr';
+      select.innerHTML = categorias.map(categoria => `
+        <option value="${categoria.id}">${categoria.nome}</option>
+      `).join('');
+
+      if (categorias.some(categoria => categoria.id === valorNormalizado)) {
+        select.value = valorNormalizado;
+      } else if (categorias.length > 0) {
+        select.value = categorias[0].id;
+      }
+    }
+
+    function limparFormularioCategoriaDespesa() {
+      document.getElementById('categoriaDespesaEditId').value = '';
+      document.getElementById('categoriaDespesaNome').value = '';
+      document.getElementById('categoriaDespesaDescricao').value = '';
+      document.getElementById('btnSalvarCategoriaDespesa').textContent = 'Adicionar';
+      document.getElementById('btnCancelarCategoriaDespesa').classList.add('hidden');
+    }
+
+    function renderCategoriasDespesaConfig() {
+      const container = document.getElementById('listaCategoriasDespesa');
+      if (!container) return;
+
+      const categorias = window.despesasUtils?.getCategoriasDespesa() || [];
+      container.innerHTML = categorias.map(categoria => `
+        <div class="p-4" style="background: var(--color-glass-bg); border: 1px solid var(--color-glass-border); border-radius: 0.75rem;">
+          <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
+            <div>
+              <h4 class="font-medium" style="color: var(--color-text-primary);">${categoria.nome}</h4>
+              <p class="text-sm mt-1" style="color: var(--color-text-muted);">${categoria.descricao || 'Sem descricao'}</p>
+            </div>
+            <div style="display:flex;gap:.5rem;">
+              <button type="button" class="btn btn-ghost" onclick="editarCategoriaDespesaConfig('${categoria.id}')">Editar</button>
+              <button type="button" class="btn btn-ghost" style="color:#ef4444;" onclick="excluirCategoriaDespesaConfig('${categoria.id}')">Excluir</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function excluirCategoriaDespesaConfig(categoriaId) {
+      const categorias = window.despesasUtils?.getCategoriasDespesa() || [];
+      const categoria = categorias.find(item => item.id === categoriaId);
+      if (!categoria) return;
+      if (!confirm(`Excluir a categoria "${categoria.nome}"? As despesas ja cadastradas com essa categoria nao serao afetadas, mas ela nao aparecera mais nas opcoes.`)) return;
+      try {
+        window.despesasUtils?.excluirCategoriaDespesa(categoriaId);
+        const categoriaMDRAtual = document.getElementById('configCategoriaMDR')?.value;
+        preencherSelectCategoriaMDR(categoriaMDRAtual || 'mdr');
+        renderCategoriasDespesaConfig();
+        renderMetasMensais();
+        limparFormularioCategoriaDespesa();
+      } catch (error) {
+        alert(error.message || 'Nao foi possivel excluir a categoria.');
+      }
+    }
+
+    function editarCategoriaDespesaConfig(categoriaId) {
+      const categorias = window.despesasUtils?.getCategoriasDespesa() || [];
+      const categoria = categorias.find(item => item.id === categoriaId);
+      if (!categoria) return;
+
+      document.getElementById('categoriaDespesaEditId').value = categoria.id;
+      document.getElementById('categoriaDespesaNome').value = categoria.nome;
+      document.getElementById('categoriaDespesaDescricao').value = categoria.descricao || '';
+      document.getElementById('btnSalvarCategoriaDespesa').textContent = 'Salvar';
+      document.getElementById('btnCancelarCategoriaDespesa').classList.remove('hidden');
+      document.getElementById('categoriaDespesaNome').focus();
+    }
+
+    function cancelarEdicaoCategoriaDespesa() {
+      limparFormularioCategoriaDespesa();
+    }
+
+    function salvarCategoriaDespesaConfig() {
+      const id = document.getElementById('categoriaDespesaEditId').value;
+      const nome = document.getElementById('categoriaDespesaNome').value.trim();
+      const descricao = document.getElementById('categoriaDespesaDescricao').value.trim();
+
+      if (!nome) {
+        alert('Informe o nome da categoria.');
+        return;
+      }
+
+      try {
+        window.despesasUtils?.upsertCategoriaDespesa({ id, nome, descricao });
+        const categoriaMDRAtual = document.getElementById('configCategoriaMDR')?.value;
+        preencherSelectCategoriaMDR(categoriaMDRAtual || 'mdr');
+        renderCategoriasDespesaConfig();
+        renderMetasMensais();
+        limparFormularioCategoriaDespesa();
+      } catch (error) {
+        alert(error.message || 'Nao foi possivel salvar a categoria.');
+      }
+    }
+
+    function carregarConfigImportacao() {
+      renderMaquininhas();
+      void hydrateMaquininhasFromFirebase(true).then(() => renderMaquininhas());
+    }
+
+    // ========== MAQUININHAS CRUD ==========
+
+    const MACHINE_MAPPING_FIELDS = [
+      { key: 'dataVenda', inputId: 'maqColDataVenda' },
+      { key: 'valorBruto', inputId: 'maqColValorBruto' },
+      { key: 'valorLiquido', inputId: 'maqColValorLiquido' },
+      { key: 'produto', inputId: 'maqColProduto' },
+      { key: 'bandeira', inputId: 'maqColBandeira' },
+      { key: 'formaPagamento', inputId: 'maqColFormaPagamento' },
+      { key: 'status', inputId: 'maqColStatus' },
+      { key: 'horarioVenda', inputId: 'maqColHorarioVenda' },
+      { key: 'descontoMDR', inputId: 'maqColValorMDR' },
+      { key: 'codigoVenda', inputId: 'maqColCodigoVenda' }
+    ];
+
+    function getMaquininhasLavanderiaId() {
+      const selectValue = document.getElementById('lavanderiaSelect')?.value;
+      return selectValue || UserSystem.getLavanderiaSelecionada()?.id || 'default';
+    }
+
+    function getMaquininhasStorageKey() {
+      return `${getMaquininhasLavanderiaId()}_maquininhas_cadastradas`;
+    }
+
+    const maquininhasCache = new Map();
+
+    function safeParseMachineList(raw) {
+      if (Array.isArray(raw)) {
+        return raw;
+      }
+      try {
+        const parsed = JSON.parse(raw || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function normalizeColumnConfigValue(value) {
+      const text = String(value || '').trim();
+      return text ? text.toUpperCase() : '';
+    }
+
+    const MACHINE_IMPORT_PRESETS = {
+      mercadopago_pix: {
+        tipo: 'mercadopago',
+        label: 'Mercado Pago PIX / Bank Transfer',
+        linhaHeader: 1,
+        mapeamento: {
+          dataVenda: 'date_created',
+          valorBruto: 'transaction_amount',
+          valorLiquido: 'net_received_amount',
+          produto: 'reason',
+          bandeira: 'payment_type',
+          formaPagamento: 'payment_type',
+          status: 'status',
+          descontoMDR: 'mercadopago_fee',
+          codigoVenda: 'operation_id'
+        }
+      },
+      mercadopago_geral: {
+        tipo: 'mercadopago',
+        label: 'Mercado Pago Geral',
+        linhaHeader: 1,
+        mapeamento: {
+          dataVenda: 'date_created',
+          valorBruto: 'transaction_amount',
+          valorLiquido: 'net_received_amount',
+          produto: 'reason',
+          bandeira: 'payment_type',
+          formaPagamento: 'payment_type',
+          status: 'status',
+          descontoMDR: 'mercadopago_fee',
+          codigoVenda: 'operation_id'
+        }
+      },
+      rede_padrao: {
+        tipo: 'rede',
+        label: 'Rede Padrão',
+        linhaHeader: 2,
+        mapeamento: {
+          dataVenda: 'DATA DA VENDA',
+          valorBruto: 'VALOR DA VENDA ATUALIZADO',
+          valorLiquido: 'VALOR LÍQUIDO',
+          produto: 'TIPO',
+          bandeira: 'MODALIDADE',
+          formaPagamento: 'MODALIDADE',
+          status: 'STATUS DA VENDA',
+          horarioVenda: 'HORA DA VENDA',
+          descontoMDR: 'VALOR MDR',
+          codigoVenda: 'NSU'
+        }
+      },
+      stone_padrao: {
+        tipo: 'stone',
+        label: 'Stone Padrão',
+        linhaHeader: 1,
+        mapeamento: {
+          dataVenda: 'DATA DA VENDA',
+          valorBruto: 'VALOR BRUTO',
+          valorLiquido: 'VALOR LÍQUIDO',
+          produto: 'PRODUTO',
+          bandeira: 'BANDEIRA',
+          formaPagamento: 'FORMA DE PAGAMENTO',
+          status: 'STATUS',
+          horarioVenda: 'HORA DA VENDA',
+          descontoMDR: 'MDR',
+          codigoVenda: 'STONE ID'
+        }
+      }
+    };
+
+    function getMachinePresetLabel(preset) {
+      return MACHINE_IMPORT_PRESETS[preset]?.label || 'Automático';
+    }
+
+    function getDefaultMachinePlanilhaConfig(tipo, preset = 'auto') {
+      if (preset && preset !== 'auto' && MACHINE_IMPORT_PRESETS[preset]) {
+        const config = MACHINE_IMPORT_PRESETS[preset];
+        return {
+          linhaHeader: config.linhaHeader,
+          mapeamento: { ...config.mapeamento }
+        };
+      }
+      if (tipo === 'rede') {
+        return {
+          linhaHeader: 2,
+          mapeamento: {
+            dataVenda: 'DATA DA VENDA',
+            valorBruto: 'VALOR DA VENDA ATUALIZADO',
+            valorLiquido: 'VALOR LÍQUIDO',
+            produto: 'TIPO',
+            bandeira: 'MODALIDADE',
+            formaPagamento: 'MODALIDADE',
+            status: 'STATUS DA VENDA',
+            horarioVenda: 'HORA DA VENDA',
+            descontoMDR: 'VALOR MDR',
+            codigoVenda: 'NSU'
+          }
+        };
+      }
+      if (tipo === 'mercadopago') {
+        return {
+          linhaHeader: 1,
+          mapeamento: {
+            dataVenda: 'date_created',
+            valorBruto: 'transaction_amount',
+            valorLiquido: 'net_received_amount',
+            produto: 'reason',
+            bandeira: 'reason',
+            formaPagamento: 'payment_type',
+            status: 'status',
+            descontoMDR: 'mercadopago_fee',
+            codigoVenda: 'operation_id'
+          }
+        };
+      }
+      return {
+        linhaHeader: 1,
+        mapeamento: {}
+      };
+    }
+
+    function applyDefaultMachinePlanilhaConfig(tipo, force = false) {
+      const preset = document.getElementById('maqPreset')?.value || 'auto';
+      const selectedPreset = MACHINE_IMPORT_PRESETS[preset];
+      if (selectedPreset?.tipo && document.getElementById('maqTipo')) {
+        document.getElementById('maqTipo').value = selectedPreset.tipo;
+        tipo = selectedPreset.tipo;
+      }
+      const defaults = getDefaultMachinePlanilhaConfig(tipo, preset);
+      const linhaHeaderInput = document.getElementById('maqLinhaHeader');
+      if (linhaHeaderInput && (force || linhaHeaderInput.value === '' || linhaHeaderInput.value === '1' || linhaHeaderInput.value === '2')) {
+        linhaHeaderInput.value = String(defaults.linhaHeader || 1);
+      }
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const input = document.getElementById(field.inputId);
+        if (!input) return;
+        if (force || !input.value.trim()) {
+          input.value = defaults.mapeamento[field.key] || '';
+        }
+      });
+    }
+
+    function getModalMachineMapping() {
+      const mapping = {};
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const input = document.getElementById(field.inputId);
+        const value = normalizeColumnConfigValue(input?.value);
+        if (value) {
+          mapping[field.key] = value;
+        }
+      });
+      return mapping;
+    }
+
+    function countConfiguredMachineFields(mapping = {}) {
+      return MACHINE_MAPPING_FIELDS.filter(field => String(mapping?.[field.key] || '').trim() !== '').length;
+    }
+
+    function normalizeMachineConfig(machine = {}) {
+      const preset = machine.preset || 'auto';
+      const defaults = getDefaultMachinePlanilhaConfig(machine.tipo, preset);
+      const existingMapping = machine.mapeamento || {};
+      const normalizedMapping = {};
+
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const normalizedValue = normalizeColumnConfigValue(existingMapping[field.key]);
+        const fallbackValue = normalizeColumnConfigValue(defaults.mapeamento[field.key]);
+        if (normalizedValue) {
+          normalizedMapping[field.key] = normalizedValue;
+        } else if (fallbackValue && machine.tipo === 'rede') {
+          normalizedMapping[field.key] = fallbackValue;
+        }
+      });
+
+      return {
+        ...machine,
+        preset,
+        formatoData: machine.formatoData || 'auto',
+        linhaHeader: machine.linhaHeader || defaults.linhaHeader || 1,
+        mapeamento: normalizedMapping,
+        lavanderiaId: machine.lavanderiaId || getMaquininhasLavanderiaId(),
+        ativa: machine.ativa !== false
+      };
+    }
+
+    function readLocalMachineList(scopedKey = getMaquininhasStorageKey()) {
+      const scopedList = safeParseMachineList(localStorage.getItem(scopedKey)).map(normalizeMachineConfig);
+      if (scopedList.length > 0) return scopedList;
+
+      const legacyList = safeParseMachineList(localStorage.getItem('maquininhas_cadastradas')).map(normalizeMachineConfig);
+      if (legacyList.length > 0) {
+        try {
+          localStorage.setItem(scopedKey, JSON.stringify(legacyList));
+        } catch (e) {}
+        return legacyList;
+      }
+
+      return [];
+    }
+
+    async function persistMaquininhasToFirebase(scopedKey, list) {
+      if (!window.FirebaseStore || typeof window.FirebaseStore.isAvailable !== 'function') {
+        return false;
+      }
+
+      try {
+        const available = await window.FirebaseStore.isAvailable();
+        if (!available) return false;
+        await window.FirebaseStore.setItem(scopedKey, list);
+        return true;
+      } catch (error) {
+        console.warn('[Configuracoes] Erro ao salvar maquininhas no Firebase:', error);
+        return false;
+      }
+    }
+
+    async function hydrateMaquininhasFromFirebase(force = false) {
+      const scopedKey = getMaquininhasStorageKey();
+      if (!force && maquininhasCache.has(scopedKey)) {
+        return maquininhasCache.get(scopedKey);
+      }
+
+      let resolved = readLocalMachineList(scopedKey);
+
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        try {
+          const available = await window.FirebaseStore.isAvailable();
+          if (available) {
+            const remoteList = safeParseMachineList(await window.FirebaseStore.getItem(scopedKey, [])).map(normalizeMachineConfig);
+            if (remoteList.length > 0) {
+              resolved = remoteList;
+            } else if (resolved.length > 0) {
+              await window.FirebaseStore.setItem(scopedKey, resolved);
+            }
+          }
+        } catch (error) {
+          console.warn('[Configuracoes] Erro ao carregar maquininhas do Firebase:', error);
+        }
+      }
+
+      if (resolved.length === 0) {
+        resolved = migrateOldConfigIfNeeded();
+      }
+
+      maquininhasCache.set(scopedKey, resolved);
+      try {
+        localStorage.setItem(scopedKey, JSON.stringify(resolved));
+      } catch (e) {}
+
+      return resolved;
+    }
+
+    function getMaquininhas() {
+      const scopedKey = getMaquininhasStorageKey();
+      const cached = maquininhasCache.get(scopedKey);
+      if (Array.isArray(cached) && cached.length > 0) {
+        return cached.map(normalizeMachineConfig);
+      }
+
+      return readLocalMachineList(scopedKey);
+    }
+
+    async function saveMaquininhas(list) {
+      const scopedKey = getMaquininhasStorageKey();
+      const normalized = (Array.isArray(list) ? list : []).map(normalizeMachineConfig);
+      maquininhasCache.set(scopedKey, normalized);
+      localStorage.setItem(scopedKey, JSON.stringify(normalized));
+      await persistMaquininhasToFirebase(scopedKey, normalized);
+      return normalized;
+    }
+
+    function migrateOldConfigIfNeeded() {
+      if (getMaquininhas().length > 0) return;
+      try {
+        const old = JSON.parse(localStorage.getItem('config_importacao_vendas') || '{}');
+        if (old.tipoMaquininha) {
+          const defaults = getDefaultMachinePlanilhaConfig(old.tipoMaquininha);
+          const maq = {
+            id: 'maq_' + Date.now(),
+            nome: old.tipoMaquininha.charAt(0).toUpperCase() + old.tipoMaquininha.slice(1),
+            tipo: old.tipoMaquininha,
+            formatoData: old.formatoData === 'MM/DD/YY' ? 'mdy' : 'dmy',
+            linhaHeader: defaults.linhaHeader || 1,
+            mapeamento: defaults.mapeamento || {},
+            autoMDR: old.autoMDR !== false,
+            categoriaMDR: old.categoriaMDR || 'mdr',
+            lavanderiaId: getMaquininhasLavanderiaId(),
+            ativa: true
+          };
+          void saveMaquininhas([maq]);
+          return [normalizeMachineConfig(maq)];
+        }
+      } catch (e) {}
+
+      return [];
+    }
+
+    function renderMaquininhas() {
+      migrateOldConfigIfNeeded();
+      const maquininhas = getMaquininhas();
+      const container = document.getElementById('listaMaquininhas');
+      const empty = document.getElementById('semMaquininhas');
+      if (!container) return;
+      if (maquininhas.length === 0) {
+        container.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+      const tipoLabel = { stone: 'Stone', cielo: 'Cielo', pagseguro: 'PagSeguro', getnet: 'Getnet', rede: 'Rede', mercadopago: 'Mercado Pago', outro: 'Outro' };
+      container.innerHTML = maquininhas.map(m => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem;border:1px solid var(--color-glass-border);border-radius:.5rem;background:var(--color-glass);">
+          <div>
+            <p class="font-medium" style="color:var(--color-text-primary);">💳 ${m.nome}</p>
+            <p class="text-xs mt-1" style="color:var(--color-text-muted);">
+              ${tipoLabel[m.tipo] || m.tipo} &bull;
+              ${m.formatoData === 'mdy' ? 'MM/DD/AAAA' : m.formatoData === 'auto' ? '🔍 Auto' : 'DD/MM/AAAA'} &bull;
+              Cabeçalho: linha ${m.linhaHeader || (m.tipo === 'rede' ? 2 : 1)} &bull;
+              Preset: ${getMachinePresetLabel(m.preset)} &bull;
+              Colunas: ${countConfiguredMachineFields(m.mapeamento)}/${MACHINE_MAPPING_FIELDS.length} &bull;
+              MDR: ${m.autoMDR ? '✅ Sim' : '❌ Não'}
+            </p>
+          </div>
+          <div style="display:flex;gap:.5rem;">
+            <button class="btn btn-ghost btn-sm" onclick="editarMaquininha('${m.id}')">✏️</button>
+            <button class="btn btn-ghost btn-sm" style="color:#ef4444;" onclick="excluirMaquininha('${m.id}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function abrirModalMaquininha(id) {
+      const modal = document.getElementById('modalMaquininha');
+      document.getElementById('maqEditId').value = '';
+      document.getElementById('maqNome').value = '';
+      document.getElementById('maqTipo').value = 'stone';
+      document.getElementById('maqPreset').value = 'auto';
+      document.getElementById('maqFormatoData').value = 'auto';
+      document.getElementById('maqLinhaHeader').value = '1';
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const input = document.getElementById(field.inputId);
+        if (input) input.value = '';
+      });
+      document.getElementById('maqAutoMDR').checked = true;
+      document.getElementById('maqCategoriaMDR').value = 'mdr';
+      document.getElementById('modalMaquininhaTitle').textContent = 'Nova Maquininha';
+      const fileInput = document.getElementById('maqExemploFile');
+      if (fileInput) fileInput.value = '';
+      const statusEl = document.getElementById('maqExemploStatus');
+      if (statusEl) statusEl.textContent = 'Nenhum arquivo carregado.';
+      applyDefaultMachinePlanilhaConfig('stone', true);
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    function editarMaquininha(id) {
+      const maq = getMaquininhas().find(m => m.id === id);
+      if (!maq) return;
+      document.getElementById('maqEditId').value = maq.id;
+      document.getElementById('maqNome').value = maq.nome;
+      document.getElementById('maqTipo').value = maq.tipo;
+      document.getElementById('maqPreset').value = maq.preset || 'auto';
+      document.getElementById('maqFormatoData').value = maq.formatoData || 'dmy';
+      document.getElementById('maqLinhaHeader').value = String(maq.linhaHeader || (maq.tipo === 'rede' ? 2 : 1));
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const input = document.getElementById(field.inputId);
+        if (input) input.value = maq.mapeamento?.[field.key] || '';
+      });
+      document.getElementById('maqAutoMDR').checked = maq.autoMDR !== false;
+      document.getElementById('maqCategoriaMDR').value = maq.categoriaMDR || 'mdr';
+      document.getElementById('modalMaquininhaTitle').textContent = 'Editar Maquininha';
+      const modal = document.getElementById('modalMaquininha');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    function fecharModalMaquininha() {
+      const modal = document.getElementById('modalMaquininha');
+      modal.classList.remove('active');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    async function salvarMaquininha() {
+      const nome = document.getElementById('maqNome').value.trim();
+      if (!nome) { alert('Informe o nome da maquininha.'); return; }
+      const id = document.getElementById('maqEditId').value;
+      const mapeamento = getModalMachineMapping();
+      const maq = {
+        id: id || 'maq_' + Date.now(),
+        nome,
+        tipo: document.getElementById('maqTipo').value,
+        preset: document.getElementById('maqPreset')?.value || 'auto',
+        formatoData: document.getElementById('maqFormatoData').value,
+        linhaHeader: parseInt(document.getElementById('maqLinhaHeader').value) || 1,
+        mapeamento,
+        autoMDR: document.getElementById('maqAutoMDR').checked,
+        categoriaMDR: document.getElementById('maqCategoriaMDR').value,
+        lavanderiaId: getMaquininhasLavanderiaId(),
+        ativa: true
+      };
+      let list = getMaquininhas();
+      if (id) {
+        list = list.map(m => m.id === id ? maq : m);
+      } else {
+        list.push(maq);
+      }
+      await saveMaquininhas(list);
+      fecharModalMaquininha();
+      renderMaquininhas();
+    }
+
+    async function excluirMaquininha(id) {
+      if (!confirm('Excluir esta maquininha?')) return;
+      await saveMaquininhas(getMaquininhas().filter(m => m.id !== id));
+      renderMaquininhas();
+    }
+
+    // ========== DETECÇÃO AUTOMÁTICA POR ARQUIVO EXEMPLO ==========
+    // Detecta se formato de datas é BR (DMY) ou EUA (MDY) a partir dos valores da coluna
+    function autoDetectDateFormatFromData(rows, headerIdx, colIdx) {
+      if (colIdx === null || colIdx === undefined || isNaN(colIdx)) return 'dmy';
+      let dmyEvidence = 0, mdyEvidence = 0;
+      const start = headerIdx + 1;
+      for (let i = start; i < Math.min(start + 20, rows.length); i++) {
+        const raw = String(rows[i]?.[colIdx] || '').trim();
+        if (/^\d{4}[\s\/\-\.]/.test(raw)) continue; // ISO — sem ambiguidade
+        const m = raw.match(/^(\d{1,2})[\/\-\.](\d{1,2})/);
+        if (!m) continue;
+        const a = parseInt(m[1], 10);
+        const b = parseInt(m[2], 10);
+        if (a > 12) dmyEvidence++;
+        else if (b > 12) mdyEvidence++;
+      }
+      if (dmyEvidence > 0 && mdyEvidence === 0) return 'dmy';
+      if (mdyEvidence > 0 && dmyEvidence === 0) return 'mdy';
+      return mdyEvidence > dmyEvidence ? 'mdy' : 'dmy';
+    }
+
+    function encontrarColunaConfig(headers, possiveisNomes) {
+      for (let i = 0; i < headers.length; i++) {
+        const h = (headers[i] || '').toString()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .toUpperCase().trim();
+        for (const nome of possiveisNomes) {
+          if (h.includes(nome.toUpperCase())) return i;
+        }
+      }
+      return null;
+    }
+
+    function aplicarDeteccaoAutomatica(jsonData, fileName) {
+      const headerIdx = Math.max(0, (parseInt(document.getElementById('maqLinhaHeader')?.value) || 1) - 1);
+      const headers = jsonData[headerIdx] || jsonData[0] || [];
+
+      const auto = {
+        dataVenda:    encontrarColunaConfig(headers, ['DATA DA VENDA', 'DATA VENDA', 'DATA DA TRANSACAO', 'DATA/HORA', 'DATA', 'DATE', 'DATE_CREATED', 'DATA DA COMPRA']),
+        valorBruto:   encontrarColunaConfig(headers, ['VALOR BRUTO', 'VALOR_BRUTO', 'BRUTO', 'VALOR DA VENDA', 'VENDA ATUALIZADO', 'TOTAL VENDA',
+          'TRANSACTION_AMOUNT', 'GROSS AMOUNT', 'VALOR TOTAL', 'VALOR DO PRODUTO']),
+        valorLiquido: encontrarColunaConfig(headers, ['VALOR LIQUIDO', 'VALOR_LIQUIDO', 'LIQUIDO', 'VALOR LIQUID',
+          'NET_RECEIVED_AMOUNT', 'NET AMOUNT', 'VALOR RECEBIDO', 'VALOR TOTAL RECEBIDO']),
+        produto:      encontrarColunaConfig(headers, ['PRODUTO', 'TIPO', 'TYPE', 'PRODUCT', 'REASON', 'DESCRICAO DA OPERACAO', 'DESCRI']),
+        bandeira:     encontrarColunaConfig(headers, ['BANDEIRA', 'BRAND', 'MODALIDADE', 'MODALITY', 'FLAG',
+          'PAYMENT_METHOD_ID', 'PAYMENT_TYPE', 'CARD BRAND']),
+        formaPagamento: encontrarColunaConfig(headers, ['FORMA DE PAGAMENTO', 'MEIO DE PAGAMENTO', 'TIPO DE PAGAMENTO',
+          'PAYMENT METHOD', 'PAYMENT_METHOD', 'PAYMENT_TYPE_ID', 'PAYMENT TYPE', 'MODALIDADE']),
+        status:       encontrarColunaConfig(headers, ['ULTIMO STATUS', 'STATUS', 'SITUACAO', 'LAST_STATUS', 'STATUS DA OPERACAO', 'TRANSACTION STATE']),
+        horarioVenda: encontrarColunaConfig(headers, ['HORA DA VENDA', 'HORARIO VENDA', 'HORARIO DA TRANSACAO', 'HORA', 'TIME']),
+        descontoMDR:  encontrarColunaConfig(headers, ['DESCONTO DE MDR', 'DESCONTO MDR', 'MDR', 'TAXA MDR', 'VALOR MDR',
+          'FEE_AMOUNT', 'FEE', 'TAXA ADMINISTRATIVA', 'TAXA_MP', 'MARKETPLACE_FEE']),
+        codigoVenda:  encontrarColunaConfig(headers, ['NSU', 'CODIGO DA VENDA', 'CODIGO VENDA', 'CODIGO DA TRANSACAO',
+          'CODIGO AUTORIZACAO', 'NUMERO DA TRANSACAO DO MERCADO PAGO', 'OPERATION_ID',
+          'STONE ID', 'STONEID', 'ID DA STONE', 'ID STONE',
+          'ID DA TRANSACAO', 'ID TRANSACAO', 'NUMERO DA VENDA', 'TRANSACTION ID',
+          'TRANSACTION_ID', 'SALE ID', 'SALE_ID', 'TID', 'AUTHORIZATION CODE', 'AUTHORIZATION_CODE'])
+      };
+
+      // Preenche os inputs com o nome da coluna detectada
+      MACHINE_MAPPING_FIELDS.forEach(field => {
+        const input = document.getElementById(field.inputId);
+        if (!input) return;
+        const idx = auto[field.key];
+        if (idx !== null && headers[idx]) {
+          input.value = headers[idx];
+        }
+      });
+
+      // Detecta formato de data e atualiza select
+      if (auto.dataVenda !== null) {
+        const fmt = autoDetectDateFormatFromData(jsonData, headerIdx, auto.dataVenda);
+        const sel = document.getElementById('maqFormatoData');
+        if (sel) sel.value = fmt;
+      }
+
+      const count = Object.values(auto).filter(v => v !== null).length;
+      const statusEl = document.getElementById('maqExemploStatus');
+      if (statusEl) {
+        statusEl.style.color = count >= 2 ? 'var(--color-success, #22c55e)' : 'var(--color-text-muted)';
+        statusEl.textContent = `✅ ${fileName} — ${count} coluna(s) detectada(s) de ${headers.length} total.`;
+      }
+    }
+
+    function carregarScriptXLSXLocal() {
+      return new Promise((resolve, reject) => {
+        if (window.XLSX) {
+          resolve(window.XLSX);
+          return;
+        }
+
+        const existente = document.querySelector('script[data-xlsx-loader="true"]');
+        if (existente) {
+          existente.addEventListener('load', () => resolve(window.XLSX), { once: true });
+          existente.addEventListener('error', reject, { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'js/vendor/xlsx.full.min.js?v=20260611-local';
+        script.defer = true;
+        script.dataset.xlsxLoader = 'true';
+        script.onload = () => window.XLSX ? resolve(window.XLSX) : reject(new Error('XLSX n?o inicializou.'));
+        script.onerror = () => reject(new Error('Falha ao carregar js/vendor/xlsx.full.min.js.'));
+        document.head.appendChild(script);
+      });
+    }
+
+    async function obterXLSX(statusEl) {
+      if (window.XLSX) return window.XLSX;
+
+      if (statusEl) statusEl.textContent = '? Carregando leitor de planilhas...';
+      try {
+        return await carregarScriptXLSXLocal();
+      } catch (error) {
+        console.error('[CONFIG] Biblioteca XLSX indispon?vel:', error);
+        if (statusEl) statusEl.textContent = '? Leitor de planilhas n?o carregou. Atualize a p?gina e tente novamente.';
+        return null;
+      }
+    }
+
+    async function carregarArquivoExemplo(file) {
+      if (!file) return;
+      const statusEl = document.getElementById('maqExemploStatus');
+      if (statusEl) statusEl.textContent = `? Lendo ${file.name}...`;
+
+      const XLSXLib = await obterXLSX(statusEl);
+      if (!XLSXLib) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSXLib.read(data, { type: 'array', cellDates: false });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const jsonData = XLSXLib.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: '' });
+          aplicarDeteccaoAutomatica(jsonData, file.name);
+        } catch (err) {
+          console.error('[CONFIG] Erro ao ler arquivo exemplo:', err);
+          if (statusEl) statusEl.textContent = `? N?o foi poss?vel ler ${file.name}. Verifique se ? CSV ou XLSX v?lido.`;
+        }
+      };
+      reader.onerror = () => {
+        if (statusEl) statusEl.textContent = '? Erro ao abrir o arquivo.';
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Redetecta ao mudar linha do cabeçalho (se arquivo já foi carregado)
+    document.getElementById('maqLinhaHeader')?.addEventListener('change', () => {
+      const fileInput = document.getElementById('maqExemploFile');
+      if (fileInput?.files?.[0]) carregarArquivoExemplo(fileInput.files[0]);
+    });
+
+    // Auto-ajusta linha do cabeçalho ao trocar tipo (Rede → 2, outros → 1)
+    document.getElementById('maqTipo')?.addEventListener('change', (e) => {
+      const presetSelect = document.getElementById('maqPreset');
+      if (presetSelect && presetSelect.value !== 'auto') {
+        const preset = MACHINE_IMPORT_PRESETS[presetSelect.value];
+        if (!preset || preset.tipo !== e.target.value) {
+          presetSelect.value = 'auto';
+        }
+      }
+      applyDefaultMachinePlanilhaConfig(e.target.value, false);
+    });
+
+    document.getElementById('maqPreset')?.addEventListener('change', () => {
+      applyDefaultMachinePlanilhaConfig(document.getElementById('maqTipo')?.value || 'stone', true);
+      const fileInput = document.getElementById('maqExemploFile');
+      if (fileInput?.files?.[0]) carregarArquivoExemplo(fileInput.files[0]);
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('modalMaquininha')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalMaquininha') fecharModalMaquininha();
+    });
+
+    function salvarConfigImportacao() {
+      // Legacy stub — config now lives in maquininhas_cadastradas
+      alert('Use os botões de maquininha acima para configurar a importação.');
+    }
+
+    function resetarConfigImportacao() {
+      if (!confirm('Excluir todas as maquininhas cadastradas e resetar para padrão?')) return;
+      const scopedKey = getMaquininhasStorageKey();
+      maquininhasCache.delete(scopedKey);
+      localStorage.removeItem(scopedKey);
+      localStorage.removeItem('maquininhas_cadastradas');
+      localStorage.removeItem('config_importacao_vendas');
+      if (window.FirebaseStore && typeof window.FirebaseStore.isAvailable === 'function') {
+        void window.FirebaseStore.isAvailable().then(available => {
+          if (!available) return;
+          return window.FirebaseStore.removeItem(scopedKey);
+        });
+      }
+      carregarConfigImportacao();
+    }
+
+    // ========== CONFIGURAÇÕES DE TEMA ==========
+
+    function aplicarTema() {
+      const tema = document.getElementById('configTema').value;
+
+      if (tema === 'auto') {
+        localStorage.removeItem('irancash_theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+      } else {
+        localStorage.setItem('irancash_theme', tema);
+        document.documentElement.dataset.theme = tema;
+      }
+
+      const labels = { light: 'Claro', dark: 'Escuro', auto: 'Automático' };
+      alert(`✅ Tema "${labels[tema] || tema}" aplicado! A página será recarregada.`);
+      location.reload();
+    }
+
+    // ========== CONFIGURAÇÕES DO SUPABASE ==========
+
+    async function testarFirebase() {
+      const btnTestar = document.getElementById('btnTestarSupabase');
+      btnTestar.disabled = true;
+      btnTestar.textContent = '⏳ Testando...';
+
+      try {
+        if (!window.FirebaseStore?.getFinancePage) {
+          throw new Error('Camada do Supabase não carregada');
+        }
+
+        // Testar leitura
+        const lavId = UserSystem.getLavanderiaSelecionada()?.id;
+        if (!lavId) {
+          throw new Error('Nenhuma lavanderia selecionada');
+        }
+
+        const testData = await window.FirebaseStore.getFinancePage(`${lavId}_receitas`, { page: 1, pageSize: 10 });
+        alert(`✅ Supabase OK!\n\nConexão estabelecida com sucesso.\n${Number(testData?.totalCount || 0)} receita(s) encontradas na lavanderia atual.`);
+      } catch (error) {
+        alert(`❌ Erro Supabase:\n\n${error.message}`);
+      } finally {
+        btnTestar.disabled = false;
+        btnTestar.textContent = '🔍 Testar';
+      }
+    }
+
+    function limparCacheFirebase() {
+      if (!confirm('Limpar o cache local? Os dados do Supabase não serão afetados.')) return;
+
+      // Limpar listeners ativos
+      if (window.FirebaseStore && window.FirebaseStore.listeners) {
+        window.FirebaseStore.listeners.forEach(unsubscribe => unsubscribe());
+        window.FirebaseStore.listeners = [];
+      }
+
+      alert('✅ Cache local limpo! Recarregue a página para sincronizar novamente.');
+    }
+
+    // ========== BACKUP & RESTORE ==========
+
+    document.getElementById('btnExportar')?.addEventListener('click', exportarBackup);
+    document.getElementById('btnImportar')?.addEventListener('click', () => {
+      document.getElementById('fileImportar').click();
+    });
+    document.getElementById('fileImportar')?.addEventListener('change', importarBackup);
+
+    async function exportarBackup() {
+      const button = document.getElementById('btnExportar');
+      const originalText = button?.textContent;
+      if (button) { button.disabled = true; button.textContent = '⏳ Preparando...'; }
+      try {
+        if (!window.FirebaseStore?.createFullBackup) throw new Error('O Supabase ainda não está pronto.');
+        const backup = await window.FirebaseStore.createFullBackup();
+        backup.version = '2.0';
+        backup.timestamp = backup.createdAt;
+        backup.localSettings = {
+          config_importacao_vendas: localStorage.getItem('config_importacao_vendas'),
+          config_notificacoes: localStorage.getItem('config_notificacoes'),
+          irancash_theme: localStorage.getItem('irancash_theme')
+        };
+        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `backup-lavacash-supabase-${new Date().toISOString().split('T')[0]}.json`;
+        anchor.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Backup completo do Supabase exportado com sucesso!');
+      } catch (error) {
+        alert(`❌ Não foi possível criar o backup:\n\n${error.message}`);
+      } finally {
+        if (button) { button.disabled = false; button.textContent = originalText || '📤 Exportar'; }
+      }
+    }
+
+    async function verificarIntegridade() {
+      const button = document.getElementById('btnVerificarIntegridade');
+      const status = document.getElementById('integrityStatus');
+      const lavId = UserSystem.getLavanderiaSelecionada()?.id;
+      if (!lavId || !window.FirebaseStore?.runDailyIntegrityCheck) {
+        status.textContent = 'O Supabase ainda não está pronto.';
+        return;
+      }
+      button.disabled = true;
+      status.textContent = 'Verificando os dados...';
+      try {
+        const result = await window.FirebaseStore.runDailyIntegrityCheck(lavId);
+        const alerts = Number(result?.receiptsWithoutDate || 0)
+          + Number(result?.receiptsWithInvalidValue || 0)
+          + Number(result?.expensesWithoutDate || 0)
+          + Number(result?.duplicateSaleCodes || 0);
+        const visibleExpenseCount = Number(result?.visibleExpenseCount ?? result?.expenseCount ?? 0);
+        const visibleExpenseTotal = Number(result?.visibleExpenseTotal ?? result?.expenseTotal ?? 0);
+        const excludedLegacyCount = Number(result?.excludedLegacyExpenseCount || 0);
+        const formatMoney = value => Number(value || 0).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        });
+        const legacyNote = excludedLegacyCount > 0
+          ? excludedLegacyCount === 1
+            ? ' 1 registro antigo está preservado e fora dos cálculos.'
+            : ` ${excludedLegacyCount} registros antigos estão preservados e fora dos cálculos.`
+          : '';
+        status.textContent = alerts === 0
+          ? `Tudo certo: ${Number(result?.receiptCount || 0)} receitas (${formatMoney(result?.receiptTotal)}) e ${visibleExpenseCount} despesas ativas (${formatMoney(visibleExpenseTotal)}) verificadas.${legacyNote}`
+          : `Atenção: ${alerts} ocorrência(s) para revisar. Datas ausentes: ${Number(result?.receiptsWithoutDate || 0) + Number(result?.expensesWithoutDate || 0)}; códigos de venda repetidos: ${Number(result?.duplicateSaleCodes || 0)}.${legacyNote}`;
+        status.style.color = alerts === 0 ? 'var(--color-success)' : 'var(--color-warning)';
+      } catch (error) {
+        status.textContent = `Falha na verificação: ${error.message}`;
+        status.style.color = 'var(--color-danger)';
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function importarBackup() {
+      const input = document.getElementById('fileImportar');
+      const file = input.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const backup = JSON.parse(e.target.result);
+
+          if (backup.format === 'lavacash-supabase-backup-v1') {
+            if (!confirm('Este é um backup completo do Supabase. Restaurar agora apenas as preferências locais deste navegador?\n\nOs dados financeiros não serão sobrescritos automaticamente.')) return;
+            Object.entries(backup.localSettings || {}).forEach(([key, value]) => {
+              if (typeof value === 'string') localStorage.setItem(key, value);
+            });
+            alert('✅ Preferências locais restauradas. O arquivo continua contendo a cópia completa do banco para recuperação administrativa.');
+            location.reload();
+            return;
+          }
+
+          if (!backup.version || !backup.data) {
+            throw new Error('Arquivo de backup inválido');
+          }
+
+          if (!confirm(`Restaurar backup de ${new Date(backup.timestamp).toLocaleString()}?\n\nISTO IRÁ SOBRESCREVER TODOS OS DADOS ATUAIS!`)) {
+            return;
+          }
+
+          // Restaurar dados
+          Object.entries(backup.data).forEach(([key, value]) => {
+            if (value) localStorage.setItem(key, value);
+          });
+
+          alert('✅ Backup restaurado! Recarregando...');
+          location.reload();
+        } catch (error) {
+          alert(`❌ Erro ao importar backup:\n\n${error.message}`);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ========== NOTIFICAÇÕES ==========
+
+    function salvarConfigNotificacoes() {
+      const config = {
+        importacao: document.getElementById('configNotifImportacao').checked,
+        erros: document.getElementById('configNotifErros').checked
+      };
+
+      localStorage.setItem('config_notificacoes', JSON.stringify(config));
+      alert('✅ Configurações de notificações salvas!');
+    }
+
+    // ========== PERMISSÕES DE ACESSO ==========
+
+    function carregarPermissoes() {
+      const permissoes = UserSystem.getPermissoesAcesso();
+
+      // Carregar checkboxes para cada tipo
+      ['visualizador', 'admin'].forEach(tipo => {
+        document.querySelectorAll(`.perm-${tipo}`).forEach(checkbox => {
+          checkbox.checked = permissoes[tipo].includes(checkbox.value);
+        });
+      });
+    }
+
+    // ========== CONTROLE DE ACESSO POR LAVANDERIA ==========
+
+    function renderAcessoLavanderias() {
+      const usuarios = UserSystem.getUsuarios()
+        .slice()
+        .sort((a, b) => String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR'));
+      const lavanderias = UserSystem.getLavanderias();
+      const container = document.getElementById('listaAcessoLavanderias');
+      if (!container) return;
+
+      if (usuarios.length === 0) {
+        container.innerHTML = '<p class="text-sm" style="color: var(--color-text-muted);">Nenhum usuário cadastrado.</p>';
+        return;
+      }
+
+      const html = usuarios.map(user => {
+        const tipoAcesso = UserSystem.normalizarTipoAcesso(user.tipoAcesso);
+        const isDevOrAll = tipoAcesso === 'desenvolvedor' || user.lavanderias?.includes('all');
+
+        let lavanderiasList = '';
+        if (isDevOrAll) {
+          lavanderiasList = '<span class="text-sm" style="color: var(--color-success);">✅ Acesso a todas as lavanderias</span>';
+        } else if (user.lavanderias && user.lavanderias.length > 0) {
+          const lavNomes = user.lavanderias
+            .map(lavId => {
+              const lav = lavanderias.find(l => l.id === lavId);
+              return lav ? lav.nome : lavId;
+            })
+            .join(', ');
+          lavanderiasList = `<span class="text-sm" style="color: var(--color-text-secondary);">${lavNomes}</span>`;
+        } else {
+          lavanderiasList = '<span class="text-sm" style="color: var(--color-danger);">⚠️ Nenhuma lavanderia atribuída</span>';
+        }
+
+        const tipoIcone = {
+          visualizador: '👁️',
+          admin: '⚡',
+          desenvolvedor: '🔧'
+        }[tipoAcesso] || '👤';
+
+        return `
+          <div class="p-4" style="background: var(--color-glass-bg); border: 1px solid var(--color-glass-border); border-radius: 0.75rem;">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span>${tipoIcone}</span>
+                  <h4 class="font-medium" style="color: var(--color-text-primary);">${user.nome}</h4>
+                  <span class="text-xs px-2 py-1 rounded" style="background: var(--color-surface-active); color: var(--color-text-muted);">
+                    ${UserSystem.ROLE_LABELS[tipoAcesso] || tipoAcesso}
+                  </span>
+                </div>
+                <p class="text-sm mt-1" style="color: var(--color-text-muted);">${user.email}</p>
+                <div class="mt-2">
+                  ${lavanderiasList}
+                </div>
+              </div>
+              <button class="btn btn-ghost" onclick="editarUsuario('${user.id}')" title="Editar lavanderias">
+                ✏️ Editar
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = html;
+    }
+
+    function salvarPermissoes() {
+      const permissoesBrutas = {
+        visualizador: [],
+        admin: [],
+        desenvolvedor: ['all']
+      };
+
+      ['visualizador', 'admin'].forEach(tipo => {
+        document.querySelectorAll(`.perm-${tipo}:checked`).forEach(checkbox => {
+          permissoesBrutas[tipo].push(checkbox.value);
+        });
+      });
+
+      const permissoes = UserSystem.salvarPermissoesAcesso(permissoesBrutas);
+
+      carregarPermissoes();
+      alert('✅ Permissões de acesso salvas com sucesso!');
+    }
+
+    // Função helper para verificar permissão de página (usar em outras páginas)
+    window.verificarPermissao = function(pagina) {
+      return UserSystem.verificarPermissao(pagina);
+    };
+
+    // Função helper para obter lavanderias permitidas do usuário atual
+    window.getLavanderiasPermitidas = function() {
+      const user = UserSystem.getCurrentUser();
+      if (!user) return [];
+
+      // Desenvolvedor e 'all' têm acesso a todas
+      if (UserSystem.normalizarTipoAcesso(user.tipoAcesso) === 'desenvolvedor' || user.lavanderias?.includes('all')) {
+        return UserSystem.getLavanderias().map(l => l.id);
+      }
+
+      // Retornar apenas lavanderias atribuídas
+      return user.lavanderias || [];
+    };
+
+    // Função helper para verificar se usuário tem acesso a uma lavanderia específica
+    window.temAcessoLavanderia = function(lavanderiaId) {
+      const user = UserSystem.getCurrentUser();
+      if (!user) return false;
+
+      // Desenvolvedor tem acesso total
+      if (UserSystem.normalizarTipoAcesso(user.tipoAcesso) === 'desenvolvedor') return true;
+
+      // Usuários com 'all' têm acesso a todas
+      if (user.lavanderias?.includes('all')) return true;
+
+      // Verificar se lavanderia está na lista do usuário
+      return user.lavanderias?.includes(lavanderiaId) || false;
+    };
+
+    // Função para filtrar dados por lavanderias permitidas
+    window.filtrarPorLavanderiaPermitida = function(dados, campoLavanderia = 'lavanderiaId') {
+      const lavanderiasPermitidas = window.getLavanderiasPermitidas();
+
+      // Se tem acesso a todas ou é desenvolvedor, retorna tudo
+      const user = UserSystem.getCurrentUser();
+      if (UserSystem.normalizarTipoAcesso(user?.tipoAcesso) === 'desenvolvedor' || user?.lavanderias?.includes('all')) {
+        return dados;
+      }
+
+      // Filtrar apenas dados das lavanderias permitidas
+      return dados.filter(item => {
+        const lavId = typeof item === 'object' ? item[campoLavanderia] : item;
+        return lavanderiasPermitidas.includes(lavId);
+      });
+    };
+
+    function renderDadosDesenvolvedorAtualizados() {
+      if (!isUsuarioAtualDesenvolvedor()) return;
+
+      renderLavanderias();
+      atualizarLavanderiaSelect();
+    }
+
+    // Init
+    if (isUsuarioAtualDesenvolvedor()) {
+      renderLavanderias();
+      carregarConfigImportacao(); // Carregar config de importação na inicialização
+      renderCategoriasDespesaConfig(); // Exibir categorias de despesas
+      preencherSelectCategoriaMDR(); // Preencher select de categoria MDR
+      renderMetasMensais(); // Metas mensais por categoria
+
+      // Carregar tema salvo
+      const temaSalvo = localStorage.getItem('irancash_theme');
+      if (temaSalvo) {
+        document.getElementById('configTema').value = temaSalvo;
+      }
+
+      // Carregar notificações
+      const configNotif = JSON.parse(localStorage.getItem('config_notificacoes') || '{}');
+      document.getElementById('configNotifImportacao').checked = configNotif.importacao !== false;
+      document.getElementById('configNotifErros').checked = configNotif.erros !== false;
+    }
+
+    window.addEventListener('firebase:initialized', () => {
+      void hydrateMaquininhasFromFirebase(true).then(() => renderMaquininhas());
+      setTimeout(renderDadosDesenvolvedorAtualizados, 300);
+    });
+
+    window.addEventListener('usersystem:updated', renderDadosDesenvolvedorAtualizados);
+
+    // ═══════════════════════════════════════════
+    // METAS MENSAIS POR CATEGORIA
+    // ═══════════════════════════════════════════
+    const METAS_KEY_BASE = 'irancash_metas_mensais';
+
+    function getCurrentLaundryIdFallback() {
+      return document.getElementById('lavanderiaSelect')?.value
+        || UserSystem.getLavanderiaSelecionada()?.id
+        || localStorage.getItem('lavanderiaSelecionada')
+        || '';
+    }
+
+    function getMetasStorageKey() {
+      try {
+        if (window.LaundryService && typeof window.LaundryService.getLaundryKey === 'function') {
+          const scoped = window.LaundryService.getLaundryKey(METAS_KEY_BASE);
+          if (scoped) return scoped;
+        }
+      } catch (e) {}
+
+      const lavId = getCurrentLaundryIdFallback();
+      return lavId ? `${lavId}_${METAS_KEY_BASE}` : METAS_KEY_BASE;
+    }
+
+    function migrateLegacyMetasKeyOnce() {
+      if (window._irancashMetasTenantMigrated) return;
+      window._irancashMetasTenantMigrated = true;
+
+      try {
+        const legacy = localStorage.getItem(METAS_KEY_BASE);
+        if (!legacy) return;
+
+        const lavs = (window.UserSystem && typeof window.UserSystem.getLavanderias === 'function')
+          ? window.UserSystem.getLavanderias()
+          : [];
+        const lavIds = Array.isArray(lavs)
+          ? lavs.map(l => l && l.id).filter(Boolean).map(String)
+          : [];
+        const fallback = getCurrentLaundryIdFallback();
+        const ids = lavIds.length ? lavIds : (fallback ? [String(fallback)] : []);
+        if (!ids.length) return;
+
+        ids.forEach(lavId => {
+          const scopedKey = `${lavId}_${METAS_KEY_BASE}`;
+          if (!localStorage.getItem(scopedKey)) {
+            localStorage.setItem(scopedKey, legacy);
+          }
+        });
+
+        localStorage.removeItem(METAS_KEY_BASE);
+      } catch (e) {}
+    }
+
+    function getMetas() {
+      migrateLegacyMetasKeyOnce();
+      try { return JSON.parse(localStorage.getItem(getMetasStorageKey()) || '{}'); } catch(e) { return {}; }
+    }
+
+    function sincronizarMetasComCategorias() {
+      const categorias = window.despesasUtils?.getCategoriasDespesa?.() || [];
+      const categoriasIds = new Set(categorias.map(cat => cat.id));
+      const metasAtuais = getMetas();
+      const metasSincronizadas = {};
+
+      Object.keys(metasAtuais).forEach(categoriaId => {
+        if (!categoriasIds.has(categoriaId)) return;
+        const valor = parseFloat(metasAtuais[categoriaId]);
+        if (valor > 0) metasSincronizadas[categoriaId] = valor;
+      });
+
+      if (JSON.stringify(metasAtuais) !== JSON.stringify(metasSincronizadas)) {
+        localStorage.setItem(getMetasStorageKey(), JSON.stringify(metasSincronizadas));
+      }
+
+      return metasSincronizadas;
+    }
+
+    function renderMetasMensais() {
+      const container = document.getElementById('listaMetasCategorias');
+      if (!container) return;
+      const categorias = window.despesasUtils?.getCategoriasDespesa?.() || [];
+      const metas = sincronizarMetasComCategorias();
+      container.innerHTML = categorias.map(cat => `
+        <div class="flex items-center gap-3" style="flex-wrap:wrap;">
+          <label class="text-sm font-medium" style="min-width:160px;color:var(--color-text-primary);">${cat.nome}</label>
+          <div class="flex items-center gap-2">
+            <span class="text-sm" style="color:var(--color-text-muted);">R$</span>
+            <input type="number" class="input-glass" style="width:140px;" min="0" step="0.01"
+              data-meta-id="${cat.id}"
+              value="${metas[cat.id] || ''}"
+              placeholder="Sem meta">
+          </div>
+          <span class="text-xs" style="color:var(--color-text-muted);">por mês</span>
+        </div>
+      `).join('');
+    }
+
+    async function persistMetas(metas) {
+      const key = getMetasStorageKey();
+      localStorage.setItem(key, JSON.stringify(metas));
+
+      if (window.IndexedDBStore && window.IndexedDBStore.setItem) {
+        try {
+          await window.IndexedDBStore.setItem(key, metas);
+        } catch (err) {
+          console.warn('[Configurações] Erro ao salvar metas no IndexedDB:', err);
+        }
+      }
+
+      if (window.FirebaseStore && window.FirebaseStore.setItem) {
+        try {
+          const available = typeof window.FirebaseStore.isAvailable === 'function'
+            ? await window.FirebaseStore.isAvailable()
+            : true;
+          if (available) await window.FirebaseStore.setItem(key, metas);
+        } catch (err) {
+          console.warn('[Configurações] Erro ao salvar metas no Firebase:', err);
+        }
+      }
+    }
+
+    async function salvarMetas() {
+      const metas = {};
+      document.querySelectorAll('[data-meta-id]').forEach(input => {
+        const val = parseFloat(input.value);
+        if (val > 0) metas[input.dataset.metaId] = val;
+      });
+      await persistMetas(metas);
+      alert('Metas salvas com sucesso!');
+    }
+
+    let _metasConfigFirebaseSyncSetup = false;
+    let _metasConfigUnsubscribe = null;
+    async function setupMetasConfigFirebaseSync() {
+      if (_metasConfigFirebaseSyncSetup) return;
+      if (!window.FirebaseStore || !window.FirebaseStore.subscribe || !window.FirebaseStore.getItem || !window.FirebaseStore.setItem) return;
+      _metasConfigFirebaseSyncSetup = true;
+
+      const key = getMetasStorageKey();
+      try {
+        const remote = await window.FirebaseStore.getItem(key, null);
+        if (remote && typeof remote === 'object' && !Array.isArray(remote)) {
+          localStorage.setItem(key, JSON.stringify(remote));
+          renderMetasMensais();
+        } else {
+          const local = getMetas();
+          if (Object.keys(local).length) await window.FirebaseStore.setItem(key, local);
+        }
+      } catch (err) {
+        console.warn('[Configurações] Erro ao sincronizar metas com Firebase:', err);
+      }
+
+      _metasConfigUnsubscribe = window.FirebaseStore.subscribe(key, (remote) => {
+        if (!remote || typeof remote !== 'object' || Array.isArray(remote)) return;
+        localStorage.setItem(key, JSON.stringify(remote));
+        renderMetasMensais();
+      });
+    }
+
+    window.addEventListener('firebase:initialized', setupMetasConfigFirebaseSync);
+    if (window.FirebaseStore && window.FirebaseStore.subscribe) {
+      setupMetasConfigFirebaseSync();
+    }
+  </script>
+<script src="js/responsive-tables.js?v=20260613-rateio-labels-v1"></script>
+  <script src="js/mobile-loader.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+</body>
+</html>

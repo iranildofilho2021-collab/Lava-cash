@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://cdn.sheetjs.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; data: blob: https://*.googleusercontent.com; connect-src &#x27;self&#x27; https://llernwuqqcvxiazsdljl.supabase.co wss://llernwuqqcvxiazsdljl.supabase.co https://*.googleapis.com https://apis.google.com https://www.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com; frame-src &#x27;self&#x27; https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://www.google.com; worker-src &#x27;self&#x27;; manifest-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Senha | LAVACASH</title>
+
+  <meta name="description" content="Recupere sua senha do sistema LAVACASH">
+  <meta name="theme-color" content="#0ea5e9">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css?v=20260412">
+  <link rel="stylesheet" href="css/utilities.css?v=20260420">
+  <link rel="stylesheet" href="css/ui-enhancements.css?v=20260608-tablefit">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- Reset Card -->
+  <div class="glass-card p-8 w-full max-w-md relative z-10 fade-in">
+
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" class="w-10 h-10">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold" style="color: var(--color-text-primary);">Recuperar Senha</h1>
+      <p class="mt-2" style="color: var(--color-text-muted);">Enviaremos um e-mail com instruções</p>
+    </div>
+
+    <!-- Reset Form -->
+    <form id="resetForm" class="space-y-5">
+
+      <div class="form-group">
+        <label for="email" class="form-label">E-mail da sua conta</label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2" style="color: var(--color-text-muted);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </span>
+          <input
+            type="email"
+            id="email"
+            class="input-glass w-full pl-11"
+            placeholder="seu@email.com"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="errorMsg" class="hidden p-3 rounded-lg text-sm text-center" style="background: rgba(239, 68, 68, 0.2); color: #f87171;"></div>
+      <div id="successMsg" class="hidden p-3 rounded-lg text-sm text-center" style="background: rgba(16, 185, 129, 0.2); color: #34d399;"></div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        id="btnReset"
+        class="btn btn-primary w-full text-lg py-3"
+        style="background: linear-gradient(135deg, #f59e0b, #ef4444);"
+      >
+        <span id="btnText">Enviar E-mail de Recuperação</span>
+        <span id="btnLoading" class="hidden">
+          <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+          </svg>
+        </span>
+      </button>
+    </form>
+
+    <!-- Back to Login -->
+    <div class="mt-6 text-center">
+      <a href="./index.html" class="inline-flex items-center gap-2 text-sm hover:underline" style="color: var(--color-text-secondary);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Voltar para o login
+      </a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/firebase-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/pwa-init.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/auth-service.js?v=20261103-pages-sync-v1"></script>
+  <script src="js/owner-mode.js?v=20260903-owner-only-v1"></script>
+
+  <script>
+    document.getElementById('resetForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+      const btnText = document.getElementById('btnText');
+      const btnLoading = document.getElementById('btnLoading');
+
+      // Show loading
+      btnText.classList.add('hidden');
+      btnLoading.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+      successMsg.classList.add('hidden');
+
+      try {
+        if (typeof AuthService !== 'undefined' && AuthService.resetPassword) {
+          const result = await AuthService.resetPassword(email);
+          if (!result.success) {
+            throw new Error(result.message || 'Não foi possível enviar o e-mail de recuperação.');
+          }
+
+          successMsg.innerHTML = `
+            <p class="font-semibold">Recuperação processada</p>
+            <p class="mt-1 text-xs">${result.message || 'Verifique sua caixa de entrada e spam.'}</p>
+          `;
+        } else {
+          throw new Error('Serviço de recuperação indisponível no momento.');
+        }
+
+        successMsg.classList.remove('hidden');
+        document.getElementById('email').value = '';
+
+      } catch (error) {
+        errorMsg.textContent = error.message || 'Erro ao enviar e-mail. Verifique se o endereço está correto.';
+        errorMsg.classList.remove('hidden');
+      }
+
+      btnText.classList.remove('hidden');
+      btnLoading.classList.add('hidden');
+    });
+  </script>
+<script src="js/ui-enhancements.js?v=20261103-pages-sync-v1"></script>
+</body>
+</html>

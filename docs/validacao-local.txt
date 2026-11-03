@@ -1,0 +1,44 @@
+[SW] Service Worker carregado!
+[SW] Ativando Service Worker...
+[SW] Removendo cache antigo: lavacash:https://example.invalid/Lava-cash/:old
+✔ all HTML assets and navigation resolve under the Pages project path (76.371473ms)
+✔ mobile links, action links, redirects and module imports resolve to existing files (67.755073ms)
+✔ PWA start, scope, icons and shortcuts stay inside the Pages directory (12.96733ms)
+✔ legacy clean URLs redirect only known routes and retain query/hash (11.878444ms)
+✔ expired session redirects to project login without looping on its root (9.743315ms)
+✔ service worker activation preserves other applications on the same GitHub origin (23.106216ms)
+✔ every application module and inline script passes JavaScript syntax checks (4106.06961ms)
+✔ all JS and inline HTML scripts parse (16.051889ms)
+✔ queue acknowledges only the operation actually sent (37.581771ms)
+✔ queue preserves immutable data rather than reading a changed cache (5.195402ms)
+✔ failed older operation blocks later operations for the same key (20.594495ms)
+✔ legacy queue is preserved without replaying unknown snapshots (3.066753ms)
+✔ pending writes from another uid are not sent (6.035117ms)
+✔ concurrent flush events send an operation once (2.8891ms)
+✔ queue reports quota failure instead of claiming durable storage (3.465841ms)
+✔ snapshot deletion without selected IDs is blocked before database writes (2.355039ms)
+✔ explicit deletion targets selected IDs and laundry only (3.395405ms)
+✔ deletion denied by RLS is not reported as success (1.858374ms)
+✔ editing a remotely deleted expense never creates it again (4.32157ms)
+✔ concurrent changes reject stale edits (3.264136ms)
+✔ updates use conditional PATCH, never an upsert that recreates a deletion (2.844119ms)
+✔ row changed between read and PATCH raises conflict (5.021518ms)
+✔ new insert uses ignore-duplicates and requires a returned record (14.787884ms)
+✔ retrying an already created identical expense is idempotent (18.122106ms)
+✔ partial series update reports confirmed IDs (16.162887ms)
+✔ Firebase claim mismatch is refreshed once and rejected with a specific error (8.995273ms)
+✔ page remote reconciliation replaces stale cache and preserves recovery data (3.483528ms)
+✔ page save waits for remote success and leaves cache unchanged on failure (2.717784ms)
+✔ page save only sends changes, not unrelated cached records (3.919773ms)
+✔ financial reconciliation keeps divergent drafts without resurrecting remote deletions (2.353977ms)
+✔ reconciliation fails before replacing data when recovery storage is full (3.949683ms)
+✔ legacy expenses without timestamps still reject stale changes (2.102981ms)
+✔ receipt save cannot report a queued write as a completed cloud save (4.709225ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5367.840372

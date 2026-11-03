@@ -1,0 +1,14 @@
+name: Validar LAVACASH
+on:
+  pull_request:
+  push:
+    branches: [main, codex/supabase-github-pages]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - run: node --test tests/*.cjs
+      - run: node scripts/build-pages.mjs
